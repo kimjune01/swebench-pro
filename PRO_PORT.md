@@ -185,6 +185,29 @@ Seven losses across six repos is too thin to call these established classes — 
 at Pro's larger N. The contracts above close gate-divergence and overfit; recon-ceiling and
 genuinely-hard are the capability frontier, and Pro will press on them harder.
 
+### The failed set (Verified, 16 not-won) — the line-up-ready validation corpus
+
+The full not-won list, classified, so an improved loop can be run against exactly the right instances.
+**No-credit rule:** improved-loop conversions on these are *telemetry, not Verified wins* — they're a
+known/labeled test set; counting them would be training on the test set. Route such runs outside
+`results/` (scoreboard.py counts that tree). External-fault reruns are the exception — same frozen
+artifact, so they *do* count.
+
+| class | instances | validates lever | rerun? |
+|---|---|---|---|
+| recon-ceiling | django-11734, django-14351 | **tri-abduction step** | no — telemetry only |
+| genuinely-hard | astropy-13398, django-16263 | tri-abduction (partial); capability frontier | no — telemetry only |
+| gate-divergence | pytest-5787, django-14170 | **attestation hash-as-precondition** | no — telemetry only |
+| craft-overfit | sympy-13091 | attestation / minimality | no — telemetry only |
+| other reasoning (sympy) | sympy-20438, sympy-17139 | (classify first) | no — telemetry only |
+| heavy-suite hang (DNF) | sympy-13878, sympy-19040, matplotlib-25311, django-15957 | **suite-selection + stage-cap** | probationary solo only |
+| box-death (infra) | django-15563, django-14404 | — | **yes (counts)** — aborted-run completion |
+| contamination (fixed) | django-15987 | — | **yes (counts)** — serialization fix re-grade |
+
+Primary tri-abduction targets: the 2 recon-ceiling + the regression sample (currently-passing hard
+instances). Attestation targets: the 2 gate-divergence. Suite-selection/stage-cap targets: the 4
+heavy-suite hangs. Each A/B's control is the committed `results/<id>/` for that instance.
+
 ## The inquiry loop is abduction — recon-ceiling is a missing operand
 
 The loop instantiates the abduction primitive (see [Abduction](https://june.kim/abduction) and the
