@@ -136,6 +136,45 @@ static prefix vs tiny control; measure quota drawdown, not wall-clock) before re
 levers also improve cache locality, so they hedge the metering question either way. (codex reviewed both
 the lever set and the caching-under-subscription question; its points are folded in.)
 
+## Validating the improvements (cheap A/B; control = already committed)
+
+Every lever is a *suspect* until a test converts it. Rank by the two axes that matter — **reduces token
+usage** and **improves reliability** — and validate the duals first. Caching is demoted: no reliability
+gain, and its token gain is unverified.
+
+Two things keep these affordable (no full-set re-run): the **control arm is the committed Verified runs**
+(`results/` already records the current frozen artifact's tokens-ish/ledger + resolve/DNF per instance —
+read it, don't re-run it), so only the **treatment** arm spends tokens, on the kept box, on a targeted set.
+And **deterministic levers need one treatment run** (the mechanism's effect on the gate isn't stochastic);
+only prompt-changing levers need repeated trials.
+
+Each test: target instances (the failures it should fix) **+ a regression sample** of currently-passing
+instances (the guard against a lever that buys conversions by breaking wins). Pass = converts targets **AND
+zero regression on the sample AND** tokens not up. Priority order:
+
+1. **Suite-selection (minimal F2P first, full suite at audit)** — token + runtime + reliability.
+   Treatment on the heavy-suite DNFs {sympy-13878, sympy-19040, matplotlib-25311} + a passing sympy/mpl
+   sample. Pass: the DNFs complete within budget (hang → terminal), sample still resolves, per-iteration
+   tokens + wall-clock drop. Deterministic gate change → 1 run (2 on the heavy ones to rule out a fluke).
+2. **Stage-cap + failure-signature early-bail** — token (kills doomed loops) + reliability (bounded).
+   Treatment on the thrash losses {django-16263, astropy-13398, sympy-13091} + a passing sample. Pass: loops
+   terminate earlier (token win) with **zero newly-failed passing instances** — the bail must not guillotine
+   a slow-but-valid solve. The regression sample is the whole point here. Deterministic → 1 run, but verify
+   the bail threshold against the passing sample's natural loop counts.
+3. **Attestation hash-as-precondition** — reliability (kills gate-divergence) + small token.
+   Not a tunable; a correctness contract. Treatment re-grades {pytest-5787, django-14170} by attesting the
+   serialized source-only patch. Pass: our-gate verdict now **equals** official (the false-green vanishes —
+   our gate goes red too, so nothing wrong gets submitted) AND no new disagreement on a passing sample.
+   Deterministic → 1 run.
+4. **Semantic gate-output extraction** — token (largest sink) + mild reliability.
+   Treatment on a few heavy-suite instances; instrument tokens fed to craft per iteration. Pass:
+   tokens/iteration down sharply AND resolve outcomes unchanged on a passing sample (truncation didn't drop
+   the signal the fix needed). Token metric deterministic; resolve outcome → check the sample.
+
+Lower priority (token-only or unverified): recon windowing, state file, baseline cache, trace dedup, prompt
+skeleton (volume cuts, validate by token delta + no-regression once the duals land); caching (verify-first
+A/B above, no reliability gain).
+
 ## Observed failure modes (Verified session, for calibration)
 
 Seven reasoning losses split roughly evenly across: **recon-ceiling** (right symptom function, wrong
