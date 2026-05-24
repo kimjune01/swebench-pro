@@ -38,6 +38,12 @@ LOCALLY (OrbStack on the Mac), not over ssh to a box. Two changes from rung4:
      sha256; a red attestation overrides an agent "RESOLVED" (the gate-divergence class —
      pytest-5787, django-14170 — is caught here instead of slipping through green).
 
+  3. CAPTURE-AT-TIMEOUT. The craft `claude` call is capped (CRAFT_CAP, default 3600s) and the
+     timeout is NON-FATAL: the agent edits the container, so on a cap-trip we break the loop and
+     capture the in-progress `git diff HEAD` instead of crashing to a 0-byte patch. Targets the
+     craft-orchestration-hang DNFs (sympy-19040, django-15957, matplotlib-25311) where the suite
+     is fast (P1: 7.79s) but the agent/codex ran away for the full hour. Caps are env-overridable.
+
 Usage: rung5_driver.py <round_tasks.json> <instance_id> [...]   (runs locally on OrbStack)
 """
 import json, subprocess, sys, time, pathlib, os, re, hashlib
@@ -50,6 +56,12 @@ from swebench.harness.constants import (
 
 HERE = pathlib.Path("/tmp/swebench-abduction")
 MAX_OUTER = 3
+# Wall-clock caps (s) on the per-stage `claude` subprocess. Craft is capped lower because the
+# DNFs were craft orchestration hangs (P1: the suite is fast); on a craft cap-trip we capture
+# the in-progress container diff rather than erroring to a 0-byte patch.
+RECON_CAP  = int(os.environ.get("RECON_CAP", "2000"))
+CRAFT_CAP  = int(os.environ.get("CRAFT_CAP", "3600"))
+AUDIT_CAP  = int(os.environ.get("AUDIT_CAP", "1200"))
 
 # Skills are repo-local (hardlinked to the canonical copies). Resolve relative to
 # this file so the repo is self-contained for anyone who clones it.
@@ -153,14 +165,23 @@ def claude(prompt_text, cwd, tag, timeout=2400):
     pf = HERE/f"r4_prompt_{tag}.txt"; pf.write_text(prompt_text)
     cwd = pathlib.Path(cwd); cwd.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
-    p = subprocess.run(
-        ["claude","--print","--model","claude-sonnet-4-5",
-         "--dangerously-skip-permissions","--disallowedTools","WebSearch,WebFetch,Task"],
-        stdin=open(pf), capture_output=True, text=True, timeout=timeout,
-        cwd=str(cwd), env=plan_env())
+    timed_out = False
+    try:
+        p = subprocess.run(
+            ["claude","--print","--model","claude-sonnet-4-5",
+             "--dangerously-skip-permissions","--disallowedTools","WebSearch,WebFetch,Task"],
+            stdin=open(pf), capture_output=True, text=True, timeout=timeout,
+            cwd=str(cwd), env=plan_env())
+        stdout, stderr = p.stdout, p.stderr
+    except subprocess.TimeoutExpired as e:
+        # Non-fatal: the agent edits the CONTAINER, so its in-progress work survives the kill.
+        # Return partial stdout + the flag; the caller decides whether to capture-at-timeout.
+        timed_out = True
+        stdout = e.stdout.decode() if isinstance(e.stdout, bytes) else (e.stdout or "")
+        stderr = e.stderr.decode() if isinstance(e.stderr, bytes) else (e.stderr or "")
     dt = time.time()-t0
-    (HERE/f"r4_out_{tag}.txt").write_text(p.stdout+"\n---STDERR---\n"+p.stderr)
-    return p.stdout, dt
+    (HERE/f"r4_out_{tag}.txt").write_text(stdout+"\n---STDERR---\n"+stderr)
+    return stdout, dt, timed_out
 
 # ── recon: single diagnostician (gate + outer loop is the adversary) ──────────
 
@@ -186,10 +207,10 @@ def recon(inst, box, gate, hgraph, kill_report, depth):
         f"{kr}"
         f"\n===================== THE /recon SKILL =====================\n{RECON_SKILL}\n"
     )
-    out, dt = claude(adapter, HERE/f"r4_cwd_{tag}", tag, timeout=2000)
+    out, dt, _to = claude(adapter, HERE/f"r4_cwd_{tag}", tag, timeout=RECON_CAP)
     fixed_point = "FIXED POINT" in out.upper()
     log({"instance":iid,"stage":"recon","depth":depth,"wall_s":round(dt),
-         "fixed_point":fixed_point})
+         "fixed_point":fixed_point,"timed_out":_to})
     return out, fixed_point
 
 # ── craft ─────────────────────────────────────────────────────────────────────
@@ -222,12 +243,12 @@ def craft(inst, box, gate, hgraph, handoff, kill_report, depth):
         f"never your reasoning, never codex's approval.\n\n"
         f"===================== THE /craft SKILL =====================\n{CRAFT_SKILL}\n"
     )
-    out, dt = claude(adapter, HERE/f"r4_cwd_{tag}", tag, timeout=3600)
+    out, dt, timed_out = claude(adapter, HERE/f"r4_cwd_{tag}", tag, timeout=CRAFT_CAP)
     redirect = "re-diagnose" in out.lower()
     claim = ("RESOLVED" in out) and ("NOT-RESOLVED" not in out)
     log({"instance":iid,"stage":"craft","depth":depth,"wall_s":round(dt),
-         "claim":claim,"wants_rediagnose":redirect})
-    return out, redirect
+         "claim":claim,"wants_rediagnose":redirect,"timed_out":timed_out})
+    return out, redirect, timed_out
 
 # ── audit ─────────────────────────────────────────────────────────────────────
 
@@ -248,7 +269,7 @@ def audit(inst, box, gate, hgraph, failbase, depth):
         f"RE-ENTER: <recon|craft|none>\n\n"
         f"===================== THE /audit SKILL =====================\n{AUDIT_SKILL}\n"
     )
-    out, dt = claude(adapter, HERE/f"r4_cwd_{tag}", tag, timeout=1200)
+    out, dt, _to = claude(adapter, HERE/f"r4_cwd_{tag}", tag, timeout=AUDIT_CAP)
     verdict, route = "UNKNOWN", "none"
     for line in reversed(out.strip().splitlines()):
         l = line.strip()
@@ -444,7 +465,15 @@ def process(iid):
                 log({"instance":iid,"stage":"halt","msg":"fixed point: re-diagnosis converged"})
                 break
         # CRAFT
-        craft_out, wants_rediagnose = craft(inst, box, gate, hgraph, handoff, kill_report, depth)
+        craft_out, wants_rediagnose, craft_timed_out = craft(inst, box, gate, hgraph, handoff, kill_report, depth)
+        if craft_timed_out:
+            # Capture-at-timeout: the agent's in-progress edits are still in the container.
+            # Break the loop and let the post-loop capture + testify grade whatever exists,
+            # instead of crashing to a 0-byte patch (the DNF class — sympy-19040, etc.).
+            verdict = "CRAFT_TIMEOUT"
+            log({"instance":iid,"stage":"halt","depth":depth,
+                 "msg":f"craft hit CRAFT_CAP={CRAFT_CAP}s — capturing in-progress diff"})
+            break
         if wants_rediagnose and depth < MAX_OUTER-1:
             # craft says the hypothesis is wrong — feed its note back to recon next iter
             kill_report = f"craft could not implement the diagnosis:\n{craft_out[-2000:]}"
