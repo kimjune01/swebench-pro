@@ -5,3 +5,4 @@ __pycache__/
 .venv/
 swebench-env/
 .DS_Store
+iso/
