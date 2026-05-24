@@ -240,6 +240,31 @@ So the recon windowing lever in the efficiency list is really the operational fa
 step; treat its A/B as testing "does the added counterfactual branch convert recon-ceiling instances
 without degrading localization on the passing sample."
 
+### Why tri is terminal — the lineage (to dig into)
+
+The loop's primitive set closes at {unary diff, bi-abduction, tri-abduction} — no genuine 4-ary primitive,
+n-ary breadth is triadic composition (the hypothesis graph / fan-out). This isn't a hunch; it's
+**Peirce's Reduction Thesis**: triads are *necessary* (a genuinely triadic relation can't be analyzed
+into monadic+dyadic — Thirdness is irreducible) and *sufficient* (no genuinely tetradic-or-higher
+relation; every n-adic decomposes to triadic). Same Peirce who named abduction (retroduction) and the
+1/2/3 categories (Firstness/Secondness/Thirdness).
+
+Sources to chase:
+- **Robert Burch, *A Peircean Reduction Thesis* (1991)** — formalizes it as Peircean Algebraic Logic
+  (PAL): all relations constructible from ternary, none from unary+binary alone; the **teridentity**
+  (genuine 3-way identity) is the irreducible witness.
+- **Hereth Correia & Pöschel, "Peircean Algebraic Logic and Peirce's Reduction Thesis" (2011)** — refines
+  Burch, removes one of his restrictions.
+- **Koshkin, "Is Peirce's Reduction Thesis gerrymandered?"** — the live critique (argues the formalization
+  smuggles the result). Cite it too; the *core* (triadic sufficient + irreducible) is the lineage, the
+  exact formalization is contested — don't present it as clean-settled.
+- Causal-domain echo: **Pearl's Causal Hierarchy Theorem** (Bareinboim–Correa–Ibeling–Icard) — exactly
+  three layers, counterfactual maximal, no fourth. Continuous-function cousin: **Kolmogorov–Arnold**
+  (n-ary continuous functions → superpositions bottoming out at binary+unary). Both rhyme; Peirce is the genus.
+
+**Consequence:** stop looking for higher-arity operators. The tri-abduction recon step is the *terminal*
+recon primitive; everything wider is composition the pipeline already does.
+
 ## Sequence
 
 Public: one-instance smoke (image pulls, container sets up, gate runs, capture, official verdict) →
