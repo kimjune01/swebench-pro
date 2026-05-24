@@ -185,6 +185,38 @@ Seven losses across six repos is too thin to call these established classes — 
 at Pro's larger N. The contracts above close gate-divergence and overfit; recon-ceiling and
 genuinely-hard are the capability frontier, and Pro will press on them harder.
 
+## The inquiry loop is abduction — recon-ceiling is a missing operand
+
+The loop instantiates the abduction primitive (see [Abduction](https://june.kim/abduction) and the
+methodeutics chapters [ch05 bi-abduction](https://june.kim/reading/methodeutics/ch05-bi-abduction),
+[ch06 tri-abduction](https://june.kim/reading/methodeutics/ch06-tri-abduction)). The primitive is *diff*:
+figure = what changed, ground = what held; the arity is the degree of freedom.
+
+- **recon = bi-abduction.** Observation (failing test + behavior) + goal (pass F2P) → autonomously infer
+  the frame (the root-cause precondition). No hand-authored fault tree.
+- **the loop's failure-first reasoning = incorrectness.** Reason backward from the bad state against the
+  fail-on-base baseline; under-approximate "this path reaches the bug," don't prove correctness.
+- **audit→recon outer loop builds the hypothesis graph** = N branches → typed subgraph.
+
+**recon-ceiling is bi-abduction landing on the wrong frame** — it took the *symptom function* (`In`,
+`ResolvedOuterRef`) as figure when the real figure was the compiler/resolution path. The fix is to add
+the third operand: **on non-convergence, take a tri-abduction step** — fork from the shared start, diff
+the actual bad-state branch against the expected-good-state counterfactual, and follow the causal edge to
+its origin (the last writer of the wrong state). That is exactly "trace the exact path, name the last
+writer," stated in the framework it instantiates — not a generic windowing tweak.
+
+This cleaves the improvement suspects by *type of fix*:
+- **Abduction-side (fixes diagnosis → recon-ceiling, partly genuinely-hard):** bi-abduction is the base
+  recon; add a tri-abduction step when a frame fails to converge. Validate per the recon A/B (stochastic
+  → repeated trials), with the regression sample guarding against worse localization elsewhere.
+- **Contract-side (fixes verification → gate-divergence, craft-overfit):** the attestation
+  hash-as-precondition. Orthogonal — abduction cannot fix a gate that lies about its own success, and a
+  better gate cannot supply a frame the loop never inferred.
+
+So the recon windowing lever in the efficiency list is really the operational face of a tri-abduction
+step; treat its A/B as testing "does the added counterfactual branch convert recon-ceiling instances
+without degrading localization on the passing sample."
+
 ## Sequence
 
 Public: one-instance smoke (image pulls, container sets up, gate runs, capture, official verdict) →
