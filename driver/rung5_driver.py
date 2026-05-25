@@ -146,7 +146,7 @@ def warm_and_failbase(inst, cid, root):
     (HERE/f"r4_failbase_{tag}.txt").write_text(base)
     return base
 
-def helpers(inst, cid, root):
+def helpers(inst, cid, root, tsha):
     iid = inst["instance_id"]; tag = iid.replace("/","_").replace("__","_")
     act = inst.get("env_activate",""); pre = f"{act} 2>/dev/null; " if act else ""
     box = f"/tmp/box-sh-{tag}"
@@ -155,9 +155,20 @@ def helpers(inst, cid, root):
          f"docker exec {cid} bash -lc 'cd {root} && {pre}bash /tmp/_bc'\n")
     pathlib.Path(box).write_text(s); subprocess.run(["chmod","+x",box])
     tc = (inst.get("install_config") or {}).get("test_cmd","").replace("'","'\\''")
+    # SOURCE-ONLY GATE. Restore the gold test files (committed at tsha) before EVERY gate
+    # run, so the agent's stopping signal is graded against the GOLD tests — exactly what
+    # testify and the official harness do (they reset test files to base and re-apply the
+    # gold test patch). Without this, an agent edit to a test false-greens the gate
+    # (django-14170): the gate runs the WEAKENED test, capture strips the edit, and testify
+    # then reds the source-only patch — caught, but the agent already stopped on the lie.
+    # Restoring closes the escape hatch: the agent must fix SOURCE. Gold-blind on public Pro
+    # (paths come from the test_patch headers); on private Pro there is no visible F2P gate,
+    # so testfiles is empty, the prefix is empty, and the source-only CAPTURE is the backstop.
+    testfiles = [l[6:] for l in inst.get("test_patch","").splitlines() if l.startswith("+++ b/")]
+    restore = f"git checkout {tsha} -- {' '.join(testfiles)} 2>/dev/null; " if testfiles else ""
     gate = f"/tmp/gate-{tag}"
     g = (f"#!/bin/bash\n"
-         f"docker exec {cid} bash -lc 'cd {root} && {pre}{tc} 2>&1 | tail -120'\n")
+         f"docker exec {cid} bash -lc 'cd {root} && {restore}{pre}{tc} 2>&1 | tail -120'\n")
     pathlib.Path(gate).write_text(g); subprocess.run(["chmod","+x",gate])
     return box, gate
 
@@ -199,6 +210,9 @@ def recon(inst, box, gate, hgraph, kill_report, depth):
         f"- Code is in an offline container. Run ALL reads via: `{box} '<cmd>'` "
         f"(it already cd's to repo root — do NOT prepend cd). No internet, no gh, no codex.\n"
         f"- Run the failing tests: `{gate}`\n"
+        f"- The fix must be SOURCE-ONLY: test files are gold-locked (the gate restores them "
+        f"before every run). Never hand off 'edit/weaken the test' as a fix — diagnose the "
+        f"source cause that makes the GOLD tests pass.\n"
         f"- Append hypothesis nodes to: {hgraph} (never truncate).\n"
         f"- Failing tests live in: {testfiles}\n\n"
         f"FAIL_TO_PASS (must pass): {str(inst['FAIL_TO_PASS'])[:600]}\n\n"
@@ -227,6 +241,11 @@ def craft(inst, box, gate, hgraph, handoff, kill_report, depth):
         f"- Offline container. Edit/read via: `{box} '<cmd>'` (already at repo root — "
         f"do NOT prepend cd; use sed/python3/patch inside it).\n"
         f"- Verify with the gate: `{gate}` (max 8 iterations).\n"
+        f"- SOURCE-ONLY. Test files are gold-locked: the gate restores them to the reference "
+        f"version before every run, so any edit you make to a test is silently reverted and "
+        f"never graded (the official harness does the same). A green gate must come from "
+        f"changing SOURCE under the package, not from weakening a test. If a PASS_TO_PASS test "
+        f"regresses, the fix is too broad — narrow the source change; do NOT touch the test.\n"
         f"- `codex` runs LOCALLY (not in the container, so it can't read the repo or run "
         f"the gate). Bridge it: pull file contents via the box helper, paste them into the "
         f"codex prompt. Invoke via stdin heredoc: `cat <<'EOF' | codex exec -` ... `EOF`. "
@@ -295,21 +314,37 @@ def _is_detritus(path):
     if any(fnmatch.fnmatch(path, g) for g in _DETRITUS_GLOBS): return True
     return any(seg in path for seg in _DETRITUS_DIRS)
 
+# Test-path conventions, used ONLY as a private-Pro fallback when the gold test_patch
+# (and thus the exact testfiles list) isn't visible. On public Pro the exact list is
+# precise and this is never consulted.
+_TESTFILE_GLOBS = ("test_*.py", "*_test.py", "tests.py", "conftest.py")
+def _is_testfile(path):
+    base = path.rsplit("/", 1)[-1]
+    if any(fnmatch.fnmatch(base, g) for g in _TESTFILE_GLOBS): return True
+    p = f"/{path}"
+    return p.startswith("/tests/") or "/tests/" in p or "/test/" in p
+
 def _strip_test_blocks(diff, testfiles):
     """Drop per-file blocks the official harness owns (test files) or that are pure
     detritus (build artifacts, *.bak backups). Done in Python on the full diff —
     shell-side `:(exclude)` pathspecs collide with the bash -lc single-quote wrapping
     and silently empty the whole capture; the `find -delete` cleanup is also unreliable
     through that quoting. This pass is the quoting-safe backstop. Subtractive only:
-    these paths are never a legitimate fix, so dropping them can't break a valid patch."""
+    these paths are never a legitimate fix, so dropping them can't break a valid patch.
+
+    Public Pro: `testfiles` is the exact gold list (precise). Private Pro: it's empty, so
+    fall back to test-path conventions — the source-only contract must still hold when the
+    held-out test set is invisible."""
     tf = set(testfiles or [])
+    use_convention = not tf
     out, keep = [], True
     for line in diff.splitlines(keepends=True):
         if line.startswith("diff --git "):
             # "diff --git a/<p> b/<p>" — take the b/ path
             parts = line.split()
             bpath = parts[3][2:] if len(parts) >= 4 and parts[3].startswith("b/") else None
-            keep = (bpath not in tf) and not (bpath and _is_detritus(bpath))
+            is_test = (bpath in tf) or (use_convention and bool(bpath) and _is_testfile(bpath))
+            keep = (not is_test) and not (bpath and _is_detritus(bpath))
         if keep:
             out.append(line)
     return "".join(out)
@@ -339,15 +374,19 @@ def capture_patch(inst, cid, root, tsha):
         log({"instance":iid,"stage":"capture","msg":"EMPTY patch — see capture_diag"})
     return patch
 
-def verify_gate(inst, cid, root):
+def verify_gate(inst, cid, root, tsha):
     """Driver-side final gate run on the agent's tree, AFTER the loop. Two purposes:
     (1) an independent confirmation of the verdict (we re-run the tests ourselves
     rather than trusting the agent's audit), and (2) the saved passing-test output
-    artifact for this trial. Saved per instance as r4_passgate_<id>.txt."""
+    artifact for this trial. Saved per instance as r4_passgate_<id>.txt. Restores the
+    gold test files first (same source-only contract as the iteration gate), so the saved
+    artifact reflects the gold tests, never an agent-weakened one."""
     tc = (inst.get("install_config") or {}).get("test_cmd","")
     if not tc: return "", None
     act = inst.get("env_activate",""); pre = f"{act} 2>/dev/null; " if act else ""
-    r = ssh(f"sudo docker exec {cid} bash -lc 'cd {root} && {pre}{tc} 2>&1 | tail -300'", timeout=1800)
+    testfiles = [l[6:] for l in inst.get("test_patch","").splitlines() if l.startswith("+++ b/")]
+    restore = f"git checkout {tsha} -- {' '.join(testfiles)} 2>/dev/null; " if testfiles else ""
+    r = ssh(f"sudo docker exec {cid} bash -lc 'cd {root} && {restore}{pre}{tc} 2>&1 | tail -300'", timeout=1800)
     tag = inst["instance_id"].replace("/","_")
     out = f"$ {tc}\n\n{r.stdout}{r.stderr}"
     (HERE/f"r4_passgate_{tag}.txt").write_text(out)
@@ -448,7 +487,7 @@ def process(iid):
     if not applied: teardown(inst, cid); return
 
     failbase = warm_and_failbase(inst, cid, root)
-    box, gate = helpers(inst, cid, root)
+    box, gate = helpers(inst, cid, root, tsha)
     ssh(f"sudo docker network disconnect bridge {cid} 2>/dev/null; echo done")  # offline
 
     tag = iid.replace("/","_")
@@ -500,7 +539,7 @@ def process(iid):
         prev_route = raw_route
 
     # Driver-side final gate: save passing-test output + independently confirm verdict.
-    passout, drv_f2p_pass = verify_gate(inst, cid, root)
+    passout, drv_f2p_pass = verify_gate(inst, cid, root, tsha)
     log({"instance":iid,"stage":"verify_gate","agent_verdict":verdict,
          "driver_f2p_pass":drv_f2p_pass,
          "passgate_file":str(HERE/f"r4_passgate_{tag}.txt")})
