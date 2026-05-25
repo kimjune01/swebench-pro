@@ -78,6 +78,7 @@ For every edit site, confirm location: `grep -rn "<pattern>" .`. Code may differ
 
 1. **Draft** the minimal fix for every edit site recon named, as a unified diff. "Minimal" = the smallest change that makes FAIL_TO_PASS pass without breaking existing tests.
    - Do not: add features, refactor unrelated code, add error handling for impossible scenarios, add comments explaining what the code does.
+   - Do not edit a test to make the gate green. The fix is **source-only** — tests are gold-locked, and a harness that restores them will silently revert your edit (and the grader runs the gold tests regardless). A green that came from weakening a test is a false green.
    - Do: cover exactly the edit sites; handle every location grep found.
 2. **Volley** the drafted diff with codex (see "The codex volley" above) before touching the container. Fold in the load-bearing catches.
 3. **Apply** the revised diff to the container via the box helper.
@@ -94,7 +95,7 @@ Run the gate.
 |---|---|---|
 | **Convergent (stuck)** | same error persists | the fix isn't reaching the right path — was the edit too shallow? wrong file? |
 | **Divergent (progress)** | error changed, points at the real problem | follow the new evidence — you're closer |
-| **Oscillatory (regression)** | a previously-passing test now fails | the fix is too broad — narrow it |
+| **Oscillatory (regression)** | a previously-passing test now fails | the fix is too broad — narrow the **source** change; never edit the regressed test to quiet it |
 | Compile/syntax error | mechanical | fix and re-run |
 
 Volley every gate failure with codex (paste the gate output + current diff, ask why it fails) before revising. Then revise and re-run. **Max 8 gate iterations.** If you exhaust them without green, leave the best partial fix in the tree and note the last gate failure in the graph document.

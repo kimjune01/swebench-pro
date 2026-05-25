@@ -165,10 +165,19 @@ def helpers(inst, cid, root, tsha):
     # (paths come from the test_patch headers); on private Pro there is no visible F2P gate,
     # so testfiles is empty, the prefix is empty, and the source-only CAPTURE is the backstop.
     testfiles = [l[6:] for l in inst.get("test_patch","").splitlines() if l.startswith("+++ b/")]
-    restore = f"git checkout {tsha} -- {' '.join(testfiles)} 2>/dev/null; " if testfiles else ""
+    if testfiles:
+        tf = " ".join(testfiles)
+        # ANDON: surface that the agent edited a gold test BEFORE the silent revert below
+        # hides it — the rec #2 "mechanism fired" signal, and a craft-overfit alarm if the
+        # agent keeps reaching for test edits. Detection only; the restore still runs.
+        andon = (f'E=$(git diff --name-only {tsha} -- {tf} 2>/dev/null); '
+                 f'[ -n "$E" ] && echo "[ANDON] agent edited gold test(s), reverting: $E"; ')
+        restore = f"git checkout {tsha} -- {tf} 2>/dev/null; "
+    else:
+        andon = restore = ""
     gate = f"/tmp/gate-{tag}"
     g = (f"#!/bin/bash\n"
-         f"docker exec {cid} bash -lc 'cd {root} && {restore}{pre}{tc} 2>&1 | tail -120'\n")
+         f"docker exec {cid} bash -lc 'cd {root} && {andon}{restore}{pre}{tc} 2>&1 | tail -120'\n")
     pathlib.Path(gate).write_text(g); subprocess.run(["chmod","+x",gate])
     return box, gate
 

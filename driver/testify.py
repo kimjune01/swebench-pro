@@ -70,6 +70,24 @@ def main():
     out = REPO / "iso" / a.instance_id; out.mkdir(parents=True, exist_ok=True)
     log_fp = str(out / "testify_eval.log")
 
+    # PRECONDITION: the prediction must be source-only. testify applies it AFTER the gold
+    # test patch, so a leaked test-file hunk would either re-tamper the gold tree (false
+    # green) or fail to apply (red for the wrong reason). _strip_test_blocks removes these
+    # at capture; this is the artifact-side assertion that it did. Use the EXACT gold test
+    # paths from the test_patch headers — precise, no heuristic false-positives. Fails fast,
+    # before the docker pull.
+    gold_testfiles = {l[6:] for l in inst["test_patch"].splitlines() if l.startswith("+++ b/")}
+    pred_paths = {p[3][2:] for p in (l.split() for l in pred_bytes.decode("utf-8","replace").splitlines()
+                  if l.startswith("diff --git ")) if len(p) >= 4 and p[3].startswith("b/")}
+    leaked = sorted(pred_paths & gold_testfiles)
+    if leaked:
+        verdict = {"instance_id": a.instance_id, "prediction_sha256": pred_sha,
+                   "decision": "rejected",
+                   "reason": "prediction is not source-only (touches gold test files)",
+                   "leaked_test_files": leaked, "resolved": False}
+        (out / "testify.json").write_text(json.dumps(verdict, indent=2))
+        print(json.dumps(verdict, indent=2)); return
+
     print(f">> testify {a.instance_id}  pred sha256={pred_sha[:16]}…")
     print(f">> pull {img} (--platform {PLATFORM})")
     sh("docker", "pull", "--platform", PLATFORM, img, timeout=2400)
