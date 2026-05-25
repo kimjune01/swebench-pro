@@ -71,6 +71,7 @@ def build_pro(iid):
         "instance_id": iid,
         "bench": "pro",
         "image_name": image,
+        "repo": inst["repo"],            # needed by the grader's image_uri (repo.split("/"))
         "repo_dir": "/app",
         "env_activate": "",
         "repo_language": inst["repo_language"],

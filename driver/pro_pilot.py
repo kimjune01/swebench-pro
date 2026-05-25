@@ -104,6 +104,39 @@ def selftest(inst):
           f"(red={red_ok} green={green_ok}) ===")
 
 
+def pro_capture(inst, cid, root):
+    """Capture the agent's SOURCE-only diff: stage everything, diff vs base (HEAD), drop
+    test-file blocks (selected_test_files are gold-locked). Saved as the prediction."""
+    ssh(f"sudo docker exec {cid} bash -lc 'cd {root} && git add -A -- . 2>/dev/null; "
+        f"git diff --cached HEAD > /tmp/_pred.diff 2>/dev/null; echo OK'")
+    diff = ssh(f"sudo docker exec {cid} bash -lc 'cat /tmp/_pred.diff'").stdout
+    src = _strip_test_blocks(diff, set(inst["selected_test_files"]))
+    tag = inst["instance_id"].replace("/", "_")
+    (HERE / f"pro_patch_{tag}.diff").write_text(src)
+    return src
+
+
+def official_grade(inst, src):
+    """Authoritative verdict: re-grade the captured source-only diff with the Pro evaluator
+    on a FRESH container (gate == grader by construction). PUBLIC set only."""
+    import subprocess, os
+    repo = os.environ.get("SWEAP_OS_REPO", "/tmp/swebench-pro-os")
+    iid = inst["instance_id"]; tag = iid.replace("/", "_")
+    samp = HERE / f"pro_sample_{tag}.jsonl"; pred = HERE / f"pro_pred_{tag}.json"
+    row = {k: inst[k] for k in inst if k not in ("run_script", "parser_script")}
+    row["fail_to_pass"] = json.dumps(inst["fail_to_pass"]); row["pass_to_pass"] = json.dumps(inst["pass_to_pass"])
+    row["selected_test_files_to_run"] = json.dumps(inst["selected_test_files"])
+    import pandas as pd; pd.DataFrame([row]).to_json(samp, orient="records", lines=True)
+    json.dump([{"instance_id": iid, "patch": src, "prefix": ""}], open(pred, "w"))
+    out = HERE / f"pro_grade_{tag}"
+    subprocess.run([sys.executable, "swe_bench_pro_eval.py", "--raw_sample_path", str(samp),
+                    "--patch_path", str(pred), "--output_dir", str(out), "--scripts_dir", "run_scripts",
+                    "--num_workers", "1", "--use_local_docker", "--dockerhub_username",
+                    os.environ.get("DOCKERHUB_USER", "jefzda"), "--redo"], cwd=repo)
+    res = out / "eval_results.json"
+    return json.load(open(res)).get(iid) if res.exists() else None
+
+
 def main():
     task_path, iid = sys.argv[1], sys.argv[2]
     inst = next(t for t in json.load(open(task_path)) if t["instance_id"] == iid)
@@ -112,7 +145,45 @@ def main():
     inst.setdefault("FAIL_TO_PASS", inst["fail_to_pass"]); inst.setdefault("PASS_TO_PASS", inst["pass_to_pass"])
     if "--selftest" in sys.argv:
         selftest(inst); return
-    print("real pilot loop not wired in this commit — run --selftest first")
+
+    HERE.mkdir(parents=True, exist_ok=True)
+    log({"instance": iid, "stage": "pilot_start", "bench": "pro"})
+    s = pro_setup(inst)
+    if not s: print("setup failed"); return
+    cid, root = s
+    box, gate = install_gate(inst, cid, root)
+    failbase = run_gate(gate)                       # baseline (all F2P fail on base)
+    tag = iid.replace("/", "_")
+    (HERE / f"pro_failbase_{tag}.txt").write_text(failbase)
+    # NOTE: network left ON for the pilot (some repos need deps at test time; offline-per-repo
+    # is still being mapped). The bench is contamination-acknowledged (LIMITATIONS).
+    hgraph = str(HERE / f"pro_hgraph_{tag}.md"); pathlib.Path(hgraph).write_text(f"# Pilot: {iid}\n")
+
+    verdict, route, kill, handoff, prev = "UNKNOWN", "recon", None, None, None
+    for depth in range(r5.MAX_OUTER):
+        if route == "recon" or handoff is None:
+            handoff, fp = recon(inst, box, gate, hgraph, kill, depth)
+            if fp and depth > 0: break
+        craft_out, redo, timed_out = craft(inst, box, gate, hgraph, handoff, kill, depth)
+        if timed_out: verdict = "CRAFT_TIMEOUT"; break
+        if redo and depth < r5.MAX_OUTER - 1:
+            kill = f"craft could not implement the diagnosis:\n{craft_out[-2000:]}"; route = "recon"; prev = None; continue
+        audit_out, verdict, route = audit(inst, box, gate, hgraph, failbase, depth)
+        if verdict == "RESOLVED" or route == "none": break
+        if route == "craft" and prev == "craft":
+            route = "recon"; kill = "NARROW MODE STALLED — re-diagnose differently.\n" + audit_out[-1800:]
+        elif depth < r5.MAX_OUTER - 1: kill = audit_out[-2500:]
+        prev = route
+
+    src = pro_capture(inst, cid, root)
+    final_gate = run_gate(gate)
+    ssh(f"sudo docker kill {cid} 2>/dev/null")
+    resolved = official_grade(inst, src) if src.strip() else None
+    log({"instance": iid, "stage": "pilot_done", "agent_verdict": verdict,
+         "official_resolved": resolved, "patch_bytes": len(src)})
+    print(f"\n=== PILOT {iid} ===\n  agent_verdict: {verdict}\n  patch_bytes: {len(src)}"
+          f"\n  gate(final): {'GREEN' if 'ALL F2P PASSED' in final_gate else 'RED'}"
+          f"\n  OFFICIAL RESOLVED: {resolved}")
 
 
 if __name__ == "__main__":

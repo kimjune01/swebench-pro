@@ -2,6 +2,30 @@
 
 Newest first.
 
+## 2026-05-24 — first Pro pilot: end-to-end RESOLVED (public, local, agent loop)
+
+Wired `pro_pilot.py` (reuses rung5 recon/craft/audit verbatim + Pro setup/gate) and ran the
+real agent loop on `instance_ansible__ansible-5e369604…` (public set, local Docker, emulated).
+
+- **Result: RESOLVED, officially.** Agent produced a 74-line source-only patch to
+  `lib/ansible/utils/display.py` (matches the gold file). Live gate GREEN; official Pro grader
+  on the captured source-only diff (fresh container) → `accuracy 1.0`, `true`. F2P 5/5.
+- **Pipeline validated end-to-end:** setup (entrypoint-override keepalive) → recon → craft →
+  audit → source-only capture (`git diff` + `_strip_test_blocks`) → official grade. The
+  recon/craft/audit reuse worked unchanged (they take box+gate as opaque helpers).
+- **Two pilot-found infra bugs (the point of pilots), both fixed token-free:**
+  1. Pro image `ENTRYPOINT=[/bin/bash]` → `… sleep infinity` ran `bash sleep` and exited.
+     Fix: `docker run --entrypoint sleep`.
+  2. `official_grade` threw `ValueError: not enough values to unpack` — the Pro task omitted
+     `repo`, so `image_uri`'s `repo.split("/")` failed. Fix: `make_task` now emits `repo`.
+     (Surfaced as a phantom gate/official "divergence"; re-grading the captured patch with the
+     fix → `true`. No real divergence — gate == grader holds.)
+- **Cost:** one agent loop's tokens (authorized). Everything else ($0): census, 4-repo gold
+  smoke, gate selftest, both bug fixes, the re-grade.
+
+Next: second pilot on a non-Python repo (navidrome/Go or NodeBB/JS) to shake the loop on a
+different language/runner; then offline-per-repo mapping before any batch.
+
 ## 2026-05-24 — Pro grader smoke: gold patch → RESOLVED ($0, local Docker)
 
 First contact with SWE-bench Pro. Ran the official Pro evaluator (`scaleapi/SWE-bench_Pro-os`
