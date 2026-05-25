@@ -4,11 +4,13 @@ The recon→craft→audit agent pipeline, pointed at **SWE-bench Pro**. Sibling 
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified) — one repo per benchmark so
 each run's artifacts and number stand on their own, no branch-spelunking to tell them apart.
 
-**Status: rig + plan, adapter not yet built.** This repo starts as a copy of the Verified rig (which
-resolved 422/438 eligible there) plus [`PRO_PORT.md`](PRO_PORT.md) — the port plan. Pro is harder and
-partly held out; whether this is a clean adapter swap or a new harness depends on a handful of unknowns
-(dataset shape, prebuilt images, grader, env convention) that `PRO_PORT.md` enumerates. Nothing here
-claims a Pro number yet.
+**Status: adapter built and validated; pre-scored-run.** The Pro adapter works end-to-end — grader
+across Python/Go/JS, gate, source-only capture — with **two pilots officially RESOLVED** (ansible,
+NodeBB) and a 6/6 hardest-reasoning telemetry batch (dev-mode, no-credit). No scored run has been
+started or frozen. **Agents start at [`CLAUDE.md`](CLAUDE.md)**; setup is one command
+(`bash driver/bootstrap.sh`). See [`PROCEDURE.md`](PROCEDURE.md) (how to run),
+[`PREREGISTRATION.md`](PREREGISTRATION.md) (the rules + the audition posture), and
+[`WORKLOG.md`](WORKLOG.md) (current state). `PRO_PORT.md` is the original port plan/background.
 
 ## Goal (the predicate)
 
