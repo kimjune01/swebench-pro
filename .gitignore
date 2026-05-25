@@ -19,3 +19,6 @@ runs/dev/*
 !runs/dev/README.md
 scratch/*
 !scratch/README.md
+
+# local env written by bootstrap.sh (machine-specific paths)
+driver/.proenv

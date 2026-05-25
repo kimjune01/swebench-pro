@@ -15,9 +15,15 @@ git -C "$SWEAP_OS_REPO" fetch -q origin "$EVAL_COMMIT" 2>/dev/null || git -C "$S
 git -C "$SWEAP_OS_REPO" checkout -q "$EVAL_COMMIT"
 
 echo ">> [2/4] venv @ $VENV (pinned deps)"
-[ -x "$VENV/bin/python" ] || { command -v uv >/dev/null && uv venv "$VENV" >/dev/null || python3 -m venv "$VENV"; }
-if ! "$VENV/bin/python" -c "import swebench,datasets,pandas,docker" 2>/dev/null; then
-  "$VENV/bin/pip" install -q "swebench==4.1.0" "datasets==4.8.5" "pandas==3.0.3" "docker==7.1.0"
+PINS=("swebench==4.1.0" "datasets==4.8.5" "pandas==3.0.3" "docker==7.1.0")
+if command -v uv >/dev/null; then
+  [ -x "$VENV/bin/python" ] || uv venv "$VENV" >/dev/null    # uv venv has no pip; install via `uv pip -p`
+  "$VENV/bin/python" -c "import swebench,datasets,pandas,docker" 2>/dev/null \
+    || uv pip install -q -p "$VENV/bin/python" "${PINS[@]}"
+else
+  [ -x "$VENV/bin/python" ] || python3 -m venv "$VENV"
+  "$VENV/bin/python" -c "import swebench,datasets,pandas,docker" 2>/dev/null \
+    || "$VENV/bin/python" -m pip install -q "${PINS[@]}"
 fi
 
 echo ">> [3/4] docker host"
