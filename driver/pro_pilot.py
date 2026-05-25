@@ -17,9 +17,15 @@ private. (See PRO_PORT.md "Blind mode".)
 """
 import json, sys, pathlib, shlex
 import rung5_driver as r5
-from rung5_driver import ssh, log, claude, recon, craft, audit, capture_patch, _strip_test_blocks, HERE
+from rung5_driver import ssh, log, claude, recon, craft, audit, capture_patch, _strip_test_blocks
 
 WORKSPACE = "/workspace"
+# Telemetry artifacts land in the self-descriptive runs/dev/ (gitignored, no-credit), not the
+# shared driver tmp. Redirect the driver's output dir for the whole module so recon/craft/audit
+# (which use rung5.HERE) and our own writes co-locate there.
+r5.HERE = pathlib.Path(__file__).resolve().parent.parent / "runs" / "dev"
+r5.HERE.mkdir(parents=True, exist_ok=True)
+HERE = r5.HERE
 
 
 def restore_cmd(inst):

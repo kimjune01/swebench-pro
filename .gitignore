@@ -8,8 +8,14 @@ swebench-env/
 iso/
 
 # generated per-instance task files — regenerate via `BENCH=pro make_task`; only strata.json is curated
-tasks/pro/*.json
-!tasks/pro/strata.json
 # ephemeral scratch pad: working notes/artifacts. Durable record goes in WORKLOG.md, not here.
 scratch/
 # dev/telemetry run outputs live in /tmp (batch_*.tsv, pro_smoke/, swebench-abduction/) — never committed
+
+# self-descriptive layout: commit each dir's README, ignore its (regenerable/ephemeral) contents
+tasks/generated/*
+!tasks/generated/README.md
+runs/dev/*
+!runs/dev/README.md
+scratch/*
+!scratch/README.md

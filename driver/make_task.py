@@ -24,7 +24,10 @@ import json, os, sys, re, ast, pathlib
 
 BENCH = os.environ.get("BENCH", "verified")
 iid = sys.argv[1]
-out = sys.argv[2] if len(sys.argv) > 2 else f"{iid}.json"
+import pathlib as _pl
+_REPO = _pl.Path(__file__).resolve().parent.parent
+# default output lands in the self-descriptive generated/ dir (gitignored, regenerable)
+out = sys.argv[2] if len(sys.argv) > 2 else str(_REPO / "tasks" / "generated" / f"{iid}.json")
 
 
 def _as_list(v):
@@ -91,6 +94,7 @@ def build_pro(iid):
 
 
 task, note = (build_pro if BENCH == "pro" else build_verified)(iid)
+_pl.Path(out).parent.mkdir(parents=True, exist_ok=True)
 json.dump([task], open(out, "w"), indent=1)
 f2p = task.get("fail_to_pass", task.get("FAIL_TO_PASS")); p2p = task.get("pass_to_pass", task.get("PASS_TO_PASS"))
 print(f"wrote {out}  [BENCH={BENCH}]")

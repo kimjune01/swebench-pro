@@ -121,7 +121,7 @@ which is independent of our model's results.
   "our frozen system resolved X / Y public Pro instances."
 - **Differential:** report cells where **our system** resolves and **both reference *systems***
   (sonnet-4, gpt4o — both run in the **SWE-Agent** scaffold, 200-turn) failed, and cells where we
-  fail and both passed (`tasks/pro/strata.json`). The baselines' scaffold is specifically
+  fail and both passed (`tasks/strata.json`). The baselines' scaffold is specifically
   SWE-Agent; the differential is against *that*, not a generic agent.
   Against the **sonnet-4** baseline the model axis is *mostly controlled* — we run **Sonnet 4.5**,
   same family, one version bump (§12, C1) — so the differential is **largely scaffold**, the 4→4.5

@@ -11,7 +11,7 @@ iid = sys.argv[1]
 offline = "--offline" in sys.argv
 repo = pathlib.Path(os.environ.get("SWEAP_OS_REPO", "/tmp/swebench-pro-os"))
 assert (repo / "swe_bench_pro_eval.py").exists(), f"clone scaleapi/SWE-bench_Pro-os at {repo} (set SWEAP_OS_REPO)"
-work = pathlib.Path("/tmp/pro_smoke") / iid
+work = pathlib.Path(__file__).resolve().parent.parent / "scratch" / "pro_smoke" / iid
 work.mkdir(parents=True, exist_ok=True)
 
 r = next(x for x in load_dataset("ScaleAI/SWE-bench_Pro", split="test") if x["instance_id"] == iid)

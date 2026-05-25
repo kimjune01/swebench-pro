@@ -26,58 +26,55 @@ Residual knots: model credentials, and sandbox-trust for running our code on sec
 
 ## 0. Prerequisites
 
-```bash
-# (a) this repo
-export REPO=/path/to/swebench-pro
-
-# (b) the eval repo (run_scripts + parser.py + dockerfiles + the official grader) — a HARD dependency
-git clone https://github.com/scaleapi/SWE-bench_Pro-os.git /tmp/swebench-pro-os
-( cd /tmp/swebench-pro-os && git checkout ca10a60a5fcae51e6948ffe1485d4153d421e6c5 )
-export SWEAP_OS_REPO=/tmp/swebench-pro-os
-
-# (c) a venv with the pins (uv or pip)
-python -m venv .venv && . .venv/bin/activate
-pip install "swebench==4.1.0" "datasets==4.8.5" "pandas==3.0.3" "docker==7.1.0"
-export PY=$(command -v python)
-
-# (d) model CLIs for the agent loop: `claude` (generator) + `codex` (craft filter), authed.
-# (e) an amd64 Docker host. Mac/OrbStack runs the amd64 images under emulation (dev only);
-#     EC2 m7i.xlarge runs them native (scored runs — §4).
-```
-
-## 0.5 Validate your environment ($0, no tokens) — DO THIS FIRST
-
-Confirm the grader + images + scripts work on your box *before* spending anything, by grading a
-**gold patch** (must resolve). This is the self-test that proves setup with zero tacit knowledge:
+You bring two things; **`bootstrap.sh` does the rest and proves it worked**:
+- model CLIs `claude` (generator) + `codex` (craft filter), authenticated;
+- an amd64 Docker host — Mac/OrbStack (emulated, dev only) or EC2 `m7i.xlarge` (native, scored — §4).
 
 ```bash
-cd $SWEAP_OS_REPO
-$PY $REPO/driver/pro_smoke.py <instance_id>     # builds 1-row sample + gold pred, grades it
-# expect: eval_results.json -> {"<id>": true}, "Overall accuracy: 1.0"
+bash driver/bootstrap.sh      # idempotent: pins+clones eval repo, builds venv, checks docker,
+                              # writes driver/.proenv, then VALIDATES with the $0 gold smoke.
+. driver/.proenv              # exports SWEAP_OS_REPO + PY for every other command below
 ```
 
-If this is not `true`, stop — your Docker/arch/eval-repo/venv is wrong; fix it before §1.
-(Known-good instance: `instance_ansible__ansible-5e369604e1930b1a2e071fecd7ec5276ebd12cb1-v0f01c69f1e2528b935359cfe578530722bca2c59`.)
+`bootstrap.sh` ends by grading a gold patch (must print `READY — env validated`). If it fails, the
+environment is wrong and it tells you the exact command to debug — **don't proceed until it's
+green.** That single command replaces the old clone/checkout/venv/validate dance. Re-run anytime.
+
+## Layout (the dirs are the instructions)
+
+```
+driver/            pipeline code + bootstrap.sh + .proenv
+skills/            recon · craft · audit
+tasks/strata.json  curated difficulty strata (committed)
+tasks/generated/   per-instance task JSONs from make_task — regenerable, gitignored
+runs/dev/          telemetry runs (pilots, dev batches) — NO-CREDIT, gitignored  (prereg §2)
+runs/scored/       frozen-tag scored-run artifacts — the committed trail          (prereg §10)
+scratch/           ephemeral pad — gitignored; durable record goes in WORKLOG.md
+```
+
+Scripts default into these (no paths to pass): `make_task` → `tasks/generated/`, pilots/batches →
+`runs/dev/`, `pro_smoke` → `scratch/`. dev vs scored, regenerable vs committed — read off the tree.
 
 ## 1. Build the task
 
 ```bash
-BENCH=pro $PY $REPO/driver/make_task.py <instance_id> $REPO/tasks/pro/<name>.json
+BENCH=pro $PY driver/make_task.py <instance_id>   # writes tasks/generated/<instance_id>.json
 ```
 
 Emits the self-contained Pro shape: `jefzda` image (via `image_uri.py`), `repo_dir=/app`, empty
 `env_activate` (no conda), `before_repo_set_cmd`, `selected_test_files`, lowercase
 `fail_to_pass`/`pass_to_pass`, `test_patch`, and `run_script`/`parser_script` baked in. **No gold
-patch** (agent-safe). Requires `$SWEAP_OS_REPO` for the image-uri logic and run_scripts.
+patch** (agent-safe).
 
 ## 2. Run a pilot
 
 ```bash
+T=tasks/generated/<instance_id>.json
 # gate self-test first ($0 tokens): must print RED on base, GREEN on gold
-$PY $REPO/driver/pro_pilot.py $REPO/tasks/pro/<name>.json <instance_id> --selftest
+$PY driver/pro_pilot.py $T <instance_id> --selftest
 
 # the real loop (spends model tokens): recon -> craft -> audit -> source-only capture -> grade
-SWEAP_OS_REPO=$SWEAP_OS_REPO $PY $REPO/driver/pro_pilot.py $REPO/tasks/pro/<name>.json <instance_id>
+$PY driver/pro_pilot.py $T <instance_id>          # artifacts land in runs/dev/
 ```
 
 The PUBLIC-mode gate restores gold tests (`before_repo_set_cmd` last line) then runs
