@@ -6,3 +6,10 @@ __pycache__/
 swebench-env/
 .DS_Store
 iso/
+
+# generated per-instance task files — regenerate via `BENCH=pro make_task`; only strata.json is curated
+tasks/pro/*.json
+!tasks/pro/strata.json
+# ephemeral scratch pad: working notes/artifacts. Durable record goes in WORKLOG.md, not here.
+scratch/
+# dev/telemetry run outputs live in /tmp (batch_*.tsv, pro_smoke/, swebench-abduction/) — never committed

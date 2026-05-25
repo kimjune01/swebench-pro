@@ -79,6 +79,7 @@ For every edit site, confirm location: `grep -rn "<pattern>" .`. Code may differ
 1. **Draft** the minimal fix for every edit site recon named, as a unified diff. "Minimal" = the smallest change that makes FAIL_TO_PASS pass without breaking existing tests.
    - Do not: add features, refactor unrelated code, add error handling for impossible scenarios, add comments explaining what the code does.
    - Do not edit a test to make the gate green. The fix is **source-only** — tests are gold-locked, and a harness that restores them will silently revert your edit (and the grader runs the gold tests regardless). A green that came from weakening a test is a false green.
+   - Edit source **in place**. Do not write helper/scratch scripts (`fix_*.py`, one-off generators) into the repo to do the edit — they get swept into the captured patch as noise. Use the box helper's `sed`/`python3 -c`/`patch` for transformations; leave nothing behind but the source change.
    - Do: cover exactly the edit sites; handle every location grep found.
 2. **Volley** the drafted diff with codex (see "The codex volley" above) before touching the container. Fold in the load-bearing catches.
 3. **Apply** the revised diff to the container via the box helper.
