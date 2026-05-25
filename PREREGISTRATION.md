@@ -123,10 +123,11 @@ which is independent of our model's results.
   (sonnet-4, gpt4o — both run in the **SWE-Agent** scaffold, 200-turn) failed, and cells where we
   fail and both passed (`tasks/pro/strata.json`). The baselines' scaffold is specifically
   SWE-Agent; the differential is against *that*, not a generic agent.
-  This is a **system-vs-system contrast**, not evidence of a scaffold or capability advantage —
-  the baselines differ from us in *both* scaffold and base model (§12, C1). No phrase in any
-  writeup may attribute the differential to "scaffold," "navigation," or "capability" unless the
-  §12 same-model control has run.
+  Against the **sonnet-4** baseline the model axis is *mostly controlled* — we run **Sonnet 4.5**,
+  same family, one version bump (§12, C1) — so the differential is **largely scaffold**, the 4→4.5
+  bump the only residual (closed by the same-model control). Writeups may say "largely scaffold,
+  residual = one minor model version, control pending"; they may **not** claim a *clean* scaffold
+  advantage until that control runs, and the gpt4o half stays cross-family (system-vs-system).
 
 ## 8. Curriculum & self-holdout (development only — NOT a measurement strategy)
 
@@ -206,13 +207,18 @@ Scored against the **frozen-artifact full-set run**, not pilots.
 
 ## 12. Confounds, controls, contamination (the part most likely to embarrass us)
 
-**C1 — scaffold vs model (the binding confound).** Baselines ran sonnet-4 / gpt4o in
-`SWE-agent`/`mini-swe-agent`; we run recon/craft/audit with a different, likely stronger base
-model. A we-resolve/they-fail cell could be **our model**, not **our scaffold**. The headline is
-locked to **system-vs-system** (§7) until the control runs:
-- **(the only thing that licenses a scaffold claim) same-model control arm:** run *our* base model
-  through vanilla `mini-swe-agent` (ships in the eval repo) on the same instances. our-scaffold ≫
-  vanilla-scaffold *at fixed model* isolates scaffold advantage. Budget-gated.
+**C1 — scaffold vs model (a *small* confound, not a chasm).** We run **Sonnet 4.5**
+(`RCA_MODEL=claude-sonnet-4-5`, verified in the live process); the baseline ran **`claude-sonnet-4`**
++ gpt4o in `SWE-Agent`. So against the sonnet-4 baseline this is **same model family, a single
+version bump (4 → 4.5)** — *not* a different/larger model. A we-resolve/sonnet-4-fails cell is
+therefore **largely a scaffold result**, especially given most baseline failures are navigation/
+context-overflow (a scaffold property). The model axis is **mostly controlled by construction**;
+the **only residual** is the 4→4.5 improvement.
+- **(closes the residual) same-model control arm:** run **Sonnet 4.5** through vanilla
+  `mini-swe-agent` on the same instances. our-scaffold ≫ vanilla-scaffold *at fixed Sonnet 4.5*
+  removes the 4→4.5 gap entirely and licenses a clean scaffold claim. Budget-gated — but the
+  headline is no longer *locked* to system-vs-system: it is "largely scaffold (same family),
+  residual = one minor version, control pending." (The gpt4o comparison remains cross-family.)
 
 **C2 — contamination.** The bench is contaminated for any model whose cutoff postdates the
 instances (`LIMITATIONS`); "resolved" then bounds capability-or-recall (Q19). Mitigation: report
