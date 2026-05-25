@@ -2,6 +2,30 @@
 
 Newest first.
 
+## 2026-05-24 — Pro grader smoke: gold patch → RESOLVED ($0, local Docker)
+
+First contact with SWE-bench Pro. Ran the official Pro evaluator (`scaleapi/SWE-bench_Pro-os`
+`swe_bench_pro_eval.py --use_local_docker`) on one instance with the **gold patch** — the
+PROCEDURE §"sequence" step-1 sanity check. No EC2, no model tokens, no driver code.
+
+- **Instance:** `instance_ansible__ansible-5e369604…-v0f01c…` (ansible, single test file
+  `test/units/utils/test_display.py` — pure Python, no DB/Qt, cheapest cell).
+- **Result:** `Overall accuracy: 1.0`, `eval_results.json → true`. parser.py emitted 7 PASSED /
+  2 SKIPPED; resolution check (all F2P pass) → RESOLVED. ~25s first run (incl. amd64 pull under
+  Rosetta), ~2s cached.
+- **Validated end-to-end:** image pull (`jefzda/sweap-images:<tag>`, amd64) → `before_repo_set_cmd`
+  → `run_script.sh <test_files>` → `parser.py` → resolution. The grading model is sound; the
+  source-only/gold-test restore is **built into Pro's run_script** (`git checkout <commit> --
+  <test_files>`), confirming the PRO_PORT note.
+- **Adapter gotchas (folded into PROCEDURE §1):** (1) `fail_to_pass`/`pass_to_pass`/
+  `selected_test_files_to_run` are `eval()`'d → must be Python-literal **strings**, not arrays;
+  (2) harness reads **lowercase** `fail_to_pass` (HF dataset ✓; repo jsonl ships uppercase —
+  inconsistent); (3) Dockerfiles + run_scripts read from the cloned eval repo on disk (hard dep);
+  (4) image URI via `get_dockerhub_image_uri` — only `-vnan` stripped, other `-v<sha>` kept.
+
+Next: `make_task.py` Pro mode emitting this exact shape, then the rung5 gate swap (run_script.sh
++ parser.py, `/app`, no conda).
+
 ## 2026-05-24 — source-only gate committed + rec #2 re-confirmed
 
 Applied FAILURE_ATTRIBUTION.md (verified repo) to pro. The four recs map: #1 source-only

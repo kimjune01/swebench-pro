@@ -64,6 +64,16 @@ image (`jefzda/sweap-images:<tag>` via the `helper_code/image_uri.py` tag logic)
 instance's `run_scripts/<id>/run_script.sh`, so the task records the run-script path, not a
 `test_cmd`.
 
+**Gotchas confirmed by the gold-patch smoke (see WORKLOG):**
+- The Pro evaluator `eval()`s `fail_to_pass`, `pass_to_pass`, and `selected_test_files_to_run`,
+  so they must be **Python-literal strings** (`'["a","b"]'`), not JSON arrays. The HF dataset's
+  casing is already lowercase; the repo's `sweap_eval_full_v2.jsonl` ships **uppercase**
+  `FAIL_TO_PASS`/`PASS_TO_PASS` (internally inconsistent with its own harness — alias to lowercase).
+- The grader reads per-instance Dockerfiles from disk (`dockerfiles/{base,instance}_dockerfile/
+  <id>/`) and scripts from `run_scripts/<id>/`, so a clone of `scaleapi/SWE-bench_Pro-os` is a
+  hard dependency. Use `get_dockerhub_image_uri` for the image URI — only `-vnan` is stripped;
+  any other `-v<sha>` suffix is **kept**.
+
 ## 2. Get an offline-capable Docker box ✅ (disk tweak 🔧)
 
 ```bash
