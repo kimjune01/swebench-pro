@@ -267,3 +267,26 @@ attestation contract.
   pkg versions), $0 gold-smoke as the env self-test (step 0.5), real commands (BENCH=pro
   make_task, pro_pilot --selftest/run, official grade), dev-local vs scored-EC2 split, the
   pilot-found gotchas, and the "derive don't trust" verify recipe.
+
+## 2026-05-24 — hardest-6 validation batch: 6/6 RESOLVED (telemetry) + Go capture bug found/fixed
+
+Dev-mode subset peek (prereg §2 — NOT a scored measurement; these are labeled-set instances,
+telemetry only). Ran 6 light-infra members of `hardest_both_reasoning` (3 ansible/Py + 3
+navidrome/Go — cells both sonnet-4 AND gpt4o failed on REASONING) through `pro_batch.sh`.
+
+- **Result: 6/6 officially RESOLVED.** Sonnet 4.5 + recon/craft/audit resolved all six. Real
+  source wins (grader restores gold tests before grading, so TRUE is on the source fix). One
+  (ansible-d62496fe) took **3 outer-loop iterations** (NOT_RESOLVED → re-diagnose → NOT_RESOLVED
+  → re-diagnose → RESOLVED) — the audit→recon self-correction was load-bearing. Rest first-try.
+- **Framing:** same model family as the failing baseline (4.5 vs sonnet-4) ⇒ largely scaffold/
+  loop, not a bigger model (§12 C1). Strong frontier signal — but **n=6, only 2 repos, light
+  subset**; does not predict the heavy/PyQt repos in the full 31. Telemetry, not a score.
+- **Bug found (the subset's payoff):** navidrome captures leaked gold `*_test.go` changes —
+  Go/Ginkgo `selected_test_files` are test FUNCTION names, so exact-match stripping never fired.
+  Not a false green (gold restored), but a source-only violation that would hit every Go/JS
+  instance + risk false-greens on a no-restore path. **Fixed** (ed005d3): always apply the
+  language-aware test convention + extend globs (Go/JS) + capture by test_patch PATHS. Residual:
+  agent `fix_*.py` scratch scripts still leak (follow-up).
+- **Verdict on "did we learn anything":** yes — a real capture bug → fixed before the full set
+  (per the criterion). The wins also confirm the pipeline clears the light reasoning frontier.
+  Next: full 31 on EC2-native after token refill (heavy/PyQt repos), with the Go-clean capture.
