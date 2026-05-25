@@ -27,6 +27,10 @@ method's frame, "fresh go" is the new hypothesis, "descend difficulty" follows t
 - **Generality guard (since public/private share the 11 repos):** every fix must be motivated by
   a failure CLASS, instance-blind — else we overfit public and waste the one private shot. The
   private set REVEALS overfitting faithfully; it does not PREVENT it.
+  > **CORRECTION (2026-05-24, later):** "share the 11 repos" is WRONG. Public (11 repos) and the
+  > held-out (12 repos) are **different** repositories (commercial is 18 more). The held-out is a
+  > *cross-repo* generalization test — stronger than the same-repo framing here implied, and the
+  > generality guard matters MORE, not less. The substantive point (keep fixes general) stands.
 - **Attribution guard (`FAILURE_ATTRIBUTION.md`):** don't conclude "our reasoning is wrong" from
   a loss log (it reads as "almost had it"); use counterfactual/rerun to separate variance / infra
   / genuinely-hard from a real method gap before spending a restart.
