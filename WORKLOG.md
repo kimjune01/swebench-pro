@@ -2,6 +2,25 @@
 
 Newest first.
 
+## 2026-05-24 — source-only gate committed + rec #2 re-confirmed
+
+Applied FAILURE_ATTRIBUTION.md (verified repo) to pro. The four recs map: #1 source-only
+gate and #4 de-biasing protocol were already in hand (the gate as an uncommitted diff, the
+protocol as `hypotheses/97-to-100.md`); #3 (from-scratch run) stays future.
+
+- **#1 committed** (`7e3f697`): the iteration gate and `verify_gate` now `git checkout {tsha}
+  -- {testfiles}` to restore gold tests before every run; recon/craft prompts state tests are
+  gold-locked; `_strip_test_blocks` gained the `_is_testfile` convention fallback for the
+  private split. py_compile clean; all three callers (`helpers`/`verify_gate`/`capture_patch`)
+  thread `tsha`.
+- **#2 re-confirmed** via `testify.py` on django-14170 (`patch.diff` from the 20260524T031903Z
+  run). Local verdict == official, by construction: `RESOLVED_NO`, F2P 2/0, P2P 67 pass / **9
+  fail** — the BETWEEN-filter index optimization assertions the agent weakened ("Tests updated
+  to reflect this intentional behavior change," craft log). pred sha256 `cecf6d72…`. The
+  source-only capture strips the test edit, so gold-test restoration exposes the false-green:
+  local-green/official-red is now impossible for this class. (Re-confirmation of the earlier
+  same-day lever-#3 catch, not a new finding.)
+
 ## 2026-05-24 — rename: the bench attestation tool is `testify`
 
 `attest.py` → `testify.py`; the rung5 function/stage/ledger fields are `testify*`. Reason:
