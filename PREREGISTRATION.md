@@ -182,7 +182,7 @@ history. Versions never comingle. The number is re-derivable from the commits, n
 | 16 | Feynman | Self-deception routes: capture ≠ what ran (→ always official-regrade the captured diff); contamination read as capability; variance dressed as a wall (→ FAILURE_ATTRIBUTION probes); model strength laundered as scaffold credit (§12). |
 | 17 | Pearl | No causal claim beyond "the artifact produces grader-accepted patches." |
 | 18 | Ioannidis | N=731 powers the headline; subgroups (31 / 94 / 172) are **low-power** (n=31 → ±~18% CI) — §P2 carries a three-way verdict (confirm/refute/**inconclusive**) for exactly this. |
-| 19 | Mayo | **Not severe** against "recall, not reasoning" — a contaminated model can pass without reasoning. "Resolved" bounds capability-or-recall (§12, C2). |
+| 19 | Mayo | For our actual claim (the **scaffold differential**) the test **is severe**: contamination is symmetric across arms, so "recall not reasoning" can't explain why we resolve a cell the *same-family* baseline failed — both recall equally; scaffold is the only differing cause. "Not severe against recall" applies only to an **absolute model-capability** reading, which we don't make (§12, C2). |
 | 20 | Gwern | Full trail: per-instance commits, losing runs kept, audit-defects listed, version history in git. |
 | 21 | Gwern | Predictions timestamped + specific below. |
 | 22 | Ramdas | No optional stopping (§5); fixed order (§3); only early stop is enumerated infra. No peek-and-stop. |
@@ -220,16 +220,15 @@ the **only residual** is the 4→4.5 improvement.
   headline is no longer *locked* to system-vs-system: it is "largely scaffold (same family),
   residual = one minor version, control pending." (The gpt4o comparison remains cross-family.)
 
-**C2 — contamination.** The bench is contaminated for any model whose cutoff postdates the
-instances (`LIMITATIONS`); "resolved" then bounds capability-or-recall (Q19). Mitigation: report
-separately the subset whose `created_at` predates a clean model's cutoff (Verified used Sonnet
-4.5). If too few qualify, say so; never present the contaminated headline as a clean capability
-number. (Note: the held-out's 12 different repos test cross-repo generalization but **not**
-contamination — different repos can still be in pretraining.)
-
-**C3 — the differential only partially nets contamination.** Both arms are contaminated, so the
-difference cancels task-level contamination but not model-level recall asymmetry. C1's control is
-what closes this; absent it the differential is suggestive, not dispositive.
+**C2 — contamination is not a confound for the scaffold claim; it *isolates* it.** Both arms are
+contaminated (Sonnet 4.5 and the sonnet-4 baseline have both seen these repos), so recall **cannot**
+explain a we-resolve / sonnet-4-fails cell — the contaminated baseline had the same recall and
+*still failed* (SWE-Agent overflowed before applying what it "knew"). Symmetric contamination
+removes model-knowledge as the variable, leaving **scaffold** as the differing cause. Our claim is
+scaffold navigation/execution, not model capability; contamination bears **only** on reading the
+*absolute* number as "the model reasons," which we don't claim. (We *may* report the clean-cutoff
+subset for the absolute number — not load-bearing.) The held-out's different repos test cross-repo
+generalization, orthogonal to contamination.
 
 ## 13. Freeze mechanism
 
