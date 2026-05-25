@@ -2,6 +2,39 @@
 
 Newest first.
 
+## 2026-05-25 — pre-freeze trial-by-fire: gate was blind to Go (login-shell PATH reset) — ROOT-FIXED
+
+Hunting for a LOSS on the 31 `hardest_both_reasoning` (all pilots so far passed → low information).
+Built tasks across 3 languages and ran the **$0 gold-patch gate selftest** as a targeted defect
+audit before spending tokens. Two findings, one a freeze-blocker:
+
+- **Concurrency flake (benign):** 5 selftests in parallel under amd64 emulation gave a false
+  `GREEN=False` on the *known-good* ansible-5e369604 (bootstrap had just graded its gold RESOLVED).
+  Serial re-run → PASS. Lesson: **selftests must run serially under emulation**; parallel container
+  contention corrupts the gold pass-check. (RED-on-base was robust throughout; only the gold check flaked.)
+- **Go gate bug (FREEZE-BLOCKER, root-fixed):** flipt & navidrome stayed `GREEN=False` even serially.
+  Official grader on flipt gold → **RESOLVED=True** (100%). So our gate disagreed with the official
+  grader — violating predicate §1.3 (gate == official grader). Root cause: `pro_pilot.install_gate`
+  ran the gate and the agent's box via `docker exec … bash **-lc**`. A **login** shell sources
+  `/etc/profile`, which **resets PATH** to a bare default and drops the image's baked
+  `/go/bin:/usr/local/go/bin` (+ GOPATH, in `Config.Env`). `go` vanished → 0 tests run → false
+  `GREEN=False` on **every Go instance**. Python survived only because `/usr/bin` is on the reset
+  PATH too. In a scored run this gate (the agent's stopping signal) would never go green on Go →
+  the loop burns budget past correct fixes → **every Go instance a false LOSS** (flipt = 8 of the 31
+  hardest, + navidrome). **Fix:** `bash -lc` → `bash -c` (non-login) in gate + box, so the image's
+  baked env is preserved — matching how the official grader runs. General by construction (covers any
+  baked-PATH toolchain: Go/Rust/Node-nvm/…), instance-blind, admissible under §1.1. Verified: flipt,
+  navidrome now RED+GREEN; ansible, openlibrary (Python) still RED+GREEN (no regression).
+
+**Gaps filled:** `tasks/run_order.txt` — canonical lexicographic order over the full 731 (§3 fixed
+run-order; eligible run follows it, skipping defects in place, so order is audit-independent).
+
+**Still open before freeze:** full-731 gold-patch defect audit (§6) — heavy/EC2 batch job, blocked on
+the Pro batch driver (🔧); EBS drift (PROCEDURE §4 says 100 GB, provision scripts use 40/50 GB);
+heavy-repo sample (qutebrowser/element-web) needs the pipeline running *on* an EC2 box (the not-yet-
+built "package for Scale" piece). No LOSS found yet — the gate bug was masking Go, so the real
+hardest-Go hunt starts now with a trustworthy gate.
+
 ## 2026-05-24 — campaign protocol: hardest-first curriculum, two modes, restart-whole-set
 
 Locked the campaign shape before scaling past pilots. It's the audit→recon outer loop at

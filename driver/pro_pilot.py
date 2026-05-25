@@ -74,9 +74,14 @@ def install_gate(inst, cid, root):
          f"python -c {shlex.quote(summary)}")
     tag = inst["instance_id"].replace("/", "_")
     gate = f"/tmp/gate-pro-{tag}"; box = f"/tmp/box-pro-{tag}"
-    pathlib.Path(gate).write_text(f"#!/bin/bash\ndocker exec {cid} bash -lc {shlex.quote(g)} 2>&1 | tail -150\n")
+    # bash -c, NOT -lc: a login shell sources /etc/profile which RESETS PATH to a bare default,
+    # dropping the image's baked /go/bin:/usr/local/go/bin (and GOPATH etc. in Config.Env). That
+    # made `go` vanish in the gate → 0 tests run → false GREEN=False on every Go instance. The
+    # official grader uses the image env (non-login); we must match it. Python survived only
+    # because /usr/bin is on the reset PATH too. (Pro env_activate is empty — no conda needs -l.)
+    pathlib.Path(gate).write_text(f"#!/bin/bash\ndocker exec {cid} bash -c {shlex.quote(g)} 2>&1 | tail -150\n")
     bx = (f"printf '%s' \"$*\" | docker exec -i {cid} bash -c 'cat >/tmp/_bc' && "
-          f"docker exec {cid} bash -lc 'cd {root} && bash /tmp/_bc'")
+          f"docker exec {cid} bash -c 'cd {root} && bash /tmp/_bc'")
     pathlib.Path(box).write_text(f"#!/bin/bash\n{bx}\n")
     import subprocess; subprocess.run(["chmod", "+x", gate, box])
     return box, gate
