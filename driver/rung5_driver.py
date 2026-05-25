@@ -316,8 +316,17 @@ import fnmatch
 # Build artifacts / agent backups that are never part of a real fix. Matched on the
 # diff's b/ path; dropped from the captured prediction regardless of whether the
 # in-container `find` cleanup fired (it silently missed *.bak on django-13023).
-_DETRITUS_GLOBS = ("*.bak", "*.bak[0-9]*", "*.orig", "*.rej", "*.pyc", "*.so")
-_DETRITUS_DIRS = ("__pycache__/", ".pytest_cache/", "result_images/", ".egg-info/")
+_DETRITUS_GLOBS = ("*.bak", "*.bak[0-9]*", "*.orig", "*.rej", "*.pyc", "*.so",
+                   # runtime/build artifacts the run_script generates (cross-language):
+                   "*.aof", "*.rdb", "*.log", "*.min.js", "*.map",
+                   "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "Cargo.lock")
+_DETRITUS_DIRS = ("__pycache__/", ".pytest_cache/", "result_images/", ".egg-info/",
+                  "node_modules/", "dist/", "build/", "coverage/", ".cache/", ".next/")
+
+# A source-only fix never has a multi-MB single-file diff. This cap is the catch-all that
+# the name-based denylist can't be: it drops runtime blobs regardless of name (the NodeBB
+# redis `appendonly.aof` was 3 MB → broke the official grade for 35 min before this).
+_MAX_FILE_BLOCK = 262144  # bytes of diff text per file
 
 def _is_detritus(path):
     if any(fnmatch.fnmatch(path, g) for g in _DETRITUS_GLOBS): return True
@@ -346,16 +355,23 @@ def _strip_test_blocks(diff, testfiles):
     held-out test set is invisible."""
     tf = set(testfiles or [])
     use_convention = not tf
-    out, keep = [], True
+    # Buffer per-file blocks so an oversized one (a runtime blob) can be dropped whole.
+    blocks, cur, bpath = [], [], None
     for line in diff.splitlines(keepends=True):
         if line.startswith("diff --git "):
-            # "diff --git a/<p> b/<p>" — take the b/ path
+            if cur: blocks.append((bpath, "".join(cur)))
+            cur = [line]
             parts = line.split()
             bpath = parts[3][2:] if len(parts) >= 4 and parts[3].startswith("b/") else None
-            is_test = (bpath in tf) or (use_convention and bool(bpath) and _is_testfile(bpath))
-            keep = (not is_test) and not (bpath and _is_detritus(bpath))
-        if keep:
-            out.append(line)
+        else:
+            cur.append(line)
+    if cur: blocks.append((bpath, "".join(cur)))
+    out = []
+    for bp, text in blocks:
+        is_test = (bp in tf) or (use_convention and bool(bp) and _is_testfile(bp))
+        if is_test or (bp and _is_detritus(bp)): continue
+        if len(text.encode("utf-8", "replace")) > _MAX_FILE_BLOCK: continue  # runtime blob
+        out.append(text)
     return "".join(out)
 
 def capture_patch(inst, cid, root, tsha):
