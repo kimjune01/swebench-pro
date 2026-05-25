@@ -120,7 +120,9 @@ which is independent of our model's results.
 - **Headline:** resolved / eligible (official), per frozen tag. Stated as a *system* result:
   "our frozen system resolved X / Y public Pro instances."
 - **Differential:** report cells where **our system** resolves and **both reference *systems***
-  (sonnet-4, gpt4o) failed, and cells where we fail and both passed (`tasks/pro/strata.json`).
+  (sonnet-4, gpt4o — both run in the **SWE-Agent** scaffold, 200-turn) failed, and cells where we
+  fail and both passed (`tasks/pro/strata.json`). The baselines' scaffold is specifically
+  SWE-Agent; the differential is against *that*, not a generic agent.
   This is a **system-vs-system contrast**, not evidence of a scaffold or capability advantage —
   the baselines differ from us in *both* scaffold and base model (§12, C1). No phrase in any
   writeup may attribute the differential to "scaffold," "navigation," or "capability" unless the
@@ -137,11 +139,19 @@ generalization check we control. Ordering never affects a completed measurement.
 
 ## 9. Held-out discipline
 
-The held-out is **Scale-run, 12 different repos, one shot**, reserved for overfitting detection.
-We almost certainly do not hold it; we cannot iterate against it (leakage) and cannot rehearse on
-it. The held-out F2P verdict is an oracle, never a stopping signal. If we run a blind submission,
-the gate stops on visible signals only (PASS_TO_PASS, repo suite, budget). The firewall is
-physical: held-out repos/tests are not in hand.
+The held-out is **Scale-run, 12 different repos, reserved for internal overfitting detection** —
+there is **no published external submission mechanism** (Scale *runs the agent*, it does not accept
+held-out predictions; baselines used the **SWE-Agent** scaffold, 200-turn limit). So a held-out run
+for us is **relationship-gated** (a SEAL ask), not a self-serve submission, and is **not the
+load-bearing result** — our defensible claim is the public number + self-built controls (§7, §8,
+§12). The held-out, if granted, is clean cross-repo *confirmation*, not the linchpin.
+
+If granted, the mechanism is **Scale runs our self-contained EC2 box/driver on their instances**
+(our driver takes a `task.json`, data-source-agnostic), *not* us packaging into their harness —
+see `PROCEDURE.md`. Residual: model credentials + sandbox-trust on secret data. Discipline holds
+regardless: the held-out F2P verdict is an oracle, never a stopping signal; one pass, no iterating
+against it; the firewall is physical (held-out repos/tests are not in hand, and cannot be rehearsed
+on — §0).
 
 ## 10. Provenance
 

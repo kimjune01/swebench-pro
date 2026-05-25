@@ -1,157 +1,134 @@
-# Procedure
+# Procedure — reproduce a SWE-bench Pro result from scratch
 
-The exact steps to reproduce a run, adapted from the Verified procedure for **SWE-bench Pro**.
-See `PRO_PORT.md` for the goal predicate and `README.md` for status.
+This is the **load-bearing reproducibility contract** (predicate clause 5): a third party with
+this repo, Docker, and model access reproduces a result and *derives* the number rather than
+trusting it. Counting rules live in `PREREGISTRATION.md`; this file is *how you run it*.
 
-**Status: in progress.** The provisioning layer transfers as-is; the task/gate/grade **adapter
-is not built yet**. Steps are marked:
-- ✅ **works now** — transfers unchanged from the Verified rig.
-- 🔧 **adapter TODO** — described as intended; the code does not exist yet (the Pro grading
-  model diverges enough from Verified that this is a new adapter, not a constant swap — see
-  "What changes" below).
+**Status:** the per-instance pilot path below is **real and validated** — two pilots officially
+resolved across two languages: `ansible-5e369604` (Python) and `NodeBB-51d8f3b1` (JS, 40 s grade
+after the capture fix). The multi-box batch driver for Pro is **not built yet** — single-instance
+`pro_pilot.py` is the current unit. Steps marked 🔧 are not yet wired.
 
-Nothing here claims a Pro number. This file is the plan we execute against.
+**Packaging = the EC2 box, not a harness.** The reproduction artifact is "provision an amd64 box,
+clone, run the driver" (§4) — for skeptics *and* for Scale (who would run the same self-contained
+driver pointed at held-out instances, rather than us conforming to their 200-turn agent harness).
+Residual knots: model credentials, and sandbox-trust for running our code on secret held-out data.
 
-## What changes from Verified (the adapter surface)
+## Pinned versions (a reproduction must match these)
 
-Resolved by inspecting `ScaleAI/SWE-bench_Pro` and `scaleapi/SWE-bench_Pro-os`:
-
-| Aspect | Verified | **Pro** |
-|---|---|---|
-| Dataset | `princeton-nlp/SWE-bench_Verified` | `ScaleAI/SWE-bench_Pro` (731 public; held-out private split) |
-| Field case | `FAIL_TO_PASS` / `PASS_TO_PASS` (JSON) | `fail_to_pass` / `pass_to_pass` (lowercase) |
-| Image | `swebench/sweb.eval.x86_64.<key>` (conda) | `jefzda/sweap-images:<dockerhub_tag>` (language-native) |
-| Image arch | amd64 | **amd64** (confirmed via `docker manifest inspect`) — native on EC2, no emulation |
-| Repo dir | `/testbed` | **`/app`** |
-| Env | conda `activate testbed` | **none** — `node:18` etc.; setup via `before_repo_set_cmd` + the run script |
-| Test command | `install_config.test_cmd` (regex from eval spec) | **no `test_cmd`** — per-instance `run_scripts/<id>/run_script.sh` |
-| Result parsing | swebench `get_logs_eval` / `get_eval_tests_report` | per-instance `run_scripts/<id>/parser.py` |
-| Grader | `swebench.harness.run_evaluation --dataset_name` | `swe_bench_pro_eval.py --scripts_dir run_scripts --dockerhub_username jefzda` |
-| Languages | all Python | Python, JavaScript, Go, + more (NodeBB, qutebrowser, ansible, openlibrary, teleport, navidrome) |
-
-**Note on the source-only contract:** Pro's `run_script.sh` re-applies the gold tests itself
-(`git checkout <instance_commit> -- <test_files>`, `cp -r test/.`), so the false-green class
-the Verified gate fix closes is **structurally handled by Pro's own grader**. The local gate
-should still replicate it, but it is not new risk on Pro.
+| component | pin |
+|---|---|
+| dataset | `ScaleAI/SWE-bench_Pro` split `test` (731), revision `7ab5114912baf22bb098818e604c02fe7ad2c11f` |
+| eval repo | `github.com/scaleapi/SWE-bench_Pro-os` commit `ca10a60a5fcae51e6948ffe1485d4153d421e6c5` |
+| python | `swebench==4.1.0`, `datasets==4.8.5`, `pandas==3.0.3`, `docker==7.1.0` (docker-py) |
+| images | `jefzda/sweap-images:<tag>` (DockerHub, amd64, immutable per-instance tags) |
+| baseline scaffold (for the differential) | **SWE-Agent**, 200-turn limit (Scale's reported baseline) |
 
 ## 0. Prerequisites
 
-- An **amd64** Linux Docker host. Pro images are linux/amd64; `driver/provision.sh` provisions
-  an AWS EC2 `m7i.xlarge` (amd64) — they pull and run **natively, no Rosetta/`--platform`
-  emulation** (unlike the local Mac/OrbStack path in `LOCAL_ISO.md`). ✅
-  - **Bump the disk** in the provisioner from 40–50 GB to **80–100 GB**: Pro repos are
-    enterprise-scale and images are larger (~0.9 GB compressed → a few GB unpacked, plus deps
-    like `node_modules`/redis). 🔧 (one-line edit to `provision.sh`)
-- On the plan host (your laptop): `claude` CLI (generator), `codex` CLI (filter), Python with
-  `pip install -r requirements.txt`. ✅
-- For grading, clone `scaleapi/SWE-bench_Pro-os` (provides `run_scripts/`, `parser.py`, and
-  `swe_bench_pro_eval.py`); `pip install -r` its requirements. 🔧
-- Models run on the plan host; only the system-under-test container goes offline. Auth notes
-  (subscription vs API key, `CLAUDE_SUBSCRIPTION=1`, `RCA_MODEL`, `SSH_USER`) are identical to
-  Verified — see that repo's `PROCEDURE.md` §0. ✅
-
-## 1. Build the task JSON 🔧
-
 ```bash
-python driver/make_task.py <instance_id> tasks/<instance_id>.json   # BENCH=pro
+# (a) this repo
+export REPO=/path/to/swebench-pro
+
+# (b) the eval repo (run_scripts + parser.py + dockerfiles + the official grader) — a HARD dependency
+git clone https://github.com/scaleapi/SWE-bench_Pro-os.git /tmp/swebench-pro-os
+( cd /tmp/swebench-pro-os && git checkout ca10a60a5fcae51e6948ffe1485d4153d421e6c5 )
+export SWEAP_OS_REPO=/tmp/swebench-pro-os
+
+# (c) a venv with the pins (uv or pip)
+python -m venv .venv && . .venv/bin/activate
+pip install "swebench==4.1.0" "datasets==4.8.5" "pandas==3.0.3" "docker==7.1.0"
+export PY=$(command -v python)
+
+# (d) model CLIs for the agent loop: `claude` (generator) + `codex` (craft filter), authed.
+# (e) an amd64 Docker host. Mac/OrbStack runs the amd64 images under emulation (dev only);
+#     EC2 m7i.xlarge runs them native (scored runs — §4).
 ```
 
-Intended behavior (adapter TODO): pull the instance from `ScaleAI/SWE-bench_Pro`, derive the
-image (`jefzda/sweap-images:<tag>` via the `helper_code/image_uri.py` tag logic), set
-`repo_dir=/app`, leave `env_activate` empty, and carry `before_repo_set_cmd`,
-`selected_test_files_to_run`, lowercase `fail_to_pass`/`pass_to_pass`, `test_patch`, and
-`base_commit` into the shape the driver expects. The "test command" is not a string — it is the
-instance's `run_scripts/<id>/run_script.sh`, so the task records the run-script path, not a
-`test_cmd`.
+## 0.5 Validate your environment ($0, no tokens) — DO THIS FIRST
 
-**Gotchas confirmed by the gold-patch smoke (see WORKLOG):**
-- The Pro evaluator `eval()`s `fail_to_pass`, `pass_to_pass`, and `selected_test_files_to_run`,
-  so they must be **Python-literal strings** (`'["a","b"]'`), not JSON arrays. The HF dataset's
-  casing is already lowercase; the repo's `sweap_eval_full_v2.jsonl` ships **uppercase**
-  `FAIL_TO_PASS`/`PASS_TO_PASS` (internally inconsistent with its own harness — alias to lowercase).
-- The grader reads per-instance Dockerfiles from disk (`dockerfiles/{base,instance}_dockerfile/
-  <id>/`) and scripts from `run_scripts/<id>/`, so a clone of `scaleapi/SWE-bench_Pro-os` is a
-  hard dependency. Use `get_dockerhub_image_uri` for the image URI — only `-vnan` is stripped;
-  any other `-v<sha>` suffix is **kept**.
-
-## 2. Get an offline-capable Docker box ✅ (disk tweak 🔧)
+Confirm the grader + images + scripts work on your box *before* spending anything, by grading a
+**gold patch** (must resolve). This is the self-test that proves setup with zero tacit knowledge:
 
 ```bash
-bash driver/provision.sh        # after bumping VolumeSize to 80–100 GB
+cd $SWEAP_OS_REPO
+$PY $REPO/driver/pro_smoke.py <instance_id>     # builds 1-row sample + gold pred, grades it
+# expect: eval_results.json -> {"<id>": true}, "Overall accuracy: 1.0"
 ```
 
-Unchanged from Verified: writes `/tmp/v4smoke.env` (`KEY`, `PUBIP`, `IID`, `SG`, `REGION`),
-installs Docker, arms the self-terminate watchdog. `provision_box.sh <name>` for batch boxes.
-Pro images being amd64, the EC2 host runs them natively.
+If this is not `true`, stop — your Docker/arch/eval-repo/venv is wrong; fix it before §1.
+(Known-good instance: `instance_ansible__ansible-5e369604e1930b1a2e071fecd7ec5276ebd12cb1-v0f01c69f1e2528b935359cfe578530722bca2c59`.)
 
-## 3. Run the pipeline 🔧
+## 1. Build the task
 
 ```bash
-python driver/rung5_driver.py /tmp/v4smoke.env tasks/<instance_id>.json <instance_id>
+BENCH=pro $PY $REPO/driver/make_task.py <instance_id> $REPO/tasks/pro/<name>.json
 ```
 
-Same recon → craft → audit loop and source-only gate, with the adapter changes:
-1. Pull `jefzda/sweap-images:<tag>`, start the container, `git apply` the test patch and commit
-   it at `/app` (so the captured patch excludes test changes).
-2. Run `before_repo_set_cmd` + the instance `run_script.sh` once online to install deps and
-   capture the fail-on-base baseline. No conda activation.
-3. Disconnect the container from the network (offline SUT).
-4. **recon / craft / audit** as on Verified. The **gate runs the instance's `run_script.sh`**
-   (which restores gold tests itself) and classifies via the instance's **`parser.py`**, not the
-   swebench marker regex. The andon + source-only prompts carry over unchanged.
-5. Outer loop (max 3), capture `git diff` as the model patch, tear down.
+Emits the self-contained Pro shape: `jefzda` image (via `image_uri.py`), `repo_dir=/app`, empty
+`env_activate` (no conda), `before_repo_set_cmd`, `selected_test_files`, lowercase
+`fail_to_pass`/`pass_to_pass`, `test_patch`, and `run_script`/`parser_script` baked in. **No gold
+patch** (agent-safe). Requires `$SWEAP_OS_REPO` for the image-uri logic and run_scripts.
 
-Outputs land in the same per-instance artifact shape (`r4_*`, ledger, hypothesis graph).
-
-## 4. Grade with the official Pro harness (the real verdict) 🔧
-
-The driver's gate is the stopping signal, not the grader. For the authoritative verdict, run the
-Pro evaluator from `scaleapi/SWE-bench_Pro-os`:
+## 2. Run a pilot
 
 ```bash
-python swe_bench_pro_eval.py \
-  --raw_sample_path=swe_bench_pro_full.csv \
-  --patch_path=<predictions>.json \
-  --output_dir=<out> \
-  --scripts_dir=run_scripts \
-  --num_workers=1 \
-  --dockerhub_username=jefzda
+# gate self-test first ($0 tokens): must print RED on base, GREEN on gold
+$PY $REPO/driver/pro_pilot.py $REPO/tasks/pro/<name>.json <instance_id> --selftest
+
+# the real loop (spends model tokens): recon -> craft -> audit -> source-only capture -> grade
+SWEAP_OS_REPO=$SWEAP_OS_REPO $PY $REPO/driver/pro_pilot.py $REPO/tasks/pro/<name>.json <instance_id>
 ```
 
-`<predictions>.json` maps `instance_id` → model patch (gather via `helper_code/gather_patches.py`
-shape). Sanity-check the harness first with the gold `patch` column (must grade RESOLVED).
-Treat that report, not this repo's `RESOLVED`, as the verdict.
+The PUBLIC-mode gate restores gold tests (`before_repo_set_cmd` last line) then runs
+`run_script.sh` + `parser.py`, reporting F2P pass/fail. Capture is source-only: `git diff` minus
+test files, build/runtime blobs, and any single-file diff >256 KB. The run ends by **re-grading
+the captured diff on a fresh container** (gate == official grader) and prints `OFFICIAL RESOLVED`.
 
-## Batch runs 🔧
+## 3. The authoritative grade
 
-Mirror Verified: `provision_box.sh` per box, `shard_batch.py` to spread instances (give the
-heaviest repos — teleport/ansible/NodeBB — solo boxes), `launch_generic.sh` with
-`CLAUDE_SUBSCRIPTION=1`, then grade each box's shard and `archive_batch.py`. Stream-monitor every
-run (`driver/MONITORING.md`). All `*_batch` scripts need the same Pro-field/image adapter as §1.
+The agent's gate is the stopping signal, not the verdict. The number is the official grader on the
+captured source-only diff:
 
-## 5. Archive into the repo ✅
-
-Copy run outputs into `results/<instance_id>/` (separate tree from Verified) and append a
-`WORKLOG.md` entry. Pro gets its own documented-defects list — never "instances we failed" (the
-no-priors / honest-denominator rule from `PRO_PORT.md` still binds).
-
-## Teardown ✅
-
-Identical to Verified:
 ```bash
-. /tmp/v4smoke.env
-aws ec2 terminate-instances --instance-ids "$IID" --region "$REGION"
-aws ec2 delete-security-group --group-id "$SG" --region "$REGION"
-aws ec2 delete-key-pair --key-name "$KEY" --region "$REGION"
+cd $SWEAP_OS_REPO
+$PY swe_bench_pro_eval.py --raw_sample_path <sample.jsonl> --patch_path <pred.json> \
+  --output_dir <out> --scripts_dir run_scripts --num_workers 1 \
+  --use_local_docker --dockerhub_username jefzda --redo
+# verdict: <out>/eval_results.json -> {"<id>": true|false}
 ```
 
-## Sequence to build the adapter (the actual next work)
+`pred.json` = `[{"instance_id","patch","prefix":""}]`. `sample.jsonl` needs lowercase
+`fail_to_pass`/`pass_to_pass`/`selected_test_files_to_run` as **string** reprs (the grader `eval()`s
+them) — `pro_pilot.py:official_grade` builds both correctly.
 
-1. **One-instance smoke, by hand:** pick a small public instance (a Python repo like qutebrowser
-   or ansible), `docker pull` its `jefzda/sweap-images` tag on an EC2 box, run its
-   `run_script.sh` against the gold `patch`, confirm `parser.py` reports the F2P resolved. This
-   validates image + grader before any driver code.
-2. **`make_task.py` Pro mode** (§1) → **`rung5_driver` gate swap** (run_script.sh + parser.py,
-   `/app`, no conda) (§3) → **grade wiring** (§4).
-3. Small sharded batch, then the methodeutics loop on the public set toward a frozen artifact.
-4. Private split last: one blind submission (see `PRO_PORT.md` "Blind mode").
+## 4. Dev (local, emulated) vs scored (EC2, native)
+
+- **Dev:** Mac/OrbStack, amd64 under Rosetta. Fine for small Python/Go/JS instances; **impractical
+  for heavy repos** (webclients 4.7 GB, teleport 2.4 GB) and slow on big suites under emulation.
+- **Scored:** EC2 `m7i.xlarge` (amd64 native, no emulation) via `driver/provision.sh` — **bump the
+  EBS volume to 100 GB** (Pro images unpack large). Native matches Scale's environment. The
+  batch/sharding driver for Pro is 🔧 (port from the Verified `rung5_driver`/`shard_batch`).
+
+## 5. Gotchas (each cost a pilot to find)
+
+- Pro images are `ENTRYPOINT=[/bin/bash]` → start with `--entrypoint sleep` or the container exits.
+- Fields are **lowercase** and the grader `eval()`s them → pass **string** reprs, not JSON arrays.
+- Image URI: use `helper_code/image_uri.py:get_dockerhub_image_uri`; only `-vnan` is stripped, other
+  `-v<sha>` suffixes are **kept**. The task must carry `repo` (image_uri does `repo.split("/")`).
+- Capture must drop runtime blobs (redis `appendonly.aof`, `node_modules`, build dirs) — handled by
+  the denylist + 256 KB per-file cap in `_strip_test_blocks`.
+- The eval repo clone is a hard dependency (dockerfiles + run_scripts read from disk by id).
+
+## 6. Verify someone else's number (derive, don't trust)
+
+Every committed result carries its captured source-only diff. To verify: take `patch.diff`, build
+`pred.json`, run §3 on a clean container, confirm the verdict matches. No need to re-run the agent —
+the grade is deterministic from the diff.
+
+## Not yet load-bearing (honest gaps)
+
+- Pro batch/sharding driver (multi-box) — single-instance only today.
+- Packaging for Scale to run our pipeline on the held-out (containerized, model-creds, 200-turn
+  budget). The held-out is Scale-run and relationship-gated, not a self-serve submission — see
+  `PREREGISTRATION.md` §9.

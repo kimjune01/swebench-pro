@@ -242,3 +242,24 @@ without provisioning EC2. Telemetry only — conversions on this set are not Ver
 Next: pick a lever to validate. Lowest-friction is suite-selection on a heavy-suite hang
 (sympy/matplotlib) or the gate-divergence pair (pytest-5787, django-14170) for the
 attestation contract.
+
+## 2026-05-24 — capture fix verified + 2nd pilot (NodeBB/JS) RESOLVED; PROCEDURE load-bearing
+
+- **NodeBB capture bug:** the 35-min "hang" was the final grade choking on a 3.1 MB captured
+  patch — redis `appendonly.aof` (runtime artifact) swept in by `git add -A`. The agent loop
+  itself was fine (~11 min, RESOLVED/GREEN). Fixed `_strip_test_blocks`: cross-language artifact
+  denylist + 256 KB per-file cap. Re-grading the recovered clean patch (3.1 MB → 4.4 KB):
+  **official RESOLVED, accuracy 1.0, 40 s**. Two pilots now officially resolved: ansible (Py) +
+  NodeBB (JS).
+- **Held-out reality:** Scale *runs the agent* on the private set (858, 12 different repos),
+  SWE-Agent baseline, 200-turn — **no external submission mechanism**. So held-out is
+  relationship-gated, not the load-bearing result; public + self-built controls (contamination
+  subset, same-model scaffold arm, per-repo generalization) are the defensible claim. Prereg §9
+  patched; §7 names SWE-Agent as the baseline scaffold.
+- **Packaging = the EC2 box.** Reproduction artifact is provision + run-the-driver (data-source-
+  agnostic `task.json`), for skeptics and for Scale alike — not harness-conformance. Residual:
+  model creds + sandbox-trust on secret data.
+- **PROCEDURE.md rewritten to load-bearing:** pinned versions (dataset rev, eval-repo commit,
+  pkg versions), $0 gold-smoke as the env self-test (step 0.5), real commands (BENCH=pro
+  make_task, pro_pilot --selftest/run, official grade), dev-local vs scored-EC2 split, the
+  pilot-found gotchas, and the "derive don't trust" verify recipe.
