@@ -2,6 +2,50 @@
 
 Newest first.
 
+## 2026-05-24 — campaign protocol: hardest-first curriculum, two modes, restart-whole-set
+
+Locked the campaign shape before scaling past pilots. It's the audit→recon outer loop at
+campaign scale: a hard failure is the perturbation, "reconsider reasoning" re-abduces the
+method's frame, "fresh go" is the new hypothesis, "descend difficulty" follows the edge.
+
+- **Hardest-first, on PUBLIC only.** Iterate freely on public — the private held-out set is a
+  physical firewall, so public iteration can't contaminate the private grade. Order to maximize
+  information per token: hardest instances first (by what other models failed), descend.
+- **Two modes — keep them separate.** (1) *Exploratory/development*: run SUBSETS freely (hard
+  ones + easy anchors + differential-vs-others) to diagnose method weaknesses; no scoreboard,
+  partial is fine, do NOT full-restart per tweak. (2) *Measurement*: freeze the artifact → run
+  the WHOLE eligible set → that's the number.
+- **A restart is always the WHOLE set.** Partial/failures-only re-runs cherry-pick the
+  denominator and hide regressions (a fix can break what passed). One frozen version × full
+  eligible set, committed as its own sample under a frozen tag; versions never comingle; same
+  disclosed denominator each run. Because a full restart is expensive (731 public × an agent
+  loop), batch general fixes during exploration, validate the freeze candidate on a held-out
+  public slice, then spend one full-set run.
+- **Signal is the differential vs others, not the absolute.** we-fail/others-fail = expected,
+  low info; we-fail/others-PASS = our specific weakness (fix first); we-PASS/others-fail = our
+  edge (the publishable signal). The "vs others" comparison is the tri-abduction third operand.
+- **Generality guard (since public/private share the 11 repos):** every fix must be motivated by
+  a failure CLASS, instance-blind — else we overfit public and waste the one private shot. The
+  private set REVEALS overfitting faithfully; it does not PREVENT it.
+- **Attribution guard (`FAILURE_ATTRIBUTION.md`):** don't conclude "our reasoning is wrong" from
+  a loss log (it reads as "almost had it"); use counterfactual/rerun to separate variance / infra
+  / genuinely-hard from a real method gap before spending a restart.
+
+Source for "what others find hard": the eval repo ships `error_analysis/{claude_sonnet_4,gpt4o}.csv`
+(per-instance failure category + rationale — these are FAILURE lists: sonnet failed 533, gpt4o 624).
+
+**Mined → `tasks/pro/strata.json`.** Of 731 public, both SOTA models failed **520 (71%)** — but
+that's dominated by SCAFFOLD failures (309 context-overflow / endless-file-reading by sonnet),
+i.e. *their harness* got lost, not problem difficulty. Separating scaffold from reasoning:
+- **hardest_both_reasoning = 31** — both fail AND both via reasoning category (wrong_solution /
+  misunderstood / wrong-file). The genuine diagnosis frontier → the hardest-first curriculum.
+- **edge_both_scaffold = 172** — both fail via scaffold limits. Likely OUR edge: bounded-read HG
+  recon shouldn't context-overflow. we-pass-here = the publishable comparative-advantage signal.
+- **easy_anchors_neither_fail = 94** — both passed → controls; failing one = our bug.
+
+Confirms the comparative-advantage thesis: most of "Pro is brutal" is agent-scaffold limits, not
+reasoning. Curriculum: start on the 31 hardest, salt with easy anchors, watch the 172 for edge.
+
 ## 2026-05-24 — first Pro pilot: end-to-end RESOLVED (public, local, agent loop)
 
 Wired `pro_pilot.py` (reuses rung5 recon/craft/audit verbatim + Pro setup/gate) and ran the
