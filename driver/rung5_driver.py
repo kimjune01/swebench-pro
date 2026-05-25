@@ -335,7 +335,10 @@ def _is_detritus(path):
 # Test-path conventions, used ONLY as a private-Pro fallback when the gold test_patch
 # (and thus the exact testfiles list) isn't visible. On public Pro the exact list is
 # precise and this is never consulted.
-_TESTFILE_GLOBS = ("test_*.py", "*_test.py", "tests.py", "conftest.py")
+_TESTFILE_GLOBS = ("test_*.py", "*_test.py", "tests.py", "conftest.py",      # python
+                   "*_test.go",                                              # go
+                   "*.test.js", "*.test.jsx", "*.test.ts", "*.test.tsx",     # js/ts
+                   "*.spec.js", "*.spec.jsx", "*.spec.ts", "*.spec.tsx")
 def _is_testfile(path):
     base = path.rsplit("/", 1)[-1]
     if any(fnmatch.fnmatch(base, g) for g in _TESTFILE_GLOBS): return True
@@ -354,7 +357,10 @@ def _strip_test_blocks(diff, testfiles):
     fall back to test-path conventions — the source-only contract must still hold when the
     held-out test set is invisible."""
     tf = set(testfiles or [])
-    use_convention = not tf
+    # ALWAYS apply the language-aware test-path convention, not just when tf is empty.
+    # tf can be useless even when present: Go/Ginkgo `selected_test_files` are test FUNCTION
+    # names (TestArtwork), not paths, so exact-match never fires and gold test changes leak
+    # (navidrome). The convention (*_test.go, *.spec.ts, /tests/, …) catches them by path.
     # Buffer per-file blocks so an oversized one (a runtime blob) can be dropped whole.
     blocks, cur, bpath = [], [], None
     for line in diff.splitlines(keepends=True):
@@ -368,7 +374,7 @@ def _strip_test_blocks(diff, testfiles):
     if cur: blocks.append((bpath, "".join(cur)))
     out = []
     for bp, text in blocks:
-        is_test = (bp in tf) or (use_convention and bool(bp) and _is_testfile(bp))
+        is_test = (bp in tf) or (bool(bp) and _is_testfile(bp))
         if is_test or (bp and _is_detritus(bp)): continue
         if len(text.encode("utf-8", "replace")) > _MAX_FILE_BLOCK: continue  # runtime blob
         out.append(text)

@@ -110,7 +110,10 @@ def pro_capture(inst, cid, root):
     ssh(f"sudo docker exec {cid} bash -lc 'cd {root} && git add -A -- . 2>/dev/null; "
         f"git diff --cached HEAD > /tmp/_pred.diff 2>/dev/null; echo OK'")
     diff = ssh(f"sudo docker exec {cid} bash -lc 'cat /tmp/_pred.diff'").stdout
-    src = _strip_test_blocks(diff, set(inst["selected_test_files"]))
+    # Use the GOLD test PATHS from the test_patch headers (real paths), not selected_test_files
+    # (which are test FUNCTION names for Go/Ginkgo and never match). Convention catches the rest.
+    gold_testpaths = {l[6:] for l in inst.get("test_patch", "").splitlines() if l.startswith("+++ b/")}
+    src = _strip_test_blocks(diff, gold_testpaths)
     tag = inst["instance_id"].replace("/", "_")
     (HERE / f"pro_patch_{tag}.diff").write_text(src)
     return src
