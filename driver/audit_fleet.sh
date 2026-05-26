@@ -36,7 +36,7 @@ setup_and_dispatch() {  # $1=box-name $2=shard-i $3=N
     cd ~/swebench-pro && UV_PYTHON=3.11 bash driver/bootstrap.sh >/tmp/boot.log 2>&1 && echo BOOT_OK || (tail -3 /tmp/boot.log; exit 1)
     . driver/.proenv
     nohup \$PY driver/pro_run.py --mode audit --shard ${I}/${N} > ~/audit_shard.log 2>&1 &
-    echo DISPATCHED ${NAME} shard ${I}/${N} pid \$! (watchdog +${WATCHDOG_MIN}m)
+    echo DISPATCHED ${NAME} shard ${I}/${N} pid \$! watchdog +${WATCHDOG_MIN}m
   "
 }
 

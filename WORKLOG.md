@@ -359,3 +359,14 @@ navidrome/Go — cells both sonnet-4 AND gpt4o failed on REASONING) through `pro
 - **Verdict on "did we learn anything":** yes — a real capture bug → fixed before the full set
   (per the criterion). The wins also confirm the pipeline clears the light reasoning frontier.
   Next: full 31 on EC2-native after token refill (heavy/PyQt repos), with the Go-clean capture.
+
+## 2026-05-26 — lost a 54% audit to a short watchdog; codified overnight recovery
+
+The 4-box §6 audit self-terminated at ~3h / ~396 of 731 graded: `audit_fleet` inherited
+`provision_box.sh`'s +180min shutdown watchdog, far shorter than the ~6-8h run, and no ledger was
+checkpointed off-box → the partial grades died with the boxes. $0 tokens, ~$5 EC2, no downstream
+impact (no frozen list existed). My error (2nd EC2-artifact loss by not checkpointing pre-teardown).
+**Fixes (committed):** +720min watchdog, per-poll checkpoint of shard ledgers to local, resume-seed
+on relaunch (pro_run skips graded). **Prereg §4a** now codifies overnight runs as box-death-expected,
+INCOMPLETE-not-LOSS, recovered by byte-identical resume — with the Q22 leakage guard (no peek-at-
+partials on the scored run; audit exempt). Relaunched crash-safe.

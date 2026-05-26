@@ -79,6 +79,37 @@ verdict-independent but **not** difficulty-independent, hence §3's fixed order)
 - **Never** move LOSS→INCOMPLETE after logs are visible; **never** exclude an instance because we
   failed it (defects come only from the §6 audit).
 
+### 4a. Overnight / unattended runs — interruption & recovery protocol
+
+A 731-set run is multi-hour and runs unattended; **box death is expected, not exceptional.** It is a
+platform fault (INCOMPLETE, verdict-independent), never a LOSS. Enumerated modes, all `BOX_DEATH`-class:
+self-termination **watchdog fired** (a +Nmin shutdown backstop — *this killed a 54%-complete audit on
+2026-05-26 when the fleet inherited a +180min default shorter than the run*), spot reclaim, host
+failure, `DISK_FULL`, `SETUP_NETWORK_FAIL`.
+
+**Recovery = §3 "re-run only the aborted instances under the byte-identical artifact" — made
+crash-safe by two mechanisms the driver must provide:**
+1. **Checkpoint.** Per-instance verdicts are flushed to a durable store off the box on a bounded
+   cadence (the fleet monitor pulls each shard ledger to local every poll). Max loss on a death =
+   one checkpoint interval, not the whole run.
+2. **Resume-seed.** On relaunch, each box is seeded with its checkpoint ledger; the driver skips any
+   instance already recorded (`pro_run` resume) and grades only the remainder. Verdicts never
+   recompute; completed ones stand (§3).
+
+**Watchdog sizing:** the shutdown backstop must exceed expected wall-time **with margin** (≥ ~1.5×);
+a watchdog firing mid-run is a known INCOMPLETE fault, recovered by resume — it never reclassifies an
+instance. A run is a headline number only once the full eligible set is *completed* (§5), across
+however many resume cycles that took.
+
+**Leakage guard on resume (ties to Q22).** For the **scored `--mode run`**, resume is legitimate
+ONLY under the `QUOTA_EXHAUSTED` discipline above: artifact **byte-identical**, and **no inspection
+of partial verdicts** to decide anything (continue / order / artifact). A box dying is verdict-
+independent, so resuming after it is not optional-stopping — but peeking at partials and then tweaking
+is, and converts a clean resume into leakage ⇒ new version ⇒ whole-set restart (§3). The **§6 audit
+is exempt** from the optional-stopping concern (it grades *gold*, not our model — partials carry no
+result signal, and eligible/defect classification is mechanical and order-independent), but its
+resume must still be byte-identical.
+
 ## 5. Stopping rule
 
 - **Exploratory:** stop a thread when it stops being informative.
