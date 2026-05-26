@@ -4,15 +4,28 @@ This is the **load-bearing reproducibility contract** (predicate clause 5): a th
 this repo, Docker, and model access reproduces a result and *derives* the number rather than
 trusting it. Counting rules live in `PREREGISTRATION.md`; this file is *how you run it*.
 
-**Status:** the per-instance pilot path below is **real and validated** — two pilots officially
-resolved across two languages: `ansible-5e369604` (Python) and `NodeBB-51d8f3b1` (JS, 40 s grade
-after the capture fix). The multi-box batch driver for Pro is **not built yet** — single-instance
-`pro_pilot.py` is the current unit. Steps marked 🔧 are not yet wired.
+**Status:** validated end-to-end. Per-instance loop (`pro_pilot.py`) officially resolves across
+Python/Go/JS; the whole-set driver (`pro_run.py --mode audit|run`, frozen-order + shard + resume)
+and the multi-box fleet (`audit_fleet.sh`) are built. EC2-native path validated (§4a).
 
-**Packaging = the EC2 box, not a harness.** The reproduction artifact is "provision an amd64 box,
-clone, run the driver" (§4) — for skeptics *and* for Scale (who would run the same self-contained
-driver pointed at held-out instances, rather than us conforming to their 200-turn agent harness).
-Residual knots: model credentials, and sandbox-trust for running our code on secret held-out data.
+## 0. Track — the only fork (public → private is this `if`)
+
+```python
+if TRACK == "public":     # scored public Pro run — this repo's current target
+    source = "ScaleAI/SWE-bench_Pro"   # 731, in hand
+    gate   = "F2P"         # reads FAIL_TO_PASS as the stopping signal — legal ONLY because
+                           # public tests are visible (pro_pilot default)
+    audit  = "§6"          # gold-patch defect audit applies (gold patches in hand)
+elif TRACK == "private":  # Scale-run held-out — the small-scope flip
+    source = "scale-held-out"          # Scale hands our driver a task.json (data-source-agnostic)
+    gate   = "BLIND"       # P2P / repo-suite / budget. F2P is NEVER a stopping signal (leakage).
+    audit  = None          # gold not in hand; Scale runs it
+```
+
+**Everything below is shared.** Going public→private is exactly: swap `source`, swap `gate`. Nothing
+else changes — that is the whole point of the data-source-agnostic `task.json` + EC2-box packaging
+(for skeptics *and* for Scale, who run the same self-contained driver rather than us conforming to
+their harness). Residual knots on the private flip: model credentials + sandbox-trust on secret data.
 
 ## Pinned versions (a reproduction must match these)
 
