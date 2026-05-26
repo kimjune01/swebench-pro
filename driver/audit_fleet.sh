@@ -49,12 +49,12 @@ case "${1:-}" in
     echo "audit dispatched; poll with: driver/audit_fleet.sh status"
     ;;
   status)
+    # ssh -n: do NOT let ssh consume the `while read` manifest stream (else only box 1 polls)
     while read -r NAME I N IP; do
       . /tmp/${NAME}.env; PEM=/tmp/${KEY}.pem
-      done_n=$($SSH -i $PEM ec2-user@${PUBIP} "wc -l < ~/swebench-pro/runs/audit/audit_${I}of${N}.jsonl 2>/dev/null || echo 0" 2>/dev/null)
-      total=$(( (731 + N - 1 - (I-1)) / N ))  # approx stripe size
-      tail=$($SSH -i $PEM ec2-user@${PUBIP} "grep -c '\"state\": \"defect\"' ~/swebench-pro/runs/audit/audit_${I}of${N}.jsonl 2>/dev/null || echo 0" 2>/dev/null)
-      echo "  $NAME (shard $I/$N): ${done_n:-?}/~${total} graded, ${tail:-?} defects so far"
+      out=$($SSH -n -i $PEM ec2-user@${PUBIP} "L=~/swebench-pro/runs/audit/audit_${I}of${N}.jsonl; echo graded=\$(wc -l < \$L 2>/dev/null || echo 0); echo defects=\$(grep -c '\"state\": \"defect\"' \$L 2>/dev/null || echo 0)" 2>/dev/null)
+      total=$(( (731 + N - 1 - (I-1)) / N ))
+      echo "  $NAME (shard $I/$N): $(echo "$out" | tr '\n' ' ') /~${total}"
     done < $MANIFEST
     ;;
   collect)
