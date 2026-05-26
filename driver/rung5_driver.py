@@ -73,6 +73,9 @@ AUDIT_SKILL = (_SKILLS / "audit/skill.md").read_text()
 # Model = Claude Sonnet by default; override with RCA_MODEL for any model your
 # `claude` CLI / API key can reach.
 MODEL = os.environ.get("RCA_MODEL", "claude-sonnet-4-5")
+# Craft-volley adversary, invoked by the agent via `codex exec`. Pinned explicitly (not left to the
+# box's codex config default) so the second model leg is reproducible + recorded in the frozen config.
+CRAFT_CODEX_MODEL = os.environ.get("CRAFT_CODEX_MODEL", "gpt-5.5")
 
 def plan_env():
     """Auth-mode agnostic. Default: pass the environment through, so an
@@ -258,7 +261,8 @@ def craft(inst, box, gate, hgraph, handoff, kill_report, depth):
         f"regresses, the fix is too broad — narrow the source change; do NOT touch the test.\n"
         f"- `codex` runs LOCALLY (not in the container, so it can't read the repo or run "
         f"the gate). Bridge it: pull file contents via the box helper, paste them into the "
-        f"codex prompt. Invoke via stdin heredoc: `cat <<'EOF' | codex exec -` ... `EOF`. "
+        f"codex prompt. Invoke via stdin heredoc: `cat <<'EOF' | codex exec -c model={CRAFT_CODEX_MODEL} -` ... `EOF` "
+        f"(the `-c model=` pin is mandatory — do not omit it). "
         f"ALWAYS volley with codex: show it your drafted diff BEFORE the first gate run, "
         f"and show it the gate output + diff on EVERY gate failure before revising. Never "
         f"gate a fix codex hasn't seen. ~6-8 codex calls; it converges in 2-3.\n"

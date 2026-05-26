@@ -37,6 +37,28 @@ their harness). Residual knots on the private flip: model credentials + sandbox-
 | images | `jefzda/sweap-images:<tag>` (DockerHub, amd64, immutable per-instance tags) |
 | baseline scaffold (for the differential) | **SWE-Agent**, 200-turn limit (Scale's reported baseline) |
 
+## Frozen run config (prereg §13 item 3)
+
+The exact knobs a scored run freezes. The artifact is **model-agnostic** by construction — model
+identity is a config parameter (`RCA_MODEL`, `CRAFT_CODEX_MODEL`), no code path branches on it
+(grep-verified) — so this block, not the code, records what the headline number ran under.
+
+| knob | frozen value | source |
+|---|---|---|
+| generator model | `claude-sonnet-4-5` | `RCA_MODEL` (rung5_driver.py) |
+| craft-volley model | `gpt-5.5` | `CRAFT_CODEX_MODEL`, pinned via `codex exec -c model=` |
+| outer loop depth | `MAX_OUTER=3` | rung5_driver.py |
+| stage caps (wall-clock, s) | recon 2000 · craft 3600 · audit 1200 | `RECON_CAP`/`CRAFT_CAP`/`AUDIT_CAP` |
+| retry policy | INCOMPLETE only, on a verdict-independent platform fault (`FAULT_RE`); WIN/LOSS never reran | prereg §4 |
+| EC2 | `m7i.xlarge`, `us-west-2`, AMI `ami-00563078bca04e287`, **100 GB EBS**, watchdog `+720 min` | provision_box.sh, run_fleet.sh |
+| auth | claude = Max OAuth (keychain → `~/.claude/.credentials.json`, bills Max/$0); codex = `~/.codex/auth.json` | run_fleet.sh `stage_creds` |
+| eligible denominator | **728** (731 − 3 §6 defects) | `runs/audit/eligible.txt` |
+
+**Regression checks (the three 2026-05-25 harness faults — a recurrence reads as INCOMPLETE, never a method LOSS):**
+1. **Non-login shell** — gate + box run via `bash -c` (not `-lc`); a login shell resets PATH and hides baked toolchains (Go/Rust/Node) → false RED gate. Preflight: gate goes GREEN on a Go gold patch.
+2. **Ledger dir** — `log()` mkdirs its parent; stages log before setup, so a missing dir crashes the first call on a fresh box (false loop-failure).
+3. **Serial gold selftests under emulation** — parallel container contention corrupts the gold pass-check; selftests run serially.
+
 ## 0. Prerequisites
 
 You bring two things; **`bootstrap.sh` does the rest and proves it worked**:
