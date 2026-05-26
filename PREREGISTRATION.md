@@ -6,28 +6,19 @@ Companion to `PRO_PORT.md` and `FAILURE_ATTRIBUTION.md`.
 
 ## 0. Goal & posture (what the public number is *for*)
 
-The public number is **not the deliverable** — it is an **audition**. The held-out set (12
-repositories *different* from the 11 public ones, run by Scale for overfitting detection) is the
-real exam. The goal is to earn a held-out run and **survive it**, then make an honest claim.
+The public number is an **audition**, not the deliverable. The held-out (12 repos *different* from
+the 11 public, Scale-run for overfit detection) is the real exam; goal = earn a held-out run and
+**survive it**. Consequences:
 
-Consequences that govern everything below:
-
-- **Overfitting public is admissible to the benchmark, inadmissible to our claim, and fatal to
-  our goal.** The split *permits* public iteration (no rule against it; the held-out exists to
-  absorb it). But the public number is permitted *because it isn't believed* — admissibility and
-  worthlessness are the same coin. For us, overfitting is self-defeating: it earns the held-out
-  run and then *fails it* on different repos, after we've spent credibility and likely our one
-  shot.
-- **We cannot rehearse on the held-out.** It is one-shot and Scale-run; iterating against it is
-  leakage. So we must detect our own overfitting *before* the audition, on a self-carved public
-  holdout (§8) — weaker than Scale's cross-repo holdout (same repos), but the only generalization
-  signal we control. The "general / instance-blind" discipline is therefore **ours, enforced for
-  our reasons** (a one-shot exam we can't retake), not a benchmark rule.
-- **The deliverable is a credible, reproducible, generalization-worthy public result + a
-  methodology pitch that earns a held-out verification** — not a maximal percentage. A gamed high
-  number is counterproductive. The pitch's strongest asset is the finding that most baseline
-  failures are scaffold-navigation, not reasoning (a fact about Scale's own baseline, which an
-  evaluation lab cares about). Rigor here is a sales asset, not paperwork.
+- **Overfitting public is self-defeating.** The split permits public iteration (held-out absorbs
+  it), but overfitting just earns the held-out run and then *fails it* on different repos — one shot
+  spent. So "general / instance-blind" is **our** discipline, enforced for our reasons, not a rule.
+- **Can't rehearse the held-out** (one-shot, Scale-run; iterating = leakage). Detect our own
+  overfit *before* the audition on a self-carved public holdout (§8) — weaker (same repos) but the
+  only generalization signal we control.
+- **Deliverable = credible, reproducible, generalization-worthy public result + a methodology
+  pitch**, not a maximal %. The pitch's asset: most baseline failures are scaffold-navigation, not
+  reasoning (a fact about Scale's baseline an eval lab cares about).
 
 ## 1. Predicate (a result is admissible iff all hold)
 
@@ -76,25 +67,17 @@ verdict-independent but **not** difficulty-independent, hence §3's fixed order)
 | **LOSS** | loop completed but not resolved — incl. completed-failed, empty/0-byte capture, **and any failure endogenous to the method** (agent errored, produced no patch, looped, hit a stage wall-clock cap) | loss | **no — stands** |
 | **INCOMPLETE**(fault) | a logged platform fault fired before a gradeable diff: `BOX_DEATH` / `AWS_API` / `OOM` / `DISK_FULL` / `SETUP_NETWORK_FAIL` / `QUOTA_EXHAUSTED` | not scored; instance incomplete | **yes** — same frozen artifact, to completion; fault code logged |
 
-**Tightening the infra hole (codex):** INCOMPLETE requires an **enumerated platform fault code**,
-not "the agent didn't finish." A method that fails to emit a patch for endogenous reasons is a
-**LOSS**. "Before a gradeable attempt" means before the loop produced *any* diff — not "before we
-liked the diff."
-
-**Timeout = LOSS, not infra.** A stage wall-clock cap is part of the artifact's budget. The sole
-exception: a hang **proven** to be an emulation artifact (reproduces on Mac emulation, completes
-on native amd64 EC2) is `INCOMPLETE` and reruns on EC2 — demonstrated with both logs, never
-asserted. Default = LOSS.
-
-**Token-exhaustion / resume (Ramdas, Q22 — the dangerous part).** `QUOTA_EXHAUSTED` mid-run is a
-legitimate *pause-and-resume* ONLY if (a) the artifact is byte-identical on resume, and (b) **you
-do not inspect partial results to decide anything** — not whether to continue, not the artifact,
-not order. Peeking then tweaking converts a clean resume into optional-stopping leakage; any
-change ⇒ new version ⇒ whole-set restart (§3). Un-attempted instances at exhaustion are **un-run**
-and (per §5) the run is then **non-headline** until completed.
-
-**Never** move a LOSS to INCOMPLETE after logs are visible. **Never** exclude an instance as a
-defect because we failed it — defects come only from the §6 pre-run audit.
+- **INCOMPLETE requires an enumerated fault code**, not "the agent didn't finish." Endogenous
+  no-patch = LOSS. "Before a gradeable diff" = before the loop produced *any* diff.
+- **Timeout = LOSS** (stage cap is part of the budget). Sole exception: a hang *proven* an emulation
+  artifact (repros on Mac, completes on native EC2) is INCOMPLETE → rerun on EC2 — both logs shown,
+  never asserted.
+- **Token-exhaustion resume** (`QUOTA_EXHAUSTED`): legit pause-resume ONLY if (a) artifact
+  byte-identical on resume and (b) **no inspection of partials** to decide anything. Peek-then-tweak
+  = optional-stopping leakage ⇒ new version ⇒ whole-set restart (§3). Un-attempted-at-exhaustion =
+  un-run ⇒ run is non-headline until completed (§5).
+- **Never** move LOSS→INCOMPLETE after logs are visible; **never** exclude an instance because we
+  failed it (defects come only from the §6 audit).
 
 ## 5. Stopping rule
 
@@ -129,25 +112,16 @@ which is independent of our model's results.
 
 ## 7. Reported metrics — SYSTEM-vs-SYSTEM only (until the §12 control runs)
 
-- **Headline:** resolved / eligible (official), per frozen tag. Stated as a *system* result:
-  "our frozen system resolved X / Y public Pro instances." **The system is multi-model and
-  contaminated** — Sonnet 4.5 generates, **GPT-5.5 (codex) challenges in the craft volley**, and both
-  models postdate these repos. The headline is therefore a *contaminated multi-model system* number,
-  never a single-model or capability claim. (This is the only budget-viable config — codex offloads
-  the scarce Claude/Max budget; a clean single-model track is not affordable, so there is no clean
-  arm to fall back on. We own that rather than imply otherwise.)
-- **Differential:** report cells where **our system** resolves and **both reference *systems***
-  (sonnet-4, gpt4o — both run in the **SWE-Agent** scaffold, 200-turn) failed, and cells where we
-  fail and both passed (`tasks/strata.json`). The baselines' scaffold is specifically
-  SWE-Agent; the differential is against *that*, not a generic agent.
-  Against the **sonnet-4** baseline the *generator* model axis is mostly controlled (we generate with
-  Sonnet 4.5, same family, one version bump — §12, C1), **but our system also adds GPT-5.5 in craft**,
-  so a we-resolve cell is not attributable to scaffold alone: it is scaffold **plus** a second,
-  cross-family model in the loop. The differential is therefore **suggestive of a scaffold+ensemble
-  advantage, not a severe scaffold-only result** — that severity needs the §12 same-model,
-  single-model control, which is not budget-viable here. Writeups may say "system advantage (better
-  scaffold + GPT-5.5 craft volley), scaffold-only attribution pending an unrun control"; they may
-  **not** claim a clean scaffold advantage, and the gpt4o half stays cross-family (system-vs-system).
+- **Headline:** resolved / eligible (official), per frozen tag. Stated as a *system* result: "our
+  frozen system resolved X / Y." The system is **multi-model and contaminated** (Sonnet 4.5 generates
+  + GPT-5.5 craft challenger; both postdate these repos) — never a single-model or capability claim.
+  See §12 for why this is the only budget-viable config and what it costs the claim.
+- **Differential:** cells where **our system** resolves and **both reference systems** (sonnet-4,
+  gpt4o, both in **SWE-Agent** 200-turn) failed — and the reverse (`tasks/strata.json`). This is a
+  **system+ensemble** advantage, *not* a clean scaffold result: our system adds GPT-5.5 the baselines
+  lacked, so scaffold-only attribution needs the unrun §12 control. Permitted phrasing: "system
+  advantage (better scaffold + GPT-5.5 craft volley), scaffold-only pending control." The gpt4o half
+  stays cross-family.
 
 ## 8. Curriculum & self-holdout (development only — NOT a measurement strategy)
 
@@ -160,19 +134,13 @@ generalization check we control. Ordering never affects a completed measurement.
 
 ## 9. Held-out discipline
 
-The held-out is **Scale-run, 12 different repos, reserved for internal overfitting detection** —
-there is **no published external submission mechanism** (Scale *runs the agent*, it does not accept
-held-out predictions; baselines used the **SWE-Agent** scaffold, 200-turn limit). So a held-out run
-for us is **relationship-gated** (a SEAL ask), not a self-serve submission, and is **not the
-load-bearing result** — our defensible claim is the public number + self-built controls (§7, §8,
-§12). The held-out, if granted, is clean cross-repo *confirmation*, not the linchpin.
-
-If granted, the mechanism is **Scale runs our self-contained EC2 box/driver on their instances**
-(our driver takes a `task.json`, data-source-agnostic), *not* us packaging into their harness —
-see `PROCEDURE.md`. Residual: model credentials + sandbox-trust on secret data. Discipline holds
-regardless: the held-out F2P verdict is an oracle, never a stopping signal; one pass, no iterating
-against it; the firewall is physical (held-out repos/tests are not in hand, and cannot be rehearsed
-on — §0).
+Held-out = **Scale-run, 12 different repos, internal overfit detection**, **no external submission
+mechanism** (Scale runs the agent). So for us it's **relationship-gated** (a SEAL ask), **not the
+load-bearing result** — our defensible claim is the public number + self-built controls (§7/§8/§12);
+held-out, if granted, is clean cross-repo *confirmation*. Mechanism: Scale runs our self-contained
+EC2 box/driver (data-source-agnostic `task.json`), not us packaging into their harness (PROCEDURE).
+Residual: model creds + sandbox-trust on secret data. Discipline holds: held-out verdict is an
+oracle never a stopping signal; one pass; the firewall is physical (repos/tests not in hand, §0).
 
 ## 10. Provenance
 
@@ -191,7 +159,7 @@ history. Versions never comingle. The number is re-derivable from the commits, n
 | 5 | Hume | Generalization is the design: public (11 repos) → held-out (12 *different* repos). Our self-holdout shares repos, so it under-tests this — disclosed. |
 | 6 | Mill | **Honest limit:** we batch general fixes per version, so we cannot causally attribute the number to a single change. We measure the artifact holistically, version-vs-version. |
 | 7 | Mill | Controls: gold-patch oracle (positive control the grader works); reference baselines as the differential arm; §12 same-model arm is the *only* scaffold control. |
-| 8 | Chamberlin | "Resolved" alternatives: real fix / recall / variance / gate-lying. **The internal agent gate is NOT the official grader** — it is a fast PUBLIC-mode stopping signal that can disagree with the grader (a 2026-05-25 login-shell/PATH bug made the gate false-NEGATIVE on Go while gold graded RESOLVED; fixed). So a RESOLVED verdict is *never* the internal gate's word: every run captures the source-only diff and **re-grades it on a fresh container with the official grader** (Q3b, Q16) — that regrade is the verdict. Internal-gate lying can only *waste budget* (false-negative → loop runs longer), it cannot manufacture a WIN. Recall-vs-reason not separable (Q19). |
+| 8 | Chamberlin | "Resolved" alts: real fix / recall / variance / gate-lying. **Internal gate ≠ official grader** — it's a fast stopping signal that *can* disagree (2026-05-25 PATH bug made it false-NEGATIVE on Go while gold graded RESOLVED). Verdict is *always* the official regrade of the captured diff on a fresh container (Q3b/Q16), never the gate. So gate-lying can only waste budget, not manufacture a WIN. Recall-vs-reason: see Q19. |
 | 9 | Peirce | Strata + comparative hypothesis built from **others'** error data, registered before our runs — not retrofit. |
 | 10 | Fisher | No assignment confound — full set, not a split. |
 | 11 | Popper | Falsifiers: F1 (anchors, §P1) and F2 (§P2 one-sided test). |
@@ -202,7 +170,7 @@ history. Versions never comingle. The number is re-derivable from the commits, n
 | 16 | Feynman | Self-deception routes: capture ≠ what ran (→ always official-regrade the captured diff); contamination read as capability; variance dressed as a wall (→ FAILURE_ATTRIBUTION probes); model strength laundered as scaffold credit (§12). |
 | 17 | Pearl | No causal claim beyond "the artifact produces grader-accepted patches." |
 | 18 | Ioannidis | N=731 powers the headline; subgroups (31 / 94 / 172) are **low-power** (n=31 → ±~18% CI) — §P2 carries a three-way verdict (confirm/refute/**inconclusive**) for exactly this. |
-| 19 | Mayo | Severity is **partial, not full**. Symmetric contamination makes "pure recall" a *far weaker* explanation for a we-resolve / baseline-fails cell (the contaminated SWE-Agent baseline had comparable exposure and still overflowed) — so the test is reasonably severe against a *recall-only* reading. It is **not** severe for a *scaffold-only* claim, because our system adds GPT-5.5 in craft: the differing cause is scaffold **+ a second cross-family model**, not scaffold alone (§7, §12). Scaffold-only severity needs the §12 same-model single-model control, which is not budget-viable. We do not make an absolute model-capability claim (§12, C2). |
+| 19 | Mayo | **Partial severity.** Symmetric contamination makes recall-only a *far weaker* explanation (the contaminated baseline had comparable exposure and still failed) — severe-ish against recall-only. **Not** severe for scaffold-only: our system adds GPT-5.5, so the differing cause is scaffold + ensemble (§12, C1). No absolute-capability claim. |
 | 20 | Gwern | Full trail: per-instance commits, losing runs kept, audit-defects listed, version history in git. |
 | 21 | Gwern | Predictions timestamped + specific below. |
 | 22 | Ramdas | No optional stopping (§5); fixed order (§3); only early stop is enumerated infra. No peek-and-stop. |
@@ -227,47 +195,34 @@ Scored against the **frozen-artifact full-set run**, not pilots.
 
 ### Known exploratory exposure before freeze (full disclosure)
 
-These predictions were registered 2026-05-24, but by freeze we had **already run instances under the
-real (codex-volley) config in exploratory mode** — disclosed here so the predictions are read as
-*confirmatory on the frozen full-set run*, not naive:
+Registered 2026-05-24, but by freeze we'd already run instances under the real config — so the
+predictions are *confirmatory on the frozen run*, not naive:
 
-- **2026-05-25:** all **31 `hardest_both_reasoning`** instances were run end-to-end and **every one
-  graded OFFICIAL RESOLVED** (4 light local + 13 heavy on EC2 + a prior 6, dev-mode/no-credit). So
-  P2's `hardest_both_reasoning` arm is **not blind** — we have seen p_hard ≈ 1.0 on this stratum.
-  Consequence: P2 is effectively a test of whether `edge_both_scaffold` *also* approaches ceiling;
-  if p_hard is already ~1.0, P2 can only resolve *confirmed* (p_edge > p_hard impossible if
-  p_hard=1) or *inconclusive* — it can no longer be a surprising result. We flag this rather than
-  pretend the stratum was unseen. The `edge_both_scaffold` (172) and `easy_anchors` (94) strata
-  were **not** swept and remain genuinely out-of-sample for P1/E1.
-- No `edge_both_scaffold` or `easy_anchors` instance has been run under the config as of freeze.
+- **2026-05-25:** all **31 `hardest_both_reasoning`** ran end-to-end, **all OFFICIAL RESOLVED** (4
+  light local + 13 heavy EC2 + prior 6; dev-mode). So P2's `p_hard` arm is **not blind** (≈1.0 seen).
+  Since p_edge > p_hard is impossible at p_hard=1, P2 can now only land *confirmed* or *inconclusive*
+  — flagged, not hidden.
+- `edge_both_scaffold` (172) and `easy_anchors` (94) were **not** run — genuinely out-of-sample for
+  P1/E1.
 
 ## 12. Confounds, controls, contamination (the part most likely to embarrass us)
 
-**C1 — the config is multi-model; "scaffold vs model" is a *real* confound we do not fully close.**
-Our system = **Sonnet 4.5** generator (`RCA_MODEL=claude-sonnet-4-5`, verified live) **+ GPT-5.5
-(codex) challenger in the craft volley**. The baseline ran **`claude-sonnet-4`** + gpt4o in
-`SWE-Agent`. So on the *generator* axis vs the sonnet-4 baseline it is same family, one version bump
-(4 → 4.5) — but our system **adds a second, cross-family model (GPT-5.5)** the baseline lacked. A
-we-resolve / baseline-fails cell is therefore **a scaffold + ensemble result**, not scaffold alone —
-even though most baseline failures are navigation/context-overflow (a scaffold property). We **cannot**
-claim "mostly controlled by construction" while a whole extra model is in our loop. This is the only
-budget-viable config (codex offloads the scarce Claude budget); there is no clean single-model arm.
-- **(would-close-it, NOT budget-viable) same-model single-model control:** run **Sonnet 4.5** through
-  vanilla `mini-swe-agent`, *no codex*, on the same instances. our-system ≫ that at fixed Sonnet 4.5,
-  no GPT-5.5, would isolate scaffold. We **cannot afford** this (it shifts all load onto the scarce
-  Claude budget), so it remains **unrun** — and the scaffold-only attribution stays **open**, not
-  "control pending." The honest headline is a *contaminated multi-model system* result (§7).
+**C1 — multi-model config; scaffold-vs-model is a *real, unclosed* confound.** Our system = **Sonnet
+4.5** generator (`RCA_MODEL=claude-sonnet-4-5`) **+ GPT-5.5 (codex) craft challenger**; baseline =
+`claude-sonnet-4` + gpt4o in `SWE-Agent`. On the generator axis that's one version bump (4→4.5), but
+our system **adds a second cross-family model the baseline lacked** — so a we-resolve cell is
+scaffold **+ ensemble**, not scaffold alone. It's the only budget-viable config (codex offloads the
+scarce Claude budget; no clean single-model arm).
+- **The control that would isolate scaffold** — Sonnet 4.5 through vanilla `mini-swe-agent`, no codex
+  — is **not budget-viable** (shifts all load onto Claude), so it's **unrun** and scaffold-only
+  attribution stays **open** (not "pending"). Honest headline = contaminated multi-model system (§7).
 
-**C2 — symmetric contamination weakens the recall explanation; it does not eliminate it.** Both
-sides are contaminated (Sonnet 4.5 and the sonnet-4 baseline have both seen these repos), and the
-contaminated baseline *still failed* (SWE-Agent overflowed before applying what it "knew"). So
-"pure recall" is a **much weaker** explanation for a we-resolve / baseline-fails cell than it would
-be against an uncontaminated baseline — but it is **not ruled out**: Sonnet 4 and 4.5 (and GPT-5.5)
-differ in memorization, retrieval, cutoff, and tool-use priors, so recall *could* still contribute.
-We therefore make **no absolute model-capability claim** (§12, C2); the defensible reading is
-"better execution under a stronger multi-model system," with recall down-weighted, not excluded.
-(We *may* report the clean-cutoff subset for the absolute number — not load-bearing.) The held-out's
-different repos test cross-repo generalization, orthogonal to contamination.
+**C2 — symmetric contamination weakens recall, doesn't eliminate it.** Both sides saw these repos and
+the baseline *still failed* (SWE-Agent overflowed before applying what it "knew"), so recall-only is a
+**much weaker** explanation than against a clean baseline — but **not ruled out** (Sonnet 4/4.5/GPT-5.5
+differ in memorization/cutoff/priors). Hence **no absolute-capability claim**; defensible reading =
+"better execution under a stronger multi-model system," recall down-weighted, not excluded. The
+held-out's different repos test cross-repo generalization, orthogonal to contamination.
 
 ## 13. Freeze mechanism
 
