@@ -107,6 +107,7 @@ def ssh(remote, timeout=600, inp=None):
         capture_output=True, text=True, timeout=timeout, input=inp)
 
 def log(obj):
+    LEDGER.parent.mkdir(parents=True, exist_ok=True)  # fresh hosts (EC2) lack the default /tmp dir
     with open(LEDGER,"a") as f: f.write(json.dumps(obj)+"\n")
     sys.stderr.write(f"[{obj.get('instance')}] {obj.get('stage')}: {obj.get('msg','')}\n")
     sys.stderr.flush()
