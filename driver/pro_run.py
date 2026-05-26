@@ -46,6 +46,17 @@ def shard(ids, spec):
     return [x for k, x in enumerate(ids) if k % n == (i - 1)]  # deterministic stripe of frozen order
 
 
+def prune_images():
+    """Audit/run pulls a distinct multi-GB image per instance — without pruning, a shard's worth
+    overflows the disk (→ false DISK_FULL). Best-effort reclaim between instances. Off via
+    PRO_RUN_PRUNE=0. Nothing is running between instances, so `prune -af` only drops cached images."""
+    if os.environ.get("PRO_RUN_PRUNE", "1") == "0":
+        return
+    subprocess.run("sudo docker system prune -af --volumes >/dev/null 2>&1 || "
+                   "docker system prune -af --volumes >/dev/null 2>&1",
+                   shell=True, timeout=300)
+
+
 def audit_one(iid):
     """Grade the gold patch. Returns (state, detail). state in {eligible, defect, incomplete}."""
     try:
@@ -123,6 +134,7 @@ def main():
                    "secs": round(time.time() - t0)}
             f.write(json.dumps(rec) + "\n"); f.flush()
             print(f"    -> {state} ({rec['secs']}s) {detail[:80]}", flush=True)
+            prune_images()  # bound disk: drop the instance image before pulling the next
 
     # summary + (audit) frozen eligible/defect lists
     recs = [json.loads(l) for l in ledger.read_text().splitlines() if l.strip()]
