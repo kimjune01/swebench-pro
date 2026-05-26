@@ -173,6 +173,13 @@ def main():
     ap.add_argument("--instance-ceiling", type=int, default=36000, help="hard per-instance SSH timeout (s); > worst-case MAX_OUTER*caps")
     args = ap.parse_args()
 
+    auth_mode = os.environ.get("AUTH_MODE", "subscription")
+    if auth_mode != "subscription":
+        sys.exit(f"AUTH_MODE={auth_mode}: the coordinator is subscription-only (operator path). For "
+                 "API/Bedrock reproduction use the canonical static shard with your keys "
+                 "(pro_run --mode run --shard i/N; see PROCEDURE 'Token access').")
+    log("================ AUTH_MODE=subscription  ->  billing: Max/$0 (per-box AUTH_ASSERT at setup) ================")
+
     elig = pathlib.Path(args.eligible).read_text().split()
     done = load_done()
     todo = heavy_first([i for i in elig if i not in done])

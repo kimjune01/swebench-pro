@@ -23,10 +23,20 @@ MANIFEST=/tmp/run_fleet.manifest
 SSH="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10"
 WATCHDOG_MIN="${WATCHDOG_MIN:-720}"
 ELIGIBLE="$REPO/runs/audit/eligible.txt"
+AUTH_MODE="${AUTH_MODE:-subscription}"   # explicit billing choice — asserted, never inferred silently
 
 # --- local-side: extract Max OAuth creds from the macOS keychain to a temp file for scp ---
 # claude reads ~/.claude/.credentials.json on Linux; on this Mac it lives in the keychain.
 stage_creds() {
+  # ---- explicit auth-mode gate (loud banner; refuse to launch on the wrong billing) ----
+  if [ "$AUTH_MODE" != "subscription" ]; then
+    echo "FATAL: this fleet is subscription-only (bills Max/\$0 via pushed OAuth)."
+    echo "  AUTH_MODE=$AUTH_MODE is the *reproduction* path — run it via the canonical static shard"
+    echo "  with your own keys instead:  ANTHROPIC_API_KEY=... OPENAI_API_KEY=...  (or CLAUDE_CODE_USE_BEDROCK=1)"
+    echo "  driver/pro_run.py --mode run --shard i/N --eligible runs/audit/eligible.txt   (see PROCEDURE 'Token access')"
+    exit 1
+  fi
+  echo "================ AUTH_MODE=subscription  →  billing: Max/\$0 (OAuth, CLAUDE_SUBSCRIPTION=1) ================"
   CLAUDE_CREDS=/tmp/claude_credentials.json
   security find-generic-password -s "Claude Code-credentials" -w > "$CLAUDE_CREDS" 2>/dev/null \
     || { echo "FATAL: could not read 'Claude Code-credentials' from keychain"; exit 1; }
@@ -62,6 +72,12 @@ setup_box() {
     UV_PYTHON=3.11 bash driver/bootstrap.sh >/tmp/boot.log 2>&1 && echo BOOT_OK || (tail -3 /tmp/boot.log; exit 1)
     . driver/.proenv
     claude --version >/dev/null 2>&1 && codex --version >/dev/null 2>&1 || { echo 'CLI_PREFLIGHT_FAIL'; exit 1; }
+    # AUTH ASSERT (subscription): the dispatch sets CLAUDE_SUBSCRIPTION=1, which makes plan_env() drop any
+    # ANTHROPIC_API_KEY -> OAuth creds.json wins the precedence -> Max/\$0. Assert the inputs that fix that
+    # (no cheap way to introspect realized billing; precedence is deterministic, so inputs == mode).
+    [ -s ~/.claude/.credentials.json ] || { echo 'AUTH_ASSERT_FAIL: no OAuth creds.json on box'; exit 1; }
+    [ -z \"\${CLAUDE_CODE_USE_BEDROCK:-}\${CLAUDE_CODE_USE_VERTEX:-}\" ] || { echo 'AUTH_ASSERT_FAIL: cloud-provider flag set, would override subscription'; exit 1; }
+    echo 'AUTH_ASSERT subscription OK (OAuth creds present; dispatch forces CLAUDE_SUBSCRIPTION=1)'
     echo READY_${NAME}
   "
 }
