@@ -32,6 +32,9 @@ docker version --format '   server {{.Server.Version}} ({{.Server.Arch}})' \
 
 echo ">> [4/4] write env -> driver/.proenv  (every script sources this; no manual exports)"
 printf 'export SWEAP_OS_REPO=%q\nexport PY=%q\n' "$SWEAP_OS_REPO" "$VENV/bin/python" > "$REPO/driver/.proenv"
+# scratch dirs the run writes to (explicit contract; log() also mkdir's defensively — the
+# load-bearing guard, since stages log before setup runs). Listed here so the layout is legible.
+mkdir -p /tmp/swebench-abduction "$REPO/runs/dev"
 
 echo ">> validate: \$0 gold smoke ($SMOKE_IID)"
 ( . "$REPO/driver/.proenv" && SWEAP_OS_REPO="$SWEAP_OS_REPO" "$PY" "$REPO/driver/pro_smoke.py" "$SMOKE_IID" >/dev/null 2>&1 ) \

@@ -29,11 +29,30 @@ audit before spending tokens. Two findings, one a freeze-blocker:
 **Gaps filled:** `tasks/run_order.txt` — canonical lexicographic order over the full 731 (§3 fixed
 run-order; eligible run follows it, skipping defects in place, so order is audit-independent).
 
-**Still open before freeze:** full-731 gold-patch defect audit (§6) — heavy/EC2 batch job, blocked on
-the Pro batch driver (🔧); EBS drift (PROCEDURE §4 says 100 GB, provision scripts use 40/50 GB);
-heavy-repo sample (qutebrowser/element-web) needs the pipeline running *on* an EC2 box (the not-yet-
-built "package for Scale" piece). No LOSS found yet — the gate bug was masking Go, so the real
-hardest-Go hunt starts now with a trustworthy gate.
+**Heavy-repo gate sample (EC2, native amd64, $0 tokens):** qutebrowser (PyQt), element-web (JS 4.7G),
+teleport (Go 2.4G) — all RED+GREEN. The `-c` fix generalizes across heavy toolchains; native path works.
+
+**EC2-native single-instance path — NOW BUILT (was the "package for Scale" gap).** `provision_box.sh`
+(EBS_GB=100) → rsync tree → on box: `dnf install git python3.11`, `uv`, `bash driver/bootstrap.sh`
+(gold smoke validated natively), model auth = **Max OAuth** (keychain `Claude Code-credentials` →
+`~/.claude/.credentials.json`) so it bills Max/$0 **not** the PAYG `ANTHROPIC_API_KEY`; codex needs a
+`git init` at repo root (it refuses untrusted dirs; local worked only because `.git` was present).
+Two faults found+fixed building it: EBS drift (→ EBS_GB param, default 100) and **`log()` crash on
+fresh host** — LEDGER used the import-time default `/tmp/swebench-abduction` which doesn't exist on a
+new box → pilot crashed on its first `log()` before any agent work (a *false* "loop-failure",
+INCOMPLETE per §4, not a LOSS). Root fix: `log()` mkdir's its parent (load-bearing, since stages log
+before setup); bootstrap also pre-makes the dirs for legibility. Decided against rm-before-grading
+(grading is container-isolated; rm would fight the §10 provenance trail).
+
+**Curriculum / edge selection:** built `tasks/features.csv` (731-instance difficulty features: f2p,
+p2p, loc, hunks, ps_len, lang, baseline failure category). Convex hull + Pareto-max → 160 edgiest
+(`edgy_hull.json`). Note: at n=31 the reasoning subset (= `hardest_both_reasoning`) is 29/31 hull
+vertices — the hull adds no selectivity at small n; its compression (160/731) is for full-set coverage,
+not the reasoning hunt. Reasoning-frontier LOSS-hunt target = the 31 (16 light local + 13 heavy on box).
+
+**Hunt status (in progress):** flipt-292 = WIN (OFFICIAL RESOLVED). Strategy = coverage until first
+real LOSS, then iterate on the artifact *before* freezing the full run. Halt-on-first-LOSS hunts
+running local (light) + EC2 (heavy).
 
 ## 2026-05-24 — campaign protocol: hardest-first curriculum, two modes, restart-whole-set
 

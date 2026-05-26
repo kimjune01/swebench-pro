@@ -103,9 +103,29 @@ them) — `pro_pilot.py:official_grade` builds both correctly.
 
 - **Dev:** Mac/OrbStack, amd64 under Rosetta. Fine for small Python/Go/JS instances; **impractical
   for heavy repos** (webclients 4.7 GB, teleport 2.4 GB) and slow on big suites under emulation.
-- **Scored:** EC2 `m7i.xlarge` (amd64 native, no emulation) via `driver/provision.sh` — **bump the
-  EBS volume to 100 GB** (Pro images unpack large). Native matches Scale's environment. The
-  batch/sharding driver for Pro is 🔧 (port from the Verified `rung5_driver`/`shard_batch`).
+- **Scored:** EC2 `m7i.xlarge` (amd64 native, no emulation). Native matches Scale's environment. The
+  batch/sharding driver for Pro is 🔧 (port from the Verified `rung5_driver`/`shard_batch`); the
+  **single-instance EC2-native path is built and validated** (recipe below).
+
+### 4a. EC2-native single-instance recipe (validated 2026-05-25)
+
+```bash
+EBS_GB=100 bash driver/provision_box.sh heavy        # 100 GB (heavy images unpack large); writes /tmp/heavy.env
+. /tmp/heavy.env; PEM=/tmp/${KEY}.pem
+rsync -az -e "ssh -i $PEM" --exclude .venv --exclude .git --exclude runs --exclude scratch \
+  ./ ec2-user@$PUBIP:~/swebench-pro/                 # ship the tree (no .git)
+ssh -i $PEM ec2-user@$PUBIP '
+  sudo dnf install -y git python3.11 python3.11-pip
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  cd ~/swebench-pro && git init -q && git add -A && git commit -qm init  # codex refuses untrusted (non-git) dirs
+  UV_PYTHON=3.11 bash driver/bootstrap.sh'           # py3.11: pinned pandas 3.0/swebench need >=3.10
+```
+Model auth = **your Max OAuth, not the API key** (keeps it $0 on the Max plan; the key bills PAYG):
+```bash
+security find-generic-password -s "Claude Code-credentials" -w | ssh -i $PEM ec2-user@$PUBIP 'mkdir -p ~/.claude; cat > ~/.claude/.credentials.json; chmod 600 ~/.claude/.credentials.json'
+cat ~/.codex/auth.json | ssh -i $PEM ec2-user@$PUBIP 'mkdir -p ~/.codex; cat > ~/.codex/auth.json; chmod 600 ~/.codex/auth.json'
+# on the box, run loops with: unset ANTHROPIC_API_KEY; export PATH=$HOME/.local/bin:$PATH
+```
 
 ## 5. Gotchas (each cost a pilot to find)
 
