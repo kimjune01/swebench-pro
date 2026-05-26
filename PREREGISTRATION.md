@@ -54,10 +54,14 @@ Consequences that govern everything below:
   merged across versions. Same eligible denominator each run.
 - **Artifact unchanged, infra aborted some instances** → re-run *only the aborted instances* (§4);
   completed verdicts stand.
-- **Run order is pre-registered** (fixed instance order, committed before the run) so it cannot
-  become a lever — relevant because token-exhaustion is special-cased and hard instances may burn
-  more budget. Order does not affect a *completed* measurement; it is fixed only to remove the
-  degree of freedom from partial runs.
+- **Run order is pre-registered** so it cannot become a lever — relevant because token-exhaustion is
+  special-cased and hard instances may burn more budget. The frozen order is the committed file
+  **`tasks/run_order.txt`**: the lexicographic sort of all 731 `instance_id`s, generated from the
+  pinned dataset revision (PROCEDURE §3). The eligible run follows that order, **skipping defects in
+  place**, so the order is fixed independently of the §6 audit's outcome. Order does not affect a
+  *completed* measurement; it is fixed only to remove the degree of freedom from partial runs. Shard
+  assignment (when the batch driver lands) must be a deterministic function of this order, committed
+  with it.
 
 ## 4. Failure-mode catalog — a fixed state machine (DECIDED IN ADVANCE)
 
@@ -111,6 +115,14 @@ pre-run audit, frozen before any scored model run**:
 > whose image/parser is missing/broken, is a documented defect — excluded, listed with its grader
 > output. This list is committed *before* the model run. **No defect may be added after model
 > results are visible.**
+>
+> **Pinned mechanics (a re-run must match):** dataset revision and eval-repo/grader commit per
+> PROCEDURE "Pinned versions"; gold patch = the dataset `patch` field; grader command = the §3
+> `swe_bench_pro_eval.py` invocation; one worker; per-instance grade artifact = `eval_results.json`
+> + captured grader log. **Audit-time platform faults are not defects:** a gold-patch grade that
+> fails with an enumerated §4 fault code (`DISK_FULL`/`AWS_API`/`OOM`/image-pull failure/`BOX_DEATH`)
+> is *audit-incomplete* → retried to a verdict, never silently dropped. Only a gold patch that
+> *grades not-RESOLVED*, or a genuinely missing/broken image or parser, is a defect.
 
 This closes the post-hoc-exclusion hole (codex): exclusions are decided by gold-patch behavior,
 which is independent of our model's results.
@@ -118,16 +130,24 @@ which is independent of our model's results.
 ## 7. Reported metrics — SYSTEM-vs-SYSTEM only (until the §12 control runs)
 
 - **Headline:** resolved / eligible (official), per frozen tag. Stated as a *system* result:
-  "our frozen system resolved X / Y public Pro instances."
+  "our frozen system resolved X / Y public Pro instances." **The system is multi-model and
+  contaminated** — Sonnet 4.5 generates, **GPT-5.5 (codex) challenges in the craft volley**, and both
+  models postdate these repos. The headline is therefore a *contaminated multi-model system* number,
+  never a single-model or capability claim. (This is the only budget-viable config — codex offloads
+  the scarce Claude/Max budget; a clean single-model track is not affordable, so there is no clean
+  arm to fall back on. We own that rather than imply otherwise.)
 - **Differential:** report cells where **our system** resolves and **both reference *systems***
   (sonnet-4, gpt4o — both run in the **SWE-Agent** scaffold, 200-turn) failed, and cells where we
   fail and both passed (`tasks/strata.json`). The baselines' scaffold is specifically
   SWE-Agent; the differential is against *that*, not a generic agent.
-  Against the **sonnet-4** baseline the model axis is *mostly controlled* — we run **Sonnet 4.5**,
-  same family, one version bump (§12, C1) — so the differential is **largely scaffold**, the 4→4.5
-  bump the only residual (closed by the same-model control). Writeups may say "largely scaffold,
-  residual = one minor model version, control pending"; they may **not** claim a *clean* scaffold
-  advantage until that control runs, and the gpt4o half stays cross-family (system-vs-system).
+  Against the **sonnet-4** baseline the *generator* model axis is mostly controlled (we generate with
+  Sonnet 4.5, same family, one version bump — §12, C1), **but our system also adds GPT-5.5 in craft**,
+  so a we-resolve cell is not attributable to scaffold alone: it is scaffold **plus** a second,
+  cross-family model in the loop. The differential is therefore **suggestive of a scaffold+ensemble
+  advantage, not a severe scaffold-only result** — that severity needs the §12 same-model,
+  single-model control, which is not budget-viable here. Writeups may say "system advantage (better
+  scaffold + GPT-5.5 craft volley), scaffold-only attribution pending an unrun control"; they may
+  **not** claim a clean scaffold advantage, and the gpt4o half stays cross-family (system-vs-system).
 
 ## 8. Curriculum & self-holdout (development only — NOT a measurement strategy)
 
@@ -171,7 +191,7 @@ history. Versions never comingle. The number is re-derivable from the commits, n
 | 5 | Hume | Generalization is the design: public (11 repos) → held-out (12 *different* repos). Our self-holdout shares repos, so it under-tests this — disclosed. |
 | 6 | Mill | **Honest limit:** we batch general fixes per version, so we cannot causally attribute the number to a single change. We measure the artifact holistically, version-vs-version. |
 | 7 | Mill | Controls: gold-patch oracle (positive control the grader works); reference baselines as the differential arm; §12 same-model arm is the *only* scaffold control. |
-| 8 | Chamberlin | "Resolved" alternatives: real fix / recall / variance / gate-lying. Gate-lying excluded by construction (gate == official grader). Recall-vs-reason not separable (Q19). |
+| 8 | Chamberlin | "Resolved" alternatives: real fix / recall / variance / gate-lying. **The internal agent gate is NOT the official grader** — it is a fast PUBLIC-mode stopping signal that can disagree with the grader (a 2026-05-25 login-shell/PATH bug made the gate false-NEGATIVE on Go while gold graded RESOLVED; fixed). So a RESOLVED verdict is *never* the internal gate's word: every run captures the source-only diff and **re-grades it on a fresh container with the official grader** (Q3b, Q16) — that regrade is the verdict. Internal-gate lying can only *waste budget* (false-negative → loop runs longer), it cannot manufacture a WIN. Recall-vs-reason not separable (Q19). |
 | 9 | Peirce | Strata + comparative hypothesis built from **others'** error data, registered before our runs — not retrofit. |
 | 10 | Fisher | No assignment confound — full set, not a split. |
 | 11 | Popper | Falsifiers: F1 (anchors, §P1) and F2 (§P2 one-sided test). |
@@ -182,7 +202,7 @@ history. Versions never comingle. The number is re-derivable from the commits, n
 | 16 | Feynman | Self-deception routes: capture ≠ what ran (→ always official-regrade the captured diff); contamination read as capability; variance dressed as a wall (→ FAILURE_ATTRIBUTION probes); model strength laundered as scaffold credit (§12). |
 | 17 | Pearl | No causal claim beyond "the artifact produces grader-accepted patches." |
 | 18 | Ioannidis | N=731 powers the headline; subgroups (31 / 94 / 172) are **low-power** (n=31 → ±~18% CI) — §P2 carries a three-way verdict (confirm/refute/**inconclusive**) for exactly this. |
-| 19 | Mayo | For our actual claim (the **scaffold differential**) the test **is severe**: contamination is symmetric across arms, so "recall not reasoning" can't explain why we resolve a cell the *same-family* baseline failed — both recall equally; scaffold is the only differing cause. "Not severe against recall" applies only to an **absolute model-capability** reading, which we don't make (§12, C2). |
+| 19 | Mayo | Severity is **partial, not full**. Symmetric contamination makes "pure recall" a *far weaker* explanation for a we-resolve / baseline-fails cell (the contaminated SWE-Agent baseline had comparable exposure and still overflowed) — so the test is reasonably severe against a *recall-only* reading. It is **not** severe for a *scaffold-only* claim, because our system adds GPT-5.5 in craft: the differing cause is scaffold **+ a second cross-family model**, not scaffold alone (§7, §12). Scaffold-only severity needs the §12 same-model single-model control, which is not budget-viable. We do not make an absolute model-capability claim (§12, C2). |
 | 20 | Gwern | Full trail: per-instance commits, losing runs kept, audit-defects listed, version history in git. |
 | 21 | Gwern | Predictions timestamped + specific below. |
 | 22 | Ramdas | No optional stopping (§5); fixed order (§3); only early stop is enumerated infra. No peek-and-stop. |
@@ -205,36 +225,69 @@ Scored against the **frozen-artifact full-set run**, not pilots.
   with its CI. Reported, not pass/failed against a guessed bar. (Renamed from "P3" — it was never
   a prediction.)
 
+### Known exploratory exposure before freeze (full disclosure)
+
+These predictions were registered 2026-05-24, but by freeze we had **already run instances under the
+real (codex-volley) config in exploratory mode** — disclosed here so the predictions are read as
+*confirmatory on the frozen full-set run*, not naive:
+
+- **2026-05-25:** all **31 `hardest_both_reasoning`** instances were run end-to-end and **every one
+  graded OFFICIAL RESOLVED** (4 light local + 13 heavy on EC2 + a prior 6, dev-mode/no-credit). So
+  P2's `hardest_both_reasoning` arm is **not blind** — we have seen p_hard ≈ 1.0 on this stratum.
+  Consequence: P2 is effectively a test of whether `edge_both_scaffold` *also* approaches ceiling;
+  if p_hard is already ~1.0, P2 can only resolve *confirmed* (p_edge > p_hard impossible if
+  p_hard=1) or *inconclusive* — it can no longer be a surprising result. We flag this rather than
+  pretend the stratum was unseen. The `edge_both_scaffold` (172) and `easy_anchors` (94) strata
+  were **not** swept and remain genuinely out-of-sample for P1/E1.
+- No `edge_both_scaffold` or `easy_anchors` instance has been run under the config as of freeze.
+
 ## 12. Confounds, controls, contamination (the part most likely to embarrass us)
 
-**C1 — scaffold vs model (a *small* confound, not a chasm).** We run **Sonnet 4.5**
-(`RCA_MODEL=claude-sonnet-4-5`, verified in the live process); the baseline ran **`claude-sonnet-4`**
-+ gpt4o in `SWE-Agent`. So against the sonnet-4 baseline this is **same model family, a single
-version bump (4 → 4.5)** — *not* a different/larger model. A we-resolve/sonnet-4-fails cell is
-therefore **largely a scaffold result**, especially given most baseline failures are navigation/
-context-overflow (a scaffold property). The model axis is **mostly controlled by construction**;
-the **only residual** is the 4→4.5 improvement.
-- **(closes the residual) same-model control arm:** run **Sonnet 4.5** through vanilla
-  `mini-swe-agent` on the same instances. our-scaffold ≫ vanilla-scaffold *at fixed Sonnet 4.5*
-  removes the 4→4.5 gap entirely and licenses a clean scaffold claim. Budget-gated — but the
-  headline is no longer *locked* to system-vs-system: it is "largely scaffold (same family),
-  residual = one minor version, control pending." (The gpt4o comparison remains cross-family.)
+**C1 — the config is multi-model; "scaffold vs model" is a *real* confound we do not fully close.**
+Our system = **Sonnet 4.5** generator (`RCA_MODEL=claude-sonnet-4-5`, verified live) **+ GPT-5.5
+(codex) challenger in the craft volley**. The baseline ran **`claude-sonnet-4`** + gpt4o in
+`SWE-Agent`. So on the *generator* axis vs the sonnet-4 baseline it is same family, one version bump
+(4 → 4.5) — but our system **adds a second, cross-family model (GPT-5.5)** the baseline lacked. A
+we-resolve / baseline-fails cell is therefore **a scaffold + ensemble result**, not scaffold alone —
+even though most baseline failures are navigation/context-overflow (a scaffold property). We **cannot**
+claim "mostly controlled by construction" while a whole extra model is in our loop. This is the only
+budget-viable config (codex offloads the scarce Claude budget); there is no clean single-model arm.
+- **(would-close-it, NOT budget-viable) same-model single-model control:** run **Sonnet 4.5** through
+  vanilla `mini-swe-agent`, *no codex*, on the same instances. our-system ≫ that at fixed Sonnet 4.5,
+  no GPT-5.5, would isolate scaffold. We **cannot afford** this (it shifts all load onto the scarce
+  Claude budget), so it remains **unrun** — and the scaffold-only attribution stays **open**, not
+  "control pending." The honest headline is a *contaminated multi-model system* result (§7).
 
-**C2 — contamination is not a confound for the scaffold claim; it *isolates* it.** Both arms are
-contaminated (Sonnet 4.5 and the sonnet-4 baseline have both seen these repos), so recall **cannot**
-explain a we-resolve / sonnet-4-fails cell — the contaminated baseline had the same recall and
-*still failed* (SWE-Agent overflowed before applying what it "knew"). Symmetric contamination
-removes model-knowledge as the variable, leaving **scaffold** as the differing cause. Our claim is
-scaffold navigation/execution, not model capability; contamination bears **only** on reading the
-*absolute* number as "the model reasons," which we don't claim. (We *may* report the clean-cutoff
-subset for the absolute number — not load-bearing.) The held-out's different repos test cross-repo
-generalization, orthogonal to contamination.
+**C2 — symmetric contamination weakens the recall explanation; it does not eliminate it.** Both
+sides are contaminated (Sonnet 4.5 and the sonnet-4 baseline have both seen these repos), and the
+contaminated baseline *still failed* (SWE-Agent overflowed before applying what it "knew"). So
+"pure recall" is a **much weaker** explanation for a we-resolve / baseline-fails cell than it would
+be against an uncontaminated baseline — but it is **not ruled out**: Sonnet 4 and 4.5 (and GPT-5.5)
+differ in memorization, retrieval, cutoff, and tool-use priors, so recall *could* still contribute.
+We therefore make **no absolute model-capability claim** (§12, C2); the defensible reading is
+"better execution under a stronger multi-model system," with recall down-weighted, not excluded.
+(We *may* report the clean-cutoff subset for the absolute number — not load-bearing.) The held-out's
+different repos test cross-repo generalization, orthogonal to contamination.
 
 ## 13. Freeze mechanism
 
 This document is a **living dev doc until we commit to a scored run**. At that point it is frozen:
 (1) commit, (2) annotated tag `prereg-pro-vN`, (3) SHA recorded in `WORKLOG.md`. Pre-run
 amendments are new commits + new tags with timestamped rationale; old tags never move. Every
-scored-run artifact cites the tag it ran under. Post-hoc edits are detectable as commits *after*
-the run's first result commit — that ordering is part of the trail (Q20). **No tag is cut now** —
-we are still in development.
+scored-run artifact cites the tag it ran under (artifacts are committed *after* the tag and cite the
+prereg SHA they ran from — the tag is immutable, so per-instance results necessarily post-date it;
+that commit ordering is itself the trail, Q20). **No tag is cut now** — we are still in development.
+
+**Pre-freeze gate (all must be committed before the `prereg-pro-vN` tag):**
+1. **§6 defect list** — the full-731 gold-patch audit run and its frozen exclusion list committed.
+   *(Not yet done — the load-bearing blocker.)*
+2. **Batch/sharding driver** — the whole-eligible-set runner (§2, §5) with resume semantics and
+   shard map deterministic from `tasks/run_order.txt` (§3). *(Not yet built — single-instance only.)*
+3. **Frozen config block** — exact model IDs (Sonnet 4.5 generator + GPT-5.5 craft), stage
+   wall-clock caps, retry policy, EC2 instance type + **100 GB EBS**, dataset + grader digests
+   (PROCEDURE "Pinned versions"), and the env contract (non-login shell / PATH preserved, ledger
+   dir created) — the three 2026-05-25 harness faults pinned as preflight/regression checks so a
+   recurrence reads as INCOMPLETE, never a method LOSS.
+4. **§13 self-update** — flip "No tag is cut now" to the cut tag + SHA when the gate clears.
+
+Until 1–3 exist, freezing would freeze a *promise*, not an executable preregistration.
