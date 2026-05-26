@@ -59,6 +59,22 @@ identity is a config parameter (`RCA_MODEL`, `CRAFT_CODEX_MODEL`), no code path 
 2. **Ledger dir** — `log()` mkdirs its parent; stages log before setup, so a missing dir crashes the first call on a fresh box (false loop-failure).
 3. **Serial gold selftests under emulation** — parallel container contention corrupts the gold pass-check; selftests run serially.
 
+## Token access / auth (the harness is auth-agnostic)
+
+The harness drives the `claude` and `codex` CLIs, which resolve credentials from standard env vars —
+so **whoever reproduces it plugs in their own token source with no code change.** Claude Code's
+precedence: cloud-provider creds (`CLAUDE_CODE_USE_BEDROCK=1` / `CLAUDE_CODE_USE_VERTEX=1` + provider
+creds) → `ANTHROPIC_AUTH_TOKEN` → `ANTHROPIC_API_KEY` → subscription OAuth.
+
+- **Canonical reproduction (e.g. Scale):** set `ANTHROPIC_API_KEY` + `OPENAI_API_KEY` (PAYG, matches
+  SWE-bench's own reference inference scripts), **or** `CLAUDE_CODE_USE_BEDROCK=1` + AWS creds for the
+  Claude leg if billing through Bedrock. No harness change — the CLIs pick it up. This is the most
+  likely evaluator path; the benchmark's native inference is direct-API and restartable.
+- **Operator (our run):** Max-OAuth pushed to each box + `CLAUDE_SUBSCRIPTION=1` in the dispatch env,
+  which makes `plan_env()` drop any stray `ANTHROPIC_API_KEY` so the run bills **Max/$0**, never PAYG.
+  ⚠ Because an API key *overrides* the subscription in the precedence order, a leaked `ANTHROPIC_API_KEY`
+  would silently bill PAYG — `CLAUDE_SUBSCRIPTION=1` is the guard.
+
 ## Execution paths (canonical vs operator)
 
 The verdict is **dispatch-independent** — the official grader runs per-instance with no cross-instance

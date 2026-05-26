@@ -75,8 +75,8 @@ setup_and_dispatch() {  # static path: setup_box then nohup a whole shard.  $1=n
     "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/run_${I}of${N}.jsonl" >/dev/null 2>&1
   $SSH -i $PEM ec2-user@${PUBIP} "
     cd ~/swebench-pro && . driver/.proenv
-    export PATH=\$HOME/.local/bin:\$HOME/.npm-global/bin:\$PATH
-    nohup env PATH=\$PATH \$PY driver/pro_run.py --mode run --shard ${I}/${N} --eligible runs/audit/eligible.txt ${EXTRA} > ~/run_shard.log 2>&1 &
+    export PATH=\$HOME/.local/bin:\$HOME/.npm-global/bin:\$PATH CLAUDE_SUBSCRIPTION=1
+    nohup env PATH=\$PATH CLAUDE_SUBSCRIPTION=1 \$PY driver/pro_run.py --mode run --shard ${I}/${N} --eligible runs/audit/eligible.txt ${EXTRA} > ~/run_shard.log 2>&1 &
     echo DISPATCHED ${NAME} shard ${I}/${N} pid \$! watchdog +${WATCHDOG_MIN}m ${EXTRA}
   "
 }

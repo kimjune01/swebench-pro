@@ -100,9 +100,12 @@ def kill_box(name):
 def run_instance(env, iid, ceiling):
     """SSH-run exactly one instance on the box. Returns (rec_dict | None). None = box/transport fault."""
     pem = f"/tmp/{env['KEY']}.pem"
+    # CLAUDE_SUBSCRIPTION=1 forces the Max-OAuth path (plan_env drops any stray ANTHROPIC_API_KEY),
+    # so our run bills Max/$0 even if a key ever leaks into the box env. Scale's reproduction omits
+    # this and instead sets ANTHROPIC_API_KEY / OPENAI_API_KEY (or Bedrock) — the CLIs pick it up.
     remote = ("cd ~/swebench-pro && . driver/.proenv && "
-              "export PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH && "
-              f"env PATH=$PATH $PY driver/pro_run.py --mode run --only {iid} 2>&1")
+              "export PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH CLAUDE_SUBSCRIPTION=1 && "
+              f"env PATH=$PATH CLAUDE_SUBSCRIPTION=1 $PY driver/pro_run.py --mode run --only {iid} 2>&1")
     try:
         r = subprocess.run(SSH + ["-i", pem, f"ec2-user@{env['PUBIP']}", remote],
                            capture_output=True, text=True, timeout=ceiling)
