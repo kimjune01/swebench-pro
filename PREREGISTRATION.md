@@ -121,6 +121,13 @@ resume must still be byte-identical.
 
 ## 6. Eligible denominator & pre-run defect audit
 
+> **RESULT (2026-05-26): eligible = 728 / 731.** Audit ran on all 731 gold patches; **3 defects**
+> (gold patch graded NOT-RESOLVED by the official grader, deterministic on re-grade), one per
+> language: `instance_NodeBB__NodeBB-00c70ce7…` (JS — 4/681 F2P tests absent, name-collision/flaky),
+> `instance_future-architect__vuls-bff6b755…` (Go), `instance_ansible__ansible-de5858f4…` (Py).
+> Committed: `runs/audit/{eligible.txt,defects.jsonl}` + per-shard ledgers. This list is frozen
+> **before** any scored model run; no defect may be added after model results are visible.
+
 Public eligible = the 731 `ScaleAI/SWE-bench_Pro` test instances **minus defects found by a
 pre-run audit, frozen before any scored model run**:
 
@@ -265,9 +272,9 @@ prereg SHA they ran from — the tag is immutable, so per-instance results neces
 that commit ordering is itself the trail, Q20). **No tag is cut now** — we are still in development.
 
 **Pre-freeze gate (all must be committed before the `prereg-pro-vN` tag):**
-1. **§6 defect list** — the full-731 gold-patch audit run and its frozen exclusion list committed.
-   *(Driver built: `pro_run.py --mode audit`, validated + deterministic; the **731-instance run is
-   not yet executed** — the load-bearing blocker. First probe instance was a defect, so eligible<731.)*
+1. **§6 defect list** — ✅ **DONE (2026-05-26).** Full 731 gold-patch audit run (4-box fleet);
+   committed: `runs/audit/eligible.txt` (**728**), `runs/audit/defects.jsonl` (**3**), per-shard
+   ledgers. **Eligible denominator = 728** (731 − 3 defects); 0.4% defect rate.
 2. **Batch/sharding driver** — the whole-eligible-set runner (§2, §5) with resume semantics and
    shard map deterministic from `tasks/run_order.txt` (§3). *(Per-shard loop built: `pro_run.py
    --mode run --shard i/N` (resume + deterministic stripe); **multi-box orchestration** — provision

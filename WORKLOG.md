@@ -370,3 +370,14 @@ impact (no frozen list existed). My error (2nd EC2-artifact loss by not checkpoi
 on relaunch (pro_run skips graded). **Prereg §4a** now codifies overnight runs as box-death-expected,
 INCOMPLETE-not-LOSS, recovered by byte-identical resume — with the Q22 leakage guard (no peek-at-
 partials on the scored run; audit exempt). Relaunched crash-safe.
+
+## 2026-05-26 (later) — §6 defect audit COMPLETE: eligible = 728/731
+
+Relaunch (crash-safe: +720 watchdog, 60s local checkpoint, resume-seed) ran clean to completion —
+no box deaths this time. **731/731 gold patches graded → 728 eligible, 3 defects (0.4%).** Defects
+(gold NOT resolved by official grader, deterministic): NodeBB-00c70ce (JS), vuls-bff6b755 (Go),
+ansible-de5858f4 (Py). Frozen lists committed: runs/audit/{eligible.txt,defects.jsonl} + shards.
+**Eligible denominator = 728** is now the §6 artifact. Freeze gate item 1 ✅. Remaining before a tag:
+batch-driver multi-box orchestration is built (audit_fleet proves it; the run-mode wrapper is the
+same shape), and the §13 frozen-config block. The first joint of the decomposition (honest denominator)
+is now nailed down.
