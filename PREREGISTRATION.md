@@ -235,9 +235,12 @@ that commit ordering is itself the trail, Q20). **No tag is cut now** — we are
 
 **Pre-freeze gate (all must be committed before the `prereg-pro-vN` tag):**
 1. **§6 defect list** — the full-731 gold-patch audit run and its frozen exclusion list committed.
-   *(Not yet done — the load-bearing blocker.)*
+   *(Driver built: `pro_run.py --mode audit`, validated + deterministic; the **731-instance run is
+   not yet executed** — the load-bearing blocker. First probe instance was a defect, so eligible<731.)*
 2. **Batch/sharding driver** — the whole-eligible-set runner (§2, §5) with resume semantics and
-   shard map deterministic from `tasks/run_order.txt` (§3). *(Not yet built — single-instance only.)*
+   shard map deterministic from `tasks/run_order.txt` (§3). *(Per-shard loop built: `pro_run.py
+   --mode run --shard i/N` (resume + deterministic stripe); **multi-box orchestration** — provision
+   N boxes, dispatch shards, merge ledgers — still a thin wrapper to write.)*
 3. **Frozen config block** — exact model IDs (Sonnet 4.5 generator + GPT-5.5 craft), stage
    wall-clock caps, retry policy, EC2 instance type + **100 GB EBS**, dataset + grader digests
    (PROCEDURE "Pinned versions"), and the env contract (non-login shell / PATH preserved, ledger
