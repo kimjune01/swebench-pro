@@ -189,7 +189,7 @@ def claude(prompt_text, cwd, tag, timeout=2400):
     timed_out = False
     try:
         p = subprocess.run(
-            ["claude","--print","--model","claude-sonnet-4-5",
+            ["claude","--print","--model",MODEL,
              "--dangerously-skip-permissions","--disallowedTools","WebSearch,WebFetch,Task"],
             stdin=open(pf), capture_output=True, text=True, timeout=timeout,
             cwd=str(cwd), env=plan_env())

@@ -132,7 +132,7 @@ def claude(prompt_text, cwd, tag, timeout=2400):
     cwd = pathlib.Path(cwd); cwd.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     p = subprocess.run(
-        ["claude","--print","--model","claude-sonnet-4-5",
+        ["claude","--print","--model",MODEL,
          "--dangerously-skip-permissions","--disallowedTools","WebSearch,WebFetch,Task"],
         stdin=open(pf), capture_output=True, text=True, timeout=timeout,
         cwd=str(cwd), env=plan_env())

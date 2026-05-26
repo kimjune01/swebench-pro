@@ -22,3 +22,7 @@ scratch/*
 
 # local env written by bootstrap.sh (machine-specific paths)
 driver/.proenv
+
+# ephemeral single-box 60s checkpoint ledgers (canonical audit trail = eligible.txt + defects.jsonl + shards/)
+runs/audit/audit.jsonl
+runs/*/*_checkpoint.jsonl
