@@ -55,7 +55,7 @@ from swebench.harness.constants import (
     START_TEST_OUTPUT, END_TEST_OUTPUT, ResolvedStatus)
 
 HERE = pathlib.Path("/tmp/swebench-abduction")
-MAX_OUTER = 3
+MAX_OUTER = int(os.environ.get("MAX_OUTER", "5"))
 # Wall-clock caps (s) on the per-stage `claude` subprocess. Craft is capped lower because the
 # DNFs were craft orchestration hangs (P1: the suite is fast); on a craft cap-trip we capture
 # the in-progress container diff rather than erroring to a 0-byte patch.

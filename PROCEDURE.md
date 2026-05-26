@@ -47,7 +47,7 @@ identity is a config parameter (`RCA_MODEL`, `CRAFT_CODEX_MODEL`), no code path 
 |---|---|---|
 | generator model | `claude-sonnet-4-5` | `RCA_MODEL` (rung5_driver.py) |
 | craft-volley model | `gpt-5.5` | `CRAFT_CODEX_MODEL`, pinned via `codex exec -c model=` |
-| outer loop depth | `MAX_OUTER=3` | rung5_driver.py |
+| outer loop depth | `MAX_OUTER=5` | rung5_driver.py |
 | stage caps (wall-clock, s) | recon 2000 · craft 3600 · audit 1200 | `RECON_CAP`/`CRAFT_CAP`/`AUDIT_CAP` |
 | retry policy | INCOMPLETE only, on a verdict-independent platform fault (`FAULT_RE`); WIN/LOSS never reran | prereg §4 |
 | EC2 | `m7i.xlarge`, `us-west-2`, AMI `ami-00563078bca04e287`, **100 GB EBS**, watchdog `+720 min` | provision_box.sh, run_fleet.sh |
