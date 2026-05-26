@@ -59,6 +59,20 @@ identity is a config parameter (`RCA_MODEL`, `CRAFT_CODEX_MODEL`), no code path 
 2. **Ledger dir** — `log()` mkdirs its parent; stages log before setup, so a missing dir crashes the first call on a fresh box (false loop-failure).
 3. **Serial gold selftests under emulation** — parallel container contention corrupts the gold pass-check; selftests run serially.
 
+## Execution paths (canonical vs operator)
+
+The verdict is **dispatch-independent** — the official grader runs per-instance with no cross-instance
+state, so any dispatch that drains the full eligible set yields the identical 728-verdict set.
+
+- **Canonical / reproducible (what a third party runs):** `pro_run.py --mode run --shard i/N
+  --eligible runs/audit/eligible.txt` — deterministic stripe of the frozen order, EC2 + pinned deps
+  only, **zero custom infra** (no SQS/IAM/S3). This is the path to reproduce the number.
+- **Operator convenience (our week-long run):** `coordinator.py --boxes N` — laptop-side dynamic
+  dispatcher. Hands each box the next eligible instance over SSH as it finishes (near-100% box
+  utilization vs idle static stripes), with fault tolerance (box-death requeue + reprovision,
+  bounded poison-instance retries, crash-resume from the authoritative `runs/scored/run.jsonl`).
+  Same per-instance unit as canonical, so verdicts match. Needs the laptop online as coordinator.
+
 ## 0. Prerequisites
 
 You bring two things; **`bootstrap.sh` does the rest and proves it worked**:

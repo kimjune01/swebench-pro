@@ -34,26 +34,25 @@ stage_creds() {
   [ -s "$ELIGIBLE" ] || { echo "FATAL: $ELIGIBLE missing — run the §6 audit first"; exit 1; }
 }
 
-setup_and_dispatch() {  # $1=box-name $2=shard-i $3=N  [$4=extra pro_run args, e.g. --limit 1]
-  local NAME="$1" I="$2" N="$3" EXTRA="${4:-}"
+# Bring a box to READY: rsync the tree, push auth + eligible list, install CLIs, bootstrap, preflight.
+# Leaves no agent running — used by both the static dispatch path AND the coordinator (which then
+# feeds the box one instance at a time). Re-runnable (idempotent installs).  $1=box-name
+setup_box() {
+  local NAME="$1"
   . /tmp/${NAME}.env; local PEM=/tmp/${KEY}.pem
   rsync -az -e "$SSH -i $PEM" --exclude .venv --exclude .git --exclude runs --exclude scratch \
     "$REPO/" ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/ >/dev/null 2>&1
-  # auth + eligible list + resume-seed (rsync excludes runs/, so these go explicitly)
-  $SSH -i $PEM ec2-user@${PUBIP} "mkdir -p ~/.claude ~/.codex ~/swebench-pro/runs/audit ~/swebench-pro/runs/scored/shards" 2>/dev/null
-  scp -o StrictHostKeyChecking=no -i $PEM "$CLAUDE_CREDS"        "ec2-user@${PUBIP}:/home/ec2-user/.claude/.credentials.json" >/dev/null 2>&1
-  scp -o StrictHostKeyChecking=no -i $PEM "$HOME/.codex/auth.json" "ec2-user@${PUBIP}:/home/ec2-user/.codex/auth.json"       >/dev/null 2>&1
-  scp -o StrictHostKeyChecking=no -i $PEM "$ELIGIBLE"           "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/audit/eligible.txt" >/dev/null 2>&1
-  local ckpt="$REPO/runs/scored/shards/run_${I}of${N}.jsonl"
-  [ -f "$ckpt" ] && scp -o StrictHostKeyChecking=no -i $PEM "$ckpt" \
-    "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/run_${I}of${N}.jsonl" >/dev/null 2>&1
+  # auth + eligible list (rsync excludes runs/, so these go explicitly)
+  $SSH -i $PEM ec2-user@${PUBIP} "mkdir -p ~/.claude ~/.codex ~/swebench-pro/runs/audit ~/swebench-pro/runs/scored" 2>/dev/null
+  scp -o StrictHostKeyChecking=no -i $PEM "$CLAUDE_CREDS"          "ec2-user@${PUBIP}:/home/ec2-user/.claude/.credentials.json" >/dev/null 2>&1
+  scp -o StrictHostKeyChecking=no -i $PEM "$HOME/.codex/auth.json" "ec2-user@${PUBIP}:/home/ec2-user/.codex/auth.json"          >/dev/null 2>&1
+  scp -o StrictHostKeyChecking=no -i $PEM "$ELIGIBLE"             "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/audit/eligible.txt" >/dev/null 2>&1
   $SSH -i $PEM ec2-user@${PUBIP} "
     set -e
     sudo shutdown -c 2>/dev/null; sudo shutdown -h +${WATCHDOG_MIN} >/dev/null 2>&1
     sudo dnf install -y -q git python3.11 python3.11-pip nodejs npm >/dev/null 2>&1
     command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh >/dev/null 2>&1
     export PATH=\$HOME/.local/bin:\$PATH
-    # agent CLIs (npm global, user prefix so no sudo for the install itself)
     npm config set prefix ~/.npm-global 2>/dev/null
     export PATH=\$HOME/.npm-global/bin:\$PATH
     command -v claude >/dev/null || npm i -g @anthropic-ai/claude-code >/dev/null 2>&1
@@ -62,8 +61,21 @@ setup_and_dispatch() {  # $1=box-name $2=shard-i $3=N  [$4=extra pro_run args, e
     git init -q 2>/dev/null || true   # codex refuses untrusted (non-git) dirs
     UV_PYTHON=3.11 bash driver/bootstrap.sh >/tmp/boot.log 2>&1 && echo BOOT_OK || (tail -3 /tmp/boot.log; exit 1)
     . driver/.proenv
-    # preflight: both CLIs must resolve + be authed before we burn the shard
     claude --version >/dev/null 2>&1 && codex --version >/dev/null 2>&1 || { echo 'CLI_PREFLIGHT_FAIL'; exit 1; }
+    echo READY_${NAME}
+  "
+}
+
+setup_and_dispatch() {  # static path: setup_box then nohup a whole shard.  $1=name $2=i $3=N [$4=extra]
+  local NAME="$1" I="$2" N="$3" EXTRA="${4:-}"
+  setup_box "$NAME" || return 1
+  . /tmp/${NAME}.env; local PEM=/tmp/${KEY}.pem
+  local ckpt="$REPO/runs/scored/shards/run_${I}of${N}.jsonl"
+  [ -f "$ckpt" ] && scp -o StrictHostKeyChecking=no -i $PEM "$ckpt" \
+    "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/run_${I}of${N}.jsonl" >/dev/null 2>&1
+  $SSH -i $PEM ec2-user@${PUBIP} "
+    cd ~/swebench-pro && . driver/.proenv
+    export PATH=\$HOME/.local/bin:\$HOME/.npm-global/bin:\$PATH
     nohup env PATH=\$PATH \$PY driver/pro_run.py --mode run --shard ${I}/${N} --eligible runs/audit/eligible.txt ${EXTRA} > ~/run_shard.log 2>&1 &
     echo DISPATCHED ${NAME} shard ${I}/${N} pid \$! watchdog +${WATCHDOG_MIN}m ${EXTRA}
   "
@@ -153,5 +165,21 @@ PY
       echo "terminated $NAME ($IID)"
     done < $MANIFEST
     ;;
-  *) echo "usage: run_fleet.sh {smoke|provision <N>|status|checkpoint|collect|teardown}"; exit 1 ;;
+  setup-box)  # provision ONE box and bring it to READY (no dispatch) — used by coordinator.py
+    NAME="${2:?usage: run_fleet.sh setup-box <name>}"
+    stage_creds
+    EBS_GB=100 bash "$REPO/driver/provision_box.sh" "$NAME" >/tmp/prov_${NAME}.log 2>&1 \
+      || { echo "PROVISION_FAIL ${NAME}: $(tail -1 /tmp/prov_${NAME}.log)"; exit 1; }
+    setup_box "$NAME"   # prints READY_<name> or fails
+    ;;
+  kill-box)  # terminate ONE box + clean its SG/key — used by coordinator.py on box death
+    NAME="${2:?usage: run_fleet.sh kill-box <name>}"
+    [ -f /tmp/${NAME}.env ] || { echo "no env for ${NAME}"; exit 0; }
+    . /tmp/${NAME}.env
+    aws ec2 terminate-instances --instance-ids $IID --region $REGION >/dev/null 2>&1
+    aws ec2 delete-security-group --group-id $SG --region $REGION 2>/dev/null
+    aws ec2 delete-key-pair --key-name $KEY --region $REGION 2>/dev/null
+    echo "terminated ${NAME} ($IID)"
+    ;;
+  *) echo "usage: run_fleet.sh {smoke|provision <N>|setup-box <name>|kill-box <name>|status|checkpoint|collect|teardown}"; exit 1 ;;
 esac

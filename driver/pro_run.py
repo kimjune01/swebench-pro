@@ -99,6 +99,7 @@ def main():
     ap.add_argument("--limit", type=int, help="stop after N instances (dev only)")
     ap.add_argument("--eligible", help="(run mode) file of eligible ids; default = all in order")
     ap.add_argument("--redo", nargs="*", default=[], help="force re-run these ids even if recorded")
+    ap.add_argument("--only", nargs="*", default=[], help="run exactly these ids (coordinator single-dispatch)")
     args = ap.parse_args()
 
     outdir = REPO / "runs" / ("audit" if args.mode == "audit" else "scored")
@@ -115,12 +116,17 @@ def main():
             except Exception:
                 pass
 
-    ids = shard(load_order(), args.shard)
-    if args.mode == "run" and args.eligible:
-        elig = set(pathlib.Path(args.eligible).read_text().split())
-        ids = [i for i in ids if i in elig]
-    if args.limit:
-        ids = ids[:args.limit]
+    if args.only:
+        order = set(load_order())
+        ids = [i for i in args.only if i in order]   # validate against frozen order
+        args.redo = list(args.only)                  # --only always runs, even if recorded
+    else:
+        ids = shard(load_order(), args.shard)
+        if args.mode == "run" and args.eligible:
+            elig = set(pathlib.Path(args.eligible).read_text().split())
+            ids = [i for i in ids if i in elig]
+        if args.limit:
+            ids = ids[:args.limit]
 
     act = audit_one if args.mode == "audit" else run_one
     with open(ledger, "a") as f:
@@ -134,6 +140,7 @@ def main():
                    "secs": round(time.time() - t0)}
             f.write(json.dumps(rec) + "\n"); f.flush()
             print(f"    -> {state} ({rec['secs']}s) {detail[:80]}", flush=True)
+            print("RESULT_JSON " + json.dumps(rec), flush=True)  # coordinator parses this off stdout
             prune_images()  # bound disk: drop the instance image before pulling the next
 
     # summary + (audit) frozen eligible/defect lists
