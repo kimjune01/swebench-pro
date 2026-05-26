@@ -2,6 +2,48 @@
 
 Newest first.
 
+## 2026-05-26 (later) — §6 defect audit COMPLETE: eligible = 728/731
+
+Relaunch ran clean to completion, no box deaths. **731/731 gold patches graded → 728 eligible,
+3 defects (0.4%).** Defects (gold NOT resolved by the official grader, deterministic on re-grade):
+NodeBB-00c70ce (JS — 4/681 F2P names absent, name-collision/flaky), vuls-bff6b755 (Go),
+ansible-de5858f4 (Py). Frozen lists committed: `runs/audit/{eligible.txt,defects.jsonl}` + shards.
+**Eligible denominator = 728** is the §6 artifact; freeze gate item 1 ✅. The first joint of the
+decomposition (honest denominator) is nailed; 0.4% is low, no denominator-softening to defend.
+
+## 2026-05-26 — lost a 54% audit to a short watchdog; codified overnight recovery
+
+First 4-box §6 audit self-terminated at ~3h / ~396 of 731 graded: `audit_fleet` inherited
+`provision_box.sh`'s +180min shutdown watchdog (far shorter than the ~6-8h run) and no ledger was
+checkpointed off-box → partial grades died with the boxes. $0 tokens, ~$5 EC2, no downstream impact
+(no frozen list existed). My error — 2nd EC2-artifact loss by not checkpointing before the box went
+away. **Fixes:** +720min watchdog; **persistent 60s local checkpoint** (loss ≤1 instance; chose
+polling over push-streaming — idempotent, self-healing, observable, no silent shipper); resume-seed
+on relaunch (pro_run skips graded). **Prereg §4a** codifies overnight runs as box-death-EXPECTED,
+INCOMPLETE-not-LOSS, byte-identical resume, Q22 leakage guard (no peek-at-partials on the scored run;
+audit exempt — grades gold, not our model). Logged the loss straight (the SLOP-table discipline).
+
+## 2026-05-26 — whole-set driver + audit fleet built (both freeze blockers code-complete)
+
+`pro_run.py` — one loop, `--mode audit|run` over the frozen order (`run_order.txt`), `--shard i/N`
+deterministic stripe, auto-resume, image-prune between instances (bounds disk on distinct multi-GB
+images). `audit_fleet.sh` — multi-box orchestration: provision (EBS 100), bootstrap, dispatch shards,
+checkpoint/collect/teardown. EC2-native execution path validated (Max OAuth = $0; codex needs git-init;
+py3.11). PROCEDURE §0: public→private is now a single `if` (swap source + gate); §4a recovery protocol.
+
+## 2026-05-25 (eve) — codex freeze-review → prereg upgraded, then compressed ~20%
+
+Sent the prereg to codex for freeze-readiness. Acted on its catches (all true regardless of freeze
+timing): **Q8** — internal gate ≠ official grader (today's Go bug proved it); verdict is always the
+official regrade, so gate-lying wastes budget but can't manufacture a WIN. **§7/§12/Q19** — disclose
+GPT-5.5 in craft → headline is a *contaminated multi-model system* result; scaffold-only attribution
+stays OPEN (same-model control not budget-viable), C2 softened "cannot"→"far weaker, not ruled out".
+**§11** — "known exploratory exposure" disclosure (31 hardest swept clean pre-freeze, so P2's p_hard
+arm isn't blind). **§6** pinned mechanics + audit-fault handling. **§13** explicit pre-freeze gate.
+Then compressed the doc ~20% (agent is the primary reader; cut human-persuasion prose, dedup'd the
+contamination argument to §12-canonical). Blockers codex flagged = the two I already had: defect
+audit + batch driver.
+
 ## 2026-05-25 — pre-freeze trial-by-fire: gate was blind to Go (login-shell PATH reset) — ROOT-FIXED
 
 Hunting for a LOSS on the 31 `hardest_both_reasoning` (all pilots so far passed → low information).
@@ -360,24 +402,3 @@ navidrome/Go — cells both sonnet-4 AND gpt4o failed on REASONING) through `pro
   (per the criterion). The wins also confirm the pipeline clears the light reasoning frontier.
   Next: full 31 on EC2-native after token refill (heavy/PyQt repos), with the Go-clean capture.
 
-## 2026-05-26 — lost a 54% audit to a short watchdog; codified overnight recovery
-
-The 4-box §6 audit self-terminated at ~3h / ~396 of 731 graded: `audit_fleet` inherited
-`provision_box.sh`'s +180min shutdown watchdog, far shorter than the ~6-8h run, and no ledger was
-checkpointed off-box → the partial grades died with the boxes. $0 tokens, ~$5 EC2, no downstream
-impact (no frozen list existed). My error (2nd EC2-artifact loss by not checkpointing pre-teardown).
-**Fixes (committed):** +720min watchdog, per-poll checkpoint of shard ledgers to local, resume-seed
-on relaunch (pro_run skips graded). **Prereg §4a** now codifies overnight runs as box-death-expected,
-INCOMPLETE-not-LOSS, recovered by byte-identical resume — with the Q22 leakage guard (no peek-at-
-partials on the scored run; audit exempt). Relaunched crash-safe.
-
-## 2026-05-26 (later) — §6 defect audit COMPLETE: eligible = 728/731
-
-Relaunch (crash-safe: +720 watchdog, 60s local checkpoint, resume-seed) ran clean to completion —
-no box deaths this time. **731/731 gold patches graded → 728 eligible, 3 defects (0.4%).** Defects
-(gold NOT resolved by official grader, deterministic): NodeBB-00c70ce (JS), vuls-bff6b755 (Go),
-ansible-de5858f4 (Py). Frozen lists committed: runs/audit/{eligible.txt,defects.jsonl} + shards.
-**Eligible denominator = 728** is now the §6 artifact. Freeze gate item 1 ✅. Remaining before a tag:
-batch-driver multi-box orchestration is built (audit_fleet proves it; the run-mode wrapper is the
-same shape), and the §13 frozen-config block. The first joint of the decomposition (honest denominator)
-is now nailed down.
