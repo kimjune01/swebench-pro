@@ -2,6 +2,7 @@
 set -e
 NAME="$1"
 REGION=us-west-2; AMI=ami-00563078bca04e287; ITYPE=m7i.xlarge; VPC=vpc-02c2ac734b774000f
+EBS_GB=${EBS_GB:-100}   # PROCEDURE §4: Pro heavy images (webclients 4.7G, teleport 2.4G) unpack large
 TS=$(date +%s%N | tail -c 7); KEY=sweb-$NAME-$TS; SG_NAME=sweb-$NAME-$TS; PEM=/tmp/${KEY}.pem
 ENVF=/tmp/${NAME}.env
 aws ec2 create-key-pair --key-name $KEY --query KeyMaterial --output text --region $REGION > $PEM
@@ -11,7 +12,7 @@ SG=$(aws ec2 create-security-group --group-name $SG_NAME --description "$NAME" -
 aws ec2 authorize-security-group-ingress --group-id $SG --protocol tcp --port 22 --cidr ${MYIP}/32 --region $REGION >/dev/null
 IID=$(aws ec2 run-instances --image-id $AMI --instance-type $ITYPE --key-name $KEY \
   --security-group-ids $SG --count 1 --instance-initiated-shutdown-behavior terminate \
-  --block-device-mappings '[{"DeviceName":"/dev/xvda","Ebs":{"VolumeSize":50,"VolumeType":"gp3","DeleteOnTermination":true}}]' \
+  --block-device-mappings "[{\"DeviceName\":\"/dev/xvda\",\"Ebs\":{\"VolumeSize\":${EBS_GB},\"VolumeType\":\"gp3\",\"DeleteOnTermination\":true}}]" \
   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$NAME}]" \
   --query "Instances[0].InstanceId" --output text --region $REGION)
 aws ec2 wait instance-running --instance-ids $IID --region $REGION
