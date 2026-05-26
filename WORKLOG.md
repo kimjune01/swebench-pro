@@ -50,9 +50,26 @@ p2p, loc, hunks, ps_len, lang, baseline failure category). Convex hull + Pareto-
 vertices — the hull adds no selectivity at small n; its compression (160/731) is for full-set coverage,
 not the reasoning hunt. Reasoning-frontier LOSS-hunt target = the 31 (16 light local + 13 heavy on box).
 
-**Hunt status (in progress):** flipt-292 = WIN (OFFICIAL RESOLVED). Strategy = coverage until first
-real LOSS, then iterate on the artifact *before* freezing the full run. Halt-on-first-LOSS hunts
-running local (light) + EC2 (heavy).
+**Hunt result — reasoning-frontier SWEPT CLEAN (0 losses).** Coverage-until-first-LOSS on the 31
+`hardest_both_reasoning`: 4 light local (flipt×2, navidrome, openlibrary) + **13/13 heavy on EC2**
+(vuls×2, element-web×4, qutebrowser×4, NodeBB, teleport) — **every one OFFICIAL RESOLVED.** Plus the
+prior 6. So the hardest stratum is decisively soft for this config: zero method losses found.
+
+**What this is and isn't.** Strong *audition* signal on the hardest stratum, but: (a) config is the
+contaminated codex-volley (Sonnet 4.5 + GPT-5.5, both postdate these repos) — system result, not a
+clean capability claim (a win can't be separated from recall, Q19); (b) the only viable config —
+codex offloads the scarce Claude/Max budget, so single-model clean track isn't budget-feasible
+([[project_swebench_pro_only_viable_config]]); (c) **we found no loss, so the hunt taught us nothing
+about the *method*** — the day's real learning was the 3 harness faults caught before freeze.
+
+**Process loss (honest trail):** tore down the EC2 box before successfully pulling the heavy run
+artifacts (zsh glob nomatch skipped the rsync; `&&` chain terminated anyway). The 13/13 verdicts are
+preserved but the captured heavy patches are gone. No scored-trail violation (dev-mode no-credit),
+but a self-inflicted telemetry loss — verify the pull before teardown next time.
+
+**Next (budget-gated, not yet run):** the frontier is exhausted as a loss source. A loss for this
+config, if one exists, lives in problem-selection we haven't sampled — hull-violation interior
+(small-diff secretly-hard) or the broader `either`-reasoning 324. Solver-weakening is off the table.
 
 ## 2026-05-24 — campaign protocol: hardest-first curriculum, two modes, restart-whole-set
 
