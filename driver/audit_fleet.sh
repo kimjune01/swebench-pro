@@ -14,20 +14,29 @@ REPO="$(cd "$(dirname "$0")/.." && pwd)"
 MANIFEST=/tmp/audit_fleet.manifest
 SSH="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10"
 
+WATCHDOG_MIN="${WATCHDOG_MIN:-720}"   # audit needs ~6-8h; provision_box default +180 killed it mid-run
+
 setup_and_dispatch() {  # $1=box-name $2=shard-i $3=N
   local NAME="$1" I="$2" N="$3"
   . /tmp/${NAME}.env; local PEM=/tmp/${KEY}.pem
   rsync -az -e "$SSH -i $PEM" --exclude .venv --exclude .git --exclude runs --exclude scratch \
     "$REPO/" ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/ >/dev/null 2>&1
+  # RESUME-SEED: push the local checkpoint ledger (if any) so pro_run skips already-graded
+  # instances instead of restarting — survives a box death mid-shard.
+  local ckpt="$REPO/runs/audit/shards/audit_${I}of${N}.jsonl"
+  $SSH -i $PEM ec2-user@${PUBIP} "mkdir -p ~/swebench-pro/runs/audit" 2>/dev/null
+  [ -f "$ckpt" ] && scp -o StrictHostKeyChecking=no -i $PEM "$ckpt" \
+    "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/audit/audit_${I}of${N}.jsonl" >/dev/null 2>&1
   $SSH -i $PEM ec2-user@${PUBIP} "
     set -e
+    sudo shutdown -c 2>/dev/null; sudo shutdown -h +${WATCHDOG_MIN} >/dev/null 2>&1   # extend watchdog past +180 default
     sudo dnf install -y -q git python3.11 python3.11-pip >/dev/null 2>&1
     command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh >/dev/null 2>&1
     export PATH=\$HOME/.local/bin:\$PATH
     cd ~/swebench-pro && UV_PYTHON=3.11 bash driver/bootstrap.sh >/tmp/boot.log 2>&1 && echo BOOT_OK || (tail -3 /tmp/boot.log; exit 1)
     . driver/.proenv
     nohup \$PY driver/pro_run.py --mode audit --shard ${I}/${N} > ~/audit_shard.log 2>&1 &
-    echo DISPATCHED ${NAME} shard ${I}/${N} pid \$!
+    echo DISPATCHED ${NAME} shard ${I}/${N} pid \$! (watchdog +${WATCHDOG_MIN}m)
   "
 }
 
@@ -55,6 +64,14 @@ case "${1:-}" in
       out=$($SSH -n -i $PEM ec2-user@${PUBIP} "L=~/swebench-pro/runs/audit/audit_${I}of${N}.jsonl; echo graded=\$(wc -l < \$L 2>/dev/null || echo 0); echo defects=\$(grep -c '\"state\": \"defect\"' \$L 2>/dev/null || echo 0)" 2>/dev/null)
       total=$(( (731 + N - 1 - (I-1)) / N ))
       echo "  $NAME (shard $I/$N): $(echo "$out" | tr '\n' ' ') /~${total}"
+    done < $MANIFEST
+    ;;
+  checkpoint)  # pull current ledgers to local WITHOUT merging/writing final lists — for periodic
+    mkdir -p "$REPO/runs/audit/shards"  # crash-safety during the run; survives a box death
+    while read -r NAME I N IP; do
+      . /tmp/${NAME}.env; PEM=/tmp/${KEY}.pem
+      scp -o StrictHostKeyChecking=no -i $PEM "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/audit/audit_${I}of${N}.jsonl" \
+        "$REPO/runs/audit/shards/audit_${I}of${N}.jsonl" 2>/dev/null && echo "ckpt $NAME $(wc -l < "$REPO/runs/audit/shards/audit_${I}of${N}.jsonl" 2>/dev/null)"
     done < $MANIFEST
     ;;
   collect)
