@@ -43,6 +43,15 @@ the 11 public, Scale-run for overfit detection) is the real exam; goal = earn a 
 
 - **Artifact changed** → whole-set restart under a new frozen tag. Prior verdicts are stale, never
   merged across versions. Same eligible denominator each run.
+- **Restarts are unbounded but accountable: the *motivation* for every restart is recorded in
+  `WORKLOG.md`, before the new tag's run, and the worklog is maintained as an honest append-only
+  trail.** This is the guard against restart-as-optional-stopping, not a numeric cap. A restart must
+  be motivated by a **failure class** (§1.1), and that motivation is written down and timestamped —
+  a reviewer judges integrity by reading the trail, not by trusting a self-asserted rule. A restart
+  whose only honest motivation would be "the last headline was low" has no failure-class entry to
+  write, so it has nowhere to hide: the worklog either carries a legitimate reason or exposes its
+  absence. Every tag that completed a full-set run stays in history (§10); the worklog is the record
+  of *why* each exists.
 - **Artifact unchanged, infra aborted some instances** → re-run *only the aborted instances* (§4);
   completed verdicts stand.
 - **Run order is pre-registered** so it cannot become a lever — relevant because token-exhaustion is
@@ -269,7 +278,7 @@ history. Versions never comingle. The number is re-derivable from the commits, n
 | 19 | Mayo | **Partial severity.** Symmetric contamination makes recall-only a *far weaker* explanation (the contaminated baseline had comparable exposure and still failed) — severe-ish against recall-only. **Not** severe for scaffold-only: our system adds GPT-5.5, so the differing cause is scaffold + ensemble (§12, C1). No absolute-capability claim. |
 | 20 | Gwern | Full trail: per-instance commits, losing runs kept, audit-defects listed, version history in git. |
 | 21 | Gwern | Predictions timestamped + specific below. |
-| 22 | Ramdas | No optional stopping (§5); fixed order (§3); only early stop is enumerated infra. No peek-and-stop. |
+| 22 | Ramdas | No optional stopping (§5); fixed order (§3); only early stop is enumerated infra. No peek-and-stop. Restart-via-versioning (the subtle form) is guarded not by a cap but by **logged motivation** — every restart's failure-class rationale is written to `WORKLOG.md` before its run, so a result-motivated restart has no honest entry to write (§3). |
 
 ### Registered predictions (2026-05-24, before any scored Pro run)
 
