@@ -65,8 +65,9 @@ setup_box() {
     export PATH=\$HOME/.local/bin:\$PATH
     npm config set prefix ~/.npm-global 2>/dev/null
     export PATH=\$HOME/.npm-global/bin:\$PATH
-    command -v claude >/dev/null || npm i -g @anthropic-ai/claude-code >/dev/null 2>&1
-    command -v codex  >/dev/null || npm i -g @openai/codex            >/dev/null 2>&1
+    # Pinned CLI versions (the agent harness's invocation surface — flags/auth/model-resolution can
+    # drift across releases, so reproduction must match these, like any other frozen dep).
+    npm i -g @anthropic-ai/claude-code@2.1.150 @openai/codex@0.134.0 >/dev/null 2>&1
     cd ~/swebench-pro
     git init -q 2>/dev/null || true   # codex refuses untrusted (non-git) dirs
     UV_PYTHON=3.11 bash driver/bootstrap.sh >/tmp/boot.log 2>&1 && echo BOOT_OK || (tail -3 /tmp/boot.log; exit 1)

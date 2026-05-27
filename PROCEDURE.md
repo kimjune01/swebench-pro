@@ -47,6 +47,8 @@ identity is a config parameter (`RCA_MODEL`, `CRAFT_CODEX_MODEL`), no code path 
 |---|---|---|
 | generator model | `claude-sonnet-4-5` | `RCA_MODEL` (rung5_driver.py) |
 | craft-volley model | `gpt-5.5` | `CRAFT_CODEX_MODEL`, pinned via `codex exec -c model=` |
+| agent CLI | `@anthropic-ai/claude-code@2.1.150` | `npm i -g` (invokes the generator) |
+| craft CLI | `@openai/codex@0.134.0` | `npm i -g` (invokes the volley model) |
 | outer loop depth | `MAX_OUTER=5` | rung5_driver.py |
 | stage caps (wall-clock, s) | recon 2000 · craft 3600 · audit 1200 | `RECON_CAP`/`CRAFT_CAP`/`AUDIT_CAP` |
 | retry policy | INCOMPLETE only, on a verdict-independent platform fault (`FAULT_RE`); WIN/LOSS never reran | prereg §4 |
@@ -74,6 +76,23 @@ creds) → `ANTHROPIC_AUTH_TOKEN` → `ANTHROPIC_API_KEY` → subscription OAuth
   which makes `plan_env()` drop any stray `ANTHROPIC_API_KEY` so the run bills **Max/$0**, never PAYG.
   ⚠ Because an API key *overrides* the subscription in the precedence order, a leaked `ANTHROPIC_API_KEY`
   would silently bill PAYG — `CLAUDE_SUBSCRIPTION=1` is the guard.
+
+## Reproduction contract (read before reproducing)
+
+What "reproducible" means here, stated precisely so a third party hits no surprises:
+
+- **Aggregate, not bit-identical.** The agent is stochastic (sampling), so reproduction reproduces the
+  **aggregate resolve-rate within sampling variance** over the 728 eligible set — **not** a deterministic
+  per-instance replay. A given instance flipping WIN/LOSS between runs is expected, not a defect.
+- **Pinned surface.** Match every row in *Pinned versions* + *Frozen run config*, including the **agent
+  CLI versions** (`claude-code@2.1.150`, `codex@0.134.0`) — install them with `npm i -g
+  @anthropic-ai/claude-code@2.1.150 @openai/codex@0.134.0`. CLI releases can change flags/auth/model
+  resolution, so they are frozen deps like any other.
+- **Tokens are yours.** Set `ANTHROPIC_API_KEY` + `OPENAI_API_KEY` (or Bedrock); see *Token access*. The
+  `gpt-5.5` craft model is pinned via `codex exec -c model=gpt-5.5` — if your org exposes it under a
+  different alias/snapshot, set `CRAFT_CODEX_MODEL` to that ID.
+- **DockerHub.** 728 multi-GB images pull from `jefzda/sweap-images`; **`docker login` first** —
+  anonymous pulls throttle (~100–200/6h) and would inject spurious mid-run failures.
 
 ## Execution paths (canonical vs operator)
 
