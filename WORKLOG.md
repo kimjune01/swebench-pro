@@ -22,10 +22,20 @@ Subscription path byte-identical (assert refactored into an injected snippet; bo
 simulation-verified to render valid remote bash). The dynamic coordinator's fault-tolerance is retained
 (vs the fragile static-shard path) for the unattended window. Committed.
 
-**Canary (in flight):** 1 box, `AUTH_MODE=api`, 3 quota-paused **flipt** instances → **dev** ledger
-(`runs/dev/canary_api.jsonl`, isolated from the scored ledger). Doubles as the flipt-loss follow-up: if
-these now WIN under healthy tokens, it corroborates the quota-casualty diagnosis. Validates api
-provisioning + key billing + codex-sub-under-load + cost before any bulk paid spend. **Pending result.**
+**Canary (DONE — PASS):** 1 box, `AUTH_MODE=api`, 3 quota-paused **flipt** instances → dev ledger
+(`runs/dev/canary_api.jsonl`). Plumbing works end-to-end (api provision, key billing, codex-on-sub, full
+pipeline, clean teardown). **Confirms the quota-casualty diagnosis:** under healthy tokens these ran
+**full-length 885–1378s** (vs 196–374s fast-deaths at the wall) → **2 WIN / 1 LOSS**. flipt-0b119520
+flipped LOSS@268s → **WIN@885s**; flipt-05d7234f ran 1378s and genuinely lost. So re-running cleanly
+separates quota-casualties from real losses — the reclassification was correct.
+**Measured cost: USD 6.21 / 3 = ~$2.07/instance (flipt = light end; ~900–1400s).** Heavy repos cost
+more, so blended is higher. Cost read from the Console (regular key can't query the cost API — needs
+admin key). Box self-terminated on drain → session logs lost again (3rd teardown artifact-loss; retro:
+pull logs before teardown). Canary verdicts stay on the dev ledger; the scored run re-runs those 3.
+
+**Bulk run launched:** 4 boxes, `AUTH_MODE=api`, full eligible → scored ledger, resuming the 680 (354
+quota-paused + 326 never-attempted; 48 terminal skipped). Runs until the key window (~2026-05-29 03:00),
+then revert to subscription at 4-box pace. Projection: ~250–300 instances in-window ≈ **~$1k–2.4k**.
 
 ## 2026-05-27 (later) — PAUSE: Max quota exhausted mid-run → 341 un-run, resume when budget refreshes
 
