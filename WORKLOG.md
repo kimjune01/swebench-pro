@@ -6,7 +6,8 @@ gets its own worklog; this one carries only `v1`'s run.
 
 ## 2026-05-26 — FROZEN: `prereg-pro-v1` cut, scored run begins
 
-**Freeze SHA:** `<filled by the post-tag commit below>` — `git tag -v prereg-pro-v1` resolves it.
+**Freeze SHA:** `99536f01fc0f3ac61e7c92a959ef5780ebe05587` (annotated tag `prereg-pro-v1` points
+here). Every scored-run artifact cites this SHA.
 
 The §13 pre-freeze gate is cleared (all four items committed): §6 defect list (eligible = 728/731),
 batch/sharding driver + fleet, frozen config block, and this §13 self-update + worklog rotation. The
