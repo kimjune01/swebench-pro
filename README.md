@@ -30,6 +30,20 @@ artifact, wins **only** on official-test verdicts, keeps an **honest denominator
 - `PRO_PORT.md` — the port plan: goal predicate, strategy, verification contracts, efficiency levers,
   Verified-session failure taxonomy, and the open questions to resolve first.
 
+## Docs index (read in this order)
+
+| doc | what it answers | read when |
+|---|---|---|
+| [`CLAUDE.md`](CLAUDE.md) | agent orientation: one-command setup, where things live, current state | **first, always** |
+| [`PROCEDURE.md`](PROCEDURE.md) | how to run: bootstrap → make_task → pilot → official grade; pinned versions; reproduction contract | running or reproducing a result |
+| [`PREREGISTRATION.md`](PREREGISTRATION.md) | the rules: predicate, two modes, restart scope, failure-mode state machine, freeze gate (§13) | before claiming a number / cutting a tag |
+| [`WORKLOG.md`](WORKLOG.md) | what happened, newest first — the live state of play | catching up on current state |
+| [`PRO_PORT.md`](PRO_PORT.md) | original port plan + background; adapter touchpoints | understanding *why* the adapter is shaped this way |
+| [`LOCAL_ISO.md`](LOCAL_ISO.md) | local isolation / sandbox notes | debugging the local dev path |
+
+State at a glance: **adapter built + validated; freeze-gate items 1–3 done; pre-scored-run.** Only the
+§13 freeze decision (cut `prereg-pro-vN` + launch) remains. `WORKLOG.md` is the source of truth.
+
 ## License
 
 Repo: CC BY-SA-NS ([`LICENSE.md`](LICENSE.md)). Skills (`skills/`): dual-licensed CC BY-SA-NS **or**

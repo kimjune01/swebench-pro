@@ -188,8 +188,9 @@ them) — `pro_pilot.py:official_grade` builds both correctly.
 - **Dev:** Mac/OrbStack, amd64 under Rosetta. Fine for small Python/Go/JS instances; **impractical
   for heavy repos** (webclients 4.7 GB, teleport 2.4 GB) and slow on big suites under emulation.
 - **Scored:** EC2 `m7i.xlarge` (amd64 native, no emulation). Native matches Scale's environment. The
-  batch/sharding driver for Pro is 🔧 (port from the Verified `rung5_driver`/`shard_batch`); the
-  **single-instance EC2-native path is built and validated** (recipe below).
+  whole-set driver (`pro_run.py --shard i/N`) and multi-box fleet (`audit_fleet.sh`, `coordinator.py`)
+  are **built and validated on real boxes** (2026-05-27); the single-instance EC2-native recipe below
+  still applies for a one-off.
 
 ### 4a. EC2-native single-instance recipe (validated 2026-05-25)
 
@@ -229,7 +230,7 @@ the grade is deterministic from the diff.
 
 ## Not yet load-bearing (honest gaps)
 
-- Pro batch/sharding driver (multi-box) — single-instance only today.
+- Same-model `mini-swe-agent` control arm (isolates scaffold from model in the differential).
 - Packaging for Scale to run our pipeline on the held-out (containerized, model-creds, 200-turn
   budget). The held-out is Scale-run and relationship-gated, not a self-serve submission — see
   `PREREGISTRATION.md` §9.

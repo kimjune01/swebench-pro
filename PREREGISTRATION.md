@@ -285,15 +285,18 @@ that commit ordering is itself the trail, Q20). **No tag is cut now** — we are
 1. **§6 defect list** — ✅ **DONE (2026-05-26).** Full 731 gold-patch audit run (4-box fleet);
    committed: `runs/audit/eligible.txt` (**728**), `runs/audit/defects.jsonl` (**3**), per-shard
    ledgers. **Eligible denominator = 728** (731 − 3 defects); 0.4% defect rate.
-2. **Batch/sharding driver** — the whole-eligible-set runner (§2, §5) with resume semantics and
-   shard map deterministic from `tasks/run_order.txt` (§3). *(Per-shard loop built: `pro_run.py
-   --mode run --shard i/N` (resume + deterministic stripe); **multi-box orchestration** — provision
-   N boxes, dispatch shards, merge ledgers — still a thin wrapper to write.)*
-3. **Frozen config block** — exact model IDs (Sonnet 4.5 generator + GPT-5.5 craft), stage
-   wall-clock caps, retry policy, EC2 instance type + **100 GB EBS**, dataset + grader digests
-   (PROCEDURE "Pinned versions"), and the env contract (non-login shell / PATH preserved, ledger
-   dir created) — the three 2026-05-25 harness faults pinned as preflight/regression checks so a
-   recurrence reads as INCOMPLETE, never a method LOSS.
+2. **Batch/sharding driver** — ✅ **DONE (2026-05-27).** Whole-eligible-set runner `pro_run.py
+   --mode run --shard i/N` (resume + deterministic stripe from `tasks/run_order.txt`, §3) plus
+   multi-box orchestration (`audit_fleet.sh` static shards; `coordinator.py` operator-path dynamic
+   dispatch). Validated on real boxes: provision → auth → bootstrap → agent → official grade →
+   ledger, all green; coordinator 2/2 WIN with clean teardown.
+3. **Frozen config block** — ✅ **DONE (2026-05-27).** Exact model IDs (Sonnet 4.5 generator +
+   GPT-5.5 craft), stage wall-clock caps, retry policy, EC2 instance type + **100 GB EBS**, dataset
+   + grader digests (PROCEDURE "Pinned versions" + "Frozen run config"), and the env contract
+   (non-login shell / PATH preserved, ledger dir created) — the three 2026-05-25 harness faults
+   pinned as preflight/regression checks so a recurrence reads as INCOMPLETE, never a method LOSS.
+   Model-agnostic harness (no code path branches on model identity, grep-verified).
 4. **§13 self-update** — flip "No tag is cut now" to the cut tag + SHA when the gate clears.
 
-Until 1–3 exist, freezing would freeze a *promise*, not an executable preregistration.
+Items 1–3 are committed; only item 4 (the freeze decision) remains. Freezing now would freeze an
+*executable* preregistration, not a promise.

@@ -34,7 +34,7 @@ scratch/           ephemeral — ignored; durable record → WORKLOG.md
 - **PRO_PORT.md** — original port plan / background. **LIMITATIONS / contamination** posture lives
   in the prereg (§12: contamination is symmetric → isolates the scaffold claim, not a confound).
 
-## Current state (2026-05-24)
+## Current state (2026-05-27)
 
 Adapter **built and validated**: grader works across Python/Go/JS; gate red-on-base/green-on-gold;
 source-only capture (size-capped, language-aware test stripping). **Two pilots officially RESOLVED**
@@ -42,9 +42,10 @@ source-only capture (size-capped, language-aware test stripping). **Two pilots o
 **Sonnet 4.5** (`RCA_MODEL`); the reference baseline is Sonnet 4 + gpt4o in **SWE-Agent** — so our
 differential is *largely scaffold* (same model family).
 
-**Not yet done:** the multi-box batch driver for Pro; the full-31 run on **EC2-native** (heavy/PyQt
-repos need it) after token refill; the same-model `mini-swe-agent` control arm; offline-per-repo
-mapping. No scored run has been started or frozen — keep it that way until deliberately committing.
+**Built since:** whole-set driver (`pro_run.py`) + multi-box fleet (`audit_fleet.sh`, `coordinator.py`),
+validated on real boxes (2026-05-27); freeze-gate items 1–3 done. **Not yet done:** the same-model
+`mini-swe-agent` control arm; the §13 freeze decision itself (cut `prereg-pro-vN` tag + launch). No
+scored run has been started or frozen — keep it that way until deliberately committing.
 
 ## Conventions
 
