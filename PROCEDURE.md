@@ -230,7 +230,9 @@ the grade is deterministic from the diff.
 
 ## Not yet load-bearing (honest gaps)
 
-- Same-model `mini-swe-agent` control arm (isolates scaffold from model in the differential).
+- Same-model `mini-swe-agent` control arm (would isolate scaffold from model in the differential).
+  **Decided: not running it.** Removing codex shifts all load onto the scarce Claude budget — not
+  budget-viable. Scaffold-only attribution stays permanently OPEN, not pending (prereg §12, C1).
 - Packaging for Scale to run our pipeline on the held-out (containerized, model-creds, 200-turn
   budget). The held-out is Scale-run and relationship-gated, not a self-serve submission — see
   `PREREGISTRATION.md` §9.

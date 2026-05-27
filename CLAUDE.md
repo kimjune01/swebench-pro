@@ -43,8 +43,10 @@ source-only capture (size-capped, language-aware test stripping). **Two pilots o
 differential is *largely scaffold* (same model family).
 
 **Built since:** whole-set driver (`pro_run.py`) + multi-box fleet (`audit_fleet.sh`, `coordinator.py`),
-validated on real boxes (2026-05-27); freeze-gate items 1–3 done. **Not yet done:** the same-model
-`mini-swe-agent` control arm; the §13 freeze decision itself (cut `prereg-pro-vN` tag + launch). No
+validated on real boxes (2026-05-27); freeze-gate items 1–3 done. **Not doing:** the same-model
+`mini-swe-agent` control arm — removing codex shifts all load onto the scarce Claude budget, so it's
+not budget-viable; scaffold-only attribution stays permanently OPEN (prereg §12, not a TODO). **Not yet
+done:** the §13 freeze decision itself (cut `prereg-pro-vN` tag + launch). No
 scored run has been started or frozen — keep it that way until deliberately committing.
 
 ## Conventions

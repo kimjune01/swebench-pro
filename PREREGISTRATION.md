@@ -56,19 +56,32 @@ the 11 public, Scale-run for overfit detection) is the real exam; goal = earn a 
 
 ## 4. Failure-mode catalog — a fixed state machine (DECIDED IN ADVANCE)
 
-Every instance terminates in **exactly one** state. **No instance may be reclassified after its
-logs are visible.** The only legitimate rerun trigger is a logged platform fault, observable
-**independent of the verdict** — this is *verdict*-independence (note: token-exhaustion is
-verdict-independent but **not** difficulty-independent, hence §3's fixed order).
+Every instance **terminates in exactly one terminal state** (WIN / LOSS / INCOMPLETE); `PAUSE`
+(`QUOTA_EXHAUSTED`) is the one non-terminal stop — it always resumes to a terminal state, never
+scored on its own. **No instance may be reclassified by discretion
+after its logs are visible** — the sole reclassification permitted is the *pre-registered, mechanical*
+anti-cheat check below (INCOMPLETE→LOSS when no corroborating fault evidence exists), which is
+committed in advance and applied uniformly, not chosen after seeing which losses we'd re-roll. The
+only legitimate rerun trigger is a logged platform fault, observable **independent of the verdict** —
+this is *verdict*-independence (note: token-exhaustion is verdict-independent but **not**
+difficulty-independent, hence §3's fixed order).
 
 | state | trigger | counts as | rerun? |
 |---|---|---|---|
 | **WIN** | loop completed; official grader RESOLVED | win | no |
 | **LOSS** | loop completed but not resolved — incl. completed-failed, empty/0-byte capture, **and any failure endogenous to the method** (agent errored, produced no patch, looped, hit a stage wall-clock cap) | loss | **no — stands** |
-| **INCOMPLETE**(fault) | a logged platform fault fired before a gradeable diff: `BOX_DEATH` / `AWS_API` / `OOM` / `DISK_FULL` / `SETUP_NETWORK_FAIL` / `QUOTA_EXHAUSTED` | not scored; instance incomplete | **yes** — same frozen artifact, to completion; fault code logged |
+| **INCOMPLETE**(fault) | a logged platform fault fired before a gradeable diff: `BOX_DEATH` / `AWS_API` / `OOM` / `DISK_FULL` / `SETUP_NETWORK_FAIL` | not scored; instance incomplete | **yes** — same frozen artifact, to completion; fault code logged |
+| **PAUSE**(`QUOTA_EXHAUSTED`) | our Max budget hit its ceiling before a gradeable diff — not a fault, the expected end of budget | not scored; instance simply un-run (§5) | **resume** — byte-identical artifact, no peek (not a re-roll; see below) |
 
 - **INCOMPLETE requires an enumerated fault code**, not "the agent didn't finish." Endogenous
   no-patch = LOSS. "Before a gradeable diff" = before the loop produced *any* diff.
+- **A fault *after* the diff is captured but before the official grade is NOT INCOMPLETE.** Grading is
+  deterministic from the captured source-only diff on a fresh container (Q3b/Q16) and requires no
+  agent re-run — so a box death or grader-infra hiccup post-capture is recovered by simply re-grading
+  the captured diff (same artifact); the resulting WIN/LOSS stands. The only way this becomes
+  INCOMPLETE is if the **captured diff itself is lost or corrupt** (an infra fault on the capture
+  step), which routes back through §4a recovery. Capture, not grade, is the INCOMPLETE/terminal
+  boundary.
 - **Timeout = LOSS** (stage cap is part of the budget). Sole exception: a hang *proven* an emulation
   artifact (repros on Mac, completes on native EC2) is INCOMPLETE → rerun on EC2 — both logs shown,
   never asserted.
@@ -78,21 +91,47 @@ verdict-independent but **not** difficulty-independent, hence §3's fixed order)
   un-run ⇒ run is non-headline until completed (§5).
 - **Never** move LOSS→INCOMPLETE after logs are visible; **never** exclude an instance because we
   failed it (defects come only from the §6 audit).
-- **External corroboration of platform faults (pre-registered anti-cheat).** The exploitable move in
-  this state machine is laundering a capability LOSS as an INCOMPLETE to earn a free re-roll (§3
-  re-runs INCOMPLETEs, never LOSSes). To foreclose it we commit *in advance*: every instance records
-  UTC `started_at`/`ended_at`, and every INCOMPLETE is cross-checked against the **provider incident
-  timelines** (Anthropic + OpenAI Statuspage incident history, snapshotted during the run so a later
-  page edit can't move the goalposts). An INCOMPLETE whose window **overlaps no documented provider
-  incident** has no external fault to stand on → it is **reclassified LOSS and stands** (not re-run).
-  This is bidirectional: it proves the platform faults were real *and* proves we didn't manufacture
-  them. Mechanism: `driver/uptime_correlate.py`; report lands in `FAILURE_ATTRIBUTION.md`. Committing
-  pre-run is the point — the rule cannot be selectively invoked after seeing which losses we'd re-roll.
+- **Corroboration of platform faults (pre-registered anti-cheat).** The exploitable move in this
+  state machine is laundering a capability LOSS as an INCOMPLETE to earn a free re-roll (§3 re-runs
+  INCOMPLETEs, never LOSSes). To foreclose it we commit *in advance*: every instance records UTC
+  `started_at`/`ended_at`, and **every INCOMPLETE must carry corroborating fault evidence matched to
+  its fault class**, else it is **reclassified LOSS and stands** (not re-run). The corroboration
+  source differs by class — this is the fix for the gap that infra faults don't appear on provider
+  statuspages:
+  - **Provider-incident-class** (provider API 5xx / `AWS_API` against an Anthropic/OpenAI endpoint,
+    i.e. the provider failing *on its side* while we were within budget): cross-checked against the
+    **provider incident timelines** (Anthropic + OpenAI Statuspage history, snapshotted during the
+    run so a later page edit can't move the goalposts). No overlapping documented incident → no
+    external fault to stand on → LOSS.
+  - **Infra-class** (`BOX_DEATH`, `DISK_FULL`, `SETUP_NETWORK_FAIL`, `OOM`, watchdog/spot-reclaim):
+    corroborated by their **own on-box / AWS logs** (watchdog fire, dmesg OOM, CloudTrail spot
+    reclaim, disk/df, network error) — these never surface on a provider statuspage and are *not*
+    subject to the incident-overlap test; the on-box log **is** the independent evidence. An
+    infra-class INCOMPLETE with no such log → LOSS.
+  - **`QUOTA_EXHAUSTED` is neither** — it is the *expected* end of our Max budget, self-evident from
+    the agent CLI's own quota-error response in the log. It is **not** incident-overlap-checked (it
+    won't appear on a statuspage) and **not** a re-roll lever: it is a legitimate **pause-resume**
+    under the byte-identical / no-peek discipline above, never a LOSS-vs-INCOMPLETE judgement call.
+    An un-attempted-at-exhaustion instance is simply *un-run* until the run completes (§5).
+
+  This is bidirectional: corroboration establishes the fault's **existence and timing** *and* shows
+  we didn't fabricate it. It does **not** by itself prove the fault was exogenous — an infra event
+  *induced by the method* (disk filled by our own runaway logging, OOM from our memory blowup) is
+  **endogenous → LOSS**, not a platform fault. (Watchdog sizing is **not** in this bucket: it is
+  pinned in the frozen config at ≥1.5× expected wall-time, §4a/§13, so a mid-run fire is the
+  correctly-sized operational backstop interrupting in-flight work, not an undersizing defect —
+  INCOMPLETE/resume, per §4a.) The corroborating
+  log must show an external cause (spot reclaim, host failure, network partition, provider 5xx), not
+  merely that a resource ran out. Mechanism: `driver/uptime_correlate.py`; report lands in
+  `FAILURE_ATTRIBUTION.md`. Committing pre-run is the point — the rule cannot be selectively invoked
+  after seeing which losses we'd re-roll.
 
 ### 4a. Overnight / unattended runs — interruption & recovery protocol
 
-A 731-set run is multi-hour and runs unattended; **box death is expected, not exceptional.** It is a
-platform fault (INCOMPLETE, verdict-independent), never a LOSS. Enumerated modes, all `BOX_DEATH`-class:
+A 731-set run is multi-hour and runs unattended; **box death is expected, not exceptional.** A
+**corroborated** box death (its on-box/AWS log present, per §4's infra-class rule) is a platform fault
+(INCOMPLETE, verdict-independent), never a LOSS; an uncorroborated one reclassifies LOSS (§4).
+Enumerated modes, all `BOX_DEATH`-class:
 self-termination **watchdog fired** (a +Nmin shutdown backstop — *this killed a 54%-complete audit on
 2026-05-26 when the fleet inherited a +180min default shorter than the run*), spot reclaim, host
 failure, `DISK_FULL`, `SETUP_NETWORK_FAIL`.
@@ -105,6 +144,14 @@ crash-safe by two mechanisms the driver must provide:**
 2. **Resume-seed.** On relaunch, each box is seeded with its checkpoint ledger; the driver skips any
    instance already recorded (`pro_run` resume) and grades only the remainder. Verdicts never
    recompute; completed ones stand (§3).
+
+**"Completed" = durably checkpointed, not merely finished on the box.** An instance whose verdict
+reached the off-box ledger is final and never recomputed (§3). An instance that finished locally but
+died *before* its verdict was checkpointed has **no durable verdict to stand on** — it is treated as
+**aborted → re-run** under the byte-identical artifact, exactly like one that never started. Re-running
+it is safe because the pipeline is deterministic up to the captured diff and the official grade is a
+pure function of that diff, so a re-run reproduces the same WIN/LOSS. This is the *only* recompute the
+protocol permits, and it touches solely uncheckpointed work — never a recorded verdict.
 
 **Watchdog sizing:** the shutdown backstop must exceed expected wall-time **with margin** (≥ ~1.5×);
 a watchdog firing mid-run is a known INCOMPLETE fault, recovered by resume — it never reclassifies an
@@ -158,7 +205,7 @@ pre-run audit, frozen before any scored model run**:
 This closes the post-hoc-exclusion hole (codex): exclusions are decided by gold-patch behavior,
 which is independent of our model's results.
 
-## 7. Reported metrics — SYSTEM-vs-SYSTEM only (until the §12 control runs)
+## 7. Reported metrics — SYSTEM-vs-SYSTEM only (scaffold is permanently confounded, §12)
 
 - **Headline:** resolved / eligible (official), per frozen tag. Stated as a *system* result: "our
   frozen system resolved X / Y." The system is **multi-model and contaminated** (Sonnet 4.5 generates
@@ -167,9 +214,10 @@ which is independent of our model's results.
 - **Differential:** cells where **our system** resolves and **both reference systems** (sonnet-4,
   gpt4o, both in **SWE-Agent** 200-turn) failed — and the reverse (`tasks/strata.json`). This is a
   **system+ensemble** advantage, *not* a clean scaffold result: our system adds GPT-5.5 the baselines
-  lacked, so scaffold-only attribution needs the unrun §12 control. Permitted phrasing: "system
-  advantage (better scaffold + GPT-5.5 craft volley), scaffold-only pending control." The gpt4o half
-  stays cross-family.
+  lacked, and the §12 same-model control that would isolate scaffold **will not be run** (not budget-
+  viable) — so scaffold-only attribution is **permanently confounded**, not pending. Permitted
+  phrasing: "system advantage (better scaffold + GPT-5.5 craft volley); scaffold-only not isolated."
+  The gpt4o half stays cross-family.
 
 ## 8. Curriculum & self-holdout (development only — NOT a measurement strategy)
 
@@ -206,18 +254,18 @@ history. Versions never comingle. The number is re-derivable from the commits, n
 | 4 | Hume | Mechanism: the loop emits patches the official grader accepts. Claim = **capability of the loop to emit a passing fix**, not "the model reasoned it" (§ contamination). |
 | 5 | Hume | Generalization is the design: public (11 repos) → held-out (12 *different* repos). Our self-holdout shares repos, so it under-tests this — disclosed. |
 | 6 | Mill | **Honest limit:** we batch general fixes per version, so we cannot causally attribute the number to a single change. We measure the artifact holistically, version-vs-version. |
-| 7 | Mill | Controls: gold-patch oracle (positive control the grader works); reference baselines as the differential arm; §12 same-model arm is the *only* scaffold control. |
+| 7 | Mill | Controls: gold-patch oracle (positive control the grader works); reference baselines as the differential arm. The §12 same-model arm is the *only* scaffold control and **will not be run** (not budget-viable) — scaffold attribution stays confounded. |
 | 8 | Chamberlin | "Resolved" alts: real fix / recall / variance / gate-lying. **Internal gate ≠ official grader** — it's a fast stopping signal that *can* disagree (2026-05-25 PATH bug made it false-NEGATIVE on Go while gold graded RESOLVED). Verdict is *always* the official regrade of the captured diff on a fresh container (Q3b/Q16), never the gate. So gate-lying can only waste budget, not manufacture a WIN. Recall-vs-reason: see Q19. |
 | 9 | Peirce | Strata + comparative hypothesis built from **others'** error data, registered before our runs — not retrofit. |
 | 10 | Fisher | No assignment confound — full set, not a split. |
-| 11 | Popper | Falsifiers: F1 (anchors, §P1) and F2 (§P2 one-sided test). |
+| 11 | Popper | Falsifier: F1 (anchors, §P1 smoke alarm). F2 (the §P2 one-sided test) is **retired** — `p_hard≈1.0` made it unconfirmable and the reviving ablation is out of budget (§P2, §12). The inferential claims are now descriptive; the falsifiable surface is F1 + the official headline denominator. |
 | 12 | Popper | Official F2P+P2P is a high bar — can't be passed by weakening a test (gold tests restored). |
 | 13 | Kuhn | gold patch + F2P *define* "correct"; a better-than-gold fix that changes F2P reads as a loss. Accepted, flagged. |
-| 14 | Platt | The §12 same-model control excludes "our edge is just the model." Without it, the differential excludes nothing about scaffold. |
-| 15 | Meehl | §P2 is a one-sided test with a decision rule, not "we do better." |
+| 14 | Platt | The §12 same-model control *would* exclude "our edge is just the model" — but it **will not be run**, so the differential excludes nothing about scaffold. We accept this confound (§12, C1); the claim never asserts scaffold-alone. |
+| 15 | Meehl | §P2 *was* a one-sided test with a decision rule; demoted to a descriptive contrast (`p_hard≈1.0`, no budget for the reviving ablation). Reported with CIs, not asserted as "we do better." |
 | 16 | Feynman | Self-deception routes: capture ≠ what ran (→ always official-regrade the captured diff); contamination read as capability; variance dressed as a wall (→ FAILURE_ATTRIBUTION probes); model strength laundered as scaffold credit (§12). |
 | 17 | Pearl | No causal claim beyond "the artifact produces grader-accepted patches." |
-| 18 | Ioannidis | N=731 powers the headline; subgroups (31 / 94 / 172) are **low-power** (n=31 → ±~18% CI) — §P2 carries a three-way verdict (confirm/refute/**inconclusive**) for exactly this. |
+| 18 | Ioannidis | N=731 powers the headline; subgroups (31 / 94 / 172) are **low-power** (n=31 → ±~18% CI) — which is why §P2 is reported descriptively (CIs, not a pass/fail) rather than as an underpowered test. |
 | 19 | Mayo | **Partial severity.** Symmetric contamination makes recall-only a *far weaker* explanation (the contaminated baseline had comparable exposure and still failed) — severe-ish against recall-only. **Not** severe for scaffold-only: our system adds GPT-5.5, so the differing cause is scaffold + ensemble (§12, C1). No absolute-capability claim. |
 | 20 | Gwern | Full trail: per-instance commits, losing runs kept, audit-defects listed, version history in git. |
 | 21 | Gwern | Predictions timestamped + specific below. |
@@ -231,12 +279,13 @@ Scored against the **frozen-artifact full-set run**, not pilots.
   that flags a problem — but the diagnosis is open (pipeline bug *or* misclassified strata *or*
   anchors not actually easy for our system); we halt and investigate which, before any claim. P1
   is a gate, not an inferential result.
-- **P2 (PRIMARY — pre-registered hypothesis test):** resolve-rate on `edge_both_scaffold` (172) >
-  resolve-rate on `hardest_both_reasoning` (31). **Test:** one-sided two-proportion test (Fisher's
-  exact, small-n), α = 0.05, H₀: p_edge ≤ p_hard. **Three-way verdict:** *confirmed* if H₀
-  rejected; *refuted* if p_edge < p_hard with the one-sided test rejecting the reverse; otherwise
-  **inconclusive** (low power at n=31 — an honest non-result, not a pass). Effect size + CI
-  reported regardless. This claim is **system-vs-system** (§7, §12).
+- **P2 (DESCRIPTIVE — demoted from a hypothesis test, 2026-05-26):** report resolve-rate on
+  `edge_both_scaffold` (172) and on `hardest_both_reasoning` (31), each with its CI, and the gap.
+  **Originally** a one-sided test (H₀: p_edge ≤ p_hard) for the scaffold-vs-reasoning story, but the
+  pre-freeze sweep observed `p_hard ≈ 1.0` (hardest arm fully resolved, see below), which makes
+  `p_edge > p_hard` mathematically unreachable — the test could only ever land inconclusive. We
+  **will not run the ablation that would revive it** (not budget-viable, same constraint as §12), so
+  P2 is reported as a descriptive contrast, not a pass/fail. This is **system-vs-system** (§7, §12).
 - **E1 (descriptive estimate — NOT a prediction):** the resolve fraction on `edge_both_scaffold`
   with its CI. Reported, not pass/failed against a guessed bar. (Renamed from "P3" — it was never
   a prediction.)
@@ -246,10 +295,10 @@ Scored against the **frozen-artifact full-set run**, not pilots.
 Registered 2026-05-24, but by freeze we'd already run instances under the real config — so the
 predictions are *confirmatory on the frozen run*, not naive:
 
-- **2026-05-25:** all **31 `hardest_both_reasoning`** ran end-to-end, **all OFFICIAL RESOLVED** (4
-  light local + 13 heavy EC2 + prior 6; dev-mode). So P2's `p_hard` arm is **not blind** (≈1.0 seen).
-  Since p_edge > p_hard is impossible at p_hard=1, P2 can now only land *confirmed* or *inconclusive*
-  — flagged, not hidden.
+- **2026-05-25:** **23 of the 31 `hardest_both_reasoning`** ran end-to-end, **all OFFICIAL RESOLVED**
+  (4 light local + 13 heavy EC2 + 6 prior; dev-mode); the other 8 were not run. So P2's `p_hard` arm
+  is **not blind** — `p_hard ≈ 1.0` on everything seen. That observed ceiling is what makes
+  `p_edge > p_hard` unreachable, hence P2's demotion to descriptive (above) — flagged, not hidden.
 - `edge_both_scaffold` (172) and `easy_anchors` (94) were **not** run — genuinely out-of-sample for
   P1/E1.
 
@@ -262,8 +311,20 @@ our system **adds a second cross-family model the baseline lacked** — so a we-
 scaffold **+ ensemble**, not scaffold alone. It's the only budget-viable config (codex offloads the
 scarce Claude budget; no clean single-model arm).
 - **The control that would isolate scaffold** — Sonnet 4.5 through vanilla `mini-swe-agent`, no codex
-  — is **not budget-viable** (shifts all load onto Claude), so it's **unrun** and scaffold-only
-  attribution stays **open** (not "pending"). Honest headline = contaminated multi-model system (§7).
+  — is **not budget-viable** (shifts all load onto Claude). **Decision (committed): we will not run
+  it.** Scaffold-only attribution therefore stays **permanently open** — not "pending," not a deferred
+  TODO. Honest headline = contaminated multi-model system (§7).
+- **What carries the scaffold claim instead: others' published benchmark numbers, not our own
+  ablation.** We don't run an in-house same-model arm; the differential is against the *reference
+  baselines* (Sonnet 4 + gpt4o in SWE-Agent, 200-turn) on the same instances. Those published numbers
+  are the comparison surface — when our system resolves a cell the documented baseline missed, the
+  attribution leans on *their* measured ceiling, not on a control we ran. This is weaker than an
+  internal ablation (different model versions confound it, C2) but it is the available evidence, and
+  it is the standard way scaffold/harness work is attributed on a public leaderboard.
+- **Footnote (the one ablation worth naming):** the cleanest thing a same-model control *could* still
+  show is not scaffold-vs-model but **complementarity** — that Claude + GPT-5.5 are stronger as a pair
+  than either alone, i.e. neither dominates. That's a genuine, narrower question the differential
+  doesn't answer. We flag it and leave it unrun; it's a footnote, not a load-bearing gap.
 
 **C2 — symmetric contamination weakens recall, doesn't eliminate it.** Both sides saw these repos and
 the baseline *still failed* (SWE-Agent overflowed before applying what it "knew"), so recall-only is a
@@ -294,9 +355,21 @@ that commit ordering is itself the trail, Q20). **No tag is cut now** — we are
    GPT-5.5 craft), stage wall-clock caps, retry policy, EC2 instance type + **100 GB EBS**, dataset
    + grader digests (PROCEDURE "Pinned versions" + "Frozen run config"), and the env contract
    (non-login shell / PATH preserved, ledger dir created) — the three 2026-05-25 harness faults
-   pinned as preflight/regression checks so a recurrence reads as INCOMPLETE, never a method LOSS.
-   Model-agnostic harness (no code path branches on model identity, grep-verified).
+   pinned as **preflight** checks that run **before any instance is attempted** on a box: if a check
+   fails, the box does not run instances (it's a `SETUP_*` INCOMPLETE → re-provision), so no instance
+   is scored against a broken harness. This scope is the point — a harness fault caught *by preflight,
+   before attempts* is platform/INCOMPLETE; the same fault somehow recurring *mid-run despite passing
+   preflight* is **endogenous to our frozen harness → LOSS**, not an excuse. Model-agnostic harness
+   (no code path branches on model identity, grep-verified).
 4. **§13 self-update** — flip "No tag is cut now" to the cut tag + SHA when the gate clears.
+
+**Not a freeze gate: the §8 self-carved public holdout.** It is a pre-Scale-pitch overfit check, not
+a prerequisite for this public scored run — and the run is structurally overfit-proof anyway: we
+freeze one instance-blind artifact and run the *whole* eligible set in one pass (§2, §3), with no
+held-out signal fed back (§1.2). There is no sample-selection or iteration-on-results lever to
+overfit *with*, so a holdout to detect overfit adds nothing here. (The §8 holdout still matters
+before pitching Scale's held-out, as a cross-repo generalization rehearsal — but that's downstream of
+this run, not a gate on it.)
 
 Items 1–3 are committed; only item 4 (the freeze decision) remains. Freezing now would freeze an
 *executable* preregistration, not a promise.
