@@ -4,6 +4,28 @@ Newest first. This is the **scored-run trail** for the frozen artifact `prereg-p
 development history is in [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md). Per §13, each scored tag
 gets its own worklog; this one carries only `v1`'s run.
 
+## 2026-05-27 (later still) — publish full run data: artifact puller + prereg §14 amendment
+
+Sharpened by auditing a contemporaneous benchmark (DeepSWE/Datacurve) that ships tasks + harness but
+**no run data** across its whole GitHub org (verified: 6 repos, the only "trajectory" hits are viewer
+UI + Storybook fixtures) — its leaderboard and harness-neutrality pilot have no published numbers
+behind them. Engineer's report wearing science's clothes. The line is the **burden-of-proof direction**:
+publish the runs and invite refutation, or publish the result and ask for trust.
+
+We were doing a milder version of the same sin: the coordinator checkpointed **verdicts only**;
+trajectories + captured diffs died on box teardown (lost 3× this session). Closed it:
+- **`driver/pull_artifacts.sh`** — read-only rsync daemon, pulls per-instance artifacts off the live
+  boxes on a 600s cadence (captured diffs `runs/dev/pro_patch_*.diff`, Claude recon/craft/audit
+  trajectories `~/.claude/projects/`, codex challenger sessions `~/.codex/sessions/`, per-box ledger)
+  into `runs/scored/artifacts/<box>/`. Re-reads `/tmp/coord*.env` each cycle, so it follows
+  reprovisioned boxes. First clean cycle pulled **33 diffs + 111 claude + 113 codex trajectories
+  (36M)**. Running as bg task; zero disruption to the live run (read-only on the box side).
+- **Prereg §14 (post-freeze amendment)** — transparency-only (can't bend a verdict or the denominator),
+  so no §3 restart. Operationalizes §10: a run isn't a headline until its per-instance trajectories +
+  diffs are published, not merely its ledger. Binds v1 and all future versions.
+- **Structural TODO:** fold the pull into the coordinator's checkpoint so future runs capture full
+  provenance by default instead of via a side daemon.
+
 ## 2026-05-27 (later still) — switch to paid API for a time-boxed window (Sonnet on key, codex on sub)
 
 **Decision:** rather than wait out the Max quota grind, the operator dropped a **short-lived

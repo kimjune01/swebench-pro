@@ -405,3 +405,30 @@ this run, not a gate on it.)
 All four gate items are committed. **The gate is cleared and the artifact is frozen as
 `prereg-pro-v1`** — an *executable* preregistration, not a promise. The scored run proceeds under this
 tag; results are committed after it, citing the freeze SHA (§13).
+
+## 14. Post-freeze amendments
+
+Per §13, the frozen doc changes only by new commits with timestamped rationale; old tags never move.
+Amendments here are **transparency-only** (they strengthen what gets published, never what counts as a
+WIN/LOSS or the denominator), so they do not touch the measurement and do not trigger a §3 restart.
+
+**2026-05-27 — publish full per-instance run data, not just verdicts (operationalizes §10).** §10 already
+promises per-instance artifacts (ledger, captured diff, official report, agent logs, fault codes), but
+during the v1 run the operator coordinator checkpointed **verdicts only** — the captured diffs and agent
+trajectories died on box teardown (lost three times: an auth-outage box, the api canary, a flipt diff
+cluster). That gap made the *runs* unauditable even though the verdicts were committed, which is exactly
+the failure mode worth foreclosing: an engineer's report publishes the result and asks for trust; a
+scientific one publishes the runs and invites refutation. The dividing line is the **direction of the
+burden of proof**, and verdict-only publication points it at the reader.
+
+Committed for v1 and binding on every future version:
+- **Per-instance provenance is pulled off the boxes continuously** (`driver/pull_artifacts.sh`,
+  read-only rsync on a bounded cadence) and survives teardown: the **captured source-only diff**, the
+  **agent trajectories** (Claude recon/craft/audit sessions + the GPT-5.5 codex challenger sessions),
+  the per-box ledger, and fault codes.
+- **The run is not a headline until its per-instance trajectories + diffs are published**, not merely
+  its ledger. A score whose underlying runs cannot be re-graded and inspected is an engineer's report,
+  not a measurement (motivated by a contemporaneous coding-agent benchmark that shipped its tasks and
+  harness but **no run data**, leaving its central claims unverifiable — a line we decline to be on).
+- Trajectory volume is large; publication may be archived/compressed, but the artifacts are committed
+  to the run's frozen trail, not summarized away.

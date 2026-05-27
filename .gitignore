@@ -26,3 +26,9 @@ driver/.proenv
 # ephemeral single-box 60s checkpoint ledgers (canonical audit trail = eligible.txt + defects.jsonl + shards/)
 runs/audit/audit.jsonl
 runs/*/*_checkpoint.jsonl
+
+# raw per-instance provenance pulled off boxes (pull_artifacts.sh) + operator logs.
+# NOT discarded — published as a deliberate archive/release per prereg §14, not raw in git history.
+runs/scored/artifacts/
+runs/scored/*.log
+runs/scored/status_snapshots/
