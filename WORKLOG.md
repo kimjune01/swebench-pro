@@ -4,6 +4,29 @@ Newest first. This is the **scored-run trail** for the frozen artifact `prereg-p
 development history is in [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md). Per §13, each scored tag
 gets its own worklog; this one carries only `v1`'s run.
 
+## 2026-05-27 (later still) — switch to paid API for a time-boxed window (Sonnet on key, codex on sub)
+
+**Decision:** rather than wait out the Max quota grind, the operator dropped a **short-lived
+`ANTHROPIC_API_KEY`** (expires ~2026-05-29 03:00, then revert to subscription, same 4-box pace). Plan:
+run the scored set on **paid Sonnet + codex-on-sub** until the window closes. Key stored 600 at
+`~/.swebench-pro/anthropic.key` (outside repo); validated live (`claude-sonnet-4-5-20250929`). Operator
+confirmed the key is short-lived so transcript exposure is acceptable; rotate-after not required.
+
+**Auth-source change is NOT an artifact change → stays v1**, byte-identical (PROCEDURE "Token access"):
+auth source isn't part of the frozen artifact, the headline already discloses model+scaffold.
+
+**Plumbing built (operator, not artifact):** `coordinator.py` + `run_fleet.sh` gained `AUTH_MODE=api`
+alongside subscription — pushes a 600 key file (not OAuth), `run_instance` exports `ANTHROPIC_API_KEY`
+and leaves `CLAUDE_SUBSCRIPTION` unset so `plan_env()` honors the key; codex sub auth untouched.
+Subscription path byte-identical (assert refactored into an injected snippet; both modes
+simulation-verified to render valid remote bash). The dynamic coordinator's fault-tolerance is retained
+(vs the fragile static-shard path) for the unattended window. Committed.
+
+**Canary (in flight):** 1 box, `AUTH_MODE=api`, 3 quota-paused **flipt** instances → **dev** ledger
+(`runs/dev/canary_api.jsonl`, isolated from the scored ledger). Doubles as the flipt-loss follow-up: if
+these now WIN under healthy tokens, it corroborates the quota-casualty diagnosis. Validates api
+provisioning + key billing + codex-sub-under-load + cost before any bulk paid spend. **Pending result.**
+
 ## 2026-05-27 (later) — PAUSE: Max quota exhausted mid-run → 341 un-run, resume when budget refreshes
 
 **Not a fault — the pre-registered `QUOTA_EXHAUSTED` PAUSE (§4).** After the auth-fix resume (~22:49Z),
