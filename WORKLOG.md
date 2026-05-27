@@ -16,8 +16,26 @@ empty (48–311s, no output across all stages) — the **same harness mis-record
 verdict (endogenous)"`): 341 rows `LOSS`→`INCOMPLETE`, `fault=QUOTA_EXHAUSTED`. Backed up →
 `run.jsonl.prequota.bak`. Real-output verdicts stand.
 
-**True state on genuine completions: 45 WIN / 16 LOSS = 73.8%** (61 instances with real diffs the
-grader evaluated). Remaining: 341 quota-paused + 326 never-attempted = **667 to run**.
+**Follow-up investigation (the "13 same-repo fast losses" the operator flagged).** The 16 standing
+real-diff LOSSes split on duration: 3 genuine full-length (teleport 2622s@00:58, protonmail
+5489s@06:36 + 1015s@07:51, all *healthy regime*) vs **13 flipt at 196–374s, all 08:18–09:41Z**.
+Smoking gun = a **fleet-wide temporal regime change**, not instance difficulty: flipt WINs (9) all ran
+05:51–07:52 at **764–3025s**; flipt LOSSes (13) all ran 08:18–09:41 at **<400s** — 3× faster than any
+flipt win, and **interspersed with the empty-deaths** inside the quota wall [08:01–11:28Z], where
+**WIN=0 fleet-wide**. Mechanism: under quota throttling a *light* Go repo (flipt) can limp to a thin
+shallow patch (~250s, real diff → graded LOSS) while heavy repos die fully empty. **Same
+`QUOTA_EXHAUSTED` fault, thin-output variant.** Reclassified the 13 → INCOMPLETE/QUOTA by the same
+verdict-independent window rule (zero in-window wins, so no cherry-picking). The 3 healthy-regime
+losses **stand**.
+
+**True state on genuine (quota-healthy) completions: 45 WIN / 3 LOSS = 93.8%** (N=48, skewed to
+early-order teleport/protonmail/flipt — NOT a headline). Remaining: **354 quota-paused + 326
+never-attempted = 680 to run**.
+
+**Process gap (retro action):** `coordinator.py` checkpoints only verdicts, not captured diffs / agent
+logs — so post-teardown the flipt losses were diagnosable *only* from ledger timing/metadata, not the
+actual patches. The coordinator must pull per-instance diff + logs to the laptop (echoes the 2026-05-26
+heavy-patch teardown loss). Until then, diagnosis leans on the timing trail.
 
 **Resume discipline (§4 QUOTA_EXHAUSTED):** byte-identical artifact, no peek-to-decide, same tag v1,
 same order. Diagnosing the fault is not peeking-to-decide (no artifact/order change). **Cannot resume
