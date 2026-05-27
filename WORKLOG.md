@@ -4,6 +4,26 @@ Newest first. This is the **scored-run trail** for the frozen artifact `prereg-p
 development history is in [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md). Per §13, each scored tag
 gets its own worklog; this one carries only `v1`'s run.
 
+## 2026-05-27 (later) — PAUSE: Max quota exhausted mid-run → 341 un-run, resume when budget refreshes
+
+**Not a fault — the pre-registered `QUOTA_EXHAUSTED` PAUSE (§4).** After the auth-fix resume (~22:49Z),
+the fleet ran ~5.5h and exhausted the Max token budget. The `claude` CLI hit the quota wall and died
+empty (48–311s, no output across all stages) — the **same harness mis-recording** as the auth outage:
+~341 quota-deaths written as `LOSS ("no verdict endogenous")` instead of PAUSE. This briefly showed an
+11.2% resolve rate, which was **garbage** (mostly quota-deaths, not capability).
+
+**Reclassified** (mechanical, output-substance criterion — `state==LOSS AND detail startswith "no
+verdict (endogenous)"`): 341 rows `LOSS`→`INCOMPLETE`, `fault=QUOTA_EXHAUSTED`. Backed up →
+`run.jsonl.prequota.bak`. Real-output verdicts stand.
+
+**True state on genuine completions: 45 WIN / 16 LOSS = 73.8%** (61 instances with real diffs the
+grader evaluated). Remaining: 341 quota-paused + 326 never-attempted = **667 to run**.
+
+**Resume discipline (§4 QUOTA_EXHAUSTED):** byte-identical artifact, no peek-to-decide, same tag v1,
+same order. Diagnosing the fault is not peeking-to-decide (no artifact/order change). **Cannot resume
+until Max quota refreshes.** Structural note: 667 heavy instances on one Max sub = a multi-quota-window
+grind; cadence needs a decision (see next steps).
+
 ## 2026-05-27 — FAULT logged: auth outage (operator re-login) → 32 INCOMPLETE, re-run (§4a)
 
 **Fault class: `AUTH_OUTAGE`** (operator-induced platform fault; verdict-independent). Corroboration:
