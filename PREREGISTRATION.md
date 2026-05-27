@@ -349,8 +349,10 @@ This document is a **living dev doc until we commit to a scored run**. At that p
 rotation** (below). Pre-run amendments are new commits + new tags with timestamped rationale; old
 tags never move. Every scored-run artifact cites the tag it ran under (artifacts are committed
 *after* the tag and cite the prereg SHA they ran from — the tag is immutable, so per-instance results
-necessarily post-date it; that commit ordering is itself the trail, Q20). **No tag is cut now** — we
-are still in development.
+necessarily post-date it; that commit ordering is itself the trail, Q20). **FROZEN as
+`prereg-pro-v1` (2026-05-26).** The freeze commit's SHA is recorded in the fresh post-freeze
+`WORKLOG.md`; this document no longer changes except by the pre-run amendment mechanism above (new
+commit + new tag + timestamped rationale, old tags never move).
 
 **Worklog rotation — one fresh worklog per tag.** When the first tag `prereg-pro-v1` is cut, the
 development worklog is archived intact to **`WORKLOG_PREFREEZE.md`** (the frozen record of how the
@@ -388,8 +390,9 @@ comingle").
    before attempts* is platform/INCOMPLETE; the same fault somehow recurring *mid-run despite passing
    preflight* is **endogenous to our frozen harness → LOSS**, not an excuse. Model-agnostic harness
    (no code path branches on model identity, grep-verified).
-4. **§13 self-update + worklog rotation** — flip "No tag is cut now" to the cut tag + SHA, archive
-   `WORKLOG.md` → `WORKLOG_PREFREEZE.md`, and open a fresh `WORKLOG.md` for the scored-run trail.
+4. **§13 self-update + worklog rotation** — ✅ **DONE (2026-05-26).** Declared FROZEN as
+   `prereg-pro-v1`; `WORKLOG.md` archived → `WORKLOG_PREFREEZE.md`; fresh `WORKLOG.md` opened for the
+   scored-run trail with the freeze SHA.
 
 **Not a freeze gate: the §8 self-carved public holdout.** It is a pre-Scale-pitch overfit check, not
 a prerequisite for this public scored run — and the run is structurally overfit-proof anyway: we
@@ -399,5 +402,6 @@ overfit *with*, so a holdout to detect overfit adds nothing here. (The §8 holdo
 before pitching Scale's held-out, as a cross-repo generalization rehearsal — but that's downstream of
 this run, not a gate on it.)
 
-Items 1–3 are committed; only item 4 (the freeze decision) remains. Freezing now would freeze an
-*executable* preregistration, not a promise.
+All four gate items are committed. **The gate is cleared and the artifact is frozen as
+`prereg-pro-v1`** — an *executable* preregistration, not a promise. The scored run proceeds under this
+tag; results are committed after it, citing the freeze SHA (§13).

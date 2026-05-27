@@ -1,0 +1,443 @@
+# swebench-pro worklog
+
+Newest first.
+
+## 2026-05-27 — pre-launch hardening: model-agnostic harness, dynamic dispatch, reproduction-path + anti-cheat
+
+Closed the gap between "fleet exists" and "Scale reproduces a high score with no snags." Freeze-gate
+items 1–3 now done; remaining = cut tag + launch.
+
+**Model-agnostic harness.** `claude()` hardcoded `claude-sonnet-4-5` while `RCA_MODEL` was read-but-
+unused (decorative env var). Wired `MODEL` into the invocation (rung4/rung5); grep-verified no code path
+branches on model identity. Pinned the craft-volley model explicitly: `CRAFT_CODEX_MODEL=gpt-5.5` via
+`codex exec -c model=` (was riding the box's local codex config default — not reproducible). `MAX_OUTER`
+3→5 (env-overridable). Default config byte-identical to the planned Sonnet 4.5 + GPT-5.5 run.
+
+**Dispatch / utilization.** Static `--shard i/N` left early-finishing boxes idle (high task-time
+variance). Explored SQS+IAM+S3 for a fault-tolerant work queue, then **dropped it** — account-specific
+infra hurts reproducibility (tore down the role/bucket I'd created). Landed on: **canonical path stays
+static shards** (what Scale reruns, zero infra, dispatch-independent verdicts), **operator path =
+`coordinator.py`** — laptop-side dynamic dispatch over SSH (always-on laptop holds the queue + the
+authoritative `runs/scored/run.jsonl`), near-100% box utilization, fault tolerant (box-death requeue +
+kill/setup reprovision, hard per-instance ceiling, bounded poison-instance retries, crash-resume).
+
+**Validated on real boxes.** Fleet smoke (NodeBB/JS): provision → npm-install claude+codex → OAuth/codex
+auth push → bootstrap → agent → official grade → ledger, all green (verdict LOSS, irrelevant — plumbing
+is the pass). Coordinator validation (2 ansible, dev ledger): setup-box delegation, AUTH_ASSERT, dynamic
+loop dispatch→record→pull-next→drain→self-teardown, **2/2 WIN**, clean teardown. New code proven.
+
+**Reproduction-path snag audit (calibrated to a SOTA-agent reproducer).** Pinned agent CLI versions
+(`claude-code@2.1.150`, `codex@0.134.0`) — the invocation surface drifts across releases (silent, so
+operator skill can't recover). Stated the reproduction contract: aggregate-within-variance, NOT
+deterministic per-instance replay. Documented the auth-agnostic token contract (Scale = `ANTHROPIC_API_KEY`
++ `OPENAI_API_KEY` or Bedrock; the CLIs pick it up, no harness change). Guarded our Max/$0 billing with
+explicit `AUTH_MODE` + `CLAUDE_SUBSCRIPTION=1` (an API key silently overrides the subscription in the
+precedence order). codex `gpt-5.5` model-ID auth probe → CODEXOK; Anthropic API-key leg known-good.
+
+**Anti-cheat, pre-registered (prereg §4).** The exploit: launder a capability LOSS as a platform-fault
+INCOMPLETE for a free re-roll. Closed it — every instance now records UTC `started_at`/`ended_at`, and
+the prereg commits *pre-run* that an INCOMPLETE overlapping NO documented Anthropic/OpenAI incident is
+reclassified LOSS. `uptime_correlate.py` (stdlib): `snapshot` (capture-at-time, survives page edits) +
+`correlate` (writes FAILURE_ATTRIBUTION.md); coordinator snapshots status every 15 min. Live-tested both
+Statuspages (anthropic operational, openai partial-degradation at probe time).
+
+## 2026-05-26 (later) — §6 defect audit COMPLETE: eligible = 728/731
+
+Relaunch ran clean to completion, no box deaths. **731/731 gold patches graded → 728 eligible,
+3 defects (0.4%).** Defects (gold NOT resolved by the official grader, deterministic on re-grade):
+NodeBB-00c70ce (JS — 4/681 F2P names absent, name-collision/flaky), vuls-bff6b755 (Go),
+ansible-de5858f4 (Py). Frozen lists committed: `runs/audit/{eligible.txt,defects.jsonl}` + shards.
+**Eligible denominator = 728** is the §6 artifact; freeze gate item 1 ✅. The first joint of the
+decomposition (honest denominator) is nailed; 0.4% is low, no denominator-softening to defend.
+
+## 2026-05-26 — lost a 54% audit to a short watchdog; codified overnight recovery
+
+First 4-box §6 audit self-terminated at ~3h / ~396 of 731 graded: `audit_fleet` inherited
+`provision_box.sh`'s +180min shutdown watchdog (far shorter than the ~6-8h run) and no ledger was
+checkpointed off-box → partial grades died with the boxes. $0 tokens, ~$5 EC2, no downstream impact
+(no frozen list existed). My error — 2nd EC2-artifact loss by not checkpointing before the box went
+away. **Fixes:** +720min watchdog; **persistent 60s local checkpoint** (loss ≤1 instance; chose
+polling over push-streaming — idempotent, self-healing, observable, no silent shipper); resume-seed
+on relaunch (pro_run skips graded). **Prereg §4a** codifies overnight runs as box-death-EXPECTED,
+INCOMPLETE-not-LOSS, byte-identical resume, Q22 leakage guard (no peek-at-partials on the scored run;
+audit exempt — grades gold, not our model). Logged the loss straight (the SLOP-table discipline).
+
+## 2026-05-26 — whole-set driver + audit fleet built (both freeze blockers code-complete)
+
+`pro_run.py` — one loop, `--mode audit|run` over the frozen order (`run_order.txt`), `--shard i/N`
+deterministic stripe, auto-resume, image-prune between instances (bounds disk on distinct multi-GB
+images). `audit_fleet.sh` — multi-box orchestration: provision (EBS 100), bootstrap, dispatch shards,
+checkpoint/collect/teardown. EC2-native execution path validated (Max OAuth = $0; codex needs git-init;
+py3.11). PROCEDURE §0: public→private is now a single `if` (swap source + gate); §4a recovery protocol.
+
+## 2026-05-25 (eve) — codex freeze-review → prereg upgraded, then compressed ~20%
+
+Sent the prereg to codex for freeze-readiness. Acted on its catches (all true regardless of freeze
+timing): **Q8** — internal gate ≠ official grader (today's Go bug proved it); verdict is always the
+official regrade, so gate-lying wastes budget but can't manufacture a WIN. **§7/§12/Q19** — disclose
+GPT-5.5 in craft → headline is a *contaminated multi-model system* result; scaffold-only attribution
+stays OPEN (same-model control not budget-viable), C2 softened "cannot"→"far weaker, not ruled out".
+**§11** — "known exploratory exposure" disclosure (31 hardest swept clean pre-freeze, so P2's p_hard
+arm isn't blind). **§6** pinned mechanics + audit-fault handling. **§13** explicit pre-freeze gate.
+Then compressed the doc ~20% (agent is the primary reader; cut human-persuasion prose, dedup'd the
+contamination argument to §12-canonical). Blockers codex flagged = the two I already had: defect
+audit + batch driver.
+
+## 2026-05-25 — pre-freeze trial-by-fire: gate was blind to Go (login-shell PATH reset) — ROOT-FIXED
+
+Hunting for a LOSS on the 31 `hardest_both_reasoning` (all pilots so far passed → low information).
+Built tasks across 3 languages and ran the **$0 gold-patch gate selftest** as a targeted defect
+audit before spending tokens. Two findings, one a freeze-blocker:
+
+- **Concurrency flake (benign):** 5 selftests in parallel under amd64 emulation gave a false
+  `GREEN=False` on the *known-good* ansible-5e369604 (bootstrap had just graded its gold RESOLVED).
+  Serial re-run → PASS. Lesson: **selftests must run serially under emulation**; parallel container
+  contention corrupts the gold pass-check. (RED-on-base was robust throughout; only the gold check flaked.)
+- **Go gate bug (FREEZE-BLOCKER, root-fixed):** flipt & navidrome stayed `GREEN=False` even serially.
+  Official grader on flipt gold → **RESOLVED=True** (100%). So our gate disagreed with the official
+  grader — violating predicate §1.3 (gate == official grader). Root cause: `pro_pilot.install_gate`
+  ran the gate and the agent's box via `docker exec … bash **-lc**`. A **login** shell sources
+  `/etc/profile`, which **resets PATH** to a bare default and drops the image's baked
+  `/go/bin:/usr/local/go/bin` (+ GOPATH, in `Config.Env`). `go` vanished → 0 tests run → false
+  `GREEN=False` on **every Go instance**. Python survived only because `/usr/bin` is on the reset
+  PATH too. In a scored run this gate (the agent's stopping signal) would never go green on Go →
+  the loop burns budget past correct fixes → **every Go instance a false LOSS** (flipt = 8 of the 31
+  hardest, + navidrome). **Fix:** `bash -lc` → `bash -c` (non-login) in gate + box, so the image's
+  baked env is preserved — matching how the official grader runs. General by construction (covers any
+  baked-PATH toolchain: Go/Rust/Node-nvm/…), instance-blind, admissible under §1.1. Verified: flipt,
+  navidrome now RED+GREEN; ansible, openlibrary (Python) still RED+GREEN (no regression).
+
+**Gaps filled:** `tasks/run_order.txt` — canonical lexicographic order over the full 731 (§3 fixed
+run-order; eligible run follows it, skipping defects in place, so order is audit-independent).
+
+**Heavy-repo gate sample (EC2, native amd64, $0 tokens):** qutebrowser (PyQt), element-web (JS 4.7G),
+teleport (Go 2.4G) — all RED+GREEN. The `-c` fix generalizes across heavy toolchains; native path works.
+
+**EC2-native single-instance path — NOW BUILT (was the "package for Scale" gap).** `provision_box.sh`
+(EBS_GB=100) → rsync tree → on box: `dnf install git python3.11`, `uv`, `bash driver/bootstrap.sh`
+(gold smoke validated natively), model auth = **Max OAuth** (keychain `Claude Code-credentials` →
+`~/.claude/.credentials.json`) so it bills Max/$0 **not** the PAYG `ANTHROPIC_API_KEY`; codex needs a
+`git init` at repo root (it refuses untrusted dirs; local worked only because `.git` was present).
+Two faults found+fixed building it: EBS drift (→ EBS_GB param, default 100) and **`log()` crash on
+fresh host** — LEDGER used the import-time default `/tmp/swebench-abduction` which doesn't exist on a
+new box → pilot crashed on its first `log()` before any agent work (a *false* "loop-failure",
+INCOMPLETE per §4, not a LOSS). Root fix: `log()` mkdir's its parent (load-bearing, since stages log
+before setup); bootstrap also pre-makes the dirs for legibility. Decided against rm-before-grading
+(grading is container-isolated; rm would fight the §10 provenance trail).
+
+**Curriculum / edge selection:** built `tasks/features.csv` (731-instance difficulty features: f2p,
+p2p, loc, hunks, ps_len, lang, baseline failure category). Convex hull + Pareto-max → 160 edgiest
+(`edgy_hull.json`). Note: at n=31 the reasoning subset (= `hardest_both_reasoning`) is 29/31 hull
+vertices — the hull adds no selectivity at small n; its compression (160/731) is for full-set coverage,
+not the reasoning hunt. Reasoning-frontier LOSS-hunt target = the 31 (16 light local + 13 heavy on box).
+
+**Hunt result — reasoning-frontier SWEPT CLEAN (0 losses).** Coverage-until-first-LOSS on the 31
+`hardest_both_reasoning`: 4 light local (flipt×2, navidrome, openlibrary) + **13/13 heavy on EC2**
+(vuls×2, element-web×4, qutebrowser×4, NodeBB, teleport) — **every one OFFICIAL RESOLVED.** Plus the
+prior 6. So the hardest stratum is decisively soft for this config: zero method losses found.
+
+**What this is and isn't.** Strong *audition* signal on the hardest stratum, but: (a) config is the
+contaminated codex-volley (Sonnet 4.5 + GPT-5.5, both postdate these repos) — system result, not a
+clean capability claim (a win can't be separated from recall, Q19); (b) the only viable config —
+codex offloads the scarce Claude/Max budget, so single-model clean track isn't budget-feasible
+([[project_swebench_pro_only_viable_config]]); (c) **we found no loss, so the hunt taught us nothing
+about the *method*** — the day's real learning was the 3 harness faults caught before freeze.
+
+**Process loss (honest trail):** tore down the EC2 box before successfully pulling the heavy run
+artifacts (zsh glob nomatch skipped the rsync; `&&` chain terminated anyway). The 13/13 verdicts are
+preserved but the captured heavy patches are gone. No scored-trail violation (dev-mode no-credit),
+but a self-inflicted telemetry loss — verify the pull before teardown next time.
+
+**Next (budget-gated, not yet run):** the frontier is exhausted as a loss source. A loss for this
+config, if one exists, lives in problem-selection we haven't sampled — hull-violation interior
+(small-diff secretly-hard) or the broader `either`-reasoning 324. Solver-weakening is off the table.
+
+## 2026-05-24 — campaign protocol: hardest-first curriculum, two modes, restart-whole-set
+
+Locked the campaign shape before scaling past pilots. It's the audit→recon outer loop at
+campaign scale: a hard failure is the perturbation, "reconsider reasoning" re-abduces the
+method's frame, "fresh go" is the new hypothesis, "descend difficulty" follows the edge.
+
+- **Hardest-first, on PUBLIC only.** Iterate freely on public — the private held-out set is a
+  physical firewall, so public iteration can't contaminate the private grade. Order to maximize
+  information per token: hardest instances first (by what other models failed), descend.
+- **Two modes — keep them separate.** (1) *Exploratory/development*: run SUBSETS freely (hard
+  ones + easy anchors + differential-vs-others) to diagnose method weaknesses; no scoreboard,
+  partial is fine, do NOT full-restart per tweak. (2) *Measurement*: freeze the artifact → run
+  the WHOLE eligible set → that's the number.
+- **A restart is always the WHOLE set.** Partial/failures-only re-runs cherry-pick the
+  denominator and hide regressions (a fix can break what passed). One frozen version × full
+  eligible set, committed as its own sample under a frozen tag; versions never comingle; same
+  disclosed denominator each run. Because a full restart is expensive (731 public × an agent
+  loop), batch general fixes during exploration, validate the freeze candidate on a held-out
+  public slice, then spend one full-set run.
+- **Signal is the differential vs others, not the absolute.** we-fail/others-fail = expected,
+  low info; we-fail/others-PASS = our specific weakness (fix first); we-PASS/others-fail = our
+  edge (the publishable signal). The "vs others" comparison is the tri-abduction third operand.
+- **Generality guard (since public/private share the 11 repos):** every fix must be motivated by
+  a failure CLASS, instance-blind — else we overfit public and waste the one private shot. The
+  private set REVEALS overfitting faithfully; it does not PREVENT it.
+  > **CORRECTION (2026-05-24, later):** "share the 11 repos" is WRONG. Public (11 repos) and the
+  > held-out (12 repos) are **different** repositories (commercial is 18 more). The held-out is a
+  > *cross-repo* generalization test — stronger than the same-repo framing here implied, and the
+  > generality guard matters MORE, not less. The substantive point (keep fixes general) stands.
+- **Attribution guard (`FAILURE_ATTRIBUTION.md`):** don't conclude "our reasoning is wrong" from
+  a loss log (it reads as "almost had it"); use counterfactual/rerun to separate variance / infra
+  / genuinely-hard from a real method gap before spending a restart.
+
+Source for "what others find hard": the eval repo ships `error_analysis/{claude_sonnet_4,gpt4o}.csv`
+(per-instance failure category + rationale — these are FAILURE lists: sonnet failed 533, gpt4o 624).
+
+**Mined → `tasks/pro/strata.json`.** Of 731 public, both SOTA models failed **520 (71%)** — but
+that's dominated by SCAFFOLD failures (309 context-overflow / endless-file-reading by sonnet),
+i.e. *their harness* got lost, not problem difficulty. Separating scaffold from reasoning:
+- **hardest_both_reasoning = 31** — both fail AND both via reasoning category (wrong_solution /
+  misunderstood / wrong-file). The genuine diagnosis frontier → the hardest-first curriculum.
+- **edge_both_scaffold = 172** — both fail via scaffold limits. Likely OUR edge: bounded-read HG
+  recon shouldn't context-overflow. we-pass-here = the publishable comparative-advantage signal.
+- **easy_anchors_neither_fail = 94** — both passed → controls; failing one = our bug.
+
+Confirms the comparative-advantage thesis: most of "Pro is brutal" is agent-scaffold limits, not
+reasoning. Curriculum: start on the 31 hardest, salt with easy anchors, watch the 172 for edge.
+
+## 2026-05-24 — first Pro pilot: end-to-end RESOLVED (public, local, agent loop)
+
+Wired `pro_pilot.py` (reuses rung5 recon/craft/audit verbatim + Pro setup/gate) and ran the
+real agent loop on `instance_ansible__ansible-5e369604…` (public set, local Docker, emulated).
+
+- **Result: RESOLVED, officially.** Agent produced a 74-line source-only patch to
+  `lib/ansible/utils/display.py` (matches the gold file). Live gate GREEN; official Pro grader
+  on the captured source-only diff (fresh container) → `accuracy 1.0`, `true`. F2P 5/5.
+- **Pipeline validated end-to-end:** setup (entrypoint-override keepalive) → recon → craft →
+  audit → source-only capture (`git diff` + `_strip_test_blocks`) → official grade. The
+  recon/craft/audit reuse worked unchanged (they take box+gate as opaque helpers).
+- **Two pilot-found infra bugs (the point of pilots), both fixed token-free:**
+  1. Pro image `ENTRYPOINT=[/bin/bash]` → `… sleep infinity` ran `bash sleep` and exited.
+     Fix: `docker run --entrypoint sleep`.
+  2. `official_grade` threw `ValueError: not enough values to unpack` — the Pro task omitted
+     `repo`, so `image_uri`'s `repo.split("/")` failed. Fix: `make_task` now emits `repo`.
+     (Surfaced as a phantom gate/official "divergence"; re-grading the captured patch with the
+     fix → `true`. No real divergence — gate == grader holds.)
+- **Cost:** one agent loop's tokens (authorized). Everything else ($0): census, 4-repo gold
+  smoke, gate selftest, both bug fixes, the re-grade.
+
+Next: second pilot on a non-Python repo (navidrome/Go or NodeBB/JS) to shake the loop on a
+different language/runner; then offline-per-repo mapping before any batch.
+
+## 2026-05-24 — Pro grader smoke: gold patch → RESOLVED ($0, local Docker)
+
+First contact with SWE-bench Pro. Ran the official Pro evaluator (`scaleapi/SWE-bench_Pro-os`
+`swe_bench_pro_eval.py --use_local_docker`) on one instance with the **gold patch** — the
+PROCEDURE §"sequence" step-1 sanity check. No EC2, no model tokens, no driver code.
+
+- **Instance:** `instance_ansible__ansible-5e369604…-v0f01c…` (ansible, single test file
+  `test/units/utils/test_display.py` — pure Python, no DB/Qt, cheapest cell).
+- **Result:** `Overall accuracy: 1.0`, `eval_results.json → true`. parser.py emitted 7 PASSED /
+  2 SKIPPED; resolution check (all F2P pass) → RESOLVED. ~25s first run (incl. amd64 pull under
+  Rosetta), ~2s cached.
+- **Validated end-to-end:** image pull (`jefzda/sweap-images:<tag>`, amd64) → `before_repo_set_cmd`
+  → `run_script.sh <test_files>` → `parser.py` → resolution. The grading model is sound; the
+  source-only/gold-test restore is **built into Pro's run_script** (`git checkout <commit> --
+  <test_files>`), confirming the PRO_PORT note.
+- **Adapter gotchas (folded into PROCEDURE §1):** (1) `fail_to_pass`/`pass_to_pass`/
+  `selected_test_files_to_run` are `eval()`'d → must be Python-literal **strings**, not arrays;
+  (2) harness reads **lowercase** `fail_to_pass` (HF dataset ✓; repo jsonl ships uppercase —
+  inconsistent); (3) Dockerfiles + run_scripts read from the cloned eval repo on disk (hard dep);
+  (4) image URI via `get_dockerhub_image_uri` — only `-vnan` stripped, other `-v<sha>` kept.
+
+Next: `make_task.py` Pro mode emitting this exact shape, then the rung5 gate swap (run_script.sh
++ parser.py, `/app`, no conda).
+
+## 2026-05-24 — source-only gate committed + rec #2 re-confirmed
+
+Applied FAILURE_ATTRIBUTION.md (verified repo) to pro. The four recs map: #1 source-only
+gate and #4 de-biasing protocol were already in hand (the gate as an uncommitted diff, the
+protocol as `hypotheses/97-to-100.md`); #3 (from-scratch run) stays future.
+
+- **#1 committed** (`7e3f697`): the iteration gate and `verify_gate` now `git checkout {tsha}
+  -- {testfiles}` to restore gold tests before every run; recon/craft prompts state tests are
+  gold-locked; `_strip_test_blocks` gained the `_is_testfile` convention fallback for the
+  private split. py_compile clean; all three callers (`helpers`/`verify_gate`/`capture_patch`)
+  thread `tsha`.
+- **#2 re-confirmed** via `testify.py` on django-14170 (`patch.diff` from the 20260524T031903Z
+  run). Local verdict == official, by construction: `RESOLVED_NO`, F2P 2/0, P2P 67 pass / **9
+  fail** — the BETWEEN-filter index optimization assertions the agent weakened ("Tests updated
+  to reflect this intentional behavior change," craft log). pred sha256 `cecf6d72…`. The
+  source-only capture strips the test edit, so gold-test restoration exposes the false-green:
+  local-green/official-red is now impossible for this class. (Re-confirmation of the earlier
+  same-day lever-#3 catch, not a new finding.)
+
+## 2026-05-24 — rename: the bench attestation tool is `testify`
+
+`attest.py` → `testify.py`; the rung5 function/stage/ledger fields are `testify*`. Reason:
+the global `/attest` skill (sweep's kanban behavioral gate) is a different thing — `testify`
+is deterministic bench code that re-grades a captured prediction, not an LLM skill. The
+*concept* word "attestation" (official-attested win, attestation trail) stays as-is; only the
+tool name moved.
+
+## 2026-05-24 — rung5: attestation contract wired into the driver
+
+`driver/rung5_driver.py` = rung4 + two changes:
+1. **Local dispatch.** `ssh()` now runs commands in a local shell (`_localize` drops `sudo`,
+   forces `--platform linux/amd64` on pull/run); box/gate helpers call `docker exec`
+   directly. Invocation drops the box-env arg: `rung5_driver.py <tasks.json> <iid>...`.
+2. **The contract.** After `capture_patch`, `testify()` re-grades the serialized
+   source-only prediction on a FRESH clean container via swebench's own parser
+   (`get_logs_eval`/`get_eval_tests_report`/`get_resolution_status`). The **final verdict is
+   the attestation, not the agent's audit**: the PATCHES ledger records `submittable` (=
+   resolved AND decided) + `prediction_sha256`, and `gate_divergence_caught` fires when the
+   agent said RESOLVED but the clean re-grade is red. No green attestation → not submittable.
+   Markers wrapped in Python, not shell, to dodge the nested single-quote trap.
+
+**Validated (contract path, not full loop).** Exercised the new code through the driver's
+own module on pytest-5787: `decision=decided, resolved=false, RESOLVED_NO`,
+`p2p_failures=[test_deserialization_failure]`, sha256 `9c7c4f3d…` — identical to the
+standalone `testify.py`. Fresh container spun and torn down by the function; no leak. So a
+real run where the agent claims RESOLVED here yields `gate_divergence_caught=true,
+submittable=false`.
+
+**Not yet run:** the full recon→craft→audit loop locally under rung5 (token/time cost). The
+agent loop is host-agnostic already (claude on the plan machine, box/gate over docker exec),
+so the local seam is the only untested-at-scale part. Next: a single full-loop smoke run on a
+cheap instance to confirm the loop drives end-to-end under local dispatch.
+
+## 2026-05-24 — django-14170 re-grade: lever #3 confirmed on the 2nd case
+
+Ran `testify.py` on django-14170 (prediction from
+`results/django__django-14170/20260524T031903Z/patch.diff`). Verdict matches the committed
+official report **field-for-field**: `resolved=false`, F2P pass=2 (no failures), **9 P2P
+regressions** — the identical 9 (Extract-year BETWEEN-filter optimization + the
+`test_extract_trunc` DateFunction/WithTimeZone suite). sha256 `cecf6d72…`.
+
+Same divergence signature as pytest-5787: our committed ledger shows craft `claim=true`,
+audit `verdict=RESOLVED`, with the regressed tests sitting in `passing_tests_our_gate.txt` —
+green on the live tree, red on clean re-attestation of the captured prediction. Two
+independent gate-divergence cases now reproduce official under the contract. The lever isn't
+a one-instance fluke; both targets in PRO_PORT's gate-divergence row are closed by clean
+apply + official-parser verdict.
+
+## 2026-05-24 — `testify` mode built + mechanically validated
+
+`driver/testify.py`: clean-base apply of a serialized prediction → pinned-test run → verdict
+from swebench's **own** parser (`get_logs_eval` + `get_eval_tests_report` +
+`get_resolution_status`), so the local verdict agrees with the official grader by
+construction, not by a hand-rolled re-implementation. Emits a structured verdict +
+`prediction_sha256` (the hash-as-precondition), writes `iso/<iid>/testify.json`, one-shot
+teardown. `--keep` to retain the container.
+
+Re-ran pytest-5787 through it: `resolved=false`, `RESOLVED_NO`, F2P pass=2 (no failures),
+P2P fail=`[test_deserialization_failure]`, P2P pass=122, sha256
+`9c7c4f3d…`. Matches the official report field-for-field — the manual repro below, now
+mechanical. (One bug en route: double-prefixed the image namespace; `instance_image_key`
+already includes `swebench/`.)
+
+Next: re-grade django-14170 (second gate-divergence target) the same way.
+
+## 2026-05-24 — attestation re-grade: pytest-5787 (lever #3 validated)
+
+**Attribution.** Re-attestation of an *existing* committed artifact, not a new solve.
+The graded patch is `swebench-verified/results/pytest-dev__pytest-5787/20260523T213600Z/patch.diff`,
+produced by the frozen artifact on 2026-05-23; official verdict already recorded there as
+`resolved: false`. This run re-grades that exact prediction locally. Telemetry only —
+no-credit rule (`PRO_PORT.md`); not routed to any `results/` tree.
+
+**Result — local attestation = official, deterministically.** Applied the committed
+prediction to a clean local container (test patch committed off-tree, then `git apply`
+the source-only prediction) and ran the pinned suite: **1 failed, 124 passed**. Both
+FAIL_TO_PASS pass (`test_chained_exceptions[TestReport|CollectReport]`); the PASS_TO_PASS
+`test_deserialization_failure` fails — exactly the official report.
+
+**Validated against the Verified worklog + ledger.** The Verified WORKLOG's final taxonomy
+(line 218) files pytest-5787 as a reasoning loss, "applied cleanly, graded UNRESOLVED —
+oversized ~10KB patch." That's half the story. The committed ledger
+(`results/.../20260523T213600Z/ledger.jsonl`) shows **craft claim=true, audit
+verdict=RESOLVED**, and `test_deserialization_failure` sits in `passing_tests_our_gate.txt`
+— yet official + this clean-apply repro show it failing. So it is a genuine **gate-divergence**
+(matching PRO_PORT's failed-set table), compounded with overfit: the fix is wrong (regresses
+a P2P) **and** our gate wrongly passed it. Earlier I called it "overfit, not divergence" —
+that was wrong; it is both, and the gate-divergence is the part the attestation lever closes.
+
+**Mechanism (the PRO_PORT thesis, confirmed).** Our gate earned green on the **live container
+tree**, but the **captured source-only prediction** (`git diff HEAD`) applied to a clean base
+fails — the artifact that earned green ≠ the artifact that gets graded. Concretely the patch
+splits deserialization into chain / non-chain branches and breaks the unknown-entry-type
+guard: `_report_unserialization_failure` no longer raises, so `test_deserialization_failure`
+gets "DID NOT RAISE RuntimeError". The live-tree gate masked it; the clean re-attestation
+surfaces it.
+
+**Lever validated.** An attestation gate that (a) applies the *serialized source-only*
+prediction to a clean base and (b) derives the verdict from the *full pinned* report via
+swebench's own parser — not the agent's prose tally on the live tree — goes red here,
+matching official, and would refuse the submission. This is the hash-as-precondition contract
+(`PRO_PORT.md` lever #3), confirmed reproducible locally. Next: lift it into a mechanical
+`testify` mode (clean apply + official parser + structured verdict + prediction hash), then
+re-grade django-14170 the same way.
+
+## 2026-05-24 — local isolation harness for the 16 not-won
+
+Set up local-Docker iteration on the Mac so the known Verified failures can be worked
+without provisioning EC2. Telemetry only — conversions on this set are not Verified wins
+(no-credit rule, `PRO_PORT.md`).
+
+- **OrbStack**: engine wedged in "Starting" (stale `vmgr` handoff socket lock); fixed by
+  full quit + kill leftover procs + relaunch. Native `aarch64`; x86_64 eval images run
+  under `--platform linux/amd64` (Rosetta). Confirmed: `alpine uname -m` → `x86_64`.
+- **Tasks**: generated all 16 not-won JSONs into `tasks/not_won/` via the Verified venv
+  (`../swebench-verified/.venv`, swebench 4.1.0). Image-name convention intact
+  (`swebench/sweb.eval.x86_64.<repo>_1776_<repo>-<n>`).
+- **Harness**: wrote `driver/local_iso.sh` — the EC2 driver's setup→warm→helpers flow with
+  the ssh/sudo/platform substitutions (documented in `LOCAL_ISO.md`). Produces
+  `iso/<iid>/{cid,failbase,gate,box}` for a manual edit→gate loop.
+- **Validated end-to-end** on django-15987: pull → run → test-patch apply (committed off-tree)
+  → gate. Fail-on-base capture shows the F2P test failing as expected
+  (`test_fixture_dirs_with_default_fixture_path_as_pathlib`: ImproperlyConfigured not raised),
+  58 tests in 0.13s.
+
+Next: pick a lever to validate. Lowest-friction is suite-selection on a heavy-suite hang
+(sympy/matplotlib) or the gate-divergence pair (pytest-5787, django-14170) for the
+attestation contract.
+
+## 2026-05-24 — capture fix verified + 2nd pilot (NodeBB/JS) RESOLVED; PROCEDURE load-bearing
+
+- **NodeBB capture bug:** the 35-min "hang" was the final grade choking on a 3.1 MB captured
+  patch — redis `appendonly.aof` (runtime artifact) swept in by `git add -A`. The agent loop
+  itself was fine (~11 min, RESOLVED/GREEN). Fixed `_strip_test_blocks`: cross-language artifact
+  denylist + 256 KB per-file cap. Re-grading the recovered clean patch (3.1 MB → 4.4 KB):
+  **official RESOLVED, accuracy 1.0, 40 s**. Two pilots now officially resolved: ansible (Py) +
+  NodeBB (JS).
+- **Held-out reality:** Scale *runs the agent* on the private set (858, 12 different repos),
+  SWE-Agent baseline, 200-turn — **no external submission mechanism**. So held-out is
+  relationship-gated, not the load-bearing result; public + self-built controls (contamination
+  subset, same-model scaffold arm, per-repo generalization) are the defensible claim. Prereg §9
+  patched; §7 names SWE-Agent as the baseline scaffold.
+- **Packaging = the EC2 box.** Reproduction artifact is provision + run-the-driver (data-source-
+  agnostic `task.json`), for skeptics and for Scale alike — not harness-conformance. Residual:
+  model creds + sandbox-trust on secret data.
+- **PROCEDURE.md rewritten to load-bearing:** pinned versions (dataset rev, eval-repo commit,
+  pkg versions), $0 gold-smoke as the env self-test (step 0.5), real commands (BENCH=pro
+  make_task, pro_pilot --selftest/run, official grade), dev-local vs scored-EC2 split, the
+  pilot-found gotchas, and the "derive don't trust" verify recipe.
+
+## 2026-05-24 — hardest-6 validation batch: 6/6 RESOLVED (telemetry) + Go capture bug found/fixed
+
+Dev-mode subset peek (prereg §2 — NOT a scored measurement; these are labeled-set instances,
+telemetry only). Ran 6 light-infra members of `hardest_both_reasoning` (3 ansible/Py + 3
+navidrome/Go — cells both sonnet-4 AND gpt4o failed on REASONING) through `pro_batch.sh`.
+
+- **Result: 6/6 officially RESOLVED.** Sonnet 4.5 + recon/craft/audit resolved all six. Real
+  source wins (grader restores gold tests before grading, so TRUE is on the source fix). One
+  (ansible-d62496fe) took **3 outer-loop iterations** (NOT_RESOLVED → re-diagnose → NOT_RESOLVED
+  → re-diagnose → RESOLVED) — the audit→recon self-correction was load-bearing. Rest first-try.
+- **Framing:** same model family as the failing baseline (4.5 vs sonnet-4) ⇒ largely scaffold/
+  loop, not a bigger model (§12 C1). Strong frontier signal — but **n=6, only 2 repos, light
+  subset**; does not predict the heavy/PyQt repos in the full 31. Telemetry, not a score.
+- **Bug found (the subset's payoff):** navidrome captures leaked gold `*_test.go` changes —
+  Go/Ginkgo `selected_test_files` are test FUNCTION names, so exact-match stripping never fired.
+  Not a false green (gold restored), but a source-only violation that would hit every Go/JS
+  instance + risk false-greens on a no-restore path. **Fixed** (ed005d3): always apply the
+  language-aware test convention + extend globs (Go/JS) + capture by test_patch PATHS. Residual:
+  agent `fix_*.py` scratch scripts still leak (follow-up).
+- **Verdict on "did we learn anything":** yes — a real capture bug → fixed before the full set
+  (per the criterion). The wins also confirm the pipeline clears the light reasoning frontier.
+  Next: full 31 on EC2-native after token refill (heavy/PyQt repos), with the Go-clean capture.
+
