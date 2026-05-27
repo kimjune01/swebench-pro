@@ -134,10 +134,16 @@ def main():
             if iid in done and iid not in args.redo:
                 continue  # resume: skip recorded (prereg §3)
             t0 = time.time()
+            started_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t0))
             print(f"[{k}/{len(ids)}] {args.mode} {iid} ...", flush=True)
             state, detail = act(iid)
+            # UTC wall-clock start/end: lets every INCOMPLETE be correlated against provider-incident
+            # timelines (prereg §4) — an INCOMPLETE outside any Anthropic/OpenAI outage is a suspicious
+            # re-roll, not a platform fault. Records the audit trail that closes that cheating vector.
             rec = {"instance_id": iid, "mode": args.mode, "state": state, "detail": detail,
-                   "secs": round(time.time() - t0)}
+                   "secs": round(time.time() - t0),
+                   "started_at": started_at,
+                   "ended_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
             f.write(json.dumps(rec) + "\n"); f.flush()
             print(f"    -> {state} ({rec['secs']}s) {detail[:80]}", flush=True)
             print("RESULT_JSON " + json.dumps(rec), flush=True)  # coordinator parses this off stdout

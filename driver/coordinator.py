@@ -24,7 +24,7 @@ import argparse, json, os, pathlib, queue, re, subprocess, sys, threading, time
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 DRIVER = REPO / "driver"
-LEDGER = REPO / "runs" / "scored" / "run.jsonl"
+LEDGER = REPO / "runs" / "scored" / "run.jsonl"   # authoritative; overridable via --ledger (dev validation)
 FLEET = str(DRIVER / "run_fleet.sh")
 SSH = ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ConnectTimeout=15"]
 
@@ -171,7 +171,12 @@ def main():
     ap.add_argument("--max-attempts", type=int, default=2, help="per-instance attempts before recording INCOMPLETE")
     ap.add_argument("--box-restart-max", type=int, default=3, help="provision retries before a worker retires")
     ap.add_argument("--instance-ceiling", type=int, default=36000, help="hard per-instance SSH timeout (s); > worst-case MAX_OUTER*caps")
+    ap.add_argument("--ledger", help="ledger path (default runs/scored/run.jsonl; use a dev path for validation)")
     args = ap.parse_args()
+
+    global LEDGER
+    if args.ledger:
+        LEDGER = pathlib.Path(args.ledger)
 
     auth_mode = os.environ.get("AUTH_MODE", "subscription")
     if auth_mode != "subscription":
@@ -186,6 +191,15 @@ def main():
     log(f"eligible={len(elig)}  done={len(done)}  todo={len(todo)}  boxes={args.boxes}")
     if not todo:
         log("nothing to do — ledger already complete"); return
+
+    # capture-at-time provider status every 15 min (prereg §4: snapshot during the run so a later
+    # Statuspage edit can't move the goalposts on which INCOMPLETEs were real platform faults)
+    def _snapshotter():
+        while True:
+            subprocess.run([sys.executable, str(DRIVER / "uptime_correlate.py"), "snapshot"],
+                           capture_output=True)
+            time.sleep(900)
+    threading.Thread(target=_snapshotter, daemon=True, name="status-snap").start()
 
     q = queue.Queue()
     for i in todo:

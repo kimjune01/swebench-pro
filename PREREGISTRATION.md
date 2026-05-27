@@ -78,6 +78,16 @@ verdict-independent but **not** difficulty-independent, hence §3's fixed order)
   un-run ⇒ run is non-headline until completed (§5).
 - **Never** move LOSS→INCOMPLETE after logs are visible; **never** exclude an instance because we
   failed it (defects come only from the §6 audit).
+- **External corroboration of platform faults (pre-registered anti-cheat).** The exploitable move in
+  this state machine is laundering a capability LOSS as an INCOMPLETE to earn a free re-roll (§3
+  re-runs INCOMPLETEs, never LOSSes). To foreclose it we commit *in advance*: every instance records
+  UTC `started_at`/`ended_at`, and every INCOMPLETE is cross-checked against the **provider incident
+  timelines** (Anthropic + OpenAI Statuspage incident history, snapshotted during the run so a later
+  page edit can't move the goalposts). An INCOMPLETE whose window **overlaps no documented provider
+  incident** has no external fault to stand on → it is **reclassified LOSS and stands** (not re-run).
+  This is bidirectional: it proves the platform faults were real *and* proves we didn't manufacture
+  them. Mechanism: `driver/uptime_correlate.py`; report lands in `FAILURE_ATTRIBUTION.md`. Committing
+  pre-run is the point — the rule cannot be selectively invoked after seeing which losses we'd re-roll.
 
 ### 4a. Overnight / unattended runs — interruption & recovery protocol
 
