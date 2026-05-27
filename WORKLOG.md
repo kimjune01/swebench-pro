@@ -2,6 +2,45 @@
 
 Newest first.
 
+## 2026-05-27 — pre-launch hardening: model-agnostic harness, dynamic dispatch, reproduction-path + anti-cheat
+
+Closed the gap between "fleet exists" and "Scale reproduces a high score with no snags." Freeze-gate
+items 1–3 now done; remaining = cut tag + launch.
+
+**Model-agnostic harness.** `claude()` hardcoded `claude-sonnet-4-5` while `RCA_MODEL` was read-but-
+unused (decorative env var). Wired `MODEL` into the invocation (rung4/rung5); grep-verified no code path
+branches on model identity. Pinned the craft-volley model explicitly: `CRAFT_CODEX_MODEL=gpt-5.5` via
+`codex exec -c model=` (was riding the box's local codex config default — not reproducible). `MAX_OUTER`
+3→5 (env-overridable). Default config byte-identical to the planned Sonnet 4.5 + GPT-5.5 run.
+
+**Dispatch / utilization.** Static `--shard i/N` left early-finishing boxes idle (high task-time
+variance). Explored SQS+IAM+S3 for a fault-tolerant work queue, then **dropped it** — account-specific
+infra hurts reproducibility (tore down the role/bucket I'd created). Landed on: **canonical path stays
+static shards** (what Scale reruns, zero infra, dispatch-independent verdicts), **operator path =
+`coordinator.py`** — laptop-side dynamic dispatch over SSH (always-on laptop holds the queue + the
+authoritative `runs/scored/run.jsonl`), near-100% box utilization, fault tolerant (box-death requeue +
+kill/setup reprovision, hard per-instance ceiling, bounded poison-instance retries, crash-resume).
+
+**Validated on real boxes.** Fleet smoke (NodeBB/JS): provision → npm-install claude+codex → OAuth/codex
+auth push → bootstrap → agent → official grade → ledger, all green (verdict LOSS, irrelevant — plumbing
+is the pass). Coordinator validation (2 ansible, dev ledger): setup-box delegation, AUTH_ASSERT, dynamic
+loop dispatch→record→pull-next→drain→self-teardown, **2/2 WIN**, clean teardown. New code proven.
+
+**Reproduction-path snag audit (calibrated to a SOTA-agent reproducer).** Pinned agent CLI versions
+(`claude-code@2.1.150`, `codex@0.134.0`) — the invocation surface drifts across releases (silent, so
+operator skill can't recover). Stated the reproduction contract: aggregate-within-variance, NOT
+deterministic per-instance replay. Documented the auth-agnostic token contract (Scale = `ANTHROPIC_API_KEY`
++ `OPENAI_API_KEY` or Bedrock; the CLIs pick it up, no harness change). Guarded our Max/$0 billing with
+explicit `AUTH_MODE` + `CLAUDE_SUBSCRIPTION=1` (an API key silently overrides the subscription in the
+precedence order). codex `gpt-5.5` model-ID auth probe → CODEXOK; Anthropic API-key leg known-good.
+
+**Anti-cheat, pre-registered (prereg §4).** The exploit: launder a capability LOSS as a platform-fault
+INCOMPLETE for a free re-roll. Closed it — every instance now records UTC `started_at`/`ended_at`, and
+the prereg commits *pre-run* that an INCOMPLETE overlapping NO documented Anthropic/OpenAI incident is
+reclassified LOSS. `uptime_correlate.py` (stdlib): `snapshot` (capture-at-time, survives page edits) +
+`correlate` (writes FAILURE_ATTRIBUTION.md); coordinator snapshots status every 15 min. Live-tested both
+Statuspages (anthropic operational, openai partial-degradation at probe time).
+
 ## 2026-05-26 (later) — §6 defect audit COMPLETE: eligible = 728/731
 
 Relaunch ran clean to completion, no box deaths. **731/731 gold patches graded → 728 eligible,
