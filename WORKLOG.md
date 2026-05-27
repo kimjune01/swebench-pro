@@ -16,22 +16,29 @@ gets its own worklog; this one carries only `v1`'s run.
 - **Not difficulty-correlated:** WINs continued as late as 05:11 (boxes on still-valid cached tokens
   completed; only token-*refresh* attempts failed) → the failures track auth, not instance hardness.
 
-**Classification (pre-registered, mechanical — NOT discretion):** §13 regression-check #1 states
-environment-induced empty output "reads as INCOMPLETE, never a method LOSS." The criterion keyed on is
-mechanical — `state==LOSS AND detail startswith "no verdict (endogenous)"` (empty-all-stages) — not on
-timing or which losses we'd prefer to re-roll. The 4 genuine `"not resolved"` LOSSes (agent produced a
-real diff the grader rejected, incl. 3 flipt *inside* the window) **stand as LOSS**.
+**Classification (pre-registered, mechanical, verdict-INDEPENDENT — NOT discretion):** the trigger is
+**outage-window membership** — `started_at ∈ [04:42:39Z, 05:29:14Z]` (first..last empty-output start)
+→ INCOMPLETE, **regardless of verdict**. This supersedes a first-pass empty-output-only criterion: that
+version would have kept in-window WINs while re-running in-window losses — an asymmetry that is exactly
+the loss-laundering the §4 anti-cheat forbids. Treating the *whole* window as contaminated and
+re-running **wins too** is the verdict-independent version. Re-running the 2 in-window WINs may not
+reproduce them; accepting that risk is the cost that keeps the rule honest. Grounded in §13
+regression-check #1 (environment-induced results are platform faults, INCOMPLETE not method LOSS).
+
+**Out-of-window terminal verdicts STAND** (clean auth): 23 WIN + 1 LOSS (the genuine 2622s teleport
+@ 00:58). Only the documented fault window is re-run.
 
 **Action (§4a recovery, byte-identical artifact, same tag — NOT a v2 restart):**
-1. Ledger backed up → `runs/scored/run.jsonl.preauthoutage.bak` (original LOSS rows preserved).
-2. 32 rows reclassified `LOSS`→`INCOMPLETE` (`fault=AUTH_OUTAGE`, `orig_state=LOSS`, reclass_note).
-   `load_done()` treats INCOMPLETE as runnable → they re-dispatch on resume.
-3. Coordinator stopped; creds re-pushed to all 4 boxes from the now-valid keychain; auth verified
-   before resume.
+1. Ledger backed up → `runs/scored/run.jsonl.preauthoutage.bak` (every original verdict preserved).
+2. **37 in-window rows reclassified → `INCOMPLETE`** (`fault=AUTH_OUTAGE`, `orig_state`, reclass_note):
+   35 LOSS (32 empty + 3 flipt `not resolved`) + **2 WIN**. `load_done()` treats INCOMPLETE as
+   runnable → all 37 re-dispatch on resume.
+3. Coordinator stopped; creds re-pushed to all 4 boxes from the now-valid keychain; **auth verified
+   (`AUTHOK` on coord1)** before resume.
 
-**State at fault:** 61 graded rows → 25 WIN, 4 LOSS (genuine), 32 INCOMPLETE (auth, to re-run). True
-rate on genuine completions = 25/29. Note for final tally: re-run appends fresh terminal rows; dedupe
-by `instance_id` last-wins (as `load_done` does) so the INCOMPLETE rows don't double-count.
+**State at fault:** 61 graded rows → **23 WIN + 1 LOSS terminal (out-of-window), 37 INCOMPLETE
+(in-window, to re-run)**. Note for final tally: re-run appends fresh terminal rows; dedupe by
+`instance_id` last-wins (as `load_done` does) so the INCOMPLETE rows don't double-count.
 
 ## 2026-05-26 — FROZEN: `prereg-pro-v1` cut, scored run begins
 
