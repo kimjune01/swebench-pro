@@ -100,12 +100,19 @@ def kill_box(name):
 def run_instance(env, iid, ceiling):
     """SSH-run exactly one instance on the box. Returns (rec_dict | None). None = box/transport fault."""
     pem = f"/tmp/{env['KEY']}.pem"
-    # CLAUDE_SUBSCRIPTION=1 forces the Max-OAuth path (plan_env drops any stray ANTHROPIC_API_KEY),
-    # so our run bills Max/$0 even if a key ever leaks into the box env. Scale's reproduction omits
-    # this and instead sets ANTHROPIC_API_KEY / OPENAI_API_KEY (or Bedrock) — the CLIs pick it up.
+    # AUTH_MODE controls billing. subscription: CLAUDE_SUBSCRIPTION=1 forces the Max-OAuth path
+    # (plan_env drops any stray ANTHROPIC_API_KEY) -> Max/$0. api: export ANTHROPIC_API_KEY from the
+    # box's 600 key file and leave CLAUDE_SUBSCRIPTION unset so plan_env honors the key (Sonnet PAID);
+    # codex's own ~/.codex/auth.json (sub) is untouched either way.
+    auth_mode = os.environ.get("AUTH_MODE", "subscription")
+    if auth_mode == "api":
+        auth = ("export ANTHROPIC_API_KEY=$(cat ~/.swebench-pro/anthropic.key) && "
+                "env PATH=$PATH ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY")
+    else:
+        auth = "export CLAUDE_SUBSCRIPTION=1 && env PATH=$PATH CLAUDE_SUBSCRIPTION=1"
     remote = ("cd ~/swebench-pro && . driver/.proenv && "
-              "export PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH CLAUDE_SUBSCRIPTION=1 && "
-              f"env PATH=$PATH CLAUDE_SUBSCRIPTION=1 $PY driver/pro_run.py --mode run --only {iid} 2>&1")
+              "export PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH && "
+              f"{auth} $PY driver/pro_run.py --mode run --only {iid} 2>&1")
     try:
         r = subprocess.run(SSH + ["-i", pem, f"ec2-user@{env['PUBIP']}", remote],
                            capture_output=True, text=True, timeout=ceiling)
@@ -179,11 +186,14 @@ def main():
         LEDGER = pathlib.Path(args.ledger)
 
     auth_mode = os.environ.get("AUTH_MODE", "subscription")
-    if auth_mode != "subscription":
-        sys.exit(f"AUTH_MODE={auth_mode}: the coordinator is subscription-only (operator path). For "
-                 "API/Bedrock reproduction use the canonical static shard with your keys "
-                 "(pro_run --mode run --shard i/N; see PROCEDURE 'Token access').")
-    log("================ AUTH_MODE=subscription  ->  billing: Max/$0 (per-box AUTH_ASSERT at setup) ================")
+    if auth_mode not in ("subscription", "api"):
+        sys.exit(f"AUTH_MODE={auth_mode}: coordinator supports 'subscription' (Max/$0 OAuth) or 'api' "
+                 "(Sonnet bills ANTHROPIC_API_KEY, codex stays on sub). For Bedrock/Vertex use the "
+                 "canonical static shard (pro_run --shard i/N; see PROCEDURE 'Token access').")
+    if auth_mode == "subscription":
+        log("================ AUTH_MODE=subscription  ->  billing: Max/$0 (per-box AUTH_ASSERT at setup) ================")
+    else:
+        log("================ AUTH_MODE=api  ->  Sonnet bills ANTHROPIC_API_KEY (PAID); codex on sub; CLAUDE_SUBSCRIPTION unset ================")
 
     elig = pathlib.Path(args.eligible).read_text().split()
     done = load_done()

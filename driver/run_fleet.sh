@@ -27,12 +27,19 @@ AUTH_MODE="${AUTH_MODE:-subscription}"   # explicit billing choice — asserted,
 
 # --- local-side: extract Max OAuth creds from the macOS keychain to a temp file for scp ---
 # claude reads ~/.claude/.credentials.json on Linux; on this Mac it lives in the keychain.
+APIKEY_FILE="${APIKEY_FILE:-$HOME/.swebench-pro/anthropic.key}"
 stage_creds() {
   # ---- explicit auth-mode gate (loud banner; refuse to launch on the wrong billing) ----
+  if [ "$AUTH_MODE" = "api" ]; then
+    echo "================ AUTH_MODE=api  →  Sonnet bills ANTHROPIC_API_KEY (PAID); codex on sub ================"
+    [ -s "$APIKEY_FILE" ]           || { echo "FATAL: $APIKEY_FILE missing (api mode needs the key)"; exit 1; }
+    [ -s "$HOME/.codex/auth.json" ] || { echo "FATAL: ~/.codex/auth.json missing (codex not logged in)"; exit 1; }
+    [ -s "$ELIGIBLE" ]              || { echo "FATAL: $ELIGIBLE missing — run the §6 audit first"; exit 1; }
+    return 0
+  fi
   if [ "$AUTH_MODE" != "subscription" ]; then
-    echo "FATAL: this fleet is subscription-only (bills Max/\$0 via pushed OAuth)."
-    echo "  AUTH_MODE=$AUTH_MODE is the *reproduction* path — run it via the canonical static shard"
-    echo "  with your own keys instead:  ANTHROPIC_API_KEY=... OPENAI_API_KEY=...  (or CLAUDE_CODE_USE_BEDROCK=1)"
+    echo "FATAL: AUTH_MODE=$AUTH_MODE unsupported (use 'subscription' = Max/\$0 OAuth, or 'api' = paid key)."
+    echo "  For Bedrock/Vertex use the canonical static shard:"
     echo "  driver/pro_run.py --mode run --shard i/N --eligible runs/audit/eligible.txt   (see PROCEDURE 'Token access')"
     exit 1
   fi
@@ -53,8 +60,16 @@ setup_box() {
   rsync -az -e "$SSH -i $PEM" --exclude .venv --exclude .git --exclude runs --exclude scratch \
     "$REPO/" ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/ >/dev/null 2>&1
   # auth + eligible list (rsync excludes runs/, so these go explicitly)
-  $SSH -i $PEM ec2-user@${PUBIP} "mkdir -p ~/.claude ~/.codex ~/swebench-pro/runs/audit ~/swebench-pro/runs/scored" 2>/dev/null
-  scp -o StrictHostKeyChecking=no -i $PEM "$CLAUDE_CREDS"          "ec2-user@${PUBIP}:/home/ec2-user/.claude/.credentials.json" >/dev/null 2>&1
+  $SSH -i $PEM ec2-user@${PUBIP} "mkdir -p ~/.claude ~/.codex ~/.swebench-pro ~/swebench-pro/runs/audit ~/swebench-pro/runs/scored" 2>/dev/null
+  if [ "$AUTH_MODE" = "api" ]; then
+    # Sonnet bills the key; push it 600 to a box file (run_instance exports it, leaves CLAUDE_SUBSCRIPTION unset).
+    scp -o StrictHostKeyChecking=no -i $PEM "$APIKEY_FILE" "ec2-user@${PUBIP}:/home/ec2-user/.swebench-pro/anthropic.key" >/dev/null 2>&1
+    $SSH -i $PEM ec2-user@${PUBIP} "chmod 600 ~/.swebench-pro/anthropic.key" 2>/dev/null
+    AUTH_ASSERT_SNIPPET="[ -s ~/.swebench-pro/anthropic.key ] || { echo 'AUTH_ASSERT_FAIL: no api key on box'; exit 1; }; echo 'AUTH_ASSERT api OK (key present; CLAUDE_SUBSCRIPTION unset -> key billed)'"
+  else
+    scp -o StrictHostKeyChecking=no -i $PEM "$CLAUDE_CREDS"          "ec2-user@${PUBIP}:/home/ec2-user/.claude/.credentials.json" >/dev/null 2>&1
+    AUTH_ASSERT_SNIPPET="[ -s ~/.claude/.credentials.json ] || { echo 'AUTH_ASSERT_FAIL: no OAuth creds.json on box'; exit 1; }; [ -z \\\"\\\${CLAUDE_CODE_USE_BEDROCK:-}\\\${CLAUDE_CODE_USE_VERTEX:-}\\\" ] || { echo 'AUTH_ASSERT_FAIL: cloud-provider flag set, would override subscription'; exit 1; }; echo 'AUTH_ASSERT subscription OK (OAuth creds present; dispatch forces CLAUDE_SUBSCRIPTION=1)'"
+  fi
   scp -o StrictHostKeyChecking=no -i $PEM "$HOME/.codex/auth.json" "ec2-user@${PUBIP}:/home/ec2-user/.codex/auth.json"          >/dev/null 2>&1
   scp -o StrictHostKeyChecking=no -i $PEM "$ELIGIBLE"             "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/audit/eligible.txt" >/dev/null 2>&1
   $SSH -i $PEM ec2-user@${PUBIP} "
@@ -73,12 +88,9 @@ setup_box() {
     UV_PYTHON=3.11 bash driver/bootstrap.sh >/tmp/boot.log 2>&1 && echo BOOT_OK || (tail -3 /tmp/boot.log; exit 1)
     . driver/.proenv
     claude --version >/dev/null 2>&1 && codex --version >/dev/null 2>&1 || { echo 'CLI_PREFLIGHT_FAIL'; exit 1; }
-    # AUTH ASSERT (subscription): the dispatch sets CLAUDE_SUBSCRIPTION=1, which makes plan_env() drop any
-    # ANTHROPIC_API_KEY -> OAuth creds.json wins the precedence -> Max/\$0. Assert the inputs that fix that
-    # (no cheap way to introspect realized billing; precedence is deterministic, so inputs == mode).
-    [ -s ~/.claude/.credentials.json ] || { echo 'AUTH_ASSERT_FAIL: no OAuth creds.json on box'; exit 1; }
-    [ -z \"\${CLAUDE_CODE_USE_BEDROCK:-}\${CLAUDE_CODE_USE_VERTEX:-}\" ] || { echo 'AUTH_ASSERT_FAIL: cloud-provider flag set, would override subscription'; exit 1; }
-    echo 'AUTH_ASSERT subscription OK (OAuth creds present; dispatch forces CLAUDE_SUBSCRIPTION=1)'
+    # AUTH ASSERT: precedence is deterministic, so inputs == realized billing mode (no cheap way to
+    # introspect). Snippet is mode-specific (subscription: OAuth creds + no cloud flag; api: key present).
+    ${AUTH_ASSERT_SNIPPET}
     echo READY_${NAME}
   "
 }
