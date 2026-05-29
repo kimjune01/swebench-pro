@@ -25,7 +25,7 @@ Plus killed and restarted the coordinator at least four times, terminated and re
 
 4. **`grader_kills.jsonl` + `retry_grader_kills.sh`** — structured audit trail for watchdog kills + a script to strip the resulting spurious LOSSes from the ledger so the queue re-picks them on next coordinator startup. Policy: if the retry fails too, it's a real LOSS (or KNOWN_BAD if repeating). Built after realizing watchdog kills produce LOSS entries indistinguishable from real failures.
 
-5. **`scale_fleet.sh` + `fleet_reconciler.sh` (drafted, not deployed)** — declarative single-knob scaling via a desired-state file. Codex review found 12 issues (5 High); deferred to v2.
+5. **`scale_fleet.sh` + `fleet_reconciler.sh` (drafted, then removed)** — declarative single-knob scaling via a desired-state file. Codex review found 12 issues (5 High); deferred to v2 and the files were stripped from the tree to avoid implying they were wired. Git history retains them (`git log -- driver/fleet_reconciler.sh`).
 
 Each was built reactively — under pressure, when the previous shape was actively burning tokens or wall-clock. None was prebuilt to spec.
 

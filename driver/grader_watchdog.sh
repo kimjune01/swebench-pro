@@ -2,10 +2,11 @@
 # grader_watchdog.sh — detect hung Pro graders and force-kill the docker container so the
 # worker can move on. Pure operator infra; does NOT touch the inner harness or the grader code.
 #
-# Detection (all three required, conservative to avoid killing slow-but-progressing graders):
-#   - container uptime > AGE_THRESHOLD_MIN     (default: 60 min)
-#   - container CPU%    < CPU_THRESHOLD        (default: 1%)
-#   - latest grade-output dir mtime idle for > IDLE_THRESHOLD_MIN  (default: 30 min)
+# Detection:
+#   - /workspace/stdout.log + /workspace/stderr.log mtime inside container, idle > IDLE_THRESHOLD_MIN
+# (Previously gated on AGE + CPU + host-side pro_grade_*/ mtime, which was a misdiagnosis: long-running
+# graders look idle to the host because pro_grade_*/ only updates at verdict time. See worklog
+# 2026-05-29 (even later) for the investigation that corrected this.)
 #
 # Action: docker kill <container>. The eval process dies; pro_run either records a verdict or
 # the coordinator sees a transport fault. Either way the worker becomes dispatchable again.
@@ -24,8 +25,6 @@ LOG="runs/scored/grader_watchdog.log"
 KILL_LEDGER="runs/scored/grader_kills.jsonl"
 HEARTBEAT_LEDGER="runs/scored/box_heartbeat.jsonl"
 INTERVAL="${GRADER_WATCHDOG_INTERVAL:-300}"
-AGE_THRESHOLD_MIN="${GRADER_AGE_MIN:-60}"
-CPU_THRESHOLD="${GRADER_CPU_PCT:-1}"
 IDLE_THRESHOLD_MIN="${GRADER_IDLE_MIN:-30}"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG" >&2; }
@@ -39,7 +38,7 @@ check_box() {
     [ -f "$pem" ] || { echo "MISSING_PEM"; return; }
     # Remote-side assessment + decision. Thresholds passed via inline env on the ssh command line.
     ssh -i "$pem" -o ConnectTimeout=8 -o StrictHostKeyChecking=no ec2-user@${PUBIP} \
-      "AGE=$AGE_THRESHOLD_MIN CPU_T=$CPU_THRESHOLD IDLE=$IDLE_THRESHOLD_MIN bash -s" <<'REMOTE' 2>/dev/null
+      "IDLE=$IDLE_THRESHOLD_MIN bash -s" <<'REMOTE' 2>/dev/null
         set -u
         NOW=$(date +%s)
         # heartbeat: emit one line with box-wide load average even when no containers exist
@@ -103,7 +102,7 @@ REMOTE
   )
 }
 
-log "watchdog start (pid=$$, interval=${INTERVAL}s, age>${AGE_THRESHOLD_MIN}m cpu<${CPU_THRESHOLD}% idle>${IDLE_THRESHOLD_MIN}m)"
+log "watchdog start (pid=$$, interval=${INTERVAL}s, kill if /workspace logs idle>${IDLE_THRESHOLD_MIN}m)"
 
 while true; do
   for envf in /tmp/coord*.env; do
