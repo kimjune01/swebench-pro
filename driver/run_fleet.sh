@@ -68,7 +68,7 @@ setup_box() {
     AUTH_ASSERT_SNIPPET="[ -s ~/.swebench-pro/anthropic.key ] || { echo 'AUTH_ASSERT_FAIL: no api key on box'; exit 1; }; echo 'AUTH_ASSERT api OK (key present; CLAUDE_SUBSCRIPTION unset -> key billed)'"
   else
     scp -o StrictHostKeyChecking=no -i $PEM "$CLAUDE_CREDS"          "ec2-user@${PUBIP}:/home/ec2-user/.claude/.credentials.json" >/dev/null 2>&1
-    AUTH_ASSERT_SNIPPET="[ -s ~/.claude/.credentials.json ] || { echo 'AUTH_ASSERT_FAIL: no OAuth creds.json on box'; exit 1; }; [ -z \\\"\\\${CLAUDE_CODE_USE_BEDROCK:-}\\\${CLAUDE_CODE_USE_VERTEX:-}\\\" ] || { echo 'AUTH_ASSERT_FAIL: cloud-provider flag set, would override subscription'; exit 1; }; echo 'AUTH_ASSERT subscription OK (OAuth creds present; dispatch forces CLAUDE_SUBSCRIPTION=1)'"
+    AUTH_ASSERT_SNIPPET="[ -s ~/.claude/.credentials.json ] || { echo 'AUTH_ASSERT_FAIL: no OAuth creds.json on box'; exit 1; }; [ -z \"\${CLAUDE_CODE_USE_BEDROCK:-}\${CLAUDE_CODE_USE_VERTEX:-}\" ] || { echo 'AUTH_ASSERT_FAIL: cloud-provider flag set, would override subscription'; exit 1; }; echo 'AUTH_ASSERT subscription OK (OAuth creds present; dispatch forces CLAUDE_SUBSCRIPTION=1)'"
   fi
   scp -o StrictHostKeyChecking=no -i $PEM "$HOME/.codex/auth.json" "ec2-user@${PUBIP}:/home/ec2-user/.codex/auth.json"          >/dev/null 2>&1
   scp -o StrictHostKeyChecking=no -i $PEM "$ELIGIBLE"             "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/audit/eligible.txt" >/dev/null 2>&1
