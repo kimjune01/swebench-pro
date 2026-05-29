@@ -63,6 +63,14 @@ or operator-infra rebuild so we don't repeat the path.
   (5 operator-infra layers), what hurt (silent failures, two controllers fighting, watchmen unwatched,
   lossy ramps), the k8s-reinvention realization, and the Pulumi+Go v2 direction with substrate division
 
+### Bench defects (read before reproducing)
+
+[`docs/bench-defects.md`](docs/bench-defects.md) — upstream Pro behaviors we discovered the hard way:
+silent grader deadlocks, container leaks, perception poisoning, indistinguishable LOSS detail. If
+you're reproducing and seeing unexplained hangs or surprise LOSSes, start there. Includes the
+mitigations we built and the integrity-direction note (all defects bias toward inflated LOSS,
+so headline numbers are conservative).
+
 State at a glance: **adapter built + validated; freeze-gate items 1–3 done; pre-scored-run.** Only the
 §13 freeze decision (cut `prereg-pro-vN` + launch) remains. `WORKLOG.md` is the source of truth.
 
