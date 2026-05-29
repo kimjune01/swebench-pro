@@ -111,3 +111,11 @@ Scaling becomes `pulumi config set fleet:size 4 && pulumi up`. Drain stays as a 
 6. **Quota is a sliding window, not a wall.** Operating against a hard reset is the wrong mental model; operate against the curve. Throttle to 4 instead of emergency-to-2 when you can.
 
 7. **The right division of substrate matters.** IaC for AWS resources, code for judgment, scripts for glue. Don't force one substrate to do all three jobs.
+
+8. **Audit posture is audience-calibrated.** Same evidence, different framing depending on who the
+   reader is. For benches whose published rigor warrants pushback (DeepSWE — gold-passes-verifier
+   was never run), punchy audit posture is earned. For benches built by people doing serious
+   benchmark research (Pro), the same findings should land as **field notes** — closer to product
+   feedback than critique: "we hit these edge cases at scale, here's the trace, here's our
+   workaround." The `docs/bench-defects.md` doc is already field-notes-shaped on purpose; any
+   public Pro writeup should match.
