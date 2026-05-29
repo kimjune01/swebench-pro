@@ -18,16 +18,29 @@ set -u
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO"
 
-LOG="runs/scored/watchdog.log"
-COORD_LOG="runs/scored/coordinator-resurrect.log"
+OFFSET="${WATCHDOG_OFFSET:-0}"           # 0 = coord1-N; 4 = coord5-N (second coordinator)
+# Primary (OFFSET=0) uses the unsuffixed log; secondary watchdogs get -off<N> suffix.
+if [ "$OFFSET" = "0" ]; then
+  LOG="runs/scored/watchdog.log"
+  COORD_LOG="runs/scored/coordinator-resurrect.log"
+else
+  LOG="runs/scored/watchdog-off${OFFSET}.log"
+  COORD_LOG="runs/scored/coordinator-resurrect-off${OFFSET}.log"
+fi
 INTERVAL="${WATCHDOG_INTERVAL:-30}"   # seconds between health checks
 BOXES="${WATCHDOG_BOXES:-8}"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG" >&2; }
 
 is_coord_alive() {
-  # match the script path, exclude grep + this watchdog itself
-  ps -axo pid,command | grep -E "driver/coordinator\.py" | grep -v grep | grep -v watchdog > /dev/null
+  # Match this watchdog's specific coordinator by --box-offset value (or its absence for OFFSET=0).
+  if [ "$OFFSET" = "0" ]; then
+    # primary coordinator: matches coordinator.py but NOT "--box-offset"
+    ps -axo pid,command | grep -E "driver/coordinator\.py" | grep -v grep | grep -v watchdog | grep -v -- "--box-offset" > /dev/null
+  else
+    # secondary coordinator: matches "--box-offset $OFFSET" specifically
+    ps -axo pid,command | grep -E "driver/coordinator\.py.*--box-offset[[:space:]]+${OFFSET}\b" | grep -v grep | grep -v watchdog > /dev/null
+  fi
 }
 
 log "watchdog start (pid=$$, interval=${INTERVAL}s, boxes=${BOXES})"
@@ -44,9 +57,11 @@ while true; do
   if ! is_coord_alive; then
     RESTART_COUNT=$((RESTART_COUNT + 1))
     log "coordinator DOWN — restart #${RESTART_COUNT}"
-    log "  command: AUTH_MODE=subscription python3 -u driver/coordinator.py --boxes ${BOXES} --skip-setup --eligible runs/audit/eligible.txt"
+    OFFSET_FLAG=""
+    [ "$OFFSET" != "0" ] && OFFSET_FLAG="--box-offset ${OFFSET}"
+    log "  command: AUTH_MODE=subscription python3 -u driver/coordinator.py --boxes ${BOXES} ${OFFSET_FLAG} --skip-setup --eligible runs/audit/eligible.txt"
     AUTH_MODE=subscription nohup python3 -u driver/coordinator.py \
-      --boxes "${BOXES}" --skip-setup \
+      --boxes "${BOXES}" ${OFFSET_FLAG} --skip-setup \
       --eligible runs/audit/eligible.txt \
       >> "$COORD_LOG" 2>&1 &
     NEW_PID=$!
