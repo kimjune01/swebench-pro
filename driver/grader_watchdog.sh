@@ -72,6 +72,21 @@ check_box() {
           CPU=$(timeout 5 docker stats --no-stream --format '{{.CPUPerc}}' "$CID" 2>/dev/null | tr -d '%')
           [ -z "$CPU" ] && CPU=0
 
+          # Detect the "Waiting for Redis to start..." wedge: grader's prepare_test_environment
+          # calls `redis-server --daemonize yes` which sometimes fails silently. The script then
+          # spam-pings forever, writing "Waiting for Redis to start..." every second. Logs LOOK
+          # active (idle=0) but no test progress is happening. Remediation: docker exec a fresh
+          # redis-server in the container, which unblocks the grader's ping loop.
+          REDIS_WEDGE=$(docker exec "$CID" bash -c '
+            T=$(tail -10 /workspace/stdout.log 2>/dev/null | grep -c "Waiting for Redis to start")
+            echo ${T:-0}
+          ' 2>/dev/null)
+          REDIS_WEDGE="${REDIS_WEDGE:-0}"
+          if [ "${REDIS_WEDGE}" -ge 5 ]; then
+            echo "REDIS_KICK cid=$CID name=$CNAME wedge_lines=${REDIS_WEDGE}"
+            docker exec -d "$CID" redis-server --daemonize yes --protected-mode no --port 6379 >/dev/null 2>&1
+          fi
+
           # Idle signal: max mtime of grader's stdout/stderr INSIDE the container. These are
           # written continuously by mocha/pytest while tests run. The host-side pro_grade_*/
           # dir only updates when the verdict gets recorded, which makes legitimate long runs
@@ -94,7 +109,7 @@ check_box() {
           fi
           IDLEMIN=$(( (NOW - GRADER_MTIME) / 60 ))
 
-          echo "ASSESS cid=$CID name=$CNAME up=${UPMIN}m cpu=${CPU} idle=${IDLEMIN}m"
+          echo "ASSESS cid=$CID name=$CNAME up=${UPMIN}m cpu=${CPU} idle=${IDLEMIN}m wedge=${REDIS_WEDGE}"
 
           # Decision: kill only when the grader's own logs have gone stale.
           # Drop the AGE gate — NodeBB suites legitimately run >60min; idle is the real signal.

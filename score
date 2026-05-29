@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+"""Print the live SWE-bench Pro tally from runs/scored/run.jsonl.
+
+Last-wins dedupe by instance_id (matches load_done() semantics in the driver).
+Output is one line for quick eyeball, plus a per-state breakdown.
+
+Usage:
+  ./score                          # default: runs/scored/run.jsonl
+  ./score path/to/other.jsonl      # alternate ledger
+"""
+import json
+import sys
+from collections import Counter
+from pathlib import Path
+
+ELIGIBLE = 728  # eligible set size per §6 defect list (731 total - 3 known-bad)
+
+# Resolve default ledger relative to the script (so the symlink at ~/.local/bin/score-pro works).
+DEFAULT_LEDGER = Path(__file__).resolve().parent / "runs" / "scored" / "run.jsonl"
+ledger = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_LEDGER
+if not ledger.exists():
+    print(f"no ledger at {ledger}", file=sys.stderr)
+    sys.exit(1)
+
+latest = {}
+total_events = 0
+for line in ledger.read_text().splitlines():
+    if not line.strip():
+        continue
+    d = json.loads(line)
+    iid = d.get("instance_id")
+    if iid:
+        latest[iid] = d
+    total_events += 1
+
+states = Counter(ev.get("state", "?") for ev in latest.values())
+unique = len(latest)
+wins = states.get("WIN", 0)
+losses = states.get("LOSS", 0)
+terminal = wins + losses
+incomplete = states.get("INCOMPLETE", 0)
+untouched = ELIGIBLE - unique
+
+if terminal:
+    rate = f"{wins}/{terminal} = {100*wins/terminal:.1f}%"
+else:
+    rate = "no terminals"
+
+print(f"{wins} WIN / {losses} LOSS *  ({rate})  ·  {unique}/{ELIGIBLE} touched  ·  {incomplete} INCOMPLETE  ·  {untouched} untouched")
+print(f"  ({total_events} ledger events, last-wins dedupe by instance_id)")
+print(f"  * operator-side mitigations for grader-side defects in effect — see docs/bench-defects.md")
