@@ -45,6 +45,19 @@ check_box() {
         # heartbeat: emit one line with box-wide load average even when no containers exist
         LOAD1=$(awk '{print $1}' /proc/loadavg 2>/dev/null || echo 0)
         echo "HEARTBEAT load1=${LOAD1}"
+        # Reap orphans: pro_run is serial per box, so only the newest container is the active grader.
+        # Anything older is a leaked grader from a prior run that never cleaned up. Kill them first.
+        # docker ps sorts newest-first by default; skip the first, kill the rest.
+        ALL_CIDS=$(docker ps --format '{{.ID}}')
+        ORPHAN_CIDS=$(echo "$ALL_CIDS" | tail -n +2)
+        for OCID in $ORPHAN_CIDS; do
+          OCNAME=$(docker inspect -f '{{.Name}}' "$OCID" 2>/dev/null | sed 's|^/||')
+          OSTARTED=$(docker inspect -f '{{.State.StartedAt}}' "$OCID" 2>/dev/null)
+          OSTART_SEC=$(date -d "$OSTARTED" +%s 2>/dev/null || echo 0)
+          OUPMIN=$(( (NOW - OSTART_SEC) / 60 ))
+          echo "REAP_ORPHAN cid=$OCID name=$OCNAME up=${OUPMIN}m"
+          docker kill "$OCID" >/dev/null 2>&1
+        done
         docker ps --format '{{.ID}} {{.Names}}' | while read CID CNAME; do
           STARTED=$(docker inspect -f '{{.State.StartedAt}}' "$CID" 2>/dev/null)
           [ -z "$STARTED" ] && continue

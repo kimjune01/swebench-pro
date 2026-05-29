@@ -4,6 +4,45 @@ Newest first. This is the **scored-run trail** for the frozen artifact `prereg-p
 development history is in [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md). Per §13, each scored tag
 gets its own worklog; this one carries only `v1`'s run.
 
+## 2026-05-29 (later) — Pro grader leaks containers; orphans poisoned watchdog perception
+
+Added per-box heartbeat (`runs/scored/box_heartbeat.jsonl`) + `box_health.sh` operator query after
+several hours of asking "is it healthy" and getting only ledger-level information. First query
+revealed a class of finding the snapshot-based grader_watchdog had been missing:
+
+**The official Pro grader leaves containers running after the grader process exits.** Observed
+coord1 with 3 grader containers (uptime 6m, 72m, 73m), coord2 with 4 (uptime 22m, 71m, 72m, 72m).
+`pro_run` is serial per box, so anything older than the newest container is leaked from a prior
+instance run. Across 4 boxes, 5 orphan containers persisted. Each one had been idle for hours,
+sitting at ~0.4% CPU.
+
+**The orphans poisoned the grader_watchdog's own perception.** The watchdog uses
+`ls -dt ~/swebench-pro/runs/dev/pro_grade_*/` to find the latest grade-output dir, then checks its
+mtime to compute `idle_min`. Orphan containers left their grade dirs around (each a `pro_grade_*`
+sibling), and those stale dirs were the most-recently-modified hours ago — so the watchdog saw
+`idle_min=22m` for the active container too. Live graders were making progress; the watchdog just
+couldn't tell. None had crossed the 30m idle threshold yet, but a stale orphan would have triggered
+the kill on an *active* grader within minutes.
+
+**Remediation (immediate):**
+- Extended `grader_watchdog.sh` to reap orphan containers each poll: keep newest per box (docker ps
+  is newest-first by default), `docker kill` the rest, log `REAP_ORPHAN cid=... up=Xm`.
+- Manually killed the 5 existing orphans across coord1-4 before the next poll cycle.
+- Verified: `idle_min` on the active containers immediately dropped from 22-23m to 0m once the
+  stale grade dirs were gone (active graders had been working the whole time).
+
+**Why this matters beyond housekeeping:** the watchdog's filter (3-threshold gate) had a latent
+false-positive class we didn't know about. With orphan dirs present, any active grader that ran
+>60 minutes would have crossed all three thresholds and been killed mid-grade — adding a spurious
+LOSS to the ledger AND killing legitimate work. We dodged it this morning by luck (orphans hadn't
+crossed the 30m idle threshold yet relative to the active dirs). Codex's #4 finding on the
+unwired reconciler ("count_actual is just env files, not actual fleet state") generalizes: any
+filter that depends on derived state can be silently poisoned by stale siblings. Always sanity-check
+the input signal before trusting the gate.
+
+**Audit-implication parallel:** another Pro-grader oddity to document alongside the futex-hang
+finding. The bench ships containers that leak resources; that's their bug, ours to work around.
+
 ## 2026-05-29 — official Pro grader deadlocks silently; force-halve via drain script
 
 **Surprise finding.** The Pro `swe_bench_pro_eval.py` grader (third-party, in docker) hangs on

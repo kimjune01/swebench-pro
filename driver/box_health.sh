@@ -55,9 +55,9 @@ for box in sorted(records):
     age_s = (now - dt.datetime.fromisoformat(latest["ts"].replace("Z","+00:00")).replace(tzinfo=None)).total_seconds()
     age_min = int(age_s / 60)
 
-    # Container state from latest sample
+    # Container state from latest sample (docker ps lists newest-first, so containers[0] is active)
     if latest["containers"]:
-        c = latest["containers"][-1]
+        c = latest["containers"][0]
         cname = c["name"][:20]
         cup = c["uptime_min"]
         ccpu = c["cpu_pct"]
