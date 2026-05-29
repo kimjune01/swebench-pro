@@ -30,16 +30,38 @@ artifact, wins **only** on official-test verdicts, keeps an **honest denominator
 - `PRO_PORT.md` — the port plan: goal predicate, strategy, verification contracts, efficiency levers,
   Verified-session failure taxonomy, and the open questions to resolve first.
 
-## Docs index (read in this order)
+## Docs
+
+Three kinds: **specs** (what we will do — rules and contracts), **journals** (what actually happened
+— newest first), and **retros** (what we learned). Read specs to start, journals to catch up,
+retros to avoid re-deriving lessons.
+
+### Specs — read in this order
 
 | doc | what it answers | read when |
 |---|---|---|
 | [`CLAUDE.md`](CLAUDE.md) | agent orientation: one-command setup, where things live, current state | **first, always** |
 | [`PROCEDURE.md`](PROCEDURE.md) | how to run: bootstrap → make_task → pilot → official grade; pinned versions; reproduction contract | running or reproducing a result |
 | [`PREREGISTRATION.md`](PREREGISTRATION.md) | the rules: predicate, two modes, restart scope, failure-mode state machine, freeze gate (§13) | before claiming a number / cutting a tag |
-| [`WORKLOG.md`](WORKLOG.md) | what happened, newest first — the live state of play | catching up on current state |
+| [`PREREGISTRATION-cheap-ablation.md`](PREREGISTRATION-cheap-ablation.md) | cheap-ablation companion spec | before launching the ablation arm |
 | [`PRO_PORT.md`](PRO_PORT.md) | original port plan + background; adapter touchpoints | understanding *why* the adapter is shaped this way |
 | [`LOCAL_ISO.md`](LOCAL_ISO.md) | local isolation / sandbox notes | debugging the local dev path |
+
+### Journals
+
+| doc | covers |
+|---|---|
+| [`WORKLOG.md`](WORKLOG.md) | scored-run trail for the frozen artifact (current). **Source of truth for current state.** |
+| [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md) | pre-freeze development history |
+
+### Retros — lessons compressed for future me
+
+Filed under [`docs/retros/`](docs/retros/), one per ISO date + topic. Read before the next bench run
+or operator-infra rebuild so we don't repeat the path.
+
+- [`2026-05-29-operator-infra-v1.md`](docs/retros/2026-05-29-operator-infra-v1.md) — what we built reactively
+  (5 operator-infra layers), what hurt (silent failures, two controllers fighting, watchmen unwatched,
+  lossy ramps), the k8s-reinvention realization, and the Pulumi+Go v2 direction with substrate division
 
 State at a glance: **adapter built + validated; freeze-gate items 1–3 done; pre-scored-run.** Only the
 §13 freeze decision (cut `prereg-pro-vN` + launch) remains. `WORKLOG.md` is the source of truth.
