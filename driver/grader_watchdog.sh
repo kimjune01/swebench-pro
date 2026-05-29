@@ -11,11 +11,16 @@
 # Action: docker kill <container>. The eval process dies; pro_run either records a verdict or
 # the coordinator sees a transport fault. Either way the worker becomes dispatchable again.
 #
+# Side effects: writes runs/scored/grader_watchdog.log (human), runs/scored/grader_kills.jsonl
+# (structured kill audit trail, consumed by retry_grader_kills.sh), and runs/scored/box_heartbeat.jsonl
+# (per-box per-poll sample, consumed by box_health.sh).
+#
 # Bring it up:
 #   cd /Users/junekim/Documents/swebench-pro
 #   nohup bash driver/grader_watchdog.sh > runs/scored/grader_watchdog-boot.log 2>&1 &
 #
 # Tail:  tail -f runs/scored/grader_watchdog.log
+# Stop:  pkill -f grader_watchdog.sh
 
 set -u
 REPO="$(cd "$(dirname "$0")/.." && pwd)"

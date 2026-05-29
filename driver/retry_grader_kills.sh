@@ -2,12 +2,19 @@
 # retry_grader_kills.sh — cross-reference watchdog kills with LOSS entries; strip the spurious
 # LOSSes from the ledger so the queue re-picks those instances on next coordinator startup.
 #
+# Operator infra (one-shot). Modifies runs/scored/run.jsonl in place; backs up the original
+# to runs/scored/run.jsonl.bak-pre-retry-<UTC-stamp>. Idempotent: re-running is a no-op once
+# all matching LOSSes have been stripped.
+#
 # Pattern: for each KILL in runs/scored/grader_kills.jsonl, find any LOSS in run.jsonl recorded
 # within MATCH_WINDOW seconds on the same box. Those LOSSes are presumed grader-hang artifacts.
-# Strip them; back up the original ledger; print the list of re-queued instances.
 #
 # Policy: if a re-queued instance fails again on the next attempt, it's a genuine failure
 # (or a repeating platform bug worthy of KNOWN_BAD). Decision is operator's, not automated.
+#
+# usage:
+#   bash driver/retry_grader_kills.sh                  # default MATCH_WINDOW=60s
+#   MATCH_WINDOW=120 bash driver/retry_grader_kills.sh # widen the LOSS-to-KILL match window
 #
 # Apply takes effect on next coordinator startup (queue rebuilds from ledger). Caller decides
 # when to kill the running coordinator; the watchdog will bring it back with --skip-setup.

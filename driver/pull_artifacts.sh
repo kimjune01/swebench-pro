@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
-# Pull per-instance run artifacts off live fleet boxes to the laptop so they survive box teardown.
-# READ-ONLY on the box side (rsync pull) -> safe to run during a live coordinator run.
+# pull_artifacts.sh — pull per-instance run artifacts off live fleet boxes to the laptop so they
+# survive box teardown. READ-ONLY on the box side (rsync pull) -> safe to run during a live
+# coordinator run.
 #
 # Fulfills prereg §10 provenance (captured diff + agent logs + per-box ledger), which the
 # coordinator's verdict-only checkpoint does NOT capture. The artifacts accumulate on the box
 # (instance-named, not overwritten), so even one pull before teardown recovers full history; the
-# loop just bounds worst-case loss to one interval. Loop until killed.
+# loop just bounds worst-case loss to one interval.
+#
+# Operator infra (long-running daemon). Re-reads /tmp/coord*.env each cycle, so it follows
+# reprovisioned boxes automatically.
+#
+# Bring it up:
+#   cd /Users/junekim/Documents/swebench-pro
+#   nohup bash driver/pull_artifacts.sh > runs/scored/artifact_puller.log 2>&1 &
+#
+# Tail:  tail -f runs/scored/artifact_puller.log
+# Stop:  pkill -f pull_artifacts.sh
 #
 # Env: INTERVAL (seconds between cycles, default 600).
 set -u

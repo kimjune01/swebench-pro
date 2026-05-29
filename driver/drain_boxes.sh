@@ -2,12 +2,23 @@
 # drain_boxes.sh — for each named box, let its current run finish, then permanently
 # retire it from the fleet. Does NOT touch the inner harness.
 #
+# Operator infra (medium-running). Exits cleanly once all named boxes have retired (their
+# /tmp/<name>.env files have been gone for the 90s confirmation window with no late
+# reprovisions). Sentinel files in /tmp/drain-<name>.fired track which boxes have already
+# completed their drain trigger; they're cleaned up on normal exit.
+#
 # Strategy: poll the ledger; on the box's next completion, terminate its EC2 instance
 # + delete /tmp/<name>.env. The coordinator's box-fault path will retry setup_box up to
 # its restart_max (default 3); whack any fresh /tmp/<name>.env that appears during the
 # retry window. Once setup_box exhausts retries the worker retires gracefully.
 #
-# usage:  bash driver/drain_boxes.sh coord5 coord6 coord7 coord8
+# Bring it up:
+#   nohup bash driver/drain_boxes.sh coord5 coord6 coord7 coord8 \
+#     > runs/scored/drain-boot.log 2>&1 &
+#
+# Cancel: pkill -f drain_boxes.sh; rm -f /tmp/drain-coord*.fired
+#   (manual /tmp cleanup needed because abnormal exit doesn't reach the sentinel-cleanup path)
+#
 # log:    runs/scored/drain.log
 
 set -u

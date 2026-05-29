@@ -1,17 +1,17 @@
 #!/bin/bash
 # box_health.sh — at-a-glance fleet health from runs/scored/box_heartbeat.jsonl
 #
-# The grader_watchdog writes one heartbeat record per box per poll (default 5min).
-# This script reads the last N samples per box and prints:
+# Operator query (no side effects). The grader_watchdog writes one heartbeat record per box
+# per poll (default 5min); this script reads the last N samples per box and prints:
 #   - last seen (minutes ago)
-#   - current container (uptime, CPU%, idle min) if any
-#   - load1 trend (last 6 samples = ~30min at default cadence)
-#   - "stuck?" verdict: consecutive low-CPU container samples
+#   - current container (uptime, CPU%, idle min); flags '+N stale' if leaked
+#   - load1 trend (last N samples)
+#   - verdict on the active container: STUCK (logs idle ≥30m), · slow (logs idle ≥10m), or quiet
 #
 # usage:
-#   bash driver/box_health.sh                # current state of every box
-#   bash driver/box_health.sh --window 12    # 12 samples = ~1h
-#   bash driver/box_health.sh coord3         # detail one box
+#   bash driver/box_health.sh                # snapshot, all boxes, ~30min trend
+#   bash driver/box_health.sh --window 12    # ~1h trend
+#   bash driver/box_health.sh coord3         # focus one box, ~1h trend
 
 set -u
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
