@@ -21,6 +21,7 @@ REPO="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO"
 
 LOG="runs/scored/grader_watchdog.log"
+KILL_LEDGER="runs/scored/grader_kills.jsonl"
 INTERVAL="${GRADER_WATCHDOG_INTERVAL:-300}"
 AGE_THRESHOLD_MIN="${GRADER_AGE_MIN:-60}"
 CPU_THRESHOLD="${GRADER_CPU_PCT:-1}"
@@ -81,6 +82,15 @@ while true; do
     if [ -n "$OUT" ]; then
       echo "$OUT" | while IFS= read -r line; do
         log "$name: $line"
+        # Structured ledger of kills (for retry_grader_kills.sh to match against run.jsonl)
+        if [[ "$line" == KILL* ]]; then
+          TS=$(date -u +%FT%TZ)
+          CID=$(echo "$line"  | sed -nE 's/.*cid=([^ ]+).*/\1/p')
+          CNAME=$(echo "$line"| sed -nE 's/.*name=([^ ]+).*/\1/p')
+          UPMIN=$(echo "$line"| sed -nE 's/.*up=([0-9]+)m.*/\1/p')
+          printf '{"ts":"%s","box":"%s","cid":"%s","container":"%s","uptime_min":%s}\n' \
+            "$TS" "$name" "$CID" "$CNAME" "${UPMIN:-0}" >> "$KILL_LEDGER"
+        fi
       done
     fi
   done
