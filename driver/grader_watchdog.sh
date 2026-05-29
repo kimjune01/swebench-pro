@@ -22,6 +22,7 @@ cd "$REPO"
 
 LOG="runs/scored/grader_watchdog.log"
 KILL_LEDGER="runs/scored/grader_kills.jsonl"
+HEARTBEAT_LEDGER="runs/scored/box_heartbeat.jsonl"
 INTERVAL="${GRADER_WATCHDOG_INTERVAL:-300}"
 AGE_THRESHOLD_MIN="${GRADER_AGE_MIN:-60}"
 CPU_THRESHOLD="${GRADER_CPU_PCT:-1}"
@@ -41,6 +42,9 @@ check_box() {
       "AGE=$AGE_THRESHOLD_MIN CPU_T=$CPU_THRESHOLD IDLE=$IDLE_THRESHOLD_MIN bash -s" <<'REMOTE' 2>/dev/null
         set -u
         NOW=$(date +%s)
+        # heartbeat: emit one line with box-wide load average even when no containers exist
+        LOAD1=$(awk '{print $1}' /proc/loadavg 2>/dev/null || echo 0)
+        echo "HEARTBEAT load1=${LOAD1}"
         docker ps --format '{{.ID}} {{.Names}}' | while read CID CNAME; do
           STARTED=$(docker inspect -f '{{.State.StartedAt}}' "$CID" 2>/dev/null)
           [ -z "$STARTED" ] && continue
@@ -80,11 +84,15 @@ while true; do
     name=$(basename "$envf" .env)
     OUT=$(check_box "$name")
     if [ -n "$OUT" ]; then
+      TS=$(date -u +%FT%TZ)
+      # Collect this poll's data per box for heartbeat record
+      HB_LOAD=""
+      HB_CONTAINERS="[]"
+      HB_BUF=""
       echo "$OUT" | while IFS= read -r line; do
         log "$name: $line"
         # Structured ledger of kills (for retry_grader_kills.sh to match against run.jsonl)
         if [[ "$line" == KILL* ]]; then
-          TS=$(date -u +%FT%TZ)
           CID=$(echo "$line"  | sed -nE 's/.*cid=([^ ]+).*/\1/p')
           CNAME=$(echo "$line"| sed -nE 's/.*name=([^ ]+).*/\1/p')
           UPMIN=$(echo "$line"| sed -nE 's/.*up=([0-9]+)m.*/\1/p')
@@ -92,6 +100,25 @@ while true; do
             "$TS" "$name" "$CID" "$CNAME" "${UPMIN:-0}" >> "$KILL_LEDGER"
         fi
       done
+      # Heartbeat record: parse OUT via stdin, append one JSON line per box per poll
+      printf '%s\n' "$OUT" | TS="$TS" BOX="$name" python3 -c '
+import sys, json, re, os
+ts, box = os.environ["TS"], os.environ["BOX"]
+load = 0.0
+containers = []
+for line in sys.stdin:
+    line = line.rstrip()
+    m = re.match(r"HEARTBEAT load1=([\d.]+)", line)
+    if m:
+        load = float(m.group(1)); continue
+    m = re.match(r"ASSESS cid=(\S+) name=(\S+) up=(\d+)m cpu=([\d.]+) idle=(\d+)m", line)
+    if m:
+        containers.append({"cid": m.group(1), "name": m.group(2),
+                           "uptime_min": int(m.group(3)),
+                           "cpu_pct": float(m.group(4)),
+                           "idle_min": int(m.group(5))})
+print(json.dumps({"ts": ts, "box": box, "load1": load, "containers": containers}))
+' >> "$HEARTBEAT_LEDGER"
     fi
   done
   sleep "$INTERVAL"
