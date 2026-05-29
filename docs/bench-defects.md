@@ -1,5 +1,22 @@
 # SWE-bench Pro defects observed in our runs
 
+> **⚠ STALE — revision pending.** Defect 1 below ("silent grader deadlock") is largely a
+> misdiagnosis. The "deadlock" symptom (low CPU + idle `pro_grade_*/` dir) turned out to be our
+> own watchdog reading the wrong file — host-side `pro_grade_*/` mtime only updates at verdict
+> time, while the actual grader runs inside the container writing `/workspace/stdout.log`.
+> A working slow grader looked deadlocked to the watchdog for the whole test duration.
+>
+> What's almost certainly still true: the official grader has **no internal timeout**, so anything
+> that genuinely hangs would sit forever. But "pervasive silent deadlock" is the wrong framing.
+>
+> See `WORKLOG.md` entry **"2026-05-29 (even later)"** for the corrected understanding and
+> `~/Documents/sweep/repo-hypotheses/swebench-pro__grader-hang.md` for the investigation trail.
+> Will revise this doc once the morning's 3 retried-after-watchdog-kill instances return — their
+> outcomes tell us whether the originals were real LOSSes or our-watchdog artifacts.
+>
+> **Do NOT publish or share externally until revised.** The current framing would be unfair to a
+> bench team whose actual rigor we respect.
+
 Audit-facing: things the bench does that aren't documented in the SWE-bench Pro repo
 or the official grader, that anyone reproducing this work will hit. None of these
 are our defects; all are upstream-Pro behaviors we work around at the runner layer.
