@@ -4,6 +4,49 @@ Newest first. This is the **scored-run trail** for the frozen artifact `prereg-p
 development history is in [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md). Per §13, each scored tag
 gets its own worklog; this one carries only `v1`'s run.
 
+## 2026-05-29 — official Pro grader deadlocks silently; force-halve via drain script
+
+**Surprise finding.** The Pro `swe_bench_pro_eval.py` grader (third-party, in docker) hangs on
+heavy suites (NodeBB-shaped instances) in `futex_wait` with **0.4% CPU, 41MB RAM, no log activity
+for 3h+**. No timeout, no error, no progress signal — same `ship-without-sanity-checks` pattern
+we critiqued DeepSWE for, except here it's the upstream Pro grader. Documented as a known
+craft-hang pattern (`project_swebench_craft_hang.md`), now confirmed on the grader path too.
+
+Caught while ramping down to relieve 5-hour subscription quota pressure. SSH'd into all 8 boxes,
+found 7/8 stuck inside the docker grader, agent work long-since complete. Container `xenodochial_pike`
+on coord3: up 3h, 0.40% CPU, output dir mtime frozen at container start. Process state `S` with
+`wchan=futex_`. Identical pattern on coord4-6, 8 (2-3h+) and coord2 (49m, earlier in the hang cycle).
+Only coord1 was actually working (claude+codex spawning).
+
+**Operator infra built (does NOT touch the inner harness):**
+- **`driver/coordinator_watchdog.sh`** — polls for `coordinator.py` every 30s; on death, restarts
+  with `--skip-setup --boxes ${WATCHDOG_BOXES:-8}` against existing `/tmp/coord*.env`. Belt-and-
+  suspenders after a silent coordinator death earlier in the day (no traceback, EC2 boxes kept
+  running; we mistook a slow heartbeat for a crash). Logs to `runs/scored/watchdog.log`.
+- **`driver/drain_boxes.sh`** — let a named subset of boxes finish their current run, then
+  permanently retire them. Watches the ledger; on each box's next completion, terminates its EC2
+  instance + deletes `/tmp/<name>.env`. Whacks any reprovisioned env from `setup_box`'s retry path
+  until the worker's restart_max exhausts and it retires gracefully. Bash 3.2-compatible (sentinel
+  files instead of associative arrays).
+
+**Halving 8 → 4.** Watchdog restarted with `WATCHDOG_BOXES=4` (so any future restart only brings
+back coord1-4). Drain armed on coord5-8. Drain initially waited for a normal completion that
+never came (graders hung). After SSHing in and confirming the deadlock pattern, force-terminated
+coord5-8 EC2 boxes directly + touched sentinel files so the drain script's Phase 2 whacked the
+inevitable `setup_box` reprovision attempts. Drain reached "all targets retired" within seconds.
+
+**Note on what we lost:** ~4 in-flight NodeBB instances that had completed the agent phase hours
+ago but were stuck in the grader. Patches and trajectories were already synced to local by the
+artifact puller (last cycle 09:08, captured all coord5-8 work). The verdicts are what's missing;
+those instances stay in the queue and will be re-attempted later (possibly on the same grader bug,
+which would suggest excluding NodeBB from the eligible set as a §6.1-style platform-bug exclusion).
+
+**Audit implication (separate from §14).** The post-shipping critique of DeepSWE leaned on
+"publish runs so others can check." This run just produced a parallel finding the bench itself
+hasn't disclosed: their official grader deadlocks silently. That's an upstream-Pro defect, not
+ours, but our published artifacts will surface it for anyone who looks. Worth a follow-up
+audit-style post once we have more reproductions.
+
 ## 2026-05-27 (later still) — publish full run data: artifact puller + prereg §14 amendment
 
 Sharpened by auditing a contemporaneous benchmark (DeepSWE/Datacurve) that ships tasks + harness but
@@ -148,3 +191,74 @@ worklog with the failure class that justified the restart, per §3.)
 Scored run proceeds on the 728 eligible instances under the frozen config (Sonnet 4.5 generator +
 GPT-5.5 craft challenger), whole-set, fixed `tasks/run_order.txt` order, no early stop (§5).
 Run/resume events, fault classifications, and the headline land below as they happen.
+
+## 2026-05-28 14:39 PDT — AUTH_MODE switched: api → subscription
+
+**API window closed.** Max-OAuth subscription quota replenished; switched the headline run back to
+subscription billing (marginal $0).
+
+- **API window:** 2026-05-27 (opened when subscription quota exhausted) → 2026-05-28 14:39 PDT (closed)
+- **Total Sonnet-API spend:** **$654.73**
+- **N at switch:** 386 terminal grades (375 WIN / 11 LOSS); 16 INCOMPLETE pending re-attempt under
+  subscription
+- **Per-instance API rate (observed):** ~$3 ($654.73 / 246 instances over the window, blended across
+  light and heavy repos)
+
+**Switch sequence:**
+1. `SIGTERM` old coordinator (PID 46886, launched with `AUTH_MODE=api`) at 14:08 PDT
+2. Drained 3 of 4 in-flight SSH orphans naturally over 30 min (PIDs 14757, 15438, 15921)
+3. `SIGTERM` 1 remaining orphan (PID 16557) at 30-min ceiling; its instance routes to INCOMPLETE per §4
+4. Launched new coordinator (PID 39666) with `AUTH_MODE=subscription`, same `--boxes 4 --eligible
+   runs/audit/eligible.txt`
+5. Startup banner verified: `AUTH_MODE=subscription -> billing: Max/$0 (per-box AUTH_ASSERT at setup)`
+
+**Result-integrity assertion (per §4):** the switch does not change model behavior. Same Sonnet 4.5,
+same prompts, same harness logic; `AUTH_MODE` only swaps the SSH-payload auth line
+(`ANTHROPIC_API_KEY` export vs `CLAUDE_SUBSCRIPTION=1`). The captured diff and grader verdict are
+deterministic from model output, not from billing path. Each instance is atomically one mode (auth set
+per-SSH-call in `run_instance`). The 16 INCOMPLETE at switch get re-attempted under subscription and
+their verdicts are equally valid per the §4 state machine.
+
+**Subscription window active from 14:39 PDT.** Sonnet-side marginal cost zero from this point.
+
+---
+
+## 2026-05-28 18:50 PDT — OAuth token rotation event; 5-instance requeue
+
+**Trigger.** During fleet expansion (coord5-8 + coord9-12 = 8 subscription boxes), the OAuth token
+staged from the macOS keychain to coord6-coord12 went stale. coord5 stayed fresh by continuous use
+(claude-code rotates the token in-session); coord6-12 were idle long enough for their copy to
+expire. Boxes returned `API Error: 401 Invalid authentication credentials` on subsequent dispatch.
+
+**Detection.** coord9 burned 5 instances at 74-82s each (auth-fail signature: bails within seconds
+on every claude call vs. the 500-4000s legitimate runtime). All other boxes were mid-flight on
+long-running instances during the window, so only coord9 victims surfaced. Fleet-wide auth probe
+confirmed 7/8 boxes 401ing.
+
+**Affected instances (all coord9, 18:41-18:46 PDT, requeued per discipline):**
+- `instance_element-hq__element-web-6205c70462e0ce2e1e77afb3a70b55d0fdfe1b31-vnan` (LOSS 77s)
+- `instance_element-hq__element-web-880428ab94c6ea98d3d18dcaeb17e8767adcb461-vnan` (LOSS 75s)
+- `instance_element-hq__element-web-a692fe21811f88d92e8f7047fc615e4f1f986b0f-vnan` (LOSS 82s)
+- `instance_element-hq__element-web-ce554276db97b9969073369fefa4950ca8e54f84-vnan` (LOSS 74s)
+- `instance_navidrome__navidrome-69e0a266f48bae24a11312e9efbe495a337e4c84` (LOSS 77s)
+
+**Remediation.**
+1. Pulled fresh OAuth token from local keychain (`security find-generic-password -s
+   "Claude Code-credentials"`); scp'd to all 7 stale boxes; re-tested — all 8 boxes green.
+2. Backed up ledger to `runs/scored/run.jsonl.bak-20260528-184949` (792 lines).
+3. Stripped the 5 LOSS entries from `runs/scored/run.jsonl` (787 lines remain). Strip predicate
+   gated on `state==LOSS AND secs<100 AND iid IN <5-set>` for safety.
+4. Killed coord3 (PID 56713, the coord9-12 driver). coord1 (PID 30017, coord5-8) untouched.
+5. Restarted coord3 (new PID 11090) with `--skip-setup --box-offset 8 --boxes 4`. New `todo=332`
+   confirmed the 5 requeues landed (was 327 implied).
+
+**Classification.** This is an operational fault per §4 (provider-class incident — OAuth token
+rotation), not a model verdict. Per discipline, the 5 LOSSes are scrubbed and the instances
+re-attempted. Single ledger-strip with explicit predicate + backup is the minimal intervention;
+no harness change.
+
+**Open hygiene gap (deferred to next-run §13 amendment, not hot-patched).** Token-refresh staging
+runs once at provision-time. A long-lived run needs periodic re-staging (e.g., every 30 min, or on
+detection of 401 in claude output). Today's mitigation is manual: re-stage on demand when a 401
+storm is observed.
+
