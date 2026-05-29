@@ -72,15 +72,18 @@ for box in sorted(records):
     loads = [s["load1"] for s in samples]
     load_str = "load1=[" + " ".join(f"{l:.2f}" for l in loads) + "]"
 
-    # Stuck verdict: container present in last K samples AND cpu always <1%
+    # Stuck verdict: idle_min from latest sample tells the truth. CPU% is misleading for
+    # I/O-bound graders (npx mocha sits at ~0.4% CPU while running long Node test suites).
+    # The real progress signal is whether /workspace/stdout.log is being written, which is
+    # what idle_min now measures (watchdog reads inside-container log mtime).
     stuck = ""
-    container_samples = [(s, s["containers"][-1] if s["containers"] else None) for s in samples]
-    container_samples = [(s, c) for s, c in container_samples if c is not None]
-    if len(container_samples) >= 3:
-        low_cpu = all(c["cpu_pct"] < 1.0 for _, c in container_samples[-min(6, len(container_samples)):])
-        if low_cpu:
-            span_min = container_samples[-1][1]["idle_min"]
-            stuck = f"  ⚠ STUCK (low-cpu ≥{span_min}m)"
+    latest_c = latest["containers"][0] if latest["containers"] else None
+    if latest_c:
+        idle = latest_c["idle_min"]
+        if idle >= 30:
+            stuck = f"  ⚠ STUCK (logs idle {idle}m)"
+        elif idle >= 10:
+            stuck = f"  · slow (logs idle {idle}m)"
 
     print(f"{box}  last={age_min}m ago  {c_str}  {load_str}{stuck}")
 

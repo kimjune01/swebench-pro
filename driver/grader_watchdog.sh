@@ -68,19 +68,33 @@ check_box() {
           CPU=$(timeout 5 docker stats --no-stream --format '{{.CPUPerc}}' "$CID" 2>/dev/null | tr -d '%')
           [ -z "$CPU" ] && CPU=0
 
-          LATEST=$(ls -dt ~/swebench-pro/runs/dev/pro_grade_*/ 2>/dev/null | head -1)
-          if [ -n "$LATEST" ]; then
-            MTIME=$(stat -c %Y "$LATEST" 2>/dev/null || echo 0)
-            IDLEMIN=$(( (NOW - MTIME) / 60 ))
-          else
-            IDLEMIN=0
+          # Idle signal: max mtime of grader's stdout/stderr INSIDE the container. These are
+          # written continuously by mocha/pytest while tests run. The host-side pro_grade_*/
+          # dir only updates when the verdict gets recorded, which makes legitimate long runs
+          # look idle. Inside-container log mtime is the real progress signal.
+          GRADER_MTIME=$(docker exec "$CID" bash -c '
+            T=0
+            for f in /workspace/stdout.log /workspace/stderr.log; do
+              if [ -f "$f" ]; then
+                M=$(stat -c %Y "$f" 2>/dev/null || echo 0)
+                [ "$M" -gt "$T" ] && T=$M
+              fi
+            done
+            echo $T
+          ' 2>/dev/null)
+          GRADER_MTIME="${GRADER_MTIME:-0}"
+          if [ "$GRADER_MTIME" = "0" ]; then
+            # No /workspace logs exist — fall back to host-side check (non-Pro grader, or pre-startup)
+            LATEST=$(ls -dt ~/swebench-pro/runs/dev/pro_grade_*/ 2>/dev/null | head -1)
+            [ -n "$LATEST" ] && GRADER_MTIME=$(stat -c %Y "$LATEST" 2>/dev/null || echo 0)
           fi
+          IDLEMIN=$(( (NOW - GRADER_MTIME) / 60 ))
 
           echo "ASSESS cid=$CID name=$CNAME up=${UPMIN}m cpu=${CPU} idle=${IDLEMIN}m"
 
-          # Decision: all three thresholds tripped.
-          LOW_CPU=$(awk -v c="$CPU" -v t="$CPU_T" 'BEGIN{print (c+0 < t+0) ? 1 : 0}')
-          if [ "$UPMIN" -gt "$AGE" ] && [ "$LOW_CPU" = "1" ] && [ "$IDLEMIN" -gt "$IDLE" ]; then
+          # Decision: kill only when the grader's own logs have gone stale.
+          # Drop the AGE gate — NodeBB suites legitimately run >60min; idle is the real signal.
+          if [ "$IDLEMIN" -gt "$IDLE" ]; then
             echo "KILL cid=$CID name=$CNAME up=${UPMIN}m cpu=${CPU} idle=${IDLEMIN}m"
             docker kill "$CID" >/dev/null 2>&1
           fi

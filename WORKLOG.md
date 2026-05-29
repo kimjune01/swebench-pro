@@ -4,6 +4,47 @@ Newest first. This is the **scored-run trail** for the frozen artifact `prereg-p
 development history is in [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md). Per §13, each scored tag
 gets its own worklog; this one carries only `v1`'s run.
 
+## 2026-05-29 (even later) — watchdog was killing healthy graders; fixed by reading the right signal
+
+**Investigation (via /investigate):** all 4 boxes appeared stuck — uptime 23-47m, CPU <0.5%, idle 15-47m.
+Watchdog about to kill them on next poll. SSHed in to see what was actually happening before pulling the trigger.
+
+**Finding:** every box's process tree was `bash entryscript.sh → bash run_script.sh <NodeBB tests> → sleep 1`,
+all in `do_wait` (parent waiting for child). Not `futex_wait`. The grader runs `npx mocha --reporter=json
+--bail=false test/controllers.js` (or similar) — a legitimate slow test suite, not a hang. CPU at 0.4%
+because mocha is I/O-bound (Redis ops, HTTP routes, async waits).
+
+**Root cause:** the watchdog's `idle_min` signal read `runs/dev/pro_grade_*/` mtime on the HOST. That
+directory only updates when pro_run writes the verdict back at the end. The actual grader work is happening
+INSIDE the container at `/workspace/stdout.log` (mocha's continuous output, 53-180KB after 30 min, mtime
+within the last minute on every box). **A working grader looked idle to the watchdog for the entire test
+duration.**
+
+**Fix (committed):** `driver/grader_watchdog.sh` now reads `max(stdout.log, stderr.log)` mtime via
+`docker exec` inside the container. Dropped the AGE threshold (NodeBB suites legitimately run >60min).
+Kept IDLE_THRESHOLD_MIN as the kill gate. Verified live: all 4 boxes' watchdog idle dropped from 45m→0m
+on the first poll after the fix.
+
+**Integrity backwash:** this morning's 3 watchdog kills (61m, 194m, 205m uptime) were almost certainly
+**false positives** — healthy long-running graders the watchdog killed because it was reading the wrong
+mtime. All 3 produced spurious `not resolved` LOSSes, were re-queued via `retry_grader_kills.sh`, and
+are currently re-running on coord1-4. Their outcomes will tell us how many were actual losses vs bench
+artifacts (which were really our-watchdog artifacts).
+
+Also fixed `box_health.sh` STUCK verdict — was triggering on CPU% alone, now uses idle_min from the
+corrected source.
+
+**Updates to `docs/bench-defects.md`:** Defect 1 (futex deadlock) was largely misattributed — the
+3-hour `futex_wait` from this morning's investigation may have been a different (rarer) issue or itself
+an artifact of inspection timing. Long-running graders showing "0% CPU + idle log dir" are now the
+expected case, not a defect. Will revise the doc in a follow-up — for now the worklog is the source of
+truth for the corrected understanding.
+
+Hypothesis graph: `~/Documents/sweep/repo-hypotheses/swebench-pro__grader-hang.md`.
+
+**Lesson: watchmen's filter must read the right signal — "right" = the artifact actually produced by
+the work, not a downstream side effect of completion.**
+
 ## 2026-05-29 (later) — Pro grader leaks containers; orphans poisoned watchdog perception
 
 Added per-box heartbeat (`runs/scored/box_heartbeat.jsonl`) + `box_health.sh` operator query after
