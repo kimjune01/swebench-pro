@@ -54,6 +54,12 @@ empty captures. Full audit incl. development-overlap and independent re-grade:
 - **Token efficiency (per instance, median):** ~137 model turns, ~71k output
   tokens, ~4.7M cache-read tokens (heavy prompt-cache reuse). Totals across the run:
   67M output tokens, 5.3B cache-read.
+- **Runnable on a subscription alone.** The cheapest path isn't API at all: with a
+  Max 20× ($200/mo) plan, the whole 728-set is reproducible at **zero marginal
+  token cost** over ~2 weeks of wall-clock (just the subscription + ~$58 EC2),
+  trading time for dollars. The ~$2.60/instance API rate is the *fast* path; the
+  subscription is the *cheap* path. (This run used both — mostly subscription, with
+  a paid-API tail to finish faster.)
 
 ```mermaid
 xychart-beta

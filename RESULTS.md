@@ -14,8 +14,8 @@ single verdict (PROCEDURE §6).
   ([`PREREGISTRATION.md`](PREREGISTRATION.md) §6).
 - **Terminal verdicts:** 728 (694 WIN, 34 LOSS), **0 INCOMPLETE** — full coverage.
 - **Resolve-rate:** W / (W + L) = 694 / 728 = 95.33%.
-- **Run window:** 2026-05-27 20:02Z → 2026-05-30 17:37Z, ~72 h wall-clock —
-  **not uninterrupted:** three provider-credential stalls and a mid-run switch
+- **Run span:** ~3.5 days end-to-end (first dispatch 2026-05-27 00:58Z → last
+  verdict 2026-05-30 17:37Z) — **not uninterrupted:** three provider-credential stalls and a mid-run switch
   from Max-subscription to paid API billing, all recovered with 0 instances
   lost. Provenance in [`RUN_NOTES.md`](RUN_NOTES.md).
 

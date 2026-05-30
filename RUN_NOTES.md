@@ -15,9 +15,9 @@ the compressed provenance view. Per-stall machinery is in
 
 | | |
 |---|---|
-| first verdict | 2026-05-27 20:02Z |
+| first dispatch | 2026-05-27 00:58Z (5 min after freeze) |
 | last verdict | 2026-05-30 17:37Z |
-| wall-clock | ~72 h |
+| wall-clock | **~3.5 days** end-to-end (incl. quota pauses + 3 auth stalls; not continuous compute) |
 | boxes | 4 (EC2 `m7i.xlarge`), scaled to 8 for the API-mode tail |
 | auth | Max OAuth for ~83% of verdicts; `AUTH_MODE=api` for the final ~17% |
 
@@ -143,7 +143,7 @@ instances ran on a Max subscription at ~$0 marginal).
 |---|---|
 | avg token cost / instance | **~$2.60** at API pricing (measured: canary $2.07 on light repos, blended higher) |
 | this run's API cash | **$813.52** — only ~310 instances billed to API (≈ $813.52 / $2.60); the rest on the operator's **Max $200/mo plan**, ~$0 marginal |
-| EC2 | `m7i.xlarge` × 4 (8 for the tail) × ~72 h × ~$0.20/box-hr ≈ **$58** (~$0.08/instance) |
+| EC2 | `m7i.xlarge` × 4 (8 for the tail) × the run's box-hours × ~$0.20/box-hr ≈ **$58** (~$0.08/instance; boxes terminated during pauses, so well under the 4×3.5-day span) |
 | codex (GPT-5.5 challenger) | generous codex subscription (GPT-5.5 token allowance), ~$0 marginal |
 
 So the run's out-of-pocket beyond the two fixed subscriptions (Claude Max $200/mo +

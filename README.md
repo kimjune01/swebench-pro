@@ -21,8 +21,8 @@ coverage, no instance left un-graded. The 728 denominator is 731 dataset
 instances minus 3 instances whose own gold patch fails the official grader (a
 pre-run defect audit, frozen before the scored run); the three are named with
 grader output in [`RESULTS.md`](RESULTS.md) and committed in
-`runs/audit/defects.jsonl`. The run window 2026-05-27 20:02Z → 2026-05-30
-17:37Z (~72 h) was **not uninterrupted**: three provider-credential stalls and
+`runs/audit/defects.jsonl`. The run spanned **~3.5 days** (first dispatch
+2026-05-27 00:58Z → last verdict 2026-05-30 17:37Z) and was **not uninterrupted**: three provider-credential stalls and
 a mid-run switch from Max-subscription to paid API billing punctuated it, all
 recovered under the prereg's pre-committed recovery discipline with 0 instances
 lost ([`RUN_NOTES.md`](RUN_NOTES.md)). Every figure here is recomputable from
