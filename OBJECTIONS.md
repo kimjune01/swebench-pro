@@ -151,12 +151,19 @@ figures, kept separate because they are not the same thing:
 
 - **Replicable marginal cost under API pricing: ~$2.60 / instance.** Measured, not
   modeled — the API-mode canary ran $2.07/instance on light repos, blended higher
-  across heavy ones. This is the figure comparable to a vendor's advertised
-  per-task cost, and what a reproducer paying PAYG should budget.
+  across heavy ones. Comparable to a vendor's advertised per-task cost. Caveat: this
+  is the **Claude (Sonnet 4.5) leg only** — the GPT-5.5 challenger ran on a generous
+  codex subscription (~$0 marginal), so a reproducer metering both models budgets
+  somewhat above $2.60.
 - **This run's actual cash outlay: $813.52 API spend + ~$58 EC2.** Most instances
-  ran on a Max subscription at ~$0 marginal; only ~310 were billed to API (≈
-  $813.52 / $2.60). The subscription subsidy makes the *cash* number non-portable,
-  which is exactly why the ~$2.60 API rate above is the one to quote.
+  ran on the operator's **Max $200/mo plan** at ~$0 marginal; only ~310 were billed
+  to API (≈ $813.52 / $2.60). The subscription subsidy makes the *cash* number
+  non-portable, which is exactly why the ~$2.60 API rate above is the one to quote.
+
+And "fast" is **per instance**, not end-to-end: median ~13 min per instance, but
+the full 728-instance run took **~3.5 days** of wall-clock — bounded by fleet size
+(4–8 boxes), the three auth stalls, and quota pauses, not by per-instance speed
+([`RUN_NOTES.md`](RUN_NOTES.md)).
 
 Turn/token stats cover the 681/728 instances whose trajectories survived teardown
 (median ~71k output tokens/instance). See [`SCOREBOARD.md`](SCOREBOARD.md).

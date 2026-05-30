@@ -40,12 +40,17 @@ empty captures. Full audit incl. development-overlap and independent re-grade:
 
 ## Cheap — cost & token efficiency
 
-- **Average token cost ~$2.60 / instance at API pricing** — the figure comparable
-  to a vendor's advertised per-task cost. Measured, not modeled: the API-mode
-  canary ran $2.07/instance on light repos, blended higher across heavy ones.
-- **This run's actual cash: $813.52** in API spend, because most instances ran on
-  a Max subscription at ~$0 marginal — only ~310 were billed to API (≈ $813.52 /
-  $2.60). Plus **~$58 EC2** (~$0.08/instance). See [`RUN_NOTES.md`](RUN_NOTES.md).
+- **Average token cost ~$2.60 / instance at API pricing** — comparable to a
+  vendor's advertised per-task cost. Measured, not modeled: the API-mode canary ran
+  $2.07/instance on light repos, blended higher across heavy ones. **This is the
+  Claude (Sonnet 4.5) leg only** — the GPT-5.5 craft challenger ran on a generous
+  codex subscription at ~$0 marginal, so its tokens are not in the $2.60; a
+  reproducer paying PAYG for *both* models would pay somewhat more.
+- **This run's actual cash: $813.52** in Claude API spend, because most instances
+  ran on the operator's **Max $200/mo subscription** at ~$0 marginal — only ~310
+  were billed to API (≈ $813.52 / $2.60). The GPT-5.5 challenger was on a separate
+  codex subscription ($0 marginal). Plus **~$58 EC2** (~$0.08/instance). So
+  out-of-pocket beyond the two subscriptions was ≈ **$870**. See [`RUN_NOTES.md`](RUN_NOTES.md).
 - **Token efficiency (per instance, median):** ~137 model turns, ~71k output
   tokens, ~4.7M cache-read tokens (heavy prompt-cache reuse). Totals across the run:
   67M output tokens, 5.3B cache-read.
@@ -64,6 +69,12 @@ Median **770 s (~13 min)** per instance, p90 **1537 s (~26 min)**; 84% finish in
 5–20 min. The right tail is heavy repos and craft-hangs on big suites (max 10,745 s,
 a teleport WIN). Model turns: median 137, p90 291; 13.7% exceed SEAL's 250-turn
 reference cap.
+
+**"Fast" is per instance, not the campaign.** The full 728-instance run took **~3.5
+days** of wall-clock end-to-end — bounded by fleet size (4–8 boxes), three auth
+stalls, and quota pauses, not by per-instance speed ([`RUN_NOTES.md`](RUN_NOTES.md)).
+The ~13 min is what one instance costs in time; the run is embarrassingly parallel,
+so end-to-end is a function of how many boxes you point at it.
 
 ```mermaid
 xychart-beta

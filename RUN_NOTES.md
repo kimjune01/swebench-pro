@@ -142,14 +142,16 @@ instances ran on a Max subscription at ~$0 marginal).
 | | |
 |---|---|
 | avg token cost / instance | **~$2.60** at API pricing (measured: canary $2.07 on light repos, blended higher) |
-| this run's API cash | **$813.52** — only ~310 instances billed to API (≈ $813.52 / $2.60); the rest on Max subscription, ~$0 marginal |
+| this run's API cash | **$813.52** — only ~310 instances billed to API (≈ $813.52 / $2.60); the rest on the operator's **Max $200/mo plan**, ~$0 marginal |
 | EC2 | `m7i.xlarge` × 4 (8 for the tail) × ~72 h × ~$0.20/box-hr ≈ **$58** (~$0.08/instance) |
-| codex (GPT-5.5 challenger) | on subscription |
+| codex (GPT-5.5 challenger) | generous codex subscription (GPT-5.5 token allowance), ~$0 marginal |
 
-So the run's out-of-pocket beyond fixed subscriptions was ≈ **$813.52 API + $58
-EC2 ≈ $870**. The portable figure to quote is the **~$2.60/instance API rate** —
-comparable to a vendor's advertised per-task cost — not the subscription-subsidized
-cash, which doesn't reproduce. Per-instance token efficiency (median ~137 turns,
+So the run's out-of-pocket beyond the two fixed subscriptions (Claude Max $200/mo +
+codex) was ≈ **$813.52 Claude API + $58 EC2 ≈ $870**. The portable figure to quote
+is the **~$2.60/instance API rate** — comparable to a vendor's advertised per-task
+cost — but note it covers the **Claude leg only**: the GPT-5.5 challenger ran on the
+codex subscription, so a reproducer metering both models would pay somewhat above
+$2.60. The subscription-subsidized cash doesn't reproduce. Per-instance token efficiency (median ~137 turns,
 ~71k output tokens) is in [`SCOREBOARD.md`](SCOREBOARD.md).
 
 ## What the next campaign should pick up
