@@ -1,0 +1,1136 @@
+{"ts": "2026-05-29T18:03:56Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 6, "cpu_pct": 0.43, "idle_min": 23}, {"cid": "55f28d5f9278", "name": "vigorous_varahamihira", "uptime_min": 72, "cpu_pct": 0.42, "idle_min": 23}, {"cid": "e44c87d22804", "name": "nifty_gagarin", "uptime_min": 73, "cpu_pct": 0.42, "idle_min": 23}]}
+{"ts": "2026-05-29T18:04:04Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 22, "cpu_pct": 0.41, "idle_min": 22}, {"cid": "465a15e2701e", "name": "naughty_rosalind", "uptime_min": 71, "cpu_pct": 0.4, "idle_min": 22}, {"cid": "1b8548c3fffa", "name": "gallant_lichterman", "uptime_min": 72, "cpu_pct": 0.39, "idle_min": 22}, {"cid": "248048b7795d", "name": "pedantic_snyder", "uptime_min": 72, "cpu_pct": 0.41, "idle_min": 22}]}
+{"ts": "2026-05-29T18:04:06Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 12, "cpu_pct": 0.39, "idle_min": 12}]}
+{"ts": "2026-05-29T18:04:08Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 23, "cpu_pct": 0.39, "idle_min": 23}]}
+{"ts": "2026-05-29T18:06:08Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 8, "cpu_pct": 0.66, "idle_min": 0}]}
+{"ts": "2026-05-29T18:06:12Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 24, "cpu_pct": 0.45, "idle_min": 0}]}
+{"ts": "2026-05-29T18:06:14Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 14, "cpu_pct": 0.42, "idle_min": 14}]}
+{"ts": "2026-05-29T18:06:16Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 25, "cpu_pct": 0.4, "idle_min": 25}]}
+{"ts": "2026-05-29T18:11:18Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 13, "cpu_pct": 0.42, "idle_min": 5}]}
+{"ts": "2026-05-29T18:11:20Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 29, "cpu_pct": 0.4, "idle_min": 5}]}
+{"ts": "2026-05-29T18:11:23Z", "box": "coord3", "load1": 0.08, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 19, "cpu_pct": 0.41, "idle_min": 19}]}
+{"ts": "2026-05-29T18:11:25Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 30, "cpu_pct": 0.38, "idle_min": 30}]}
+{"ts": "2026-05-29T18:16:28Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 18, "cpu_pct": 0.43, "idle_min": 10}]}
+{"ts": "2026-05-29T18:16:30Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 34, "cpu_pct": 0.45, "idle_min": 10}]}
+{"ts": "2026-05-29T18:16:32Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 24, "cpu_pct": 0.4, "idle_min": 24}]}
+{"ts": "2026-05-29T18:16:34Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 35, "cpu_pct": 0.4, "idle_min": 35}]}
+{"ts": "2026-05-29T18:21:37Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 23, "cpu_pct": 0.42, "idle_min": 15}]}
+{"ts": "2026-05-29T18:21:39Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 39, "cpu_pct": 0.4, "idle_min": 15}]}
+{"ts": "2026-05-29T18:21:41Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 29, "cpu_pct": 0.41, "idle_min": 29}]}
+{"ts": "2026-05-29T18:21:44Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 40, "cpu_pct": 0.41, "idle_min": 40}]}
+{"ts": "2026-05-29T18:26:46Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 29, "cpu_pct": 0.42, "idle_min": 20}]}
+{"ts": "2026-05-29T18:26:48Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 44, "cpu_pct": 0.42, "idle_min": 20}]}
+{"ts": "2026-05-29T18:26:50Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 35, "cpu_pct": 0.4, "idle_min": 35}]}
+{"ts": "2026-05-29T18:26:52Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 45, "cpu_pct": 0.38, "idle_min": 45}]}
+{"ts": "2026-05-29T18:28:58Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 31, "cpu_pct": 0.44, "idle_min": 0}]}
+{"ts": "2026-05-29T18:29:00Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 47, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T18:29:03Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 37, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T18:29:05Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 47, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T18:34:07Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 36, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T18:34:10Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 52, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T18:34:12Z", "box": "coord3", "load1": 0.02, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 42, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-29T18:34:14Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 53, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T18:39:17Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 41, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T18:39:19Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 57, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T18:39:22Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 47, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T18:39:24Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 58, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T18:44:26Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 46, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T18:44:29Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 62, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T18:44:32Z", "box": "coord3", "load1": 0.08, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 52, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T18:44:34Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 63, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T18:49:36Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 51, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T18:49:39Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 67, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T18:49:41Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 57, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-29T18:49:43Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 68, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-29T18:54:46Z", "box": "coord1", "load1": 0.05, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 57, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T18:54:48Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 72, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T18:54:50Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 63, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T18:54:52Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 73, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T18:57:08Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 59, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T18:57:10Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 75, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T18:57:13Z", "box": "coord3", "load1": 0.08, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 65, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-29T18:57:15Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 76, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-29T19:02:17Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 64, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T19:02:20Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 80, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T19:02:22Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 70, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T19:02:24Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 81, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T19:07:27Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 69, "cpu_pct": 0.45, "idle_min": 0}]}
+{"ts": "2026-05-29T19:07:29Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 85, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T19:07:32Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 75, "cpu_pct": 0.38, "idle_min": 0}]}
+{"ts": "2026-05-29T19:07:34Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 86, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T19:12:37Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 74, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T19:12:39Z", "box": "coord2", "load1": 0.08, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 90, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-29T19:12:41Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 80, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T19:12:44Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 91, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T19:17:46Z", "box": "coord1", "load1": 0.14, "containers": [{"cid": "217cf6ffe68b", "name": "modest_poincare", "uptime_min": 80, "cpu_pct": 0.12, "idle_min": 0}]}
+{"ts": "2026-05-29T19:17:48Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "f6b0e5d57aba", "name": "boring_rubin", "uptime_min": 95, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T19:17:51Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "eca420b311a9", "name": "quirky_wilbur", "uptime_min": 86, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T19:17:53Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "9a4768cf0d0d", "name": "kind_kapitsa", "uptime_min": 96, "cpu_pct": 0.1, "idle_min": 0}]}
+{"ts": "2026-05-29T19:19:00Z", "box": "coord1", "load1": 0.82, "containers": []}
+{"ts": "2026-05-29T19:19:02Z", "box": "coord2", "load1": 1.4, "containers": [{"cid": "1be3e4417325", "name": "nervous_jepsen", "uptime_min": 0, "cpu_pct": 111.03, "idle_min": 0}]}
+{"ts": "2026-05-29T19:19:05Z", "box": "coord3", "load1": 1.32, "containers": [{"cid": "3810248ec495", "name": "magical_swanson", "uptime_min": 0, "cpu_pct": 117.53, "idle_min": 0}]}
+{"ts": "2026-05-29T19:19:07Z", "box": "coord4", "load1": 1.4, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 0, "cpu_pct": 0.31, "idle_min": 0}]}
+{"ts": "2026-05-29T19:24:09Z", "box": "coord1", "load1": 0.13, "containers": [{"cid": "2b7b1384b6d5", "name": "pensive_taussig", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T19:24:12Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "1be3e4417325", "name": "nervous_jepsen", "uptime_min": 5, "cpu_pct": 0.12, "idle_min": 4}]}
+{"ts": "2026-05-29T19:24:14Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "3810248ec495", "name": "magical_swanson", "uptime_min": 5, "cpu_pct": 0.12, "idle_min": 4}]}
+{"ts": "2026-05-29T19:24:17Z", "box": "coord4", "load1": 0.1, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 5, "cpu_pct": 0.14, "idle_min": 4}]}
+{"ts": "2026-05-29T19:29:19Z", "box": "coord1", "load1": 0.68, "containers": [{"cid": "d2635d824a7f", "name": "eager_pike", "uptime_min": 1, "cpu_pct": 4.17, "idle_min": 1}]}
+{"ts": "2026-05-29T19:29:22Z", "box": "coord2", "load1": 0.17, "containers": [{"cid": "fea607d2b709", "name": "lucid_snyder", "uptime_min": 0, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T19:29:24Z", "box": "coord3", "load1": 0.45, "containers": [{"cid": "3810248ec495", "name": "magical_swanson", "uptime_min": 10, "cpu_pct": 0.13, "idle_min": 2}]}
+{"ts": "2026-05-29T19:29:26Z", "box": "coord4", "load1": 0.14, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 10, "cpu_pct": 0.14, "idle_min": 1}]}
+{"ts": "2026-05-29T19:34:29Z", "box": "coord1", "load1": 0.05, "containers": [{"cid": "d2635d824a7f", "name": "eager_pike", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-29T19:34:31Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "fea607d2b709", "name": "lucid_snyder", "uptime_min": 5, "cpu_pct": 0.43, "idle_min": 0}]}
+{"ts": "2026-05-29T19:34:34Z", "box": "coord3", "load1": 0.02, "containers": [{"cid": "9431bfb08749", "name": "interesting_morse", "uptime_min": 3, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-29T19:34:36Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 15, "cpu_pct": 113.19, "idle_min": 0}]}
+{"ts": "2026-05-29T19:39:38Z", "box": "coord1", "load1": 0.67, "containers": [{"cid": "f009a1dea6bc", "name": "dreamy_burnell", "uptime_min": 1, "cpu_pct": 0.09, "idle_min": 0}]}
+{"ts": "2026-05-29T19:39:41Z", "box": "coord2", "load1": 0.04, "containers": [{"cid": "6a1a41899ed3", "name": "stupefied_austin", "uptime_min": 4, "cpu_pct": 0.14, "idle_min": 3}]}
+{"ts": "2026-05-29T19:39:43Z", "box": "coord3", "load1": 0.17, "containers": [{"cid": "c4a8b97f9fd9", "name": "recursing_dhawan", "uptime_min": 4, "cpu_pct": 0.13, "idle_min": 3}]}
+{"ts": "2026-05-29T19:39:46Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 20, "cpu_pct": 0.14, "idle_min": 1}]}
+{"ts": "2026-05-29T19:44:48Z", "box": "coord1", "load1": 0.19, "containers": [{"cid": "f009a1dea6bc", "name": "dreamy_burnell", "uptime_min": 6, "cpu_pct": 0.07, "idle_min": 0}]}
+{"ts": "2026-05-29T19:44:51Z", "box": "coord2", "load1": 1.32, "containers": [{"cid": "c269e96c2fb9", "name": "recursing_yalow", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T19:44:53Z", "box": "coord3", "load1": 0.48, "containers": [{"cid": "c4a8b97f9fd9", "name": "recursing_dhawan", "uptime_min": 9, "cpu_pct": 7.07, "idle_min": 1}]}
+{"ts": "2026-05-29T19:44:56Z", "box": "coord4", "load1": 0.26, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 25, "cpu_pct": 21.19, "idle_min": 0}]}
+{"ts": "2026-05-29T19:49:58Z", "box": "coord1", "load1": 0.28, "containers": [{"cid": "9fa1ae8b6a9a", "name": "romantic_turing", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T19:50:00Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "c269e96c2fb9", "name": "recursing_yalow", "uptime_min": 5, "cpu_pct": 3.81, "idle_min": 4}]}
+{"ts": "2026-05-29T19:50:03Z", "box": "coord3", "load1": 1.56, "containers": [{"cid": "4b4473c50469", "name": "stoic_proskuriakova", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T19:50:05Z", "box": "coord4", "load1": 0.16, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 31, "cpu_pct": 0.25, "idle_min": 0}]}
+{"ts": "2026-05-29T19:55:08Z", "box": "coord1", "load1": 0.1, "containers": [{"cid": "9fa1ae8b6a9a", "name": "romantic_turing", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-29T19:55:10Z", "box": "coord2", "load1": 0.44, "containers": [{"cid": "9a18f1a90519", "name": "friendly_neumann", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T19:55:12Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "4b4473c50469", "name": "stoic_proskuriakova", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T19:55:15Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 36, "cpu_pct": 0.14, "idle_min": 1}]}
+{"ts": "2026-05-29T20:00:17Z", "box": "coord1", "load1": 1.31, "containers": [{"cid": "53270f1fcb86", "name": "beautiful_dhawan", "uptime_min": 1, "cpu_pct": 0.07, "idle_min": 0}]}
+{"ts": "2026-05-29T20:00:20Z", "box": "coord2", "load1": 0.31, "containers": [{"cid": "9a18f1a90519", "name": "friendly_neumann", "uptime_min": 7, "cpu_pct": 103.96, "idle_min": 0}]}
+{"ts": "2026-05-29T20:00:22Z", "box": "coord3", "load1": 0.21, "containers": [{"cid": "4b4473c50469", "name": "stoic_proskuriakova", "uptime_min": 10, "cpu_pct": 3.78, "idle_min": 10}]}
+{"ts": "2026-05-29T20:00:25Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 41, "cpu_pct": 0.13, "idle_min": 6}]}
+{"ts": "2026-05-29T20:05:27Z", "box": "coord1", "load1": 0.05, "containers": [{"cid": "53270f1fcb86", "name": "beautiful_dhawan", "uptime_min": 6, "cpu_pct": 0.06, "idle_min": 5}]}
+{"ts": "2026-05-29T20:05:29Z", "box": "coord2", "load1": 0.16, "containers": [{"cid": "20d35df83423", "name": "gallant_kowalevski", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T20:05:32Z", "box": "coord3", "load1": 0.11, "containers": [{"cid": "909be8c41250", "name": "peaceful_black", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T20:05:34Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 46, "cpu_pct": 3.98, "idle_min": 11}]}
+{"ts": "2026-05-29T20:10:37Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "53270f1fcb86", "name": "beautiful_dhawan", "uptime_min": 11, "cpu_pct": 0.05, "idle_min": 0}]}
+{"ts": "2026-05-29T20:10:39Z", "box": "coord2", "load1": 1.21, "containers": [{"cid": "8a15bdcfa6ff", "name": "optimistic_bhaskara", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T20:10:42Z", "box": "coord3", "load1": 0.04, "containers": [{"cid": "909be8c41250", "name": "peaceful_black", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-29T20:10:44Z", "box": "coord4", "load1": 1.1, "containers": [{"cid": "04f9f88c2b53", "name": "recursing_leakey", "uptime_min": 51, "cpu_pct": 0.82, "idle_min": 0}]}
+{"ts": "2026-05-29T20:15:46Z", "box": "coord1", "load1": 1.01, "containers": [{"cid": "ab177a18d301", "name": "peaceful_turing", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T20:15:49Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "8a15bdcfa6ff", "name": "optimistic_bhaskara", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T20:15:51Z", "box": "coord3", "load1": 0.2, "containers": [{"cid": "909be8c41250", "name": "peaceful_black", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T20:15:54Z", "box": "coord4", "load1": 0.3, "containers": [{"cid": "69bf55ea2168", "name": "recursing_shannon", "uptime_min": 0, "cpu_pct": 0.44, "idle_min": 0}]}
+{"ts": "2026-05-29T20:20:56Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "ab177a18d301", "name": "peaceful_turing", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T20:20:58Z", "box": "coord2", "load1": 0.1, "containers": [{"cid": "cb0595c6efa5", "name": "compassionate_pike", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T20:20:59Z", "box": "coord3", "load1": 1.41, "containers": []}
+{"ts": "2026-05-29T20:21:01Z", "box": "coord4", "load1": 0.18, "containers": [{"cid": "722c7294b47f", "name": "hopeful_murdock", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T20:26:04Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "ab177a18d301", "name": "peaceful_turing", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-29T20:26:06Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "cb0595c6efa5", "name": "compassionate_pike", "uptime_min": 8, "cpu_pct": 0.81, "idle_min": 7}]}
+{"ts": "2026-05-29T20:26:09Z", "box": "coord3", "load1": 0.15, "containers": [{"cid": "7d95102afc4c", "name": "priceless_napier", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T20:26:11Z", "box": "coord4", "load1": 0.61, "containers": [{"cid": "213376d9cf36", "name": "romantic_euclid", "uptime_min": 1, "cpu_pct": 3.84, "idle_min": 0}]}
+{"ts": "2026-05-29T20:31:13Z", "box": "coord1", "load1": 1.15, "containers": [{"cid": "835d4bd2002c", "name": "frosty_ptolemy", "uptime_min": 0, "cpu_pct": 0.12, "idle_min": 0}]}
+{"ts": "2026-05-29T20:31:16Z", "box": "coord2", "load1": 1.8, "containers": [{"cid": "f58c0a390240", "name": "vibrant_rubin", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T20:31:18Z", "box": "coord3", "load1": 1.04, "containers": [{"cid": "d280a220631a", "name": "magical_sanderson", "uptime_min": 0, "cpu_pct": 82.23, "idle_min": 0}]}
+{"ts": "2026-05-29T20:31:19Z", "box": "coord4", "load1": 2.61, "containers": []}
+{"ts": "2026-05-29T20:36:19Z", "box": "coord1", "load1": 1.69, "containers": []}
+{"ts": "2026-05-29T20:36:22Z", "box": "coord2", "load1": 2.17, "containers": [{"cid": "c3908c804839", "name": "angry_galois", "uptime_min": 0, "cpu_pct": 39.08, "idle_min": 0}]}
+{"ts": "2026-05-29T20:36:24Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "d280a220631a", "name": "magical_sanderson", "uptime_min": 5, "cpu_pct": 0.14, "idle_min": 4}]}
+{"ts": "2026-05-29T20:36:25Z", "box": "coord4", "load1": 1.66, "containers": []}
+{"ts": "2026-05-29T20:41:25Z", "box": "coord1", "load1": 0.5, "containers": []}
+{"ts": "2026-05-29T20:41:26Z", "box": "coord2", "load1": 0.84, "containers": []}
+{"ts": "2026-05-29T20:41:28Z", "box": "coord3", "load1": 0.61, "containers": [{"cid": "d280a220631a", "name": "magical_sanderson", "uptime_min": 10, "cpu_pct": 0.18, "idle_min": 1}]}
+{"ts": "2026-05-29T20:41:29Z", "box": "coord4", "load1": 0.39, "containers": []}
+{"ts": "2026-05-29T20:46:30Z", "box": "coord1", "load1": 0.0, "containers": []}
+{"ts": "2026-05-29T20:46:31Z", "box": "coord2", "load1": 0.0, "containers": []}
+{"ts": "2026-05-29T20:46:32Z", "box": "coord3", "load1": 0.01, "containers": []}
+{"ts": "2026-05-29T20:46:32Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-29T20:51:33Z", "box": "coord1", "load1": 0.03, "containers": []}
+{"ts": "2026-05-29T20:51:34Z", "box": "coord2", "load1": 0.0, "containers": []}
+{"ts": "2026-05-29T20:51:35Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-29T20:51:36Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-29T20:56:38Z", "box": "coord1", "load1": 5.0, "containers": [{"cid": "02eabfd3c9c8", "name": "angry_tesla", "uptime_min": 0, "cpu_pct": 394.31, "idle_min": 0}]}
+{"ts": "2026-05-29T20:56:41Z", "box": "coord2", "load1": 1.1, "containers": [{"cid": "d4398c513aa9", "name": "priceless_mendeleev", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T20:56:43Z", "box": "coord3", "load1": 0.64, "containers": [{"cid": "84d6e59e14ec", "name": "frosty_mclean", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T20:56:45Z", "box": "coord4", "load1": 1.28, "containers": [{"cid": "8e993d2c6b4f", "name": "unruffled_bartik", "uptime_min": 0, "cpu_pct": 65.4, "idle_min": 16}]}
+{"ts": "2026-05-29T21:01:46Z", "box": "coord1", "load1": 1.06, "containers": []}
+{"ts": "2026-05-29T21:01:47Z", "box": "coord2", "load1": 1.12, "containers": []}
+{"ts": "2026-05-29T21:01:49Z", "box": "coord3", "load1": 0.07, "containers": [{"cid": "84d6e59e14ec", "name": "frosty_mclean", "uptime_min": 5, "cpu_pct": 6.61, "idle_min": 0}]}
+{"ts": "2026-05-29T21:01:52Z", "box": "coord4", "load1": 2.15, "containers": [{"cid": "cec730ffd27a", "name": "sad_mendel", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:06:54Z", "box": "coord1", "load1": 1.06, "containers": [{"cid": "5c7860de911f", "name": "mystifying_clarke", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:06:57Z", "box": "coord2", "load1": 0.42, "containers": [{"cid": "e8730e0c8cb2", "name": "romantic_hofstadter", "uptime_min": 1, "cpu_pct": 4.46, "idle_min": 1}]}
+{"ts": "2026-05-29T21:06:59Z", "box": "coord3", "load1": 0.2, "containers": [{"cid": "18827ea03d99", "name": "sad_stonebraker", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T21:07:01Z", "box": "coord4", "load1": 0.24, "containers": [{"cid": "16ed76b21a77", "name": "festive_solomon", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T21:12:04Z", "box": "coord1", "load1": 0.29, "containers": [{"cid": "5c7860de911f", "name": "mystifying_clarke", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T21:12:06Z", "box": "coord2", "load1": 1.02, "containers": [{"cid": "7e3a603596a7", "name": "priceless_elion", "uptime_min": 0, "cpu_pct": 0.13, "idle_min": 0}]}
+{"ts": "2026-05-29T21:12:07Z", "box": "coord3", "load1": 0.26, "containers": []}
+{"ts": "2026-05-29T21:12:10Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "16ed76b21a77", "name": "festive_solomon", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-29T21:17:12Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "5c7860de911f", "name": "mystifying_clarke", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-29T21:17:14Z", "box": "coord2", "load1": 0.14, "containers": [{"cid": "7e3a603596a7", "name": "priceless_elion", "uptime_min": 5, "cpu_pct": 0.13, "idle_min": 4}]}
+{"ts": "2026-05-29T21:17:17Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T21:17:19Z", "box": "coord4", "load1": 0.52, "containers": [{"cid": "58c6f4f3cafa", "name": "blissful_kepler", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:22:21Z", "box": "coord1", "load1": 0.23, "containers": [{"cid": "5c7860de911f", "name": "mystifying_clarke", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T21:22:24Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "7e3a603596a7", "name": "priceless_elion", "uptime_min": 10, "cpu_pct": 0.13, "idle_min": 9}]}
+{"ts": "2026-05-29T21:22:26Z", "box": "coord3", "load1": 0.96, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 9, "cpu_pct": 100.5, "idle_min": 4}]}
+{"ts": "2026-05-29T21:22:29Z", "box": "coord4", "load1": 0.04, "containers": [{"cid": "58c6f4f3cafa", "name": "blissful_kepler", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T21:27:31Z", "box": "coord1", "load1": 1.21, "containers": [{"cid": "6d8fd9460ae4", "name": "sharp_bohr", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:27:33Z", "box": "coord2", "load1": 0.07, "containers": [{"cid": "7e3a603596a7", "name": "priceless_elion", "uptime_min": 15, "cpu_pct": 0.13, "idle_min": 1}]}
+{"ts": "2026-05-29T21:27:35Z", "box": "coord3", "load1": 1.01, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 14, "cpu_pct": 101.0, "idle_min": 4}]}
+{"ts": "2026-05-29T21:27:38Z", "box": "coord4", "load1": 0.1, "containers": [{"cid": "58c6f4f3cafa", "name": "blissful_kepler", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:32:40Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "6d8fd9460ae4", "name": "sharp_bohr", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T21:32:42Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "7e3a603596a7", "name": "priceless_elion", "uptime_min": 20, "cpu_pct": 126.59, "idle_min": 0}]}
+{"ts": "2026-05-29T21:32:45Z", "box": "coord3", "load1": 1.0, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 19, "cpu_pct": 100.0, "idle_min": 9}]}
+{"ts": "2026-05-29T21:32:47Z", "box": "coord4", "load1": 0.21, "containers": [{"cid": "6f40ba23b3b3", "name": "angry_tesla", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T21:37:50Z", "box": "coord1", "load1": 0.56, "containers": [{"cid": "5809c7567044", "name": "zealous_antonelli", "uptime_min": 2, "cpu_pct": 0.06, "idle_min": 1}]}
+{"ts": "2026-05-29T21:37:52Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "3f4df7cdb1c6", "name": "confident_fermi", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T21:37:54Z", "box": "coord3", "load1": 1.0, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 25, "cpu_pct": 100.25, "idle_min": 14}]}
+{"ts": "2026-05-29T21:37:57Z", "box": "coord4", "load1": 0.15, "containers": [{"cid": "6f40ba23b3b3", "name": "angry_tesla", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:42:59Z", "box": "coord1", "load1": 0.06, "containers": [{"cid": "5809c7567044", "name": "zealous_antonelli", "uptime_min": 7, "cpu_pct": 0.05, "idle_min": 6}]}
+{"ts": "2026-05-29T21:43:00Z", "box": "coord2", "load1": 0.09, "containers": []}
+{"ts": "2026-05-29T21:43:02Z", "box": "coord3", "load1": 1.0, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 30, "cpu_pct": 100.75, "idle_min": 19}]}
+{"ts": "2026-05-29T21:43:05Z", "box": "coord4", "load1": 0.14, "containers": [{"cid": "d46d445de358", "name": "unruffled_shtern", "uptime_min": 3, "cpu_pct": 1.76, "idle_min": 3}]}
+{"ts": "2026-05-29T21:48:08Z", "box": "coord1", "load1": 0.8, "containers": [{"cid": "dcb3b4c3d3fb", "name": "crazy_chaplygin", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:48:10Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "6db5776c2253", "name": "hungry_solomon", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T21:48:12Z", "box": "coord3", "load1": 1.0, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 35, "cpu_pct": 100.25, "idle_min": 24}]}
+{"ts": "2026-05-29T21:48:15Z", "box": "coord4", "load1": 0.32, "containers": [{"cid": "d46d445de358", "name": "unruffled_shtern", "uptime_min": 8, "cpu_pct": 0.05, "idle_min": 0}]}
+{"ts": "2026-05-29T21:53:17Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "dcb3b4c3d3fb", "name": "crazy_chaplygin", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T21:53:20Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "6db5776c2253", "name": "hungry_solomon", "uptime_min": 9, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-29T21:53:22Z", "box": "coord3", "load1": 1.0, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 40, "cpu_pct": 99.99, "idle_min": 30}]}
+{"ts": "2026-05-29T21:53:25Z", "box": "coord4", "load1": 0.46, "containers": [{"cid": "a7dd17b74d76", "name": "inspiring_blackwell", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T21:58:27Z", "box": "coord1", "load1": 0.24, "containers": [{"cid": "2caa2f33434b", "name": "objective_chandrasekhar", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T21:58:30Z", "box": "coord2", "load1": 0.2, "containers": [{"cid": "7b44426679d4", "name": "crazy_cohen", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T21:58:32Z", "box": "coord3", "load1": 1.0, "containers": [{"cid": "7cc922a45f48", "name": "brave_ishizaka", "uptime_min": 45, "cpu_pct": 100.0, "idle_min": 35}]}
+{"ts": "2026-05-29T21:58:35Z", "box": "coord4", "load1": 0.13, "containers": [{"cid": "a7dd17b74d76", "name": "inspiring_blackwell", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:03:36Z", "box": "coord1", "load1": 1.36, "containers": []}
+{"ts": "2026-05-29T22:03:38Z", "box": "coord2", "load1": 0.17, "containers": [{"cid": "7b44426679d4", "name": "crazy_cohen", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-29T22:03:40Z", "box": "coord3", "load1": 0.12, "containers": [{"cid": "6fa6f52cd0a9", "name": "laughing_burnell", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T22:03:42Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "6ea37959dba7", "name": "pensive_carson", "uptime_min": 3, "cpu_pct": 35.95, "idle_min": 3}]}
+{"ts": "2026-05-29T22:08:45Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "42342bcdce56", "name": "blissful_mahavira", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T22:08:47Z", "box": "coord2", "load1": 0.45, "containers": [{"cid": "e0d41c0f5d64", "name": "jovial_nash", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T22:08:50Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "6fa6f52cd0a9", "name": "laughing_burnell", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-29T22:08:52Z", "box": "coord4", "load1": 0.12, "containers": [{"cid": "6ea37959dba7", "name": "pensive_carson", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-29T22:13:54Z", "box": "coord1", "load1": 0.47, "containers": [{"cid": "83d2c36c23aa", "name": "peaceful_jemison", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:13:57Z", "box": "coord2", "load1": 0.79, "containers": [{"cid": "35a0b35f52a1", "name": "nervous_wozniak", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:13:59Z", "box": "coord3", "load1": 0.13, "containers": [{"cid": "fa00702363a6", "name": "funny_jennings", "uptime_min": 2, "cpu_pct": 6.79, "idle_min": 2}]}
+{"ts": "2026-05-29T22:14:00Z", "box": "coord4", "load1": 0.56, "containers": []}
+{"ts": "2026-05-29T22:19:02Z", "box": "coord1", "load1": 0.14, "containers": [{"cid": "83d2c36c23aa", "name": "peaceful_jemison", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:19:03Z", "box": "coord2", "load1": 1.13, "containers": []}
+{"ts": "2026-05-29T22:19:05Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "fa00702363a6", "name": "funny_jennings", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T22:19:07Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "e2f8a3964cd5", "name": "nifty_borg", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T22:24:10Z", "box": "coord1", "load1": 0.16, "containers": [{"cid": "fe5c39ce64f2", "name": "eloquent_hopper", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T22:24:12Z", "box": "coord2", "load1": 0.11, "containers": [{"cid": "42bad5c14c7e", "name": "admiring_chatelet", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T22:24:15Z", "box": "coord3", "load1": 0.16, "containers": [{"cid": "646451cb5f01", "name": "relaxed_lederberg", "uptime_min": 2, "cpu_pct": 0.13, "idle_min": 2}]}
+{"ts": "2026-05-29T22:24:17Z", "box": "coord4", "load1": 0.85, "containers": [{"cid": "0781754dec50", "name": "objective_ptolemy", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T22:29:19Z", "box": "coord1", "load1": 0.46, "containers": [{"cid": "7e1ff7d7964d", "name": "elastic_kepler", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:29:22Z", "box": "coord2", "load1": 0.12, "containers": [{"cid": "42bad5c14c7e", "name": "admiring_chatelet", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-29T22:29:24Z", "box": "coord3", "load1": 0.4, "containers": [{"cid": "646451cb5f01", "name": "relaxed_lederberg", "uptime_min": 8, "cpu_pct": 0.13, "idle_min": 0}]}
+{"ts": "2026-05-29T22:29:26Z", "box": "coord4", "load1": 0.16, "containers": [{"cid": "0781754dec50", "name": "objective_ptolemy", "uptime_min": 6, "cpu_pct": 4.16, "idle_min": 6}]}
+{"ts": "2026-05-29T22:34:29Z", "box": "coord1", "load1": 0.1, "containers": [{"cid": "7e1ff7d7964d", "name": "elastic_kepler", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T22:34:29Z", "box": "coord2", "load1": 0.86, "containers": []}
+{"ts": "2026-05-29T22:34:30Z", "box": "coord3", "load1": 0.92, "containers": []}
+{"ts": "2026-05-29T22:34:33Z", "box": "coord4", "load1": 0.1, "containers": [{"cid": "94b32e4ffcef", "name": "clever_golick", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T22:39:35Z", "box": "coord1", "load1": 1.23, "containers": [{"cid": "078ccbfac4a5", "name": "distracted_sutherland", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:39:38Z", "box": "coord2", "load1": 0.1, "containers": [{"cid": "fbc9026492f8", "name": "friendly_lederberg", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:39:40Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "d2dc16b32bd9", "name": "nifty_engelbart", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T22:39:42Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "94b32e4ffcef", "name": "clever_golick", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-29T22:44:45Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "078ccbfac4a5", "name": "distracted_sutherland", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T22:44:48Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "9c5ee1b4782f", "name": "heuristic_perlman", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T22:44:50Z", "box": "coord3", "load1": 0.22, "containers": [{"cid": "d2dc16b32bd9", "name": "nifty_engelbart", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:44:52Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "94b32e4ffcef", "name": "clever_golick", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:49:55Z", "box": "coord1", "load1": 0.24, "containers": [{"cid": "c51037b582ca", "name": "eager_goldstine", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T22:49:57Z", "box": "coord2", "load1": 0.24, "containers": [{"cid": "9c5ee1b4782f", "name": "heuristic_perlman", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T22:50:00Z", "box": "coord3", "load1": 0.04, "containers": [{"cid": "8a5baba94ce0", "name": "youthful_shannon", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T22:50:02Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "94b32e4ffcef", "name": "clever_golick", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T22:55:04Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "c51037b582ca", "name": "eager_goldstine", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-29T22:55:07Z", "box": "coord2", "load1": 0.11, "containers": [{"cid": "7ede70df3b7a", "name": "laughing_sammet", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T22:55:07Z", "box": "coord3", "load1": 0.41, "containers": []}
+{"ts": "2026-05-29T22:55:10Z", "box": "coord4", "load1": 0.25, "containers": [{"cid": "b5b2ea63a15d", "name": "focused_dhawan", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:00:12Z", "box": "coord1", "load1": 0.52, "containers": [{"cid": "88b77304d7a2", "name": "eager_dewdney", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:00:15Z", "box": "coord2", "load1": 0.04, "containers": [{"cid": "7ede70df3b7a", "name": "laughing_sammet", "uptime_min": 8, "cpu_pct": 37.61, "idle_min": 0}]}
+{"ts": "2026-05-29T23:00:17Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "6c0d10ac8694", "name": "optimistic_ellis", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T23:00:19Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "b5b2ea63a15d", "name": "focused_dhawan", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:05:22Z", "box": "coord1", "load1": 0.5, "containers": [{"cid": "88b77304d7a2", "name": "eager_dewdney", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:05:24Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T23:05:26Z", "box": "coord3", "load1": 0.3, "containers": [{"cid": "cf1b2f226912", "name": "naughty_noether", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:05:29Z", "box": "coord4", "load1": 0.13, "containers": [{"cid": "90ec7a600f6c", "name": "unruffled_meninsky", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T23:10:31Z", "box": "coord1", "load1": 0.14, "containers": [{"cid": "dfe91bd4bed0", "name": "festive_boyd", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T23:10:34Z", "box": "coord2", "load1": 0.07, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T23:10:36Z", "box": "coord3", "load1": 0.14, "containers": [{"cid": "cf1b2f226912", "name": "naughty_noether", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:10:38Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "90ec7a600f6c", "name": "unruffled_meninsky", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:15:40Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "dfe91bd4bed0", "name": "festive_boyd", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:15:43Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T23:15:45Z", "box": "coord3", "load1": 0.21, "containers": [{"cid": "c72180ab5438", "name": "objective_knuth", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-29T23:15:47Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "4ca1e5507e54", "name": "stupefied_lovelace", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T23:20:50Z", "box": "coord1", "load1": 0.85, "containers": [{"cid": "2fe96e05aa61", "name": "epic_pare", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:20:52Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:20:55Z", "box": "coord3", "load1": 0.43, "containers": [{"cid": "2f7d456c004b", "name": "nervous_leakey", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:20:57Z", "box": "coord4", "load1": 0.81, "containers": [{"cid": "029e44018a4d", "name": "naughty_sinoussi", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:26:00Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "2fe96e05aa61", "name": "epic_pare", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:26:02Z", "box": "coord2", "load1": 0.1, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 24, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:26:04Z", "box": "coord3", "load1": 0.05, "containers": [{"cid": "2f7d456c004b", "name": "nervous_leakey", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T23:26:07Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "029e44018a4d", "name": "naughty_sinoussi", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-29T23:31:09Z", "box": "coord1", "load1": 0.41, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:31:12Z", "box": "coord2", "load1": 0.03, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 29, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-29T23:31:14Z", "box": "coord3", "load1": 0.11, "containers": [{"cid": "2f7d456c004b", "name": "nervous_leakey", "uptime_min": 11, "cpu_pct": 4.81, "idle_min": 0}]}
+{"ts": "2026-05-29T23:31:16Z", "box": "coord4", "load1": 0.25, "containers": [{"cid": "73d2a2f8056f", "name": "nifty_satoshi", "uptime_min": 3, "cpu_pct": 0.05, "idle_min": 2}]}
+{"ts": "2026-05-29T23:36:19Z", "box": "coord1", "load1": 0.4, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 8, "cpu_pct": 100.46, "idle_min": 0}]}
+{"ts": "2026-05-29T23:36:21Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 34, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-29T23:36:24Z", "box": "coord3", "load1": 0.13, "containers": [{"cid": "2c4333774771", "name": "boring_golick", "uptime_min": 2, "cpu_pct": 0.12, "idle_min": 2}]}
+{"ts": "2026-05-29T23:36:26Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "73d2a2f8056f", "name": "nifty_satoshi", "uptime_min": 8, "cpu_pct": 0.05, "idle_min": 7}]}
+{"ts": "2026-05-29T23:41:28Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-29T23:41:31Z", "box": "coord2", "load1": 0.59, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 39, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:41:33Z", "box": "coord3", "load1": 0.28, "containers": [{"cid": "2c4333774771", "name": "boring_golick", "uptime_min": 7, "cpu_pct": 0.13, "idle_min": 1}]}
+{"ts": "2026-05-29T23:41:35Z", "box": "coord4", "load1": 0.27, "containers": [{"cid": "2e59e3177749", "name": "elegant_antonelli", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:46:38Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 19, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:46:40Z", "box": "coord2", "load1": 0.14, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 44, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-29T23:46:43Z", "box": "coord3", "load1": 0.24, "containers": [{"cid": "9889ef6af6eb", "name": "elegant_cray", "uptime_min": 1, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-29T23:46:45Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "2e59e3177749", "name": "elegant_antonelli", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-29T23:51:48Z", "box": "coord1", "load1": 0.13, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 24, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-29T23:51:50Z", "box": "coord2", "load1": 0.03, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 49, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-29T23:51:53Z", "box": "coord3", "load1": 0.08, "containers": [{"cid": "e6995e1e2d62", "name": "bold_wing", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:51:53Z", "box": "coord4", "load1": 0.89, "containers": []}
+{"ts": "2026-05-29T23:56:56Z", "box": "coord1", "load1": 0.54, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 29, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:56:58Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 55, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-29T23:57:01Z", "box": "coord3", "load1": 1.1, "containers": [{"cid": "4143773ab2b4", "name": "sweet_jemison", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-29T23:57:03Z", "box": "coord4", "load1": 0.2, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T00:02:06Z", "box": "coord1", "load1": 0.06, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 34, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T00:02:08Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "034ca977bab5", "name": "jolly_maxwell", "uptime_min": 60, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T00:02:10Z", "box": "coord3", "load1": 0.04, "containers": [{"cid": "4143773ab2b4", "name": "sweet_jemison", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T00:02:13Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T00:07:15Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 39, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T00:07:18Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "9a4a55a642e2", "name": "sleepy_robinson", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T00:07:18Z", "box": "coord3", "load1": 1.14, "containers": []}
+{"ts": "2026-05-30T00:07:21Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 15, "cpu_pct": 0.0, "idle_min": 14}]}
+{"ts": "2026-05-30T00:12:23Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 44, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T00:12:26Z", "box": "coord2", "load1": 0.32, "containers": [{"cid": "9a4a55a642e2", "name": "sleepy_robinson", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T00:12:28Z", "box": "coord3", "load1": 0.15, "containers": [{"cid": "5ddd7c8385bf", "name": "sleepy_shtern", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T00:12:30Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 20, "cpu_pct": 15.26, "idle_min": 0}]}
+{"ts": "2026-05-30T00:17:33Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 50, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T00:17:35Z", "box": "coord2", "load1": 0.2, "containers": [{"cid": "6c6c406eceea", "name": "inspiring_buck", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T00:17:38Z", "box": "coord3", "load1": 0.11, "containers": [{"cid": "5ddd7c8385bf", "name": "sleepy_shtern", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T00:17:40Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 25, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T00:22:42Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 55, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T00:22:45Z", "box": "coord2", "load1": 0.25, "containers": [{"cid": "6c6c406eceea", "name": "inspiring_buck", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T00:22:47Z", "box": "coord3", "load1": 0.34, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T00:22:50Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 30, "cpu_pct": 10.24, "idle_min": 0}]}
+{"ts": "2026-05-30T00:27:52Z", "box": "coord1", "load1": 0.2, "containers": [{"cid": "1b171cb108fe", "name": "flamboyant_bhabha", "uptime_min": 60, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T00:27:54Z", "box": "coord2", "load1": 0.62, "containers": [{"cid": "737cfc16ad3c", "name": "interesting_lederberg", "uptime_min": 1, "cpu_pct": 0.16, "idle_min": 0}]}
+{"ts": "2026-05-30T00:27:57Z", "box": "coord3", "load1": 0.59, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 7, "cpu_pct": 99.76, "idle_min": 0}]}
+{"ts": "2026-05-30T00:27:59Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 35, "cpu_pct": 4.13, "idle_min": 5}]}
+{"ts": "2026-05-30T00:33:01Z", "box": "coord1", "load1": 0.28, "containers": [{"cid": "3a5a2fdc3692", "name": "cranky_kepler", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T00:33:04Z", "box": "coord2", "load1": 0.31, "containers": [{"cid": "737cfc16ad3c", "name": "interesting_lederberg", "uptime_min": 6, "cpu_pct": 0.13, "idle_min": 5}]}
+{"ts": "2026-05-30T00:33:06Z", "box": "coord3", "load1": 0.09, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T00:33:09Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 40, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-30T00:38:12Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T00:38:14Z", "box": "coord4", "load1": 0.23, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 45, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T00:43:15Z", "box": "coord1", "load1": 1.66, "containers": []}
+{"ts": "2026-05-30T00:43:17Z", "box": "coord2", "load1": 1.96, "containers": [{"cid": "046ccbfbbbc4", "name": "laughing_noyce", "uptime_min": 0, "cpu_pct": 3.84, "idle_min": 0}]}
+{"ts": "2026-05-30T00:43:20Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 22, "cpu_pct": 0.0, "idle_min": 12}]}
+{"ts": "2026-05-30T00:43:22Z", "box": "coord4", "load1": 0.11, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 51, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T00:48:25Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "7df3cc26ca3a", "name": "interesting_aryabhata", "uptime_min": 5, "cpu_pct": 0.07, "idle_min": 4}]}
+{"ts": "2026-05-30T00:48:27Z", "box": "coord2", "load1": 0.22, "containers": [{"cid": "046ccbfbbbc4", "name": "laughing_noyce", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T00:48:29Z", "box": "coord3", "load1": 0.03, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 27, "cpu_pct": 0.0, "idle_min": 17}]}
+{"ts": "2026-05-30T00:48:32Z", "box": "coord4", "load1": 0.12, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 56, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T00:53:34Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "7df3cc26ca3a", "name": "interesting_aryabhata", "uptime_min": 10, "cpu_pct": 0.08, "idle_min": 0}]}
+{"ts": "2026-05-30T00:53:36Z", "box": "coord2", "load1": 0.92, "containers": [{"cid": "92a2ebb671c2", "name": "gracious_satoshi", "uptime_min": 0, "cpu_pct": 0.12, "idle_min": 0}]}
+{"ts": "2026-05-30T00:53:39Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 33, "cpu_pct": 0.0, "idle_min": 22}]}
+{"ts": "2026-05-30T00:53:41Z", "box": "coord4", "load1": 0.07, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 61, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T00:58:44Z", "box": "coord1", "load1": 0.06, "containers": [{"cid": "35a16f37adad", "name": "hardcore_perlman", "uptime_min": 5, "cpu_pct": 0.38, "idle_min": 0}]}
+{"ts": "2026-05-30T00:58:46Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "92a2ebb671c2", "name": "gracious_satoshi", "uptime_min": 5, "cpu_pct": 3.8, "idle_min": 5}]}
+{"ts": "2026-05-30T00:58:48Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 38, "cpu_pct": 0.0, "idle_min": 27}]}
+{"ts": "2026-05-30T00:58:51Z", "box": "coord4", "load1": 0.12, "containers": [{"cid": "363343381c96", "name": "serene_zhukovsky", "uptime_min": 66, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T01:03:53Z", "box": "coord1", "load1": 0.12, "containers": [{"cid": "5f5bc9202bb3", "name": "jolly_pare", "uptime_min": 4, "cpu_pct": 0.07, "idle_min": 4}]}
+{"ts": "2026-05-30T01:03:55Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "92a2ebb671c2", "name": "gracious_satoshi", "uptime_min": 11, "cpu_pct": 0.12, "idle_min": 3}]}
+{"ts": "2026-05-30T01:03:58Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "04567ccd6cb3", "name": "lucid_bose", "uptime_min": 43, "cpu_pct": 0.0, "idle_min": 33}]}
+{"ts": "2026-05-30T01:04:00Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "a4a493298a7e", "name": "serene_mayer", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T01:09:02Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "b06757fb480b", "name": "zen_bhaskara", "uptime_min": 2, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-30T01:09:04Z", "box": "coord2", "load1": 0.47, "containers": [{"cid": "bb20b2ccfc29", "name": "elastic_banzai", "uptime_min": 1, "cpu_pct": 0.12, "idle_min": 1}]}
+{"ts": "2026-05-30T01:09:05Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T01:09:07Z", "box": "coord4", "load1": 0.07, "containers": [{"cid": "7220ad53c2bf", "name": "distracted_antonelli", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T01:14:10Z", "box": "coord1", "load1": 0.13, "containers": [{"cid": "b3df339a67c6", "name": "jolly_shamir", "uptime_min": 4, "cpu_pct": 0.07, "idle_min": 4}]}
+{"ts": "2026-05-30T01:14:12Z", "box": "coord2", "load1": 0.07, "containers": [{"cid": "bb20b2ccfc29", "name": "elastic_banzai", "uptime_min": 6, "cpu_pct": 0.12, "idle_min": 6}]}
+{"ts": "2026-05-30T01:14:13Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T01:14:13Z", "box": "coord4", "load1": 0.91, "containers": []}
+{"ts": "2026-05-30T01:19:15Z", "box": "coord1", "load1": 0.32, "containers": [{"cid": "b3df339a67c6", "name": "jolly_shamir", "uptime_min": 9, "cpu_pct": 0.08, "idle_min": 0}]}
+{"ts": "2026-05-30T01:19:18Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "3e162a2b57dd", "name": "nifty_brown", "uptime_min": 0, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-30T01:19:18Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T01:19:21Z", "box": "coord4", "load1": 0.41, "containers": [{"cid": "5e4fd2122db2", "name": "practical_jemison", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T01:24:23Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "9ede365d0979", "name": "sad_babbage", "uptime_min": 3, "cpu_pct": 0.4, "idle_min": 0}]}
+{"ts": "2026-05-30T01:24:25Z", "box": "coord2", "load1": 0.15, "containers": [{"cid": "489063d38f52", "name": "heuristic_bouman", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T01:24:28Z", "box": "coord3", "load1": 1.48, "containers": [{"cid": "e8fba9f687da", "name": "sweet_pascal", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T01:24:28Z", "box": "coord4", "load1": 0.58, "containers": []}
+{"ts": "2026-05-30T01:29:31Z", "box": "coord1", "load1": 0.83, "containers": [{"cid": "6d9f98a8bba8", "name": "kind_edison", "uptime_min": 4, "cpu_pct": 123.96, "idle_min": 0}]}
+{"ts": "2026-05-30T01:29:33Z", "box": "coord2", "load1": 0.58, "containers": [{"cid": "3e8f645cf169", "name": "stoic_matsumoto", "uptime_min": 1, "cpu_pct": 0.12, "idle_min": 0}]}
+{"ts": "2026-05-30T01:29:36Z", "box": "coord3", "load1": 0.04, "containers": [{"cid": "e8fba9f687da", "name": "sweet_pascal", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T01:29:38Z", "box": "coord4", "load1": 0.11, "containers": [{"cid": "5a1542f193f2", "name": "zealous_aryabhata", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T01:34:40Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "6d9f98a8bba8", "name": "kind_edison", "uptime_min": 9, "cpu_pct": 0.07, "idle_min": 2}]}
+{"ts": "2026-05-30T01:34:43Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "3e8f645cf169", "name": "stoic_matsumoto", "uptime_min": 6, "cpu_pct": 0.12, "idle_min": 5}]}
+{"ts": "2026-05-30T01:34:45Z", "box": "coord3", "load1": 0.03, "containers": [{"cid": "e8fba9f687da", "name": "sweet_pascal", "uptime_min": 10, "cpu_pct": 3.79, "idle_min": 10}]}
+{"ts": "2026-05-30T01:34:47Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "5a1542f193f2", "name": "zealous_aryabhata", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T01:39:50Z", "box": "coord1", "load1": 0.66, "containers": [{"cid": "aef33f445402", "name": "elated_merkle", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T01:39:52Z", "box": "coord2", "load1": 0.4, "containers": [{"cid": "3e8f645cf169", "name": "stoic_matsumoto", "uptime_min": 11, "cpu_pct": 0.12, "idle_min": 3}]}
+{"ts": "2026-05-30T01:39:54Z", "box": "coord3", "load1": 0.03, "containers": [{"cid": "e8fba9f687da", "name": "sweet_pascal", "uptime_min": 15, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T01:39:57Z", "box": "coord4", "load1": 0.27, "containers": [{"cid": "a594e8aed98b", "name": "fervent_hofstadter", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T01:44:59Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "aef33f445402", "name": "elated_merkle", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T01:45:01Z", "box": "coord2", "load1": 0.03, "containers": [{"cid": "85fcbe46e582", "name": "great_borg", "uptime_min": 2, "cpu_pct": 0.41, "idle_min": 0}]}
+{"ts": "2026-05-30T01:45:04Z", "box": "coord3", "load1": 0.56, "containers": [{"cid": "b546bca7356e", "name": "hardcore_lamport", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T01:45:06Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "a594e8aed98b", "name": "fervent_hofstadter", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T01:50:08Z", "box": "coord1", "load1": 0.17, "containers": [{"cid": "aef33f445402", "name": "elated_merkle", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T01:50:11Z", "box": "coord2", "load1": 0.14, "containers": [{"cid": "9ab04f6d0892", "name": "boring_shaw", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T01:50:13Z", "box": "coord3", "load1": 0.17, "containers": [{"cid": "b546bca7356e", "name": "hardcore_lamport", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T01:50:15Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "d0075cc71dc8", "name": "heuristic_borg", "uptime_min": 4, "cpu_pct": 0.07, "idle_min": 3}]}
+{"ts": "2026-05-30T01:55:18Z", "box": "coord1", "load1": 0.09, "containers": [{"cid": "146937f334e7", "name": "ecstatic_dhawan", "uptime_min": 3, "cpu_pct": 0.07, "idle_min": 3}]}
+{"ts": "2026-05-30T01:55:20Z", "box": "coord2", "load1": 0.79, "containers": [{"cid": "77a4915de4f5", "name": "relaxed_nobel", "uptime_min": 1, "cpu_pct": 0.07, "idle_min": 0}]}
+{"ts": "2026-05-30T01:55:22Z", "box": "coord3", "load1": 0.18, "containers": [{"cid": "4273c8b079c0", "name": "blissful_goldberg", "uptime_min": 2, "cpu_pct": 0.12, "idle_min": 2}]}
+{"ts": "2026-05-30T01:55:25Z", "box": "coord4", "load1": 1.19, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T02:00:27Z", "box": "coord1", "load1": 0.43, "containers": [{"cid": "9da7e5823d14", "name": "goofy_pike", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T02:00:29Z", "box": "coord2", "load1": 0.17, "containers": [{"cid": "77a4915de4f5", "name": "relaxed_nobel", "uptime_min": 6, "cpu_pct": 0.12, "idle_min": 5}]}
+{"ts": "2026-05-30T02:00:32Z", "box": "coord3", "load1": 0.37, "containers": [{"cid": "4273c8b079c0", "name": "blissful_goldberg", "uptime_min": 7, "cpu_pct": 0.12, "idle_min": 0}]}
+{"ts": "2026-05-30T02:00:34Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T02:05:37Z", "box": "coord1", "load1": 0.04, "containers": [{"cid": "9da7e5823d14", "name": "goofy_pike", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T02:05:39Z", "box": "coord2", "load1": 0.92, "containers": [{"cid": "77a4915de4f5", "name": "relaxed_nobel", "uptime_min": 11, "cpu_pct": 0.94, "idle_min": 0}]}
+{"ts": "2026-05-30T02:05:41Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "f1b32380a82d", "name": "elated_noyce", "uptime_min": 4, "cpu_pct": 0.47, "idle_min": 0}]}
+{"ts": "2026-05-30T02:05:44Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-30T02:10:46Z", "box": "coord1", "load1": 0.86, "containers": [{"cid": "720402bd8830", "name": "nice_noyce", "uptime_min": 0, "cpu_pct": 3.63, "idle_min": 0}]}
+{"ts": "2026-05-30T02:10:48Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "77a4915de4f5", "name": "relaxed_nobel", "uptime_min": 16, "cpu_pct": 0.09, "idle_min": 0}]}
+{"ts": "2026-05-30T02:10:51Z", "box": "coord3", "load1": 0.03, "containers": [{"cid": "9cd4352ca66f", "name": "friendly_robinson", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T02:10:53Z", "box": "coord4", "load1": 1.0, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 15, "cpu_pct": 100.14, "idle_min": 15}]}
+{"ts": "2026-05-30T02:15:56Z", "box": "coord1", "load1": 0.04, "containers": [{"cid": "720402bd8830", "name": "nice_noyce", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T02:15:58Z", "box": "coord2", "load1": 0.08, "containers": [{"cid": "5cc5a7b18567", "name": "vigorous_brown", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T02:16:01Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "9cd4352ca66f", "name": "friendly_robinson", "uptime_min": 9, "cpu_pct": 3.96, "idle_min": 0}]}
+{"ts": "2026-05-30T02:16:03Z", "box": "coord4", "load1": 1.06, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 20, "cpu_pct": 100.49, "idle_min": 0}]}
+{"ts": "2026-05-30T02:21:06Z", "box": "coord1", "load1": 0.16, "containers": [{"cid": "720402bd8830", "name": "nice_noyce", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T02:21:08Z", "box": "coord2", "load1": 0.25, "containers": [{"cid": "5cc5a7b18567", "name": "vigorous_brown", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T02:21:10Z", "box": "coord3", "load1": 0.2, "containers": [{"cid": "d2a61081b90c", "name": "clever_ishizaka", "uptime_min": 2, "cpu_pct": 0.13, "idle_min": 1}]}
+{"ts": "2026-05-30T02:21:13Z", "box": "coord4", "load1": 1.03, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 26, "cpu_pct": 99.75, "idle_min": 1}]}
+{"ts": "2026-05-30T02:26:15Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "3ce6e23f574c", "name": "strange_clarke", "uptime_min": 4, "cpu_pct": 0.08, "idle_min": 3}]}
+{"ts": "2026-05-30T02:26:18Z", "box": "coord2", "load1": 1.08, "containers": [{"cid": "f8e7c379ba75", "name": "festive_wilbur", "uptime_min": 0, "cpu_pct": 0.1, "idle_min": 0}]}
+{"ts": "2026-05-30T02:26:20Z", "box": "coord3", "load1": 0.09, "containers": [{"cid": "d2a61081b90c", "name": "clever_ishizaka", "uptime_min": 7, "cpu_pct": 0.13, "idle_min": 0}]}
+{"ts": "2026-05-30T02:26:23Z", "box": "coord4", "load1": 1.0, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 31, "cpu_pct": 100.25, "idle_min": 7}]}
+{"ts": "2026-05-30T02:31:25Z", "box": "coord1", "load1": 0.05, "containers": [{"cid": "3ce6e23f574c", "name": "strange_clarke", "uptime_min": 9, "cpu_pct": 0.13, "idle_min": 0}]}
+{"ts": "2026-05-30T02:31:28Z", "box": "coord2", "load1": 0.04, "containers": [{"cid": "f8e7c379ba75", "name": "festive_wilbur", "uptime_min": 5, "cpu_pct": 0.09, "idle_min": 4}]}
+{"ts": "2026-05-30T02:31:30Z", "box": "coord3", "load1": 0.11, "containers": [{"cid": "38517d662613", "name": "quirky_kare", "uptime_min": 2, "cpu_pct": 0.15, "idle_min": 2}]}
+{"ts": "2026-05-30T02:31:33Z", "box": "coord4", "load1": 1.08, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 36, "cpu_pct": 101.25, "idle_min": 12}]}
+{"ts": "2026-05-30T02:36:35Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "939b7e98b9d7", "name": "gracious_thompson", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T02:36:37Z", "box": "coord2", "load1": 0.11, "containers": [{"cid": "f8e7c379ba75", "name": "festive_wilbur", "uptime_min": 10, "cpu_pct": 0.11, "idle_min": 10}]}
+{"ts": "2026-05-30T02:36:40Z", "box": "coord3", "load1": 0.49, "containers": [{"cid": "75b2bd58b229", "name": "flamboyant_chaum", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T02:36:42Z", "box": "coord4", "load1": 1.0, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 41, "cpu_pct": 100.0, "idle_min": 17}]}
+{"ts": "2026-05-30T02:41:45Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "939b7e98b9d7", "name": "gracious_thompson", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T02:41:47Z", "box": "coord2", "load1": 1.15, "containers": [{"cid": "f8e7c379ba75", "name": "festive_wilbur", "uptime_min": 15, "cpu_pct": 104.74, "idle_min": 1}]}
+{"ts": "2026-05-30T02:41:50Z", "box": "coord3", "load1": 0.16, "containers": [{"cid": "75b2bd58b229", "name": "flamboyant_chaum", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T02:41:52Z", "box": "coord4", "load1": 1.0, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 46, "cpu_pct": 100.24, "idle_min": 22}]}
+{"ts": "2026-05-30T02:46:55Z", "box": "coord1", "load1": 0.04, "containers": [{"cid": "939b7e98b9d7", "name": "gracious_thompson", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T02:46:57Z", "box": "coord2", "load1": 0.16, "containers": [{"cid": "f8e7c379ba75", "name": "festive_wilbur", "uptime_min": 20, "cpu_pct": 0.12, "idle_min": 0}]}
+{"ts": "2026-05-30T02:47:00Z", "box": "coord3", "load1": 0.91, "containers": [{"cid": "de908c910096", "name": "sweet_lehmann", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T02:47:02Z", "box": "coord4", "load1": 1.0, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 51, "cpu_pct": 100.0, "idle_min": 27}]}
+{"ts": "2026-05-30T02:52:04Z", "box": "coord1", "load1": 0.19, "containers": [{"cid": "ed48d77afd7c", "name": "determined_mclean", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T02:52:07Z", "box": "coord2", "load1": 0.08, "containers": [{"cid": "f8e7c379ba75", "name": "festive_wilbur", "uptime_min": 26, "cpu_pct": 0.1, "idle_min": 4}]}
+{"ts": "2026-05-30T02:52:09Z", "box": "coord3", "load1": 0.05, "containers": [{"cid": "de908c910096", "name": "sweet_lehmann", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T02:52:12Z", "box": "coord4", "load1": 1.0, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 57, "cpu_pct": 100.0, "idle_min": 32}]}
+{"ts": "2026-05-30T02:57:15Z", "box": "coord1", "load1": 0.7, "containers": [{"cid": "c14cbd1afb49", "name": "interesting_kapitsa", "uptime_min": 0, "cpu_pct": 100.97, "idle_min": 0}]}
+{"ts": "2026-05-30T02:57:17Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "f8e7c379ba75", "name": "festive_wilbur", "uptime_min": 31, "cpu_pct": 0.11, "idle_min": 1}]}
+{"ts": "2026-05-30T02:57:19Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "de908c910096", "name": "sweet_lehmann", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-30T02:57:22Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T03:02:24Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "c14cbd1afb49", "name": "interesting_kapitsa", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T03:02:27Z", "box": "coord2", "load1": 0.07, "containers": [{"cid": "ffb72e8d721f", "name": "pedantic_wilson", "uptime_min": 3, "cpu_pct": 0.07, "idle_min": 2}]}
+{"ts": "2026-05-30T03:02:29Z", "box": "coord3", "load1": 0.07, "containers": [{"cid": "de908c910096", "name": "sweet_lehmann", "uptime_min": 15, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T03:02:32Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T03:07:34Z", "box": "coord1", "load1": 0.22, "containers": [{"cid": "c14cbd1afb49", "name": "interesting_kapitsa", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T03:07:37Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "ffb72e8d721f", "name": "pedantic_wilson", "uptime_min": 8, "cpu_pct": 0.07, "idle_min": 7}]}
+{"ts": "2026-05-30T03:07:39Z", "box": "coord3", "load1": 0.34, "containers": [{"cid": "81361e1b4e29", "name": "vibrant_vaughan", "uptime_min": 1, "cpu_pct": 0.13, "idle_min": 1}]}
+{"ts": "2026-05-30T03:07:41Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "4c2918e5a141", "name": "crazy_dubinsky", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T03:12:42Z", "box": "coord1", "load1": 1.48, "containers": []}
+{"ts": "2026-05-30T03:12:43Z", "box": "coord2", "load1": 1.16, "containers": []}
+{"ts": "2026-05-30T03:12:43Z", "box": "coord3", "load1": 2.16, "containers": []}
+{"ts": "2026-05-30T03:12:46Z", "box": "coord4", "load1": 0.07, "containers": [{"cid": "bfb2aa8018a5", "name": "suspicious_khorana", "uptime_min": 3, "cpu_pct": 0.45, "idle_min": 0}]}
+{"ts": "2026-05-30T03:17:47Z", "box": "coord1", "load1": 1.76, "containers": []}
+{"ts": "2026-05-30T03:17:49Z", "box": "coord2", "load1": 1.71, "containers": [{"cid": "656cfe95bb57", "name": "stupefied_williamson", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T03:17:50Z", "box": "coord3", "load1": 1.46, "containers": []}
+{"ts": "2026-05-30T03:17:50Z", "box": "coord4", "load1": 1.4, "containers": []}
+{"ts": "2026-05-30T03:22:51Z", "box": "coord1", "load1": 1.29, "containers": []}
+{"ts": "2026-05-30T03:22:54Z", "box": "coord2", "load1": 1.18, "containers": [{"cid": "ae4cdccfc069", "name": "priceless_chandrasekhar", "uptime_min": 0, "cpu_pct": 100.16, "idle_min": 0}]}
+{"ts": "2026-05-30T03:22:54Z", "box": "coord3", "load1": 1.45, "containers": []}
+{"ts": "2026-05-30T03:22:57Z", "box": "coord4", "load1": 1.18, "containers": [{"cid": "6d0979b78375", "name": "practical_kilby", "uptime_min": 0, "cpu_pct": 99.76, "idle_min": 0}]}
+{"ts": "2026-05-30T03:27:58Z", "box": "coord1", "load1": 1.6, "containers": []}
+{"ts": "2026-05-30T03:27:58Z", "box": "coord2", "load1": 1.68, "containers": []}
+{"ts": "2026-05-30T03:28:01Z", "box": "coord3", "load1": 1.01, "containers": [{"cid": "f7aca0b16442", "name": "focused_faraday", "uptime_min": 3, "cpu_pct": 99.99, "idle_min": 2}]}
+{"ts": "2026-05-30T03:28:01Z", "box": "coord4", "load1": 1.64, "containers": []}
+{"ts": "2026-05-30T03:33:04Z", "box": "coord1", "load1": 0.12, "containers": [{"cid": "84eea9c93115", "name": "magical_varahamihira", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T03:33:06Z", "box": "coord2", "load1": 1.02, "containers": [{"cid": "76e8bb90ea2b", "name": "heuristic_murdock", "uptime_min": 4, "cpu_pct": 101.0, "idle_min": 4}]}
+{"ts": "2026-05-30T03:33:09Z", "box": "coord3", "load1": 1.01, "containers": [{"cid": "f7aca0b16442", "name": "focused_faraday", "uptime_min": 8, "cpu_pct": 100.0, "idle_min": 2}]}
+{"ts": "2026-05-30T03:33:11Z", "box": "coord4", "load1": 0.14, "containers": [{"cid": "f4c6d1ee38f5", "name": "priceless_galileo", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T03:38:14Z", "box": "coord1", "load1": 7.18, "containers": [{"cid": "99974c58f16c", "name": "fervent_perlman", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T03:38:17Z", "box": "coord2", "load1": 2.55, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 1, "cpu_pct": 140.34, "idle_min": 0}]}
+{"ts": "2026-05-30T03:38:20Z", "box": "coord3", "load1": 1.84, "containers": [{"cid": "06866722e2ed", "name": "funny_driscoll", "uptime_min": 1, "cpu_pct": 113.48, "idle_min": 0}]}
+{"ts": "2026-05-30T03:38:23Z", "box": "coord4", "load1": 0.34, "containers": [{"cid": "92a57063305e", "name": "thirsty_newton", "uptime_min": 2, "cpu_pct": 0.07, "idle_min": 1}]}
+{"ts": "2026-05-30T03:43:26Z", "box": "coord1", "load1": 4.3, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 4, "cpu_pct": 392.81, "idle_min": 0}]}
+{"ts": "2026-05-30T03:43:29Z", "box": "coord2", "load1": 0.03, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T03:43:32Z", "box": "coord3", "load1": 0.34, "containers": [{"cid": "faa1617d5d31", "name": "temp_ansible_container", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T03:43:34Z", "box": "coord4", "load1": 0.13, "containers": [{"cid": "92a57063305e", "name": "thirsty_newton", "uptime_min": 7, "cpu_pct": 0.08, "idle_min": 6}]}
+{"ts": "2026-05-30T03:48:36Z", "box": "coord1", "load1": 0.47, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T03:48:39Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T03:48:42Z", "box": "coord3", "load1": 0.41, "containers": [{"cid": "faa1617d5d31", "name": "temp_ansible_container", "uptime_min": 8, "cpu_pct": 18.43, "idle_min": 0}]}
+{"ts": "2026-05-30T03:48:44Z", "box": "coord4", "load1": 0.33, "containers": [{"cid": "92a57063305e", "name": "thirsty_newton", "uptime_min": 13, "cpu_pct": 0.05, "idle_min": 3}]}
+{"ts": "2026-05-30T03:53:47Z", "box": "coord1", "load1": 0.97, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T03:53:49Z", "box": "coord2", "load1": 0.38, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 16, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T03:53:53Z", "box": "coord3", "load1": 0.18, "containers": [{"cid": "faa1617d5d31", "name": "temp_ansible_container", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T03:53:55Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "b754467d5444", "name": "suspicious_bassi", "uptime_min": 2, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-30T03:58:57Z", "box": "coord1", "load1": 1.3, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 19, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T03:59:00Z", "box": "coord2", "load1": 0.18, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 22, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T03:59:03Z", "box": "coord3", "load1": 1.89, "containers": [{"cid": "61c13c07595b", "name": "jolly_aryabhata", "uptime_min": 1, "cpu_pct": 119.93, "idle_min": 1}]}
+{"ts": "2026-05-30T03:59:05Z", "box": "coord4", "load1": 0.03, "containers": [{"cid": "7094d878e105", "name": "tender_pare", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T04:04:08Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 25, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T04:04:10Z", "box": "coord2", "load1": 0.32, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 27, "cpu_pct": 2.87, "idle_min": 1}]}
+{"ts": "2026-05-30T04:04:12Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "eb33ecf94c85", "name": "hopeful_almeida", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T04:04:15Z", "box": "coord4", "load1": 0.83, "containers": [{"cid": "fcc321dc957f", "name": "busy_brahmagupta", "uptime_min": 0, "cpu_pct": 4.09, "idle_min": 0}]}
+{"ts": "2026-05-30T04:09:17Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 30, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T04:09:20Z", "box": "coord2", "load1": 0.45, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 32, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T04:09:22Z", "box": "coord3", "load1": 0.05, "containers": [{"cid": "eb33ecf94c85", "name": "hopeful_almeida", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T04:09:25Z", "box": "coord4", "load1": 0.11, "containers": [{"cid": "fcc321dc957f", "name": "busy_brahmagupta", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T04:14:27Z", "box": "coord1", "load1": 0.88, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 35, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T04:14:29Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 37, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T04:14:32Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "eb33ecf94c85", "name": "hopeful_almeida", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T04:14:34Z", "box": "coord4", "load1": 0.07, "containers": [{"cid": "fcc321dc957f", "name": "busy_brahmagupta", "uptime_min": 11, "cpu_pct": 84.2, "idle_min": 0}]}
+{"ts": "2026-05-30T04:19:37Z", "box": "coord1", "load1": 3.28, "containers": [{"cid": "f6902cfddf92", "name": "hardcore_dirac", "uptime_min": 40, "cpu_pct": 135.18, "idle_min": 0}]}
+{"ts": "2026-05-30T04:19:39Z", "box": "coord2", "load1": 0.03, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 42, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T04:19:41Z", "box": "coord3", "load1": 0.13, "containers": [{"cid": "45f3630d37df", "name": "priceless_shirley", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T04:19:44Z", "box": "coord4", "load1": 0.17, "containers": [{"cid": "e981b022899a", "name": "goofy_chatterjee", "uptime_min": 3, "cpu_pct": 0.05, "idle_min": 2}]}
+{"ts": "2026-05-30T04:24:47Z", "box": "coord1", "load1": 6.68, "containers": [{"cid": "0c123c68be4e", "name": "beautiful_moser", "uptime_min": 1, "cpu_pct": 397.78, "idle_min": 1}]}
+{"ts": "2026-05-30T04:24:49Z", "box": "coord2", "load1": 0.43, "containers": [{"cid": "febbaa9bc858", "name": "inspiring_meitner", "uptime_min": 47, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T04:24:51Z", "box": "coord3", "load1": 1.03, "containers": [{"cid": "4e9f8e90a291", "name": "exciting_mirzakhani", "uptime_min": 0, "cpu_pct": 0.12, "idle_min": 0}]}
+{"ts": "2026-05-30T04:24:54Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "e981b022899a", "name": "goofy_chatterjee", "uptime_min": 8, "cpu_pct": 0.04, "idle_min": 7}]}
+{"ts": "2026-05-30T04:29:56Z", "box": "coord1", "load1": 3.27, "containers": [{"cid": "0c123c68be4e", "name": "beautiful_moser", "uptime_min": 6, "cpu_pct": 122.62, "idle_min": 0}]}
+{"ts": "2026-05-30T04:29:59Z", "box": "coord2", "load1": 1.42, "containers": [{"cid": "7794048c93f8", "name": "vibrant_mendeleev", "uptime_min": 1, "cpu_pct": 122.87, "idle_min": 0}]}
+{"ts": "2026-05-30T04:30:01Z", "box": "coord3", "load1": 0.24, "containers": [{"cid": "4e9f8e90a291", "name": "exciting_mirzakhani", "uptime_min": 5, "cpu_pct": 0.13, "idle_min": 5}]}
+{"ts": "2026-05-30T04:30:03Z", "box": "coord4", "load1": 0.1, "containers": [{"cid": "e981b022899a", "name": "goofy_chatterjee", "uptime_min": 13, "cpu_pct": 0.06, "idle_min": 0}]}
+{"ts": "2026-05-30T04:35:06Z", "box": "coord1", "load1": 0.47, "containers": [{"cid": "11e05c25a651", "name": "happy_brown", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T04:35:08Z", "box": "coord2", "load1": 0.21, "containers": [{"cid": "2dc3ee4eb125", "name": "boring_bardeen", "uptime_min": 0, "cpu_pct": 0.39, "idle_min": 0}]}
+{"ts": "2026-05-30T04:35:11Z", "box": "coord3", "load1": 1.0, "containers": [{"cid": "c403e2af51e6", "name": "upbeat_haslett", "uptime_min": 0, "cpu_pct": 32.16, "idle_min": 0}]}
+{"ts": "2026-05-30T04:35:11Z", "box": "coord4", "load1": 0.73, "containers": []}
+{"ts": "2026-05-30T04:40:14Z", "box": "coord1", "load1": 1.13, "containers": [{"cid": "11e05c25a651", "name": "happy_brown", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T04:40:16Z", "box": "coord2", "load1": 0.65, "containers": [{"cid": "639ba5e50f7e", "name": "practical_hofstadter", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T04:40:18Z", "box": "coord3", "load1": 1.64, "containers": [{"cid": "7798ee5897ab", "name": "sad_chebyshev", "uptime_min": 0, "cpu_pct": 97.4, "idle_min": 0}]}
+{"ts": "2026-05-30T04:40:19Z", "box": "coord4", "load1": 1.64, "containers": []}
+{"ts": "2026-05-30T04:45:22Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "8ed1fb087705", "name": "elated_golick", "uptime_min": 5, "cpu_pct": 0.1, "idle_min": 4}]}
+{"ts": "2026-05-30T04:45:24Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "639ba5e50f7e", "name": "practical_hofstadter", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T04:45:26Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "7798ee5897ab", "name": "sad_chebyshev", "uptime_min": 5, "cpu_pct": 0.11, "idle_min": 4}]}
+{"ts": "2026-05-30T04:45:29Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "36b86fda4958", "name": "serene_pasteur", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T04:50:31Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "8ed1fb087705", "name": "elated_golick", "uptime_min": 10, "cpu_pct": 0.08, "idle_min": 1}]}
+{"ts": "2026-05-30T04:50:34Z", "box": "coord2", "load1": 0.29, "containers": [{"cid": "e8642f72292e", "name": "infallible_khayyam", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T04:50:36Z", "box": "coord3", "load1": 0.29, "containers": [{"cid": "7798ee5897ab", "name": "sad_chebyshev", "uptime_min": 10, "cpu_pct": 0.12, "idle_min": 4}]}
+{"ts": "2026-05-30T04:50:38Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "36b86fda4958", "name": "serene_pasteur", "uptime_min": 10, "cpu_pct": 4.15, "idle_min": 2}]}
+{"ts": "2026-05-30T04:55:41Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "34195ba5337d", "name": "compassionate_yalow", "uptime_min": 5, "cpu_pct": 0.42, "idle_min": 0}]}
+{"ts": "2026-05-30T04:55:43Z", "box": "coord2", "load1": 0.2, "containers": [{"cid": "e8642f72292e", "name": "infallible_khayyam", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T04:55:45Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "7798ee5897ab", "name": "sad_chebyshev", "uptime_min": 15, "cpu_pct": 0.13, "idle_min": 3}]}
+{"ts": "2026-05-30T04:55:48Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "335de0180c5a", "name": "lucid_chebyshev", "uptime_min": 3, "cpu_pct": 4.31, "idle_min": 2}]}
+{"ts": "2026-05-30T05:00:50Z", "box": "coord1", "load1": 0.2, "containers": [{"cid": "ee677c3714b6", "name": "funny_villani", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T05:00:53Z", "box": "coord2", "load1": 0.54, "containers": [{"cid": "449f90421a59", "name": "elegant_fermi", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:00:55Z", "box": "coord3", "load1": 0.45, "containers": [{"cid": "633174a577da", "name": "sweet_murdock", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T05:00:57Z", "box": "coord4", "load1": 0.57, "containers": [{"cid": "335de0180c5a", "name": "lucid_chebyshev", "uptime_min": 8, "cpu_pct": 9.52, "idle_min": 0}]}
+{"ts": "2026-05-30T05:06:00Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "ee677c3714b6", "name": "funny_villani", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:06:02Z", "box": "coord2", "load1": 0.07, "containers": [{"cid": "449f90421a59", "name": "elegant_fermi", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T05:06:05Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "633174a577da", "name": "sweet_murdock", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T05:06:07Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "31d90385c404", "name": "pensive_swartz", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T05:11:10Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "ee677c3714b6", "name": "funny_villani", "uptime_min": 14, "cpu_pct": 0.39, "idle_min": 4}]}
+{"ts": "2026-05-30T05:11:12Z", "box": "coord2", "load1": 0.5, "containers": [{"cid": "9e0d02e20fa3", "name": "inspiring_bardeen", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:11:15Z", "box": "coord3", "load1": 1.07, "containers": [{"cid": "9917609589ce", "name": "practical_ptolemy", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:11:17Z", "box": "coord4", "load1": 0.07, "containers": [{"cid": "31d90385c404", "name": "pensive_swartz", "uptime_min": 8, "cpu_pct": 4.14, "idle_min": 8}]}
+{"ts": "2026-05-30T05:16:18Z", "box": "coord1", "load1": 0.98, "containers": []}
+{"ts": "2026-05-30T05:16:20Z", "box": "coord2", "load1": 0.11, "containers": [{"cid": "9e0d02e20fa3", "name": "inspiring_bardeen", "uptime_min": 6, "cpu_pct": 3.69, "idle_min": 5}]}
+{"ts": "2026-05-30T05:16:23Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "9917609589ce", "name": "practical_ptolemy", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T05:16:25Z", "box": "coord4", "load1": 0.27, "containers": [{"cid": "9232b5af458c", "name": "peaceful_northcutt", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T05:21:27Z", "box": "coord1", "load1": 0.12, "containers": [{"cid": "d2b88f1e2385", "name": "elated_cray", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T05:21:30Z", "box": "coord2", "load1": 0.18, "containers": [{"cid": "ae0bc5688b2e", "name": "determined_bhabha", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T05:21:32Z", "box": "coord3", "load1": 0.07, "containers": [{"cid": "9917609589ce", "name": "practical_ptolemy", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-30T05:21:34Z", "box": "coord4", "load1": 0.28, "containers": [{"cid": "9232b5af458c", "name": "peaceful_northcutt", "uptime_min": 7, "cpu_pct": 100.25, "idle_min": 0}]}
+{"ts": "2026-05-30T05:26:37Z", "box": "coord1", "load1": 0.18, "containers": [{"cid": "d26f4d80bedf", "name": "compassionate_heisenberg", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T05:26:39Z", "box": "coord2", "load1": 0.15, "containers": [{"cid": "ae0bc5688b2e", "name": "determined_bhabha", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:26:42Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "3e3b0a5340d0", "name": "keen_black", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T05:31:44Z", "box": "coord1", "load1": 0.17, "containers": [{"cid": "d26f4d80bedf", "name": "compassionate_heisenberg", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T05:31:47Z", "box": "coord2", "load1": 0.17, "containers": [{"cid": "533bd668c48c", "name": "amazing_swartz", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T05:31:47Z", "box": "coord3", "load1": 1.29, "containers": []}
+{"ts": "2026-05-30T05:31:50Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "3e3b0a5340d0", "name": "keen_black", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T05:36:53Z", "box": "coord1", "load1": 0.1, "containers": [{"cid": "d26f4d80bedf", "name": "compassionate_heisenberg", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T05:36:55Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "533bd668c48c", "name": "amazing_swartz", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T05:36:58Z", "box": "coord3", "load1": 0.14, "containers": [{"cid": "9aaccecea6b3", "name": "determined_proskuriakova", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T05:37:00Z", "box": "coord4", "load1": 0.03, "containers": [{"cid": "3e3b0a5340d0", "name": "keen_black", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 13}]}
+{"ts": "2026-05-30T05:42:03Z", "box": "coord1", "load1": 0.09, "containers": [{"cid": "d26f4d80bedf", "name": "compassionate_heisenberg", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:42:05Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "533bd668c48c", "name": "amazing_swartz", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:42:08Z", "box": "coord3", "load1": 0.31, "containers": [{"cid": "9aaccecea6b3", "name": "determined_proskuriakova", "uptime_min": 9, "cpu_pct": 59.64, "idle_min": 0}]}
+{"ts": "2026-05-30T05:42:10Z", "box": "coord4", "load1": 0.43, "containers": [{"cid": "48d64dc4462c", "name": "objective_dubinsky", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T05:47:12Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "0a37d4fd9b09", "name": "elegant_dirac", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T05:47:15Z", "box": "coord2", "load1": 0.2, "containers": [{"cid": "ecb890af7877", "name": "condescending_yalow", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T05:47:17Z", "box": "coord3", "load1": 0.04, "containers": [{"cid": "4406b23457a3", "name": "nostalgic_perlman", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T05:47:20Z", "box": "coord4", "load1": 0.03, "containers": [{"cid": "48d64dc4462c", "name": "objective_dubinsky", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T05:52:22Z", "box": "coord1", "load1": 1.11, "containers": [{"cid": "ff5011f4b50b", "name": "sleepy_liskov", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:52:25Z", "box": "coord2", "load1": 0.09, "containers": [{"cid": "8e319e0110d3", "name": "funny_cohen", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T05:52:27Z", "box": "coord3", "load1": 0.11, "containers": [{"cid": "4406b23457a3", "name": "nostalgic_perlman", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T05:52:30Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "48d64dc4462c", "name": "objective_dubinsky", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:57:32Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "ff5011f4b50b", "name": "sleepy_liskov", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:57:34Z", "box": "coord2", "load1": 0.3, "containers": [{"cid": "8e319e0110d3", "name": "funny_cohen", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T05:57:37Z", "box": "coord3", "load1": 0.61, "containers": [{"cid": "871b2f89027f", "name": "dreamy_kalam", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T05:57:39Z", "box": "coord4", "load1": 0.22, "containers": [{"cid": "f34f5aa24e30", "name": "dreamy_gould", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T06:02:42Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "3d780d4a687f", "name": "pensive_maxwell", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T06:02:44Z", "box": "coord2", "load1": 0.38, "containers": [{"cid": "059b76798b28", "name": "awesome_bell", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:02:46Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "871b2f89027f", "name": "dreamy_kalam", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T06:02:49Z", "box": "coord4", "load1": 0.16, "containers": [{"cid": "f34f5aa24e30", "name": "dreamy_gould", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:07:50Z", "box": "coord1", "load1": 0.42, "containers": []}
+{"ts": "2026-05-30T06:07:52Z", "box": "coord2", "load1": 0.17, "containers": [{"cid": "059b76798b28", "name": "awesome_bell", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T06:07:54Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "871b2f89027f", "name": "dreamy_kalam", "uptime_min": 11, "cpu_pct": 22.8, "idle_min": 0}]}
+{"ts": "2026-05-30T06:07:57Z", "box": "coord4", "load1": 0.29, "containers": [{"cid": "78c5faf1fcb2", "name": "fervent_pare", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T06:12:59Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "ff70dd9a2862", "name": "strange_rubin", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T06:13:01Z", "box": "coord2", "load1": 1.08, "containers": [{"cid": "4ec81b6536f5", "name": "youthful_mendel", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:13:04Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "b88d69b9bb8f", "name": "trusting_lichterman", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T06:13:06Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "78c5faf1fcb2", "name": "fervent_pare", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T06:18:09Z", "box": "coord1", "load1": 0.64, "containers": [{"cid": "ff70dd9a2862", "name": "strange_rubin", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:18:11Z", "box": "coord2", "load1": 0.77, "containers": [{"cid": "876754dbbbca", "name": "quizzical_saha", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:18:14Z", "box": "coord3", "load1": 0.13, "containers": [{"cid": "b88d69b9bb8f", "name": "trusting_lichterman", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:18:16Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "78c5faf1fcb2", "name": "fervent_pare", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 12}]}
+{"ts": "2026-05-30T06:23:18Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "cf90bdea0d2b", "name": "bold_noyce", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T06:23:21Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "876754dbbbca", "name": "quizzical_saha", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T06:23:23Z", "box": "coord3", "load1": 0.07, "containers": [{"cid": "da7a94c39db5", "name": "upbeat_villani", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T06:23:26Z", "box": "coord4", "load1": 0.89, "containers": [{"cid": "99bb8493004c", "name": "frosty_engelbart", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:28:29Z", "box": "coord1", "load1": 0.4, "containers": [{"cid": "86df30d55de0", "name": "tender_wu", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T06:28:31Z", "box": "coord2", "load1": 0.42, "containers": [{"cid": "271c2be463da", "name": "vibrant_thompson", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T06:28:32Z", "box": "coord3", "load1": 0.29, "containers": []}
+{"ts": "2026-05-30T06:28:34Z", "box": "coord4", "load1": 0.41, "containers": [{"cid": "99bb8493004c", "name": "frosty_engelbart", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T06:33:38Z", "box": "coord1", "load1": 0.16, "containers": [{"cid": "86df30d55de0", "name": "tender_wu", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T06:33:41Z", "box": "coord2", "load1": 0.33, "containers": [{"cid": "271c2be463da", "name": "vibrant_thompson", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:33:42Z", "box": "coord3", "load1": 0.03, "containers": []}
+{"ts": "2026-05-30T06:33:45Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "99bb8493004c", "name": "frosty_engelbart", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:38:47Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "86df30d55de0", "name": "tender_wu", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-30T06:38:50Z", "box": "coord2", "load1": 0.26, "containers": [{"cid": "7184fd82c512", "name": "upbeat_galois", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T06:38:51Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T06:38:52Z", "box": "coord4", "load1": 0.04, "containers": []}
+{"ts": "2026-05-30T06:43:55Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "86df30d55de0", "name": "tender_wu", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:43:57Z", "box": "coord2", "load1": 0.11, "containers": [{"cid": "7184fd82c512", "name": "upbeat_galois", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T06:43:58Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T06:43:59Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T06:49:01Z", "box": "coord1", "load1": 0.27, "containers": [{"cid": "f925ad1870da", "name": "infallible_spence", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T06:49:04Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "7184fd82c512", "name": "upbeat_galois", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T06:49:05Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T06:49:05Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T06:54:08Z", "box": "coord1", "load1": 0.13, "containers": [{"cid": "f925ad1870da", "name": "infallible_spence", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T06:54:10Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "2fe01a73e348", "name": "gracious_nobel", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T06:54:11Z", "box": "coord3", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T06:54:12Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T06:59:14Z", "box": "coord1", "load1": 0.4, "containers": [{"cid": "089dd92c0f67", "name": "zealous_rubin", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T06:59:17Z", "box": "coord2", "load1": 0.12, "containers": [{"cid": "2fe01a73e348", "name": "gracious_nobel", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T06:59:18Z", "box": "coord3", "load1": 0.24, "containers": []}
+{"ts": "2026-05-30T06:59:18Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:04:21Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "089dd92c0f67", "name": "zealous_rubin", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T07:04:23Z", "box": "coord2", "load1": 0.49, "containers": [{"cid": "d54d8c56b057", "name": "nervous_hopper", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T07:04:24Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:04:25Z", "box": "coord4", "load1": 0.18, "containers": []}
+{"ts": "2026-05-30T07:09:28Z", "box": "coord1", "load1": 0.13, "containers": [{"cid": "089dd92c0f67", "name": "zealous_rubin", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T07:09:30Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "d54d8c56b057", "name": "nervous_hopper", "uptime_min": 7, "cpu_pct": 13.15, "idle_min": 0}]}
+{"ts": "2026-05-30T07:09:31Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:09:32Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:14:34Z", "box": "coord1", "load1": 0.09, "containers": [{"cid": "c55ea4d705ae", "name": "boring_montalcini", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T07:14:37Z", "box": "coord2", "load1": 0.08, "containers": [{"cid": "1934587f1ebb", "name": "brave_yalow", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T07:14:37Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:14:38Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:19:41Z", "box": "coord1", "load1": 0.06, "containers": [{"cid": "c55ea4d705ae", "name": "boring_montalcini", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T07:19:43Z", "box": "coord2", "load1": 0.19, "containers": [{"cid": "1934587f1ebb", "name": "brave_yalow", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T07:19:44Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:19:45Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:24:48Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "c55ea4d705ae", "name": "boring_montalcini", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T07:24:50Z", "box": "coord2", "load1": 0.66, "containers": [{"cid": "0a5372d8f1d7", "name": "pedantic_fermi", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T07:24:51Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:24:52Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:29:54Z", "box": "coord1", "load1": 0.04, "containers": [{"cid": "c55ea4d705ae", "name": "boring_montalcini", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T07:29:57Z", "box": "coord2", "load1": 0.17, "containers": [{"cid": "693ea85396a3", "name": "vibrant_wright", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T07:29:58Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:29:59Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:35:01Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "c55ea4d705ae", "name": "boring_montalcini", "uptime_min": 23, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T07:35:04Z", "box": "coord2", "load1": 0.23, "containers": [{"cid": "693ea85396a3", "name": "vibrant_wright", "uptime_min": 6, "cpu_pct": 0.31, "idle_min": 0}]}
+{"ts": "2026-05-30T07:35:04Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:35:05Z", "box": "coord4", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T07:40:08Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "c55ea4d705ae", "name": "boring_montalcini", "uptime_min": 28, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T07:40:10Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "12ecd0e788b5", "name": "thirsty_dijkstra", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T07:40:11Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:40:12Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:45:14Z", "box": "coord1", "load1": 0.17, "containers": [{"cid": "c55ea4d705ae", "name": "boring_montalcini", "uptime_min": 33, "cpu_pct": 0.0, "idle_min": 12}]}
+{"ts": "2026-05-30T07:45:17Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "12ecd0e788b5", "name": "thirsty_dijkstra", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T07:45:18Z", "box": "coord3", "load1": 0.07, "containers": []}
+{"ts": "2026-05-30T07:45:18Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:50:19Z", "box": "coord1", "load1": 0.06, "containers": []}
+{"ts": "2026-05-30T07:50:20Z", "box": "coord2", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T07:50:21Z", "box": "coord3", "load1": 0.07, "containers": []}
+{"ts": "2026-05-30T07:50:22Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T07:55:23Z", "box": "coord1", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T07:55:23Z", "box": "coord2", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T07:55:24Z", "box": "coord3", "load1": 0.1, "containers": []}
+{"ts": "2026-05-30T07:55:25Z", "box": "coord4", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T08:00:26Z", "box": "coord1", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:00:27Z", "box": "coord2", "load1": 0.07, "containers": []}
+{"ts": "2026-05-30T08:00:28Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:00:29Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:05:30Z", "box": "coord1", "load1": 0.15, "containers": []}
+{"ts": "2026-05-30T08:05:31Z", "box": "coord2", "load1": 0.05, "containers": []}
+{"ts": "2026-05-30T08:05:31Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:05:32Z", "box": "coord4", "load1": 0.48, "containers": []}
+{"ts": "2026-05-30T08:10:33Z", "box": "coord1", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:10:34Z", "box": "coord2", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:10:35Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:10:36Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:15:37Z", "box": "coord1", "load1": 0.01, "containers": []}
+{"ts": "2026-05-30T08:15:38Z", "box": "coord2", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:15:39Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:15:40Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:20:41Z", "box": "coord1", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T08:20:42Z", "box": "coord2", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:20:43Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:20:43Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T08:25:46Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "4d055784abf3", "name": "agitated_allen", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T08:25:48Z", "box": "coord2", "load1": 0.12, "containers": [{"cid": "0a0f7a90117e", "name": "frosty_shtern", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T08:25:51Z", "box": "coord3", "load1": 0.03, "containers": [{"cid": "4af0a39b81d4", "name": "modest_knuth", "uptime_min": 3, "cpu_pct": 1.65, "idle_min": 3}]}
+{"ts": "2026-05-30T08:25:53Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "225e8f0bf440", "name": "agitated_jemison", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T08:30:56Z", "box": "coord1", "load1": 0.06, "containers": [{"cid": "4d055784abf3", "name": "agitated_allen", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T08:30:58Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "0a0f7a90117e", "name": "frosty_shtern", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T08:31:01Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "4af0a39b81d4", "name": "modest_knuth", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T08:36:03Z", "box": "coord1", "load1": 0.1, "containers": [{"cid": "4d055784abf3", "name": "agitated_allen", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 13}]}
+{"ts": "2026-05-30T08:36:06Z", "box": "coord2", "load1": 0.12, "containers": [{"cid": "448478e5f5eb", "name": "wonderful_germain", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T08:36:08Z", "box": "coord3", "load1": 0.36, "containers": [{"cid": "4af0a39b81d4", "name": "modest_knuth", "uptime_min": 14, "cpu_pct": 4.64, "idle_min": 2}]}
+{"ts": "2026-05-30T08:36:09Z", "box": "coord4", "load1": 1.1, "containers": []}
+{"ts": "2026-05-30T08:41:11Z", "box": "coord1", "load1": 0.13, "containers": [{"cid": "4d055784abf3", "name": "agitated_allen", "uptime_min": 19, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T08:41:14Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "448478e5f5eb", "name": "wonderful_germain", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T08:41:16Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "4af0a39b81d4", "name": "modest_knuth", "uptime_min": 19, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T08:41:19Z", "box": "coord4", "load1": 0.15, "containers": [{"cid": "b203d07405c8", "name": "determined_napier", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T08:46:21Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "4d055784abf3", "name": "agitated_allen", "uptime_min": 24, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T08:46:23Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "448478e5f5eb", "name": "wonderful_germain", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T08:46:26Z", "box": "coord3", "load1": 0.19, "containers": [{"cid": "4af0a39b81d4", "name": "modest_knuth", "uptime_min": 24, "cpu_pct": 3.72, "idle_min": 0}]}
+{"ts": "2026-05-30T08:46:28Z", "box": "coord4", "load1": 0.04, "containers": [{"cid": "b203d07405c8", "name": "determined_napier", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T08:51:31Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "4d055784abf3", "name": "agitated_allen", "uptime_min": 29, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T08:51:33Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "d282f0267734", "name": "quizzical_carver", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T08:51:36Z", "box": "coord3", "load1": 0.21, "containers": [{"cid": "4af0a39b81d4", "name": "modest_knuth", "uptime_min": 29, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T08:51:38Z", "box": "coord4", "load1": 0.27, "containers": [{"cid": "b203d07405c8", "name": "determined_napier", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T08:56:40Z", "box": "coord1", "load1": 0.38, "containers": [{"cid": "77e57996f2d4", "name": "beautiful_archimedes", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T08:56:43Z", "box": "coord2", "load1": 0.32, "containers": [{"cid": "169b4e17dca6", "name": "stoic_hoover", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T08:56:45Z", "box": "coord3", "load1": 0.02, "containers": [{"cid": "ac4e67aad161", "name": "competent_austin", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T08:56:47Z", "box": "coord4", "load1": 0.2, "containers": [{"cid": "b203d07405c8", "name": "determined_napier", "uptime_min": 19, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:01:50Z", "box": "coord1", "load1": 0.09, "containers": [{"cid": "77e57996f2d4", "name": "beautiful_archimedes", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T09:01:52Z", "box": "coord2", "load1": 0.23, "containers": [{"cid": "169b4e17dca6", "name": "stoic_hoover", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T09:01:54Z", "box": "coord3", "load1": 0.02, "containers": [{"cid": "ac4e67aad161", "name": "competent_austin", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:01:57Z", "box": "coord4", "load1": 0.07, "containers": [{"cid": "b203d07405c8", "name": "determined_napier", "uptime_min": 24, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T09:06:59Z", "box": "coord1", "load1": 0.06, "containers": [{"cid": "77e57996f2d4", "name": "beautiful_archimedes", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-30T09:07:01Z", "box": "coord2", "load1": 0.08, "containers": [{"cid": "3c0e7f4a8ed4", "name": "hardcore_colden", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T09:07:04Z", "box": "coord3", "load1": 0.02, "containers": [{"cid": "dfb031034822", "name": "sad_golick", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T09:07:06Z", "box": "coord4", "load1": 1.03, "containers": [{"cid": "6acfa0a19376", "name": "affectionate_wing", "uptime_min": 3, "cpu_pct": 100.96, "idle_min": 0}]}
+{"ts": "2026-05-30T09:12:08Z", "box": "coord1", "load1": 0.2, "containers": [{"cid": "9d6d5f8f9f18", "name": "condescending_torvalds", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T09:12:11Z", "box": "coord2", "load1": 0.63, "containers": [{"cid": "d403f6a98068", "name": "flamboyant_neumann", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:12:13Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "dfb031034822", "name": "sad_golick", "uptime_min": 8, "cpu_pct": 3.73, "idle_min": 8}]}
+{"ts": "2026-05-30T09:12:15Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "6acfa0a19376", "name": "affectionate_wing", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T09:17:18Z", "box": "coord1", "load1": 0.27, "containers": [{"cid": "9d6d5f8f9f18", "name": "condescending_torvalds", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T09:17:20Z", "box": "coord2", "load1": 0.17, "containers": [{"cid": "d403f6a98068", "name": "flamboyant_neumann", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T09:17:22Z", "box": "coord3", "load1": 0.48, "containers": [{"cid": "da3ff88e537a", "name": "sad_tesla", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:17:24Z", "box": "coord4", "load1": 0.13, "containers": [{"cid": "6acfa0a19376", "name": "affectionate_wing", "uptime_min": 13, "cpu_pct": 82.11, "idle_min": 0}]}
+{"ts": "2026-05-30T09:22:27Z", "box": "coord1", "load1": 0.1, "containers": [{"cid": "9d6d5f8f9f18", "name": "condescending_torvalds", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T09:22:29Z", "box": "coord2", "load1": 0.57, "containers": [{"cid": "f69f7519e4c6", "name": "pensive_mahavira", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:22:32Z", "box": "coord3", "load1": 0.18, "containers": [{"cid": "da3ff88e537a", "name": "sad_tesla", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T09:22:34Z", "box": "coord4", "load1": 0.22, "containers": [{"cid": "6acfa0a19376", "name": "affectionate_wing", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:27:37Z", "box": "coord1", "load1": 0.69, "containers": [{"cid": "3fa5e062526f", "name": "priceless_mclean", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T09:27:39Z", "box": "coord2", "load1": 0.18, "containers": [{"cid": "f69f7519e4c6", "name": "pensive_mahavira", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T09:27:41Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "da3ff88e537a", "name": "sad_tesla", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:27:44Z", "box": "coord4", "load1": 0.83, "containers": [{"cid": "6acfa0a19376", "name": "affectionate_wing", "uptime_min": 23, "cpu_pct": 3.84, "idle_min": 2}]}
+{"ts": "2026-05-30T09:32:46Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "3fa5e062526f", "name": "priceless_mclean", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T09:32:48Z", "box": "coord2", "load1": 0.27, "containers": [{"cid": "f69f7519e4c6", "name": "pensive_mahavira", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:32:51Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "f591456b36db", "name": "agitated_goldstine", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T09:32:53Z", "box": "coord4", "load1": 0.03, "containers": [{"cid": "91a3dd47758f", "name": "clever_ganguly", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T09:37:55Z", "box": "coord1", "load1": 0.38, "containers": [{"cid": "3fa5e062526f", "name": "priceless_mclean", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T09:37:58Z", "box": "coord2", "load1": 0.16, "containers": [{"cid": "f69f7519e4c6", "name": "pensive_mahavira", "uptime_min": 16, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T09:38:00Z", "box": "coord3", "load1": 0.04, "containers": [{"cid": "f591456b36db", "name": "agitated_goldstine", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T09:38:01Z", "box": "coord4", "load1": 0.28, "containers": []}
+{"ts": "2026-05-30T09:43:03Z", "box": "coord1", "load1": 0.12, "containers": [{"cid": "3fa5e062526f", "name": "priceless_mclean", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:43:06Z", "box": "coord2", "load1": 0.87, "containers": [{"cid": "8fcbbf118ead", "name": "competent_pasteur", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:43:08Z", "box": "coord3", "load1": 0.22, "containers": [{"cid": "f591456b36db", "name": "agitated_goldstine", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 13}]}
+{"ts": "2026-05-30T09:43:10Z", "box": "coord4", "load1": 0.16, "containers": [{"cid": "75b1194525db", "name": "loving_albattani", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T09:48:13Z", "box": "coord1", "load1": 0.41, "containers": [{"cid": "29ea5a0283ce", "name": "strange_shannon", "uptime_min": 1, "cpu_pct": 3.66, "idle_min": 0}]}
+{"ts": "2026-05-30T09:48:15Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "8fcbbf118ead", "name": "competent_pasteur", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T09:48:17Z", "box": "coord3", "load1": 0.72, "containers": [{"cid": "77b7ed36ee17", "name": "trusting_khayyam", "uptime_min": 1, "cpu_pct": 100.01, "idle_min": 0}]}
+{"ts": "2026-05-30T09:48:20Z", "box": "coord4", "load1": 0.15, "containers": [{"cid": "75b1194525db", "name": "loving_albattani", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:53:22Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "29ea5a0283ce", "name": "strange_shannon", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T09:53:24Z", "box": "coord2", "load1": 0.35, "containers": [{"cid": "24f2bcad8598", "name": "nice_kilby", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:53:27Z", "box": "coord3", "load1": 0.17, "containers": [{"cid": "77b7ed36ee17", "name": "trusting_khayyam", "uptime_min": 6, "cpu_pct": 3.68, "idle_min": 5}]}
+{"ts": "2026-05-30T09:53:29Z", "box": "coord4", "load1": 0.42, "containers": [{"cid": "03d1c3970a33", "name": "boring_bouman", "uptime_min": 3, "cpu_pct": 3.95, "idle_min": 2}]}
+{"ts": "2026-05-30T09:58:31Z", "box": "coord1", "load1": 0.31, "containers": [{"cid": "d8469460f340", "name": "serene_hoover", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T09:58:34Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "24f2bcad8598", "name": "nice_kilby", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T09:58:36Z", "box": "coord3", "load1": 0.13, "containers": [{"cid": "77b7ed36ee17", "name": "trusting_khayyam", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T09:58:38Z", "box": "coord4", "load1": 0.04, "containers": [{"cid": "03d1c3970a33", "name": "boring_bouman", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T10:03:40Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "d8469460f340", "name": "serene_hoover", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T10:03:43Z", "box": "coord2", "load1": 0.11, "containers": [{"cid": "1b856f4b9574", "name": "affectionate_bhaskara", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T10:03:45Z", "box": "coord3", "load1": 0.9, "containers": [{"cid": "76ca2331c89f", "name": "unruffled_banach", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T10:03:47Z", "box": "coord4", "load1": 0.39, "containers": [{"cid": "03d1c3970a33", "name": "boring_bouman", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T10:08:50Z", "box": "coord1", "load1": 0.42, "containers": [{"cid": "0f5feaa6f963", "name": "amazing_wright", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:08:52Z", "box": "coord2", "load1": 0.2, "containers": [{"cid": "1b856f4b9574", "name": "affectionate_bhaskara", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:08:54Z", "box": "coord3", "load1": 0.17, "containers": [{"cid": "76ca2331c89f", "name": "unruffled_banach", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T10:08:56Z", "box": "coord4", "load1": 0.83, "containers": [{"cid": "815c7b649172", "name": "clever_joliot", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:13:59Z", "box": "coord1", "load1": 0.14, "containers": [{"cid": "0f5feaa6f963", "name": "amazing_wright", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T10:14:01Z", "box": "coord2", "load1": 0.81, "containers": [{"cid": "c12bf0ec6006", "name": "condescending_bohr", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T10:14:03Z", "box": "coord3", "load1": 0.44, "containers": [{"cid": "7a02a6daec03", "name": "nervous_ardinghelli", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:14:06Z", "box": "coord4", "load1": 0.03, "containers": [{"cid": "815c7b649172", "name": "clever_joliot", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T10:19:08Z", "box": "coord1", "load1": 0.72, "containers": [{"cid": "6fe3248109d2", "name": "strange_moser", "uptime_min": 0, "cpu_pct": 99.4, "idle_min": 0}]}
+{"ts": "2026-05-30T10:19:11Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "c12bf0ec6006", "name": "condescending_bohr", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T10:19:13Z", "box": "coord3", "load1": 0.07, "containers": [{"cid": "7a02a6daec03", "name": "nervous_ardinghelli", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T10:19:15Z", "box": "coord4", "load1": 0.25, "containers": [{"cid": "815c7b649172", "name": "clever_joliot", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:24:18Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "6fe3248109d2", "name": "strange_moser", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T10:24:20Z", "box": "coord2", "load1": 0.15, "containers": [{"cid": "dc4292c2380f", "name": "intelligent_elbakyan", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T10:24:22Z", "box": "coord3", "load1": 0.72, "containers": [{"cid": "8a7274aec4ae", "name": "stoic_allen", "uptime_min": 0, "cpu_pct": 100.5, "idle_min": 0}]}
+{"ts": "2026-05-30T10:24:25Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "f513ac9da88c", "name": "sharp_cartwright", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T10:29:27Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "6fe3248109d2", "name": "strange_moser", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T10:29:29Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "dc4292c2380f", "name": "intelligent_elbakyan", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:29:32Z", "box": "coord3", "load1": 0.87, "containers": [{"cid": "8a7274aec4ae", "name": "stoic_allen", "uptime_min": 5, "cpu_pct": 99.75, "idle_min": 0}]}
+{"ts": "2026-05-30T10:29:34Z", "box": "coord4", "load1": 0.37, "containers": [{"cid": "f513ac9da88c", "name": "sharp_cartwright", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:34:37Z", "box": "coord1", "load1": 1.52, "containers": [{"cid": "6fe3248109d2", "name": "strange_moser", "uptime_min": 15, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T10:34:39Z", "box": "coord2", "load1": 0.73, "containers": [{"cid": "e7f4cfc6096c", "name": "agitated_goodall", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:34:41Z", "box": "coord3", "load1": 0.61, "containers": [{"cid": "8a7274aec4ae", "name": "stoic_allen", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:34:43Z", "box": "coord4", "load1": 0.13, "containers": [{"cid": "a852b3942777", "name": "priceless_mayer", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T10:39:46Z", "box": "coord1", "load1": 0.63, "containers": [{"cid": "d145670601c2", "name": "elastic_mccarthy", "uptime_min": 3, "cpu_pct": 1.79, "idle_min": 2}]}
+{"ts": "2026-05-30T10:39:48Z", "box": "coord2", "load1": 0.15, "containers": [{"cid": "e7f4cfc6096c", "name": "agitated_goodall", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:39:51Z", "box": "coord3", "load1": 0.12, "containers": [{"cid": "8a7274aec4ae", "name": "stoic_allen", "uptime_min": 15, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:39:53Z", "box": "coord4", "load1": 0.48, "containers": [{"cid": "c9a54835a42d", "name": "jovial_ritchie", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:44:55Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "d145670601c2", "name": "elastic_mccarthy", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T10:44:58Z", "box": "coord2", "load1": 0.22, "containers": [{"cid": "eae9114935a2", "name": "vibrant_leakey", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T10:45:00Z", "box": "coord3", "load1": 0.12, "containers": [{"cid": "0633c03cb087", "name": "keen_diffie", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T10:45:02Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "c9a54835a42d", "name": "jovial_ritchie", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T10:50:05Z", "box": "coord1", "load1": 0.1, "containers": [{"cid": "d145670601c2", "name": "elastic_mccarthy", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T10:50:07Z", "box": "coord2", "load1": 0.3, "containers": [{"cid": "5a67ab930399", "name": "vigorous_goodall", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:50:10Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "0633c03cb087", "name": "keen_diffie", "uptime_min": 7, "cpu_pct": 3.61, "idle_min": 0}]}
+{"ts": "2026-05-30T10:50:12Z", "box": "coord4", "load1": 0.71, "containers": [{"cid": "a205491c54bf", "name": "objective_hopper", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T10:55:15Z", "box": "coord1", "load1": 0.22, "containers": [{"cid": "fd7bfad1ff2f", "name": "happy_hugle", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T10:55:17Z", "box": "coord2", "load1": 0.04, "containers": [{"cid": "5a67ab930399", "name": "vigorous_goodall", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T10:55:19Z", "box": "coord3", "load1": 0.05, "containers": [{"cid": "e6c7f19776c1", "name": "hungry_lederberg", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T10:55:21Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "a205491c54bf", "name": "objective_hopper", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T11:00:24Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "fd7bfad1ff2f", "name": "happy_hugle", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:00:26Z", "box": "coord2", "load1": 0.3, "containers": [{"cid": "a2125938a203", "name": "practical_galileo", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:00:27Z", "box": "coord3", "load1": 0.56, "containers": []}
+{"ts": "2026-05-30T11:00:29Z", "box": "coord4", "load1": 0.24, "containers": [{"cid": "a205491c54bf", "name": "objective_hopper", "uptime_min": 10, "cpu_pct": 3.85, "idle_min": 0}]}
+{"ts": "2026-05-30T11:05:32Z", "box": "coord1", "load1": 0.38, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:05:34Z", "box": "coord2", "load1": 0.45, "containers": [{"cid": "a2125938a203", "name": "practical_galileo", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T11:05:36Z", "box": "coord3", "load1": 0.02, "containers": [{"cid": "f4c46f0e204f", "name": "vibrant_lehmann", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T11:05:38Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T11:10:41Z", "box": "coord1", "load1": 0.05, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T11:10:43Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "a2125938a203", "name": "practical_galileo", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:10:46Z", "box": "coord3", "load1": 0.08, "containers": [{"cid": "f4c46f0e204f", "name": "vibrant_lehmann", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:10:48Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T11:15:50Z", "box": "coord1", "load1": 0.15, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-30T11:15:53Z", "box": "coord2", "load1": 0.32, "containers": [{"cid": "8fb4953e4cae", "name": "compassionate_nobel", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T11:15:55Z", "box": "coord3", "load1": 0.05, "containers": [{"cid": "0a4a5b7dec3f", "name": "amazing_lichterman", "uptime_min": 3, "cpu_pct": 5.35, "idle_min": 2}]}
+{"ts": "2026-05-30T11:15:58Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T11:21:00Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 16}]}
+{"ts": "2026-05-30T11:21:02Z", "box": "coord2", "load1": 0.22, "containers": [{"cid": "a07a2bf341bd", "name": "vigorous_heyrovsky", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:21:05Z", "box": "coord3", "load1": 0.09, "containers": [{"cid": "0a4a5b7dec3f", "name": "amazing_lichterman", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T11:21:07Z", "box": "coord4", "load1": 0.1, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:26:09Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 22, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:26:12Z", "box": "coord2", "load1": 0.14, "containers": [{"cid": "a07a2bf341bd", "name": "vigorous_heyrovsky", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:26:14Z", "box": "coord3", "load1": 0.12, "containers": [{"cid": "0a4a5b7dec3f", "name": "amazing_lichterman", "uptime_min": 13, "cpu_pct": 99.5, "idle_min": 0}]}
+{"ts": "2026-05-30T11:26:16Z", "box": "coord4", "load1": 0.04, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 23, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:31:19Z", "box": "coord1", "load1": 0.37, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 27, "cpu_pct": 387.84, "idle_min": 0}]}
+{"ts": "2026-05-30T11:31:22Z", "box": "coord2", "load1": 0.98, "containers": [{"cid": "1be14a300719", "name": "great_hertz", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T11:31:24Z", "box": "coord3", "load1": 0.19, "containers": [{"cid": "0a4a5b7dec3f", "name": "amazing_lichterman", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:31:26Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 28, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T11:36:29Z", "box": "coord1", "load1": 0.21, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 32, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T11:36:31Z", "box": "coord2", "load1": 0.14, "containers": [{"cid": "1be14a300719", "name": "great_hertz", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T11:36:33Z", "box": "coord3", "load1": 0.03, "containers": [{"cid": "2f779bcf36af", "name": "priceless_aryabhata", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T11:36:36Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 33, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:41:38Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 37, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T11:41:40Z", "box": "coord2", "load1": 0.91, "containers": [{"cid": "22fcfe96f1a0", "name": "wonderful_carson", "uptime_min": 1, "cpu_pct": 100.49, "idle_min": 1}]}
+{"ts": "2026-05-30T11:41:42Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "2f779bcf36af", "name": "priceless_aryabhata", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T11:41:45Z", "box": "coord4", "load1": 0.1, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 38, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T11:46:47Z", "box": "coord1", "load1": 0.17, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 43, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T11:46:49Z", "box": "coord2", "load1": 0.95, "containers": [{"cid": "22fcfe96f1a0", "name": "wonderful_carson", "uptime_min": 6, "cpu_pct": 100.21, "idle_min": 1}]}
+{"ts": "2026-05-30T11:46:52Z", "box": "coord3", "load1": 0.29, "containers": [{"cid": "42e49815b3f1", "name": "elegant_proskuriakova", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:46:54Z", "box": "coord4", "load1": 0.03, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 43, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:51:57Z", "box": "coord1", "load1": 0.36, "containers": [{"cid": "89b15b5aca5e", "name": "pedantic_hugle", "uptime_min": 48, "cpu_pct": 176.82, "idle_min": 0}]}
+{"ts": "2026-05-30T11:51:59Z", "box": "coord2", "load1": 0.19, "containers": [{"cid": "22fcfe96f1a0", "name": "wonderful_carson", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:52:01Z", "box": "coord3", "load1": 0.09, "containers": [{"cid": "42e49815b3f1", "name": "elegant_proskuriakova", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T11:52:04Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 48, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T11:57:06Z", "box": "coord1", "load1": 0.14, "containers": [{"cid": "5e0709c3c9de", "name": "fervent_hoover", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T11:57:09Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "22fcfe96f1a0", "name": "wonderful_carson", "uptime_min": 16, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T11:57:11Z", "box": "coord3", "load1": 0.02, "containers": [{"cid": "7702772f98ab", "name": "stoic_bartik", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T11:57:13Z", "box": "coord4", "load1": 0.15, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 54, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T12:02:16Z", "box": "coord1", "load1": 0.24, "containers": [{"cid": "5e0709c3c9de", "name": "fervent_hoover", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T12:02:18Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "22fcfe96f1a0", "name": "wonderful_carson", "uptime_min": 21, "cpu_pct": 0.0, "idle_min": 12}]}
+{"ts": "2026-05-30T12:02:21Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "7702772f98ab", "name": "stoic_bartik", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T12:02:23Z", "box": "coord4", "load1": 0.04, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 59, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T12:07:26Z", "box": "coord1", "load1": 0.24, "containers": [{"cid": "9590f48ee3a4", "name": "ecstatic_cannon", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T12:07:28Z", "box": "coord2", "load1": 0.54, "containers": [{"cid": "920107a851cf", "name": "jolly_mirzakhani", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T12:07:30Z", "box": "coord3", "load1": 0.18, "containers": [{"cid": "7702772f98ab", "name": "stoic_bartik", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 13}]}
+{"ts": "2026-05-30T12:07:33Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 64, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T12:12:35Z", "box": "coord1", "load1": 0.1, "containers": [{"cid": "9590f48ee3a4", "name": "ecstatic_cannon", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T12:12:37Z", "box": "coord2", "load1": 0.12, "containers": [{"cid": "920107a851cf", "name": "jolly_mirzakhani", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T12:12:40Z", "box": "coord3", "load1": 0.16, "containers": [{"cid": "f852b04a1510", "name": "practical_jepsen", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T12:12:42Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 69, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T12:17:45Z", "box": "coord1", "load1": 0.07, "containers": [{"cid": "9590f48ee3a4", "name": "ecstatic_cannon", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T12:17:47Z", "box": "coord2", "load1": 0.16, "containers": [{"cid": "3b376376f5e1", "name": "interesting_wu", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T12:17:49Z", "box": "coord3", "load1": 0.19, "containers": [{"cid": "f852b04a1510", "name": "practical_jepsen", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T12:17:52Z", "box": "coord4", "load1": 0.05, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 74, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T12:22:54Z", "box": "coord1", "load1": 0.14, "containers": [{"cid": "abbb736515be", "name": "magical_feistel", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T12:22:56Z", "box": "coord2", "load1": 0.03, "containers": [{"cid": "3b376376f5e1", "name": "interesting_wu", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T12:22:59Z", "box": "coord3", "load1": 0.15, "containers": [{"cid": "f852b04a1510", "name": "practical_jepsen", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T12:23:01Z", "box": "coord4", "load1": 0.12, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 79, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T12:28:04Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "abbb736515be", "name": "magical_feistel", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T12:28:06Z", "box": "coord2", "load1": 0.12, "containers": [{"cid": "7fc6067973ff", "name": "pensive_lalande", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T12:28:08Z", "box": "coord3", "load1": 0.4, "containers": [{"cid": "51d16cb80a80", "name": "pensive_joliot", "uptime_min": 1, "cpu_pct": 3.65, "idle_min": 0}]}
+{"ts": "2026-05-30T12:28:11Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "777ae28f5d3d", "name": "youthful_dubinsky", "uptime_min": 85, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T12:33:11Z", "box": "coord1", "load1": 0.59, "containers": []}
+{"ts": "2026-05-30T12:33:14Z", "box": "coord2", "load1": 0.32, "containers": [{"cid": "7fc6067973ff", "name": "pensive_lalande", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T12:33:14Z", "box": "coord3", "load1": 0.23, "containers": []}
+{"ts": "2026-05-30T12:33:15Z", "box": "coord4", "load1": 0.65, "containers": []}
+{"ts": "2026-05-30T12:38:15Z", "box": "coord1", "load1": 0.55, "containers": []}
+{"ts": "2026-05-30T12:38:16Z", "box": "coord3", "load1": 1.59, "containers": []}
+{"ts": "2026-05-30T12:38:17Z", "box": "coord4", "load1": 1.93, "containers": []}
+{"ts": "2026-05-30T12:43:19Z", "box": "coord1", "load1": 1.37, "containers": [{"cid": "8585b1ac14f6", "name": "zen_kapitsa", "uptime_min": 0, "cpu_pct": 42.37, "idle_min": 0}]}
+{"ts": "2026-05-30T12:43:20Z", "box": "coord2", "load1": 1.04, "containers": []}
+{"ts": "2026-05-30T12:43:20Z", "box": "coord3", "load1": 1.62, "containers": []}
+{"ts": "2026-05-30T12:43:23Z", "box": "coord4", "load1": 1.1, "containers": [{"cid": "155ab075b72e", "name": "gallant_colden", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T14:22:23Z", "box": "coord1", "load1": 0.46, "containers": []}
+{"ts": "2026-05-30T14:22:23Z", "box": "coord2", "load1": 0.5, "containers": []}
+{"ts": "2026-05-30T14:22:24Z", "box": "coord3", "load1": 0.57, "containers": []}
+{"ts": "2026-05-30T14:22:25Z", "box": "coord4", "load1": 0.43, "containers": []}
+{"ts": "2026-05-30T14:22:26Z", "box": "coord5", "load1": 0.57, "containers": []}
+{"ts": "2026-05-30T14:22:26Z", "box": "coord6", "load1": 0.65, "containers": []}
+{"ts": "2026-05-30T14:22:27Z", "box": "coord7", "load1": 0.55, "containers": []}
+{"ts": "2026-05-30T14:22:28Z", "box": "coord8", "load1": 0.51, "containers": []}
+{"ts": "2026-05-30T14:27:28Z", "box": "coord1", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:27:29Z", "box": "coord2", "load1": 0.09, "containers": []}
+{"ts": "2026-05-30T14:27:30Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:27:30Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:27:31Z", "box": "coord5", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:27:32Z", "box": "coord6", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:27:32Z", "box": "coord7", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:27:33Z", "box": "coord8", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:32:34Z", "box": "coord1", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:32:34Z", "box": "coord2", "load1": 0.01, "containers": []}
+{"ts": "2026-05-30T14:32:35Z", "box": "coord3", "load1": 0.08, "containers": []}
+{"ts": "2026-05-30T14:32:35Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:32:36Z", "box": "coord5", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:32:37Z", "box": "coord6", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T14:32:37Z", "box": "coord7", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:32:38Z", "box": "coord8", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:37:39Z", "box": "coord1", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:37:40Z", "box": "coord2", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:37:40Z", "box": "coord3", "load1": 0.16, "containers": []}
+{"ts": "2026-05-30T14:37:41Z", "box": "coord4", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:37:42Z", "box": "coord5", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:37:43Z", "box": "coord6", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:37:44Z", "box": "coord7", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:37:45Z", "box": "coord8", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:42:46Z", "box": "coord1", "load1": 0.03, "containers": []}
+{"ts": "2026-05-30T14:42:46Z", "box": "coord2", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:42:47Z", "box": "coord3", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:42:48Z", "box": "coord4", "load1": 0.06, "containers": []}
+{"ts": "2026-05-30T14:42:48Z", "box": "coord5", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:42:49Z", "box": "coord6", "load1": 0.03, "containers": []}
+{"ts": "2026-05-30T14:42:50Z", "box": "coord7", "load1": 0.02, "containers": []}
+{"ts": "2026-05-30T14:42:50Z", "box": "coord8", "load1": 0.07, "containers": []}
+{"ts": "2026-05-30T14:47:51Z", "box": "coord1", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:47:52Z", "box": "coord2", "load1": 0.77, "containers": []}
+{"ts": "2026-05-30T14:47:52Z", "box": "coord3", "load1": 0.08, "containers": []}
+{"ts": "2026-05-30T14:47:53Z", "box": "coord4", "load1": 0.03, "containers": []}
+{"ts": "2026-05-30T14:47:54Z", "box": "coord5", "load1": 0.0, "containers": []}
+{"ts": "2026-05-30T14:47:55Z", "box": "coord6", "load1": 0.22, "containers": []}
+{"ts": "2026-05-30T14:47:55Z", "box": "coord7", "load1": 0.17, "containers": []}
+{"ts": "2026-05-30T14:47:56Z", "box": "coord8", "load1": 0.11, "containers": []}
+{"ts": "2026-05-30T14:52:59Z", "box": "coord1", "load1": 0.5, "containers": [{"cid": "3327e247ee18", "name": "distracted_euler", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T14:53:01Z", "box": "coord2", "load1": 0.39, "containers": [{"cid": "58a30b8955f4", "name": "lucid_sammet", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T14:53:03Z", "box": "coord3", "load1": 0.53, "containers": [{"cid": "5cb6d4dbd832", "name": "quirky_satoshi", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T14:53:06Z", "box": "coord4", "load1": 0.85, "containers": [{"cid": "d5d678ceb9d3", "name": "upbeat_sanderson", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T14:53:08Z", "box": "coord5", "load1": 0.38, "containers": [{"cid": "16d4390ceb33", "name": "dreamy_hugle", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T14:53:11Z", "box": "coord6", "load1": 0.39, "containers": [{"cid": "452fc0982147", "name": "beautiful_einstein", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T14:53:13Z", "box": "coord7", "load1": 0.25, "containers": [{"cid": "96261d0a0cd7", "name": "happy_khorana", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T14:53:16Z", "box": "coord8", "load1": 0.44, "containers": [{"cid": "6b80d461e989", "name": "vigilant_allen", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T14:58:18Z", "box": "coord1", "load1": 0.16, "containers": [{"cid": "3327e247ee18", "name": "distracted_euler", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T14:58:20Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "58a30b8955f4", "name": "lucid_sammet", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T14:58:23Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "5cb6d4dbd832", "name": "quirky_satoshi", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T14:58:25Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "d5d678ceb9d3", "name": "upbeat_sanderson", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T14:58:28Z", "box": "coord5", "load1": 0.0, "containers": [{"cid": "16d4390ceb33", "name": "dreamy_hugle", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T14:58:30Z", "box": "coord6", "load1": 0.04, "containers": [{"cid": "452fc0982147", "name": "beautiful_einstein", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T14:58:32Z", "box": "coord7", "load1": 0.16, "containers": [{"cid": "96261d0a0cd7", "name": "happy_khorana", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T14:58:35Z", "box": "coord8", "load1": 0.07, "containers": [{"cid": "6b80d461e989", "name": "vigilant_allen", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T15:03:37Z", "box": "coord1", "load1": 0.09, "containers": [{"cid": "3327e247ee18", "name": "distracted_euler", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:03:40Z", "box": "coord2", "load1": 0.45, "containers": [{"cid": "39e3fdb08731", "name": "bold_edison", "uptime_min": 0, "cpu_pct": 7.99, "idle_min": 0}]}
+{"ts": "2026-05-30T15:03:42Z", "box": "coord3", "load1": 0.24, "containers": [{"cid": "515db076dd33", "name": "eager_goldwasser", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:03:45Z", "box": "coord4", "load1": 0.12, "containers": [{"cid": "d5d678ceb9d3", "name": "upbeat_sanderson", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T15:03:47Z", "box": "coord5", "load1": 0.14, "containers": [{"cid": "16d4390ceb33", "name": "dreamy_hugle", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T15:03:50Z", "box": "coord6", "load1": 0.09, "containers": [{"cid": "452fc0982147", "name": "beautiful_einstein", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-30T15:03:52Z", "box": "coord7", "load1": 0.04, "containers": [{"cid": "779feec38b8b", "name": "blissful_mendel", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T15:03:54Z", "box": "coord8", "load1": 0.09, "containers": [{"cid": "6b80d461e989", "name": "vigilant_allen", "uptime_min": 12, "cpu_pct": 43.9, "idle_min": 0}]}
+{"ts": "2026-05-30T15:08:57Z", "box": "coord1", "load1": 0.06, "containers": [{"cid": "3327e247ee18", "name": "distracted_euler", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:08:59Z", "box": "coord2", "load1": 0.02, "containers": [{"cid": "39e3fdb08731", "name": "bold_edison", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T15:09:02Z", "box": "coord3", "load1": 0.05, "containers": [{"cid": "515db076dd33", "name": "eager_goldwasser", "uptime_min": 7, "cpu_pct": 3.66, "idle_min": 7}]}
+{"ts": "2026-05-30T15:09:04Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "ad37d5d1e311", "name": "tender_haslett", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:09:07Z", "box": "coord5", "load1": 0.09, "containers": [{"cid": "16d4390ceb33", "name": "dreamy_hugle", "uptime_min": 17, "cpu_pct": 5.85, "idle_min": 0}]}
+{"ts": "2026-05-30T15:09:09Z", "box": "coord6", "load1": 0.16, "containers": [{"cid": "452fc0982147", "name": "beautiful_einstein", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:09:11Z", "box": "coord7", "load1": 0.18, "containers": [{"cid": "779feec38b8b", "name": "blissful_mendel", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:09:14Z", "box": "coord8", "load1": 0.04, "containers": [{"cid": "6b80d461e989", "name": "vigilant_allen", "uptime_min": 17, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:14:16Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "c61ea2193da1", "name": "confident_ritchie", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:14:19Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "39e3fdb08731", "name": "bold_edison", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-30T15:14:21Z", "box": "coord3", "load1": 0.03, "containers": [{"cid": "515db076dd33", "name": "eager_goldwasser", "uptime_min": 12, "cpu_pct": 198.86, "idle_min": 0}]}
+{"ts": "2026-05-30T15:14:24Z", "box": "coord4", "load1": 0.73, "containers": [{"cid": "ce4844546913", "name": "pensive_carver", "uptime_min": 0, "cpu_pct": 82.22, "idle_min": 0}]}
+{"ts": "2026-05-30T15:14:26Z", "box": "coord5", "load1": 0.18, "containers": [{"cid": "1b1c05ca57c0", "name": "silly_dirac", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T15:14:29Z", "box": "coord6", "load1": 0.71, "containers": [{"cid": "f4ed660ac6c9", "name": "peaceful_mirzakhani", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:14:31Z", "box": "coord7", "load1": 0.01, "containers": [{"cid": "779feec38b8b", "name": "blissful_mendel", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T15:14:34Z", "box": "coord8", "load1": 0.02, "containers": [{"cid": "c911525f6f45", "name": "keen_tesla", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:19:36Z", "box": "coord1", "load1": 0.3, "containers": [{"cid": "c61ea2193da1", "name": "confident_ritchie", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T15:19:38Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "81b92f529ca9", "name": "vigilant_shtern", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T15:19:41Z", "box": "coord3", "load1": 0.05, "containers": [{"cid": "35793b78582b", "name": "wizardly_kapitsa", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T15:19:43Z", "box": "coord4", "load1": 0.17, "containers": [{"cid": "ce4844546913", "name": "pensive_carver", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:19:46Z", "box": "coord5", "load1": 0.03, "containers": [{"cid": "1b1c05ca57c0", "name": "silly_dirac", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:19:48Z", "box": "coord6", "load1": 0.18, "containers": [{"cid": "f4ed660ac6c9", "name": "peaceful_mirzakhani", "uptime_min": 6, "cpu_pct": 3.73, "idle_min": 5}]}
+{"ts": "2026-05-30T15:19:51Z", "box": "coord7", "load1": 0.02, "containers": [{"cid": "779feec38b8b", "name": "blissful_mendel", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:19:53Z", "box": "coord8", "load1": 0.07, "containers": [{"cid": "c911525f6f45", "name": "keen_tesla", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T15:24:55Z", "box": "coord1", "load1": 0.17, "containers": [{"cid": "c61ea2193da1", "name": "confident_ritchie", "uptime_min": 15, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:24:58Z", "box": "coord2", "load1": 0.13, "containers": [{"cid": "81b92f529ca9", "name": "vigilant_shtern", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:25:00Z", "box": "coord3", "load1": 0.1, "containers": [{"cid": "35793b78582b", "name": "wizardly_kapitsa", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:25:03Z", "box": "coord4", "load1": 0.96, "containers": [{"cid": "7da9aacc72fc", "name": "competent_jang", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:25:05Z", "box": "coord5", "load1": 0.23, "containers": [{"cid": "1b1c05ca57c0", "name": "silly_dirac", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:25:07Z", "box": "coord6", "load1": 0.42, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:25:10Z", "box": "coord7", "load1": 0.11, "containers": [{"cid": "779feec38b8b", "name": "blissful_mendel", "uptime_min": 24, "cpu_pct": 99.52, "idle_min": 0}]}
+{"ts": "2026-05-30T15:25:12Z", "box": "coord8", "load1": 0.18, "containers": [{"cid": "6bca363b9aea", "name": "inspiring_ganguly", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:30:13Z", "box": "coord1", "load1": 0.75, "containers": []}
+{"ts": "2026-05-30T15:30:15Z", "box": "coord2", "load1": 0.06, "containers": [{"cid": "eb8d03bd9a6e", "name": "sharp_wu", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:30:18Z", "box": "coord3", "load1": 0.31, "containers": [{"cid": "d714457d399a", "name": "compassionate_williams", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:30:20Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "7da9aacc72fc", "name": "competent_jang", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:30:23Z", "box": "coord5", "load1": 0.06, "containers": [{"cid": "a1110d771b3d", "name": "stoic_haibt", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T15:30:25Z", "box": "coord6", "load1": 0.03, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T15:30:28Z", "box": "coord7", "load1": 0.09, "containers": [{"cid": "11b7210d5efe", "name": "angry_diffie", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T15:30:30Z", "box": "coord8", "load1": 0.01, "containers": [{"cid": "6bca363b9aea", "name": "inspiring_ganguly", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T15:35:32Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "d7b0ce55d584", "name": "affectionate_shirley", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:35:33Z", "box": "coord2", "load1": 0.14, "containers": []}
+{"ts": "2026-05-30T15:35:36Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "d714457d399a", "name": "compassionate_williams", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T15:35:38Z", "box": "coord4", "load1": 0.15, "containers": [{"cid": "7da9aacc72fc", "name": "competent_jang", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-30T15:35:40Z", "box": "coord5", "load1": 0.0, "containers": [{"cid": "a1110d771b3d", "name": "stoic_haibt", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:35:43Z", "box": "coord6", "load1": 0.0, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-30T15:35:45Z", "box": "coord7", "load1": 0.04, "containers": [{"cid": "11b7210d5efe", "name": "angry_diffie", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T15:35:48Z", "box": "coord8", "load1": 0.18, "containers": [{"cid": "6bca363b9aea", "name": "inspiring_ganguly", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:40:50Z", "box": "coord1", "load1": 0.08, "containers": [{"cid": "d7b0ce55d584", "name": "affectionate_shirley", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:40:53Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "aaa38899c2e3", "name": "wizardly_brattain", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:40:55Z", "box": "coord3", "load1": 0.14, "containers": [{"cid": "098f12d726f7", "name": "compassionate_chaplygin", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:40:57Z", "box": "coord4", "load1": 0.04, "containers": [{"cid": "43f735264937", "name": "awesome_wozniak", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T15:41:00Z", "box": "coord5", "load1": 0.31, "containers": [{"cid": "f70cad13785c", "name": "reverent_wu", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T15:41:02Z", "box": "coord6", "load1": 1.05, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 16, "cpu_pct": 99.5, "idle_min": 1}]}
+{"ts": "2026-05-30T15:41:05Z", "box": "coord7", "load1": 0.34, "containers": [{"cid": "16a0d95f249e", "name": "vigorous_curie", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:41:07Z", "box": "coord8", "load1": 0.01, "containers": [{"cid": "5ad01b7a1fb6", "name": "happy_poitras", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T15:46:10Z", "box": "coord1", "load1": 0.24, "containers": [{"cid": "d7b0ce55d584", "name": "affectionate_shirley", "uptime_min": 15, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:46:12Z", "box": "coord2", "load1": 0.12, "containers": [{"cid": "aaa38899c2e3", "name": "wizardly_brattain", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:46:15Z", "box": "coord3", "load1": 0.07, "containers": [{"cid": "098f12d726f7", "name": "compassionate_chaplygin", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T15:46:17Z", "box": "coord4", "load1": 0.02, "containers": [{"cid": "43f735264937", "name": "awesome_wozniak", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:46:19Z", "box": "coord5", "load1": 0.09, "containers": [{"cid": "d486a1ae4863", "name": "cool_shockley", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:46:22Z", "box": "coord6", "load1": 1.0, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 22, "cpu_pct": 100.0, "idle_min": 6}]}
+{"ts": "2026-05-30T15:46:24Z", "box": "coord7", "load1": 0.03, "containers": [{"cid": "16a0d95f249e", "name": "vigorous_curie", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:46:27Z", "box": "coord8", "load1": 0.0, "containers": [{"cid": "5ad01b7a1fb6", "name": "happy_poitras", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T15:51:29Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "d7b0ce55d584", "name": "affectionate_shirley", "uptime_min": 21, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:51:31Z", "box": "coord2", "load1": 0.38, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:51:34Z", "box": "coord3", "load1": 0.34, "containers": [{"cid": "8b88e218a91e", "name": "bold_dirac", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:51:36Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "3f8098daa4e9", "name": "goofy_zhukovsky", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T15:51:39Z", "box": "coord5", "load1": 0.01, "containers": [{"cid": "d486a1ae4863", "name": "cool_shockley", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T15:51:41Z", "box": "coord6", "load1": 1.0, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 27, "cpu_pct": 100.25, "idle_min": 12}]}
+{"ts": "2026-05-30T15:51:44Z", "box": "coord7", "load1": 0.12, "containers": [{"cid": "5cf86f09b6ee", "name": "affectionate_cannon", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T15:51:46Z", "box": "coord8", "load1": 0.55, "containers": [{"cid": "0cb7b39a548f", "name": "kind_sutherland", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T15:56:47Z", "box": "coord1", "load1": 0.83, "containers": []}
+{"ts": "2026-05-30T15:56:49Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T15:56:52Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "8b88e218a91e", "name": "bold_dirac", "uptime_min": 5, "cpu_pct": 4.14, "idle_min": 5}]}
+{"ts": "2026-05-30T15:56:54Z", "box": "coord4", "load1": 0.0, "containers": [{"cid": "3f8098daa4e9", "name": "goofy_zhukovsky", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T15:56:57Z", "box": "coord5", "load1": 0.17, "containers": [{"cid": "d486a1ae4863", "name": "cool_shockley", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 11}]}
+{"ts": "2026-05-30T15:56:59Z", "box": "coord6", "load1": 1.0, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 32, "cpu_pct": 100.0, "idle_min": 17}]}
+{"ts": "2026-05-30T15:57:01Z", "box": "coord7", "load1": 0.19, "containers": [{"cid": "bd096861d019", "name": "magical_shockley", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T15:57:04Z", "box": "coord8", "load1": 0.07, "containers": [{"cid": "0cb7b39a548f", "name": "kind_sutherland", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T16:02:06Z", "box": "coord1", "load1": 0.01, "containers": [{"cid": "71553811f841", "name": "vigorous_bhaskara", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T16:02:08Z", "box": "coord2", "load1": 0.08, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T16:02:11Z", "box": "coord3", "load1": 0.37, "containers": [{"cid": "d44acfccc7dd", "name": "angry_burnell", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:02:13Z", "box": "coord4", "load1": 0.37, "containers": [{"cid": "aee0df21402d", "name": "frosty_ritchie", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:02:16Z", "box": "coord5", "load1": 0.03, "containers": [{"cid": "d486a1ae4863", "name": "cool_shockley", "uptime_min": 17, "cpu_pct": 3.25, "idle_min": 17}]}
+{"ts": "2026-05-30T16:02:18Z", "box": "coord6", "load1": 1.0, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 38, "cpu_pct": 100.0, "idle_min": 22}]}
+{"ts": "2026-05-30T16:02:21Z", "box": "coord7", "load1": 0.21, "containers": [{"cid": "bd096861d019", "name": "magical_shockley", "uptime_min": 7, "cpu_pct": 3.53, "idle_min": 1}]}
+{"ts": "2026-05-30T16:02:23Z", "box": "coord8", "load1": 0.28, "containers": [{"cid": "5c44f475b09b", "name": "heuristic_benz", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:07:25Z", "box": "coord1", "load1": 0.0, "containers": [{"cid": "71553811f841", "name": "vigorous_bhaskara", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:07:28Z", "box": "coord2", "load1": 0.16, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 16, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:07:30Z", "box": "coord3", "load1": 0.07, "containers": [{"cid": "d44acfccc7dd", "name": "angry_burnell", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T16:07:32Z", "box": "coord4", "load1": 0.15, "containers": [{"cid": "aee0df21402d", "name": "frosty_ritchie", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T16:07:35Z", "box": "coord5", "load1": 0.1, "containers": [{"cid": "bda7801194f1", "name": "sleepy_chaum", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:07:37Z", "box": "coord6", "load1": 1.0, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 43, "cpu_pct": 100.25, "idle_min": 28}]}
+{"ts": "2026-05-30T16:07:39Z", "box": "coord7", "load1": 0.25, "containers": [{"cid": "3695c589280d", "name": "romantic_banach", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:07:42Z", "box": "coord8", "load1": 0.0, "containers": [{"cid": "5c44f475b09b", "name": "heuristic_benz", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:12:44Z", "box": "coord1", "load1": 0.6, "containers": [{"cid": "d1a177d57ff1", "name": "elegant_panini", "uptime_min": 0, "cpu_pct": 8.13, "idle_min": 0}]}
+{"ts": "2026-05-30T16:12:47Z", "box": "coord2", "load1": 0.07, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 21, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:12:49Z", "box": "coord3", "load1": 0.04, "containers": [{"cid": "d44acfccc7dd", "name": "angry_burnell", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:12:51Z", "box": "coord4", "load1": 0.19, "containers": [{"cid": "af5524e46b3d", "name": "hopeful_aryabhata", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:12:53Z", "box": "coord5", "load1": 0.05, "containers": [{"cid": "bda7801194f1", "name": "sleepy_chaum", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T16:12:56Z", "box": "coord6", "load1": 1.0, "containers": [{"cid": "622b45a72eec", "name": "elegant_darwin", "uptime_min": 48, "cpu_pct": 100.25, "idle_min": 33}]}
+{"ts": "2026-05-30T16:12:58Z", "box": "coord7", "load1": 0.09, "containers": [{"cid": "3695c589280d", "name": "romantic_banach", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:13:01Z", "box": "coord8", "load1": 0.23, "containers": [{"cid": "ba5b47cc1e64", "name": "practical_poincare", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T16:18:03Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "d1a177d57ff1", "name": "elegant_panini", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T16:18:06Z", "box": "coord2", "load1": 0.01, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 27, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:18:08Z", "box": "coord3", "load1": 0.27, "containers": [{"cid": "b61c4b94e73f", "name": "affectionate_saha", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T16:18:11Z", "box": "coord4", "load1": 0.07, "containers": [{"cid": "af5524e46b3d", "name": "hopeful_aryabhata", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T16:18:13Z", "box": "coord5", "load1": 0.14, "containers": [{"cid": "4aea38d758b8", "name": "pedantic_dhawan", "uptime_min": 1, "cpu_pct": 4.03, "idle_min": 1}]}
+{"ts": "2026-05-30T16:18:15Z", "box": "coord6", "load1": 0.06, "containers": [{"cid": "1aeb12631e1a", "name": "magical_proskuriakova", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T16:18:18Z", "box": "coord7", "load1": 0.0, "containers": [{"cid": "90622a3486c6", "name": "elegant_shaw", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T16:18:20Z", "box": "coord8", "load1": 0.12, "containers": [{"cid": "ba5b47cc1e64", "name": "practical_poincare", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 8}]}
+{"ts": "2026-05-30T16:23:22Z", "box": "coord1", "load1": 0.11, "containers": [{"cid": "d1a177d57ff1", "name": "elegant_panini", "uptime_min": 11, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:23:25Z", "box": "coord2", "load1": 0.1, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 32, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T16:23:27Z", "box": "coord3", "load1": 0.52, "containers": [{"cid": "7aa72d48aff4", "name": "optimistic_sinoussi", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:23:29Z", "box": "coord4", "load1": 0.04, "containers": [{"cid": "af5524e46b3d", "name": "hopeful_aryabhata", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:23:32Z", "box": "coord5", "load1": 0.27, "containers": [{"cid": "4aea38d758b8", "name": "pedantic_dhawan", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T16:23:34Z", "box": "coord6", "load1": 0.16, "containers": [{"cid": "da56bc2d493b", "name": "frosty_neumann", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:23:36Z", "box": "coord7", "load1": 0.14, "containers": [{"cid": "90622a3486c6", "name": "elegant_shaw", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:23:39Z", "box": "coord8", "load1": 0.36, "containers": [{"cid": "3d2e445d0d22", "name": "objective_buck", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T16:28:41Z", "box": "coord1", "load1": 0.83, "containers": [{"cid": "10fc5be8c000", "name": "confident_lamarr", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:28:43Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 37, "cpu_pct": 0.0, "idle_min": 9}]}
+{"ts": "2026-05-30T16:28:46Z", "box": "coord3", "load1": 0.01, "containers": [{"cid": "7aa72d48aff4", "name": "optimistic_sinoussi", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:28:48Z", "box": "coord4", "load1": 0.08, "containers": [{"cid": "96c3e0758371", "name": "dreamy_benz", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T16:28:51Z", "box": "coord5", "load1": 0.04, "containers": [{"cid": "82bab7052c0e", "name": "vigilant_satoshi", "uptime_min": 2, "cpu_pct": 3.53, "idle_min": 2}]}
+{"ts": "2026-05-30T16:28:53Z", "box": "coord6", "load1": 0.1, "containers": [{"cid": "da56bc2d493b", "name": "frosty_neumann", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T16:28:56Z", "box": "coord7", "load1": 0.12, "containers": [{"cid": "c97284a92eab", "name": "jolly_blackburn", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:28:58Z", "box": "coord8", "load1": 0.05, "containers": [{"cid": "3d2e445d0d22", "name": "objective_buck", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T16:34:01Z", "box": "coord1", "load1": 0.04, "containers": [{"cid": "10fc5be8c000", "name": "confident_lamarr", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:34:03Z", "box": "coord2", "load1": 0.22, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 43, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:34:05Z", "box": "coord3", "load1": 0.35, "containers": [{"cid": "0a1e1ddd7e87", "name": "hungry_pasteur", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:34:08Z", "box": "coord4", "load1": 0.09, "containers": [{"cid": "96c3e0758371", "name": "dreamy_benz", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:34:10Z", "box": "coord5", "load1": 0.45, "containers": [{"cid": "7eb0bd579a66", "name": "awesome_kirch", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:34:13Z", "box": "coord6", "load1": 0.16, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T16:34:15Z", "box": "coord7", "load1": 0.08, "containers": [{"cid": "c97284a92eab", "name": "jolly_blackburn", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:34:18Z", "box": "coord8", "load1": 0.0, "containers": [{"cid": "3d2e445d0d22", "name": "objective_buck", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:39:20Z", "box": "coord1", "load1": 0.02, "containers": [{"cid": "5890920abf35", "name": "boring_rosalind", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T16:39:22Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 48, "cpu_pct": 4.18, "idle_min": 1}]}
+{"ts": "2026-05-30T16:39:25Z", "box": "coord3", "load1": 0.15, "containers": [{"cid": "0a1e1ddd7e87", "name": "hungry_pasteur", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:39:27Z", "box": "coord4", "load1": 0.29, "containers": [{"cid": "172ebf49adcb", "name": "distracted_lumiere", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:39:30Z", "box": "coord5", "load1": 0.13, "containers": [{"cid": "7eb0bd579a66", "name": "awesome_kirch", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T16:39:32Z", "box": "coord6", "load1": 0.2, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T16:39:35Z", "box": "coord7", "load1": 0.03, "containers": [{"cid": "3c060d9a0118", "name": "blissful_bose", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T16:39:37Z", "box": "coord8", "load1": 0.02, "containers": [{"cid": "1e5d4747aa62", "name": "gallant_mestorf", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T16:44:39Z", "box": "coord1", "load1": 0.18, "containers": [{"cid": "d86a2e7a99f4", "name": "sad_fermat", "uptime_min": 3, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T16:44:42Z", "box": "coord2", "load1": 0.14, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 53, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T16:44:44Z", "box": "coord3", "load1": 0.18, "containers": [{"cid": "f3f24555baf4", "name": "beautiful_merkle", "uptime_min": 4, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T16:44:47Z", "box": "coord4", "load1": 0.06, "containers": [{"cid": "172ebf49adcb", "name": "distracted_lumiere", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T16:44:49Z", "box": "coord5", "load1": 0.11, "containers": [{"cid": "fb03d32da124", "name": "magical_cori", "uptime_min": 2, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T16:44:52Z", "box": "coord6", "load1": 0.0, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 13, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:44:54Z", "box": "coord7", "load1": 0.14, "containers": [{"cid": "3c060d9a0118", "name": "blissful_bose", "uptime_min": 8, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:44:56Z", "box": "coord8", "load1": 0.29, "containers": [{"cid": "d527d02ceafe", "name": "gallant_carson", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:49:57Z", "box": "coord1", "load1": 0.12, "containers": []}
+{"ts": "2026-05-30T16:50:00Z", "box": "coord2", "load1": 0.8, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 59, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:50:02Z", "box": "coord3", "load1": 0.0, "containers": [{"cid": "f3f24555baf4", "name": "beautiful_merkle", "uptime_min": 9, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:50:04Z", "box": "coord4", "load1": 0.14, "containers": [{"cid": "f1d43c3f80f5", "name": "distracted_cohen", "uptime_min": 1, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:50:07Z", "box": "coord5", "load1": 0.3, "containers": [{"cid": "57be5651f576", "name": "loving_elbakyan", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:50:09Z", "box": "coord6", "load1": 0.08, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T16:50:12Z", "box": "coord7", "load1": 0.1, "containers": [{"cid": "b575c94096eb", "name": "angry_ride", "uptime_min": 2, "cpu_pct": 3.59, "idle_min": 1}]}
+{"ts": "2026-05-30T16:50:14Z", "box": "coord8", "load1": 0.01, "containers": [{"cid": "d527d02ceafe", "name": "gallant_carson", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 6}]}
+{"ts": "2026-05-30T16:55:17Z", "box": "coord1", "load1": 0.03, "containers": [{"cid": "bc3f452ce1b1", "name": "sharp_banzai", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T16:55:19Z", "box": "coord2", "load1": 0.21, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 64, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:55:21Z", "box": "coord3", "load1": 0.09, "containers": [{"cid": "f3f24555baf4", "name": "beautiful_merkle", "uptime_min": 14, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T16:55:24Z", "box": "coord4", "load1": 0.32, "containers": [{"cid": "a75bbc294a42", "name": "gallant_swanson", "uptime_min": 0, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:55:26Z", "box": "coord5", "load1": 0.06, "containers": [{"cid": "57be5651f576", "name": "loving_elbakyan", "uptime_min": 6, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:55:28Z", "box": "coord6", "load1": 0.55, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 24, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T16:55:31Z", "box": "coord7", "load1": 0.08, "containers": [{"cid": "b575c94096eb", "name": "angry_ride", "uptime_min": 7, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T16:55:33Z", "box": "coord8", "load1": 0.09, "containers": [{"cid": "d527d02ceafe", "name": "gallant_carson", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T17:00:35Z", "box": "coord1", "load1": 0.13, "containers": [{"cid": "bc3f452ce1b1", "name": "sharp_banzai", "uptime_min": 10, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T17:00:38Z", "box": "coord2", "load1": 0.0, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 69, "cpu_pct": 0.0, "idle_min": 7}]}
+{"ts": "2026-05-30T17:00:40Z", "box": "coord3", "load1": 0.06, "containers": [{"cid": "f3f24555baf4", "name": "beautiful_merkle", "uptime_min": 20, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T17:00:43Z", "box": "coord4", "load1": 0.01, "containers": [{"cid": "a75bbc294a42", "name": "gallant_swanson", "uptime_min": 5, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T17:00:54Z", "box": "coord6", "load1": 0.0, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 29, "cpu_pct": 0.0, "idle_min": 5}]}
+{"ts": "2026-05-30T17:00:56Z", "box": "coord7", "load1": 0.08, "containers": [{"cid": "b575c94096eb", "name": "angry_ride", "uptime_min": 12, "cpu_pct": 0.0, "idle_min": 3}]}
+{"ts": "2026-05-30T17:06:15Z", "box": "coord2", "load1": 0.14, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 75, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T17:06:41Z", "box": "coord6", "load1": 0.12, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 35, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T17:06:44Z", "box": "coord7", "load1": 0.01, "containers": [{"cid": "b575c94096eb", "name": "angry_ride", "uptime_min": 18, "cpu_pct": 0.0, "idle_min": 1}]}
+{"ts": "2026-05-30T17:12:02Z", "box": "coord2", "load1": 0.08, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 81, "cpu_pct": 7.28, "idle_min": 6}]}
+{"ts": "2026-05-30T17:12:28Z", "box": "coord6", "load1": 0.22, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 41, "cpu_pct": 0.0, "idle_min": 2}]}
+{"ts": "2026-05-30T17:17:55Z", "box": "coord2", "load1": 0.05, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 86, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T17:18:21Z", "box": "coord6", "load1": 0.02, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 46, "cpu_pct": 0.0, "idle_min": 4}]}
+{"ts": "2026-05-30T17:23:48Z", "box": "coord2", "load1": 0.16, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 92, "cpu_pct": 0.0, "idle_min": 10}]}
+{"ts": "2026-05-30T17:24:15Z", "box": "coord6", "load1": 0.0, "containers": [{"cid": "8f505ba48479", "name": "objective_ride", "uptime_min": 52, "cpu_pct": 3.67, "idle_min": 3}]}
+{"ts": "2026-05-30T17:29:41Z", "box": "coord2", "load1": 0.22, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 98, "cpu_pct": 0.0, "idle_min": 0}]}
+{"ts": "2026-05-30T17:35:40Z", "box": "coord2", "load1": 0.24, "containers": [{"cid": "637bb646dc86", "name": "beautiful_dhawan", "uptime_min": 104, "cpu_pct": 0.0, "idle_min": 1}]}
