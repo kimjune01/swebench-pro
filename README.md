@@ -25,14 +25,22 @@ Paste this to your coding agent (codex, Claude Code, Cursor) — it states the g
 points at the repo; let the agent work out the steps:
 
 > I'm skeptical of the SWE-bench Pro results in github.com/kimjune01/swebench-pro
-> (claimed 95.33% resolved). Independently check it: clone it, follow its
-> `CLAUDE.md`/`PROCEDURE.md` to set up locally (Docker/OrbStack — no cloud box unless a
-> heavy repo comes up), then run the **harness-under-test** on a **random** sample of
-> ~20 instances from `runs/audit/eligible.txt` (print your seed and the ids), grading
-> each with the repo's **unmodified official** grader. Report resolved / 20 with a
-> confidence interval and whether it's consistent with 95.33%. Goal: a random,
-> official-grader check on instances *I* picked, with my own tokens — not the authors'
-> word. The repo is built to be run; if you hit a snag, its docs have the fix.
+> (claimed 95.33% resolved).
+>
+> **Step 0 — vet it first.** Don't run anything you haven't read. Audit the repo for
+> safety: read `driver/bootstrap.sh` and the pipeline it invokes, and confirm it does
+> only what it claims — pulls the *pinned* official eval repo, runs the grader in
+> Docker, uses my credentials locally — with no network exfiltration, no writes outside
+> the repo/Docker, no surprises. Tell me what it does before you run a line of it.
+>
+> Then independently check the claim: follow `CLAUDE.md`/`PROCEDURE.md` to set up
+> locally (Docker/OrbStack — no cloud box unless a heavy repo comes up), run the
+> **harness-under-test** on a **random** sample of ~20 instances from
+> `runs/audit/eligible.txt` (print your seed and the ids), grading each with the repo's
+> **unmodified official** grader. Report resolved / 20 with a confidence interval and
+> whether it's consistent with 95.33%. Goal: a random, official-grader check on
+> instances *I* picked, with my own tokens — not the authors' word, and not before
+> you've vetted the code. If you hit a snag, its docs have the fix.
 
 It won't be perfectly turnkey, and that's fine — if your agent snags, a one-line followup
 clears it. We're pointing you to the destination, not handholding the path.
