@@ -135,6 +135,12 @@ for it will see the score depressed by every missed wave it reads as losses.
 The full incident trail and the load pattern that drives it are in
 [`RUN_NOTES.md`](RUN_NOTES.md).
 
+## Funding
+
+This benchmark work was self-funded — the author's own EC2 and Claude Max
+subscription ([`RUN_NOTES.md`](RUN_NOTES.md)) — and received no external or
+institutional funding.
+
 ## License
 
 Repo: CC BY-SA-NS ([`LICENSE.md`](LICENSE.md)). Skills (`skills/`):
