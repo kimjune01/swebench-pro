@@ -12,6 +12,37 @@ per benchmark so each run's artifacts and number stand on their own.
 
 *"Good" is on the **contaminated public split** — weakest evidence, not a capability claim ([`OBJECTIONS.md`](OBJECTIONS.md)); cheap and fast are contamination-free operational facts. Full board with charts: [`SCOREBOARD.md`](SCOREBOARD.md).*
 
+## Don't trust the number — reproduce it yourself
+
+You don't need to rerun 728 instances, provision a cloud fleet, or read a word of
+the defense below. Pick a **random** sample, run the harness on *your* picks, grade
+with the **official** grader. Most instances run **on your laptop** under
+Docker/OrbStack — **no EC2** unless a heavy repo (webclients, teleport) happens to be
+drawn. Cost is your own tokens (~$2.60/instance, [`SCOREBOARD.md`](SCOREBOARD.md)) — a
+20-instance check is roughly $50 and an afternoon, not a research budget.
+
+Paste this to your coding agent (codex, Claude Code, Cursor) — it states the goal and
+points at the repo; let the agent work out the steps:
+
+> I'm skeptical of the SWE-bench Pro results in github.com/kimjune01/swebench-pro
+> (claimed 95.33% resolved). Independently check it: clone it, follow its
+> `CLAUDE.md`/`PROCEDURE.md` to set up locally (Docker/OrbStack — no cloud box unless a
+> heavy repo comes up), then run the **harness-under-test** on a **random** sample of
+> ~20 instances from `runs/audit/eligible.txt` (print your seed and the ids), grading
+> each with the repo's **unmodified official** grader. Report resolved / 20 with a
+> confidence interval and whether it's consistent with 95.33%. Goal: a random,
+> official-grader check on instances *I* picked, with my own tokens — not the authors'
+> word. The repo is built to be run; if you hit a snag, its docs have the fix.
+
+It won't be perfectly turnkey, and that's fine — if your agent snags, a one-line followup
+clears it. We're pointing you to the destination, not handholding the path.
+
+Cheaper still — **free, no tokens, no agent run:** re-grade our *committed* diffs instead.
+Every verdict's captured source-only diff is in `runs/scored/artifacts.tar.zst`; re-grading
+a random handful on fresh containers confirms the *recorded* verdicts are real. The prompt
+above is the stronger check — it confirms the harness reproduces the *rate* on instances
+you choose.
+
 ## Result
 
 **694 / 728 eligible resolved = 95.33%**, official SWE-bench Pro grader, single
