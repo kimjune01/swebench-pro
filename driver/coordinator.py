@@ -135,11 +135,18 @@ def record(rec):
             f.write(json.dumps(rec) + "\n")
 
 
-def worker(name, q, max_attempts, ceiling, restart_max):
-    env = setup_box(name, restart_max)
-    if not env:
-        log(f"{name}: could not provision after {restart_max} tries — retiring this worker")
-        return
+def worker(name, q, max_attempts, ceiling, restart_max, skip_setup=False):
+    if skip_setup:
+        env = box_env(name)
+        if not env:
+            log(f"{name}: --skip-setup but /tmp/{name}.env missing/invalid — retiring worker")
+            return
+        log(f"{name}: REUSING existing box @ {env['PUBIP']} (skip-setup)")
+    else:
+        env = setup_box(name, restart_max)
+        if not env:
+            log(f"{name}: could not provision after {restart_max} tries — retiring this worker")
+            return
     while True:
         try:
             iid = q.get_nowait()
@@ -174,6 +181,8 @@ def worker(name, q, max_attempts, ceiling, restart_max):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--boxes", type=int, required=True)
+    ap.add_argument("--box-offset", type=int, default=0, help="start box numbering at coord<offset+1>; lets a second coordinator drive coord5-8 without colliding with coord1-4")
+    ap.add_argument("--skip-setup", action="store_true", help="reuse already-provisioned boxes from /tmp/<name>.env instead of calling setup_box; for a second coordinator on boxes you provisioned out-of-band")
     ap.add_argument("--eligible", default=str(REPO / "runs" / "audit" / "eligible.txt"))
     ap.add_argument("--max-attempts", type=int, default=2, help="per-instance attempts before recording INCOMPLETE")
     ap.add_argument("--box-restart-max", type=int, default=3, help="provision retries before a worker retires")
@@ -216,8 +225,8 @@ def main():
         q.put(i)
 
     threads = [threading.Thread(target=worker,
-                                args=(f"coord{b+1}", q, args.max_attempts, args.instance_ceiling, args.box_restart_max),
-                                name=f"coord{b+1}")
+                                args=(f"coord{b+1+args.box_offset}", q, args.max_attempts, args.instance_ceiling, args.box_restart_max, args.skip_setup),
+                                name=f"coord{b+1+args.box_offset}")
                for b in range(args.boxes)]
     for t in threads:
         t.start()
