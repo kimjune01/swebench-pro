@@ -8,10 +8,16 @@ figure here from that ledger; the per-instance captured diffs in the
 committed bundle `runs/scored/artifacts.tar.zst` let a reader re-grade any
 single verdict (PROCEDURE §6).
 
-- **Eligible denominator:** 728 (731 dataset instances − 3 §6 gold-patch defects).
+- **Eligible denominator:** 728 (731 dataset instances − 3 gold-patch defects).
+  The three excluded ids and their grader output are committed in
+  `runs/audit/defects.jsonl`; the kept set is `runs/audit/eligible.txt`
+  ([`PREREGISTRATION.md`](PREREGISTRATION.md) §6).
 - **Terminal verdicts:** 728 (694 WIN, 34 LOSS), **0 INCOMPLETE** — full coverage.
 - **Resolve-rate:** W / (W + L) = 694 / 728 = 95.33%.
-- **Run window:** 2026-05-27 20:02Z → 2026-05-30 17:37Z, ~72 h wall-clock.
+- **Run window:** 2026-05-27 20:02Z → 2026-05-30 17:37Z, ~72 h wall-clock —
+  **not uninterrupted:** three provider-credential stalls and a mid-run switch
+  from Max-subscription to paid API billing, all recovered with 0 instances
+  lost. Provenance in [`RUN_NOTES.md`](RUN_NOTES.md).
 
 This is a **system result**, not a capability claim: a Sonnet-4.5 generator
 plus a GPT-5.5 craft challenger, both contaminated on these repos, in the
@@ -61,9 +67,9 @@ internetarchive   92.3  ##############################################
 NodeBB            74.4  #####################################
 ```
 
-Ten of eleven repos land at or above 92%. **NodeBB at 74.4% is the lone
-outlier and the run's headline weak repo** — 11 of the 34 total losses are
-NodeBB (see below). Everything else is within a tight band.
+Ten of eleven repos resolve at 92.3% or above. **NodeBB at 74.4% sits 18
+points below the next-lowest repo (internetarchive, 92.3%) and contributes 11
+of the 34 total losses** (see below).
 
 ## Runtime distribution
 
@@ -112,16 +118,16 @@ Losses by repo, with the loss-instance runtimes:
 | internetarchive | 7 | 407, 558, 655, 774, 782, 1082, 1599 |
 | ansible | 6 | 766, 1125, 1266, 3065, 5417, 6391 |
 | protonmail | 3 | 1446, 5562, 7037 |
-| flipt | 2 | (2 graded not-resolved) |
-| element | 2 | (2 graded not-resolved) |
-| qutebrowser | 1 | (1 graded not-resolved) |
-| gravitational | 1 | (1 graded not-resolved) |
-| future | 1 | (1 graded not-resolved) |
+| future | 1 | 2839 |
+| element | 2 | 6321, 7619 |
+| flipt | 2 | 512, 1725 |
+| qutebrowser | 1 | 762 |
+| gravitational | 1 | 8202 |
 
 ### Reading any loss yourself
 
 Every loss is committed as an inspectable artifact, not a summary. All 6,553
-per-instance files (860 captured diffs + the Claude and GPT-5.5 trajectories +
+artifact files (860 captured diffs, the Claude and GPT-5.5 trajectories, and the
 per-box ledgers) are committed as a single compressed bundle,
 `runs/scored/artifacts.tar.zst` (87 MB, sha256 + full file listing in
 `runs/scored/artifacts.MANIFEST.txt` — browsable without unpacking). Unpack:
@@ -135,10 +141,11 @@ cd runs/scored && zstd -dc artifacts.tar.zst | tar -xf -
 ```
 
 To audit a loss: take its `pro_patch_*.diff`, build `pred.json`, and re-grade
-on a clean container per PROCEDURE §3 / §6. The grade is a deterministic
-function of the diff, so you reproduce the `not resolved` verdict without
-re-running the agent. The trajectory JSONLs show *why* the loop emitted that
-diff.
+on a clean container per PROCEDURE §3 / §6. Re-grading the captured diff under
+the pinned procedure reproduces the `not resolved` verdict without re-running
+the agent — the grade reads only the diff, modulo the grader pathologies
+documented in [`docs/bench-defects.md`](docs/bench-defects.md). The trajectory
+JSONLs show *why* the loop emitted that diff.
 
 ## Open question — ansible runtime shape (flagged, not a finding)
 

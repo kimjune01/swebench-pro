@@ -122,8 +122,11 @@ after model results are visible
 
 A third party derives the number rather than trusting it: unpack the committed
 bundle (`runs/scored/artifacts.tar.zst`), take any `pro_patch_*.diff`, build
-`pred.json`, run the grader on a clean container (PROCEDURE §3/§6). The grade is a deterministic function of the diff — no agent
-re-run needed. Aggregate reproduction (re-running the agent) reproduces the
+`pred.json`, run the grader on a clean container (PROCEDURE §3/§6). Re-grading
+the captured diff under the pinned procedure reproduces the verdict without an
+agent re-run — the grade reads only the diff, modulo the grader pathologies
+documented in [`docs/bench-defects.md`](docs/bench-defects.md). Aggregate
+reproduction (re-running the agent) reproduces the
 resolve-rate within sampling variance over the 728 set, **not** a per-instance
 replay; the agent is stochastic, so an individual instance flipping WIN/LOSS
 between runs is expected (PROCEDURE "Reproduction contract").

@@ -10,12 +10,17 @@ per benchmark so each run's artifacts and number stand on their own.
 **694 / 728 eligible resolved = 95.33%**, official SWE-bench Pro grader, single
 frozen instance-blind artifact (`prereg-pro-v1`), whole eligible set in one
 measurement. 728 terminal verdicts: 694 WIN, 34 LOSS, **0 INCOMPLETE** — full
-coverage, no instance left un-graded. Run window 2026-05-27 20:02Z →
-2026-05-30 17:37Z (~72 h wall-clock). Every figure here is recomputable from
-`runs/scored/run.jsonl`; every verdict is re-gradable from its committed
-source-only diff in the artifact bundle `runs/scored/artifacts.tar.zst`
-(87 MB, all 6,553 per-instance files; sha256 + listing in
-`runs/scored/artifacts.MANIFEST.txt`).
+coverage, no instance left un-graded. The 728 denominator is 731 dataset
+instances minus 3 pre-audited gold-patch defects, listed with grader output in
+`runs/audit/defects.jsonl`. The run window 2026-05-27 20:02Z → 2026-05-30
+17:37Z (~72 h) was **not uninterrupted**: three provider-credential stalls and
+a mid-run switch from Max-subscription to paid API billing punctuated it, all
+recovered under the prereg's pre-committed recovery discipline with 0 instances
+lost ([`RUN_NOTES.md`](RUN_NOTES.md)). Every figure here is recomputable from
+`runs/scored/run.jsonl`; every verdict is re-gradable, under the pinned
+procedure, from its captured source-only diff in the artifact bundle
+`runs/scored/artifacts.tar.zst` (87 MB, 6,553 files — diffs, trajectories, and
+per-box ledgers; sha256 + listing in `runs/scored/artifacts.MANIFEST.txt`).
 
 This is a **system** number, not a capability claim. The system is a
 Sonnet-4.5 generator plus a GPT-5.5 craft challenger — both contaminated on
@@ -40,8 +45,8 @@ why the confound stays open: [`METHODOLOGY.md`](METHODOLOGY.md) and
 | NodeBB | 32 | 11 | 74.4 |
 | **total** | **694** | **34** | **95.33** |
 
-Ten of eleven repos land at or above 92%; NodeBB at 74.4% is the lone outlier
-and carries 11 of the 34 losses. All 34 losses are real graded `not resolved`
+Ten of eleven repos resolve at 92.3% or above; NodeBB at 74.4% sits 18 points
+below the next-lowest and carries 11 of the 34 losses. All 34 losses are real graded `not resolved`
 verdicts on **non-empty** patches (median 3.6 KB, max 194 KB, none empty) — the
 loop produced fixes the official tests rejected, not nothing. Full breakdown,
 runtime distributions, and per-loss artifact pointers in
@@ -103,8 +108,9 @@ the public→private strategy: [`PREREGISTRATION.md`](PREREGISTRATION.md) §0–
   benchmark-agnostic; the Pro-specific constants are the adapter surface
   (`PRO_PORT.md` lists the touchpoints).
 - `runs/scored/` — the frozen-tag scored-run trail: `run.jsonl` (the ledger),
-  `artifacts.tar.zst` (87 MB bundle of all 6,553 per-instance captured diffs +
-  agent trajectories) with `artifacts.MANIFEST.txt` (sha256 + listing),
+  `artifacts.tar.zst` (87 MB bundle, 6,553 files — 860 captured diffs, the
+  agent trajectories, and per-box ledgers) with `artifacts.MANIFEST.txt`
+  (sha256 + listing),
   `auth_strips.jsonl` (the `PROVIDER_CRED_REJECT` recovery audit trail).
 - `tasks/`, `iso/`, `scratch/`, `hypotheses/` — task generation, isolation
   notes, ephemeral pads, dev hypotheses.
