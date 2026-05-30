@@ -55,6 +55,44 @@ What this disclosure does and does not claim:
   The adaptation was on the adapter/infra, validated against gold patches and
   pilots — not a fit to scored-instance outcomes.
 
+**Freeze-timing audit (git history + file-level diff).** The repo was
+initialized 2026-05-23; Pro pilots ran 2026-05-24 (ansible and NodeBB graded
+RESOLVED end-to-end); the prereg froze as `prereg-pro-v1` on 2026-05-26 17:53
+PDT. So the harness **co-evolved with Pro for ~3 days before freeze** — and a
+freeze after exposure does not, by itself, defend against development-overfit.
+But the file-level history shows *what* co-evolved, and it was not the reasoning
+loop:
+
+- **The recon/craft/audit skills were carried over from Verified essentially
+  unchanged.** Between init and freeze, the skill files received exactly two
+  edits, both 1-3 lines in `craft/skill.md`, and both are source-only / anti-
+  cheat *capture* rules ("do not edit a test to green the gate"; "edit source in
+  place, leave no scratch scripts in the patch"). Neither changes solving
+  strategy; both bias *against* false wins.
+- **The development and diagnosis work ran on Verified instances, not Pro.** The
+  pre-freeze `hypotheses/` perturbation battery (the rerun-variance tally that
+  concluded "the gap is 11/12 variance, 1/12 capability") is entirely django and
+  sympy — Verified repos. The reasoning loop was characterized there.
+- **The Pro-driven pre-freeze changes were all adapter/capture plumbing** —
+  `make_task` Pro mode, the gate self-test, runtime-blob stripping (a NodeBB
+  grade-hang fix), language-aware test-file stripping (a Go/JS capture leak),
+  and the gate's non-login-shell PATH fix. These are the task-adapter swap; they
+  fix capture and grade faithfulness, not the agent's ability to solve.
+
+So the co-evolution was confined to the adapter; the reasoning loop did not tune
+on Pro. The freeze still does not *prove* this on its own — the empirical
+backstop is the development-overlap check in [`RESULTS.md`](RESULTS.md), where
+the Python (dev-language) repos resolve 1 point *lower* than the
+never-developed-against Go/TS/JS repos, so whatever pre-freeze exposure occurred
+left no measurable overfit signal.
+
+**Grader provenance (audited).** The official grader is run **unmodified**. The
+local eval-repo clone sits at the pinned commit
+`ca10a60a5fcae51e6948ffe1485d4153d421e6c5` of
+`github.com/scaleapi/SWE-bench_Pro-os`, with no working-tree modifications; the
+verdict comes from upstream `swe_bench_pro_eval.py`, not a local
+reimplementation (PROCEDURE "Pinned versions").
+
 ## Per-instance pipeline
 
 Each of the 728 instances runs the same loop, independent of every other

@@ -103,6 +103,39 @@ Ten of eleven repos resolve at 92.3% or above. **NodeBB at 74.4% sits 18
 points below the next-lowest repo (internetarchive, 92.3%) and contributes 11
 of the 34 total losses** (see below).
 
+## Development-overlap check — did developing on Verified inflate Pro?
+
+The harness was developed and iterated on SWE-bench Verified before this run
+([`METHODOLOGY.md`](METHODOLOGY.md) "Harness provenance"). If that development
+overfit the pipeline, the repos closest to the development set should resolve
+*higher* than novel ones. We test it two ways.
+
+**Repo overlap: none.** Zero of the 11 Pro-public repos appear in Verified's
+dev set (Verified is Python scientific/web libraries — django, sympy,
+matplotlib, scikit-learn, …; Pro-public is qutebrowser, ansible, openlibrary,
+navidrome, teleport, vuls, flipt, element-web, webclients, tutanota, NodeBB).
+So there is no instance- or repo-level path from development into this run. The
+only shared channel is *language* — Verified is all Python, and three Pro repos
+are Python.
+
+**Language split: the dev-language is not advantaged.** Grouping the 728 by
+language (Python = the development language; Go/TS/JS = never touched in
+development):
+
+| group | repos | resolve |
+|---|---|---:|
+| Python (dev-language) | qutebrowser, ansible, openlibrary | 251 / 265 = **94.7%** |
+| non-Python (novel) | Go, TypeScript, JavaScript | 443 / 463 = **95.7%** |
+
+The Python group resolves **1.0 point lower**, not higher. By language: Go
+98.6% (279), TS 96.5% (141), Python 94.7% (265), JS 74.4% (43). The strongest
+group (Go) and the weakest (JS/NodeBB) are *both* novel languages. **No
+development-overfit signal appears in the direction the hypothesis predicts** —
+the spread tracks per-repo and per-language difficulty, not proximity to the
+development set. This is the empirical check the freeze-timing audit cannot
+provide (the harness co-evolved with Pro pilots before freeze, see
+[`METHODOLOGY.md`](METHODOLOGY.md)); the freeze does not defend, this does.
+
 ## Runtime distribution
 
 All 728 terminal instances, by wall-clock bucket (each `#` ≈ 3 instances):
@@ -197,6 +230,32 @@ for the next campaign, not a result**: whether stricter test-scoping in the
 craft prompt ("test only files the diff touches, not the package") removes the
 tail without changing the fast losses. It is a hypothesis to test on practice
 rungs, deliberately not acted on mid-run (the artifact was frozen).
+
+## Independent re-grade spot-check — no binding leak
+
+The standing worry about any agent result is **local-green / official-red**: the
+loop's own gate calls a WIN, but the captured diff fails when an independent
+party runs the real grader (a capture artifact, a serialization quirk, a gate
+that disagrees with the grader). To test it directly, we took a cross-language
+sample of 6 WINs, rebuilt `pred.json` from each committed diff, and re-graded on
+fresh containers with the **unmodified** official grader (pinned commit
+`ca10a60`) — no agent re-run, no model tokens.
+
+| repo | lang | re-grade verdict | grade s |
+|---|---|---|---:|
+| flipt | Go | RESOLVED | 207 |
+| navidrome | Go | RESOLVED | 69 |
+| vuls | Go | RESOLVED | 173 |
+| qutebrowser | Python | RESOLVED | 55 |
+| openlibrary | Python | RESOLVED | 63 |
+| tutanota | TypeScript | RESOLVED | 174 |
+
+**6/6 reproduced RESOLVED.** No binding leak in the sample. This is a spot-check
+(n=6 of 694, not the full set — a full re-grade is feasible but unrun here), and
+it is consistent by construction with the run's own design: each WIN was already
+an official-grader verdict on the captured source-only diff at run time (the gate
+is never the verdict; PROCEDURE §3). The re-grade confirms a third party
+reproduces those verdicts from the committed artifacts alone.
 
 ## Verifying the tally
 

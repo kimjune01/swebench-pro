@@ -1,0 +1,30 @@
+{
+  "_about": "Tier-1 kill-check #3: independent re-grade of a cross-language WIN sample with the unmodified official Pro grader (pinned ca10a60) on fresh containers. Model-free. 6/6 reproduced RESOLVED. Reproduce: driver/regrade_spotcheck.py",
+  "grader_commit": "ca10a60a5fcae51e6948ffe1485d4153d421e6c5",
+  "results": {
+    "instance_flipt-io__flipt-1737085488ecdcd3299c8e61af45a8976d457b7e": {
+      "verdict": true,
+      "secs": 207
+    },
+    "instance_navidrome__navidrome-09ae41a2da66264c60ef307882362d2e2d8d8b89": {
+      "verdict": true,
+      "secs": 69
+    },
+    "instance_future-architect__vuls-f6cc8c263dc00329786fa516049c60d4779c4a07": {
+      "verdict": true,
+      "secs": 173
+    },
+    "instance_qutebrowser__qutebrowser-fcfa069a06ade76d91bac38127f3235c13d78eb1-v5fc38aaf22415ab0b70567368332beee7955b367": {
+      "verdict": true,
+      "secs": 55
+    },
+    "instance_internetarchive__openlibrary-5c6c22f3d2edf2f1b10f5dc335e32cb6a5f40341-v76304ecdb3a5954fcf13feb710e8c40fcf24b73c": {
+      "verdict": true,
+      "secs": 63
+    },
+    "instance_tutao__tutanota-8513a9e8114a8b42e64f4348335e0f23efa054c4-vee878bb72091875e912c52fc32bc60ec3760227b": {
+      "verdict": true,
+      "secs": 174
+    }
+  }
+}
