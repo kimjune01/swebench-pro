@@ -5,12 +5,25 @@ contaminated public split should be assumed overfit until it survives the obviou
 attacks. This document states the attacks plainly and bounds each one against the
 evidence in this repo. Where an objection lands, it is conceded.
 
-The stance up front: **this is a system result on a contaminated public split,
-and it is the weakest evidence in the program.** Do not use 95.33% for capability
-inference. The load-bearing evidence for the method is elsewhere — out-of-
-distribution OSS deployment, cross-model transfer, and the legibility of the
-trail. Pro-public is an audition: "a frozen, instance-blind system resolved
-694/728 under the official grader," and nothing stronger.
+The stance up front: this is a **system result on a public, contamination-prone
+split** — an audition, not a capability claim. We don't ask you to trust it; we
+hand you the means to check it. Every row below is a *handle* (something to verify
+or a stated limit), never an argument.
+
+## The short version
+
+| The reaction | How it's handled — what *you* can check |
+|---|---|
+| "95% is 2× the leaderboard — theater" | An **audition** number on the public split. The test that would validate it — the private held-out — is Scale-run and **inaccessible to us**, so it's provisional by construction, not a 2× claim (#2, #9). |
+| "The harness is overfit to the test" | **Read the skills** (`skills/{recon,craft,audit}`) — legible, general, **zero per-instance priors**, carried over from Verified. Overfit is falsifiable by inspection (#3). |
+| "It just memorized the repos" | Conceded — the **models** pretrained on these repos (model-side, **universal** across every leaderboard entry), not a harness property (#1). |
+| "It gamed the grader" | **Unmodified official grader**, pinned commit — re-grade any verdict yourself (#5, #6). |
+| "Cherry-picked instances" | Whole eligible set (728), **0 INCOMPLETE**, 3 gold-patch defects named; reproduce on a **random** sample (#7). |
+| "Expensive brute force, not reasoning" | ~$2.60 / ~13 min each — **and** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
+| "Why should I trust you?" | You don't — **one prompt** reproduces a random sample on your machine ([README](README.md)). Trust is the one axis an AI can't win; verification is the answer. |
+| "But it's AI" | A **values** call, not an evidence one — not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
+
+The sections below are the depth layer — scan the table, dig where you doubt.
 
 ## 1. "It's contamination — the models memorized these repos."
 
