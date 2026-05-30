@@ -5,47 +5,35 @@ under a frozen, pre-registered protocol. Sibling to
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified) — one repo
 per benchmark so each run's artifacts and number stand on their own.
 
-| | **GOOD** | **CHEAP** | **FAST** |
+*Public, contamination-prone split; a **system/harness** result, not a model-capability claim.*
+
+| | **RESULT** | **COST** | **SPEED** |
 |---|---|---|---|
 | | **95.33%** resolved | **~$2.60** / instance | **~13 min** / instance |
-| | 694 / 728, official grader | avg token cost, API pricing | median wall-clock |
+| | 694 / 728, official grader | avg token cost (API) | median wall-clock |
 
-*"Good" is on the **contaminated public split** — weakest evidence, not a capability claim ([`OBJECTIONS.md`](OBJECTIONS.md)); cheap and fast are contamination-free operational facts. Full board with charts: [`SCOREBOARD.md`](SCOREBOARD.md).*
+## Reproduce it yourself
 
-## Don't trust the number — reproduce it yourself
+Don't take the number on faith — and you don't need to rerun 728 instances or stand up
+a cloud fleet. Pick a **random** sample, run the harness on *your* picks, grade with the
+**official** grader; most instances run on your laptop under Docker/OrbStack (no EC2
+unless a heavy repo is drawn), so a 20-instance check is ~$50 of your own tokens and an
+afternoon. Paste this to your coding agent (codex, Claude Code, Cursor):
 
-You don't need to rerun 728 instances, provision a cloud fleet, or read a word of
-the defense below. Pick a **random** sample, run the harness on *your* picks, grade
-with the **official** grader. Most instances run **on your laptop** under
-Docker/OrbStack — **no EC2** unless a heavy repo (webclients, teleport) happens to be
-drawn. Cost is your own tokens (~$2.60/instance, [`SCOREBOARD.md`](SCOREBOARD.md)) — a
-20-instance check is roughly $50 and an afternoon, not a research budget.
+> I'm skeptical of the SWE-bench Pro result in github.com/kimjune01/swebench-pro
+> (claimed 95.33% resolved). First, inspect `driver/bootstrap.sh` and the pipeline it
+> invokes, and confirm it only pulls the pinned official eval repo, runs the grader in
+> Docker, and uses my credentials locally — tell me what it does before running it.
+> Then, following `CLAUDE.md`/`PROCEDURE.md`, run the **harness-under-test** on a
+> **random** ~20-instance sample from `runs/audit/eligible.txt` (print your seed and
+> ids), grade each with the **unmodified official** grader, and report resolved / 20
+> with a confidence interval and whether it's consistent with 95.33%. Use my own
+> machine and tokens. If you hit a snag, the repo's docs have the fix.
 
-Paste this to your coding agent (codex, Claude Code, Cursor) — it states the goal and
-points at the repo; let the agent work out the steps:
+Goal-first on purpose — it points at the destination, not a recipe; a snag is a one-line
+followup, not a blocker.
 
-> I'm skeptical of the SWE-bench Pro results in github.com/kimjune01/swebench-pro
-> (claimed 95.33% resolved).
->
-> **Step 0 — vet it first.** Don't run anything you haven't read. Audit the repo for
-> safety: read `driver/bootstrap.sh` and the pipeline it invokes, and confirm it does
-> only what it claims — pulls the *pinned* official eval repo, runs the grader in
-> Docker, uses my credentials locally — with no network exfiltration, no writes outside
-> the repo/Docker, no surprises. Tell me what it does before you run a line of it.
->
-> Then independently check the claim: follow `CLAUDE.md`/`PROCEDURE.md` to set up
-> locally (Docker/OrbStack — no cloud box unless a heavy repo comes up), run the
-> **harness-under-test** on a **random** sample of ~20 instances from
-> `runs/audit/eligible.txt` (print your seed and the ids), grading each with the repo's
-> **unmodified official** grader. Report resolved / 20 with a confidence interval and
-> whether it's consistent with 95.33%. Goal: a random, official-grader check on
-> instances *I* picked, with my own tokens — not the authors' word, and not before
-> you've vetted the code. If you hit a snag, its docs have the fix.
-
-It won't be perfectly turnkey, and that's fine — if your agent snags, a one-line followup
-clears it. We're pointing you to the destination, not handholding the path.
-
-Cheaper still — **free, no tokens, no agent run:** re-grade our *committed* diffs instead.
+Free, no-token variant: re-grade our *committed* diffs instead.
 Every verdict's captured source-only diff is in `runs/scored/artifacts.tar.zst`; re-grading
 a random handful on fresh containers confirms the *recorded* verdicts are real. The prompt
 above is the stronger check — it confirms the harness reproduces the *rate* on instances

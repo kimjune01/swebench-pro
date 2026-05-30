@@ -121,18 +121,25 @@ honest that observation ≠ frontier. Refutable by one counterexample = the invi
   24% @ $4.72). Expensive multi-model DOMINATED (Opus4.1-High 54% @ $1,600 < o4-mini @ $259).
   HAL thesis: "costliest rarely on frontier; simple scaffolds dominate complex." Aimed straight
   at a 2-model/5-loop ensemble.
-- **Artificial Analysis Coding Agent Index**: real $/task. Composer 2.5 Standard score 62 @
-  **$0.07/task**; Opus 4.7 max 66 @ $4.10. **Our $2.60/task ≈ 37× Composer 2.5 Standard.**
-- **VERDICT: our ensemble would be Pareto-dominated on cost** unless it sets a strictly higher
-  resolve rate than the top frontier point. Correctness>cost>speed lexicographic is our defense
-  (cost is a tiebreaker, not co-equal) — but HAL/AA weight cost heavily, so they're the harsh venue.
+- **Artificial Analysis Coding Agent Index**: real $/task. Composer 2.5 Standard ≈ **$0.07/task**.
+  ⚠️ **CONFLATION GUARD (caught 2026-05-30):** AA's "62" is a NORMALIZED 0-100 COMPOSITE
+  (Pro-Hard-AA + Terminal-Bench + QnA), **NOT a SWE-bench Pro resolve rate.** Do NOT say
+  "Composer gets 62 on Pro" — Composer's raw Pro resolve rate is UNVERIFIED. DeepSWE (Datacurve)
+  is yet a THIRD board (cost-vs-DeepSWE-score, top ~70% gpt-5.4 @ ~$7; Composer not listed).
+- **FRAME = frontier, not head-to-head.** These are not directly comparable (different boards,
+  normalizations, contamination). The honest model is a **cost-vs-correctness Pareto frontier**:
+  every agent/model is a point; the question is *where our point sits*, not "we beat Composer."
+  This is exactly how DeepSWE/HAL/AA present ("most efficient ↗"). Our concern stands: a
+  $2.60 / 2-model / 5-loop point is unlikely to be on the cost-efficient part of the frontier
+  unless its resolve rate is strictly higher. correctness>cost>speed is our lexicographic defense.
 
 ### MAJOR honesty implication for the scoreboard "cheap" claim
-$2.60/task is cheap vs naive-API-everything, NOT vs lean scaffolds (Composer 2.5 = $0.07, ~37×
-cheaper). "Cheap" must be re-scoped: cheap-for-the-correctness, not cheap-absolute. (Defer edit
-per hold-polish.) The Composer 2.5 swaperoo is doubly relevant: Composer sits on the AA cost
-frontier; swapping it into our harness tests whether the scaffold's correctness lift justifies
-the harness's token overhead.
+$2.60/task is cheap vs naive-API-everything, NOT vs the cheap end of the frontier (lean agents at
+single-digit cents). "Cheap" got DROPPED → axis renamed **RESULT | COST | SPEED** (2026-05-30, per
+codex + operator); cost is a neutral metric, no adjective. The Composer 2.5 swaperoo is the
+load-bearing test: swapping Composer into our harness measures whether the scaffold's correctness
+lift justifies its added cost — i.e., where the *harness-wrapped* point lands on the frontier vs
+Composer-standalone.
 
 ## Known related benchmarks (acknowledge, don't conflate)
 - **DeepSWE** (Datacurve, https://deepswe.datacurve.ai/) — separate SWE benchmark; we're

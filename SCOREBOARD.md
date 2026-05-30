@@ -1,33 +1,31 @@
-# Scoreboard — good · cheap · fast
+# Scoreboard — result · cost · speed
 
 SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement.
 
 | | metric | value | basis |
 |---|---|---|---|
-| **GOOD** | resolve rate | **95.33%** | 694 / 728 eligible, official grader |
-| **CHEAP** | avg token cost / instance | **~$2.60** | API pricing (Anthropic-comparable per-task cost) |
-| **FAST** | wall-clock / instance | **~13 min** | median (p50 770 s) |
+| **RESULT** | resolve rate | **95.33%** | 694 / 728 eligible, official grader |
+| **COST** | avg token cost / instance | **~$2.60** | API pricing (vendor-comparable per-task cost) |
+| **SPEED** | wall-clock / instance | **~13 min** | median (p50 770 s) |
 
-> **Read "good" honestly.** 95.33% is on the **public, contaminated** SWE-bench Pro
-> split — the *weakest* evidence in this program, not a capability claim (the models
-> postdate these repos; see [`OBJECTIONS.md`](OBJECTIONS.md)). **Cheap and fast are
-> operational facts** about the run and are not affected by contamination — they are
-> the parts of this board that travel.
+> **Don't trust it — verify it.** This is a **public, contamination-prone** split and a
+> **system/harness** result, not a model-capability claim. So the repo doesn't ask for
+> your trust; it hands you the means to check: reproduce a random sample in one prompt
+> ([README](README.md)). Trust is the one axis an AI can't win against a human — the
+> answer is verifiability, not a louder number.
 
 > **Not a leaderboard entry.** The official SWE-bench Pro runs evaluate **models** —
 > hold a standard harness fixed, vary the model, rank them. This entry evaluates a
-> **harness**: the recon→craft→audit scaffold (with a multi-model ensemble inside it).
-> Different axis. The number measures what the *scaffold* contributes, not where a
-> model ranks, so it is not a leaderboard submission and should not be read as "our
-> model beats X" (see [`OBJECTIONS.md`](OBJECTIONS.md) #11).
+> **harness**: the recon→craft→audit scaffold. The number measures what the *scaffold*
+> contributes, not where a model ranks — not a leaderboard submission, and not "our
+> model beats X" (see [`OBJECTIONS.md`](OBJECTIONS.md)).
 
-> **The bar is the vibe coder.** The harness worth building is one that is *good-er,
-> cheaper, **and** faster* than a vibe coder handed the same task. That is why this
-> board is a triple, not a single score: a scaffold that wins on all three earns its
-> complexity; one that wins on only one or two does not. Good/cheap/fast is the
-> admission test for a harness, not a ranking of models.
+> **The bar is the vibe coder.** A harness worth building **resolves more, costs less,
+> and finishes faster** than a human handed the same task — that's why this board is a
+> triple, not a single score. The one axis it *can't* beat the human on is **trust**;
+> reproduce-it-yourself is how it competes there anyway.
 
-## Good — resolve rate by repo
+## Result — resolve rate by repo
 
 ```mermaid
 xychart-beta
@@ -63,7 +61,7 @@ xychart-beta
     bar [227, 183, 224, 148, 50, 20, 8]
 ```
 
-## Cheap — cost & token efficiency
+## Cost & token efficiency
 
 - **Average token cost ~$2.60 / instance at API pricing** — comparable to a
   vendor's advertised per-task cost. Measured, not modeled: the API-mode canary ran
@@ -82,8 +80,8 @@ xychart-beta
 - **Runnable on a subscription alone.** The cheapest path isn't API at all: with a
   Max 20× ($200/mo) plan, the whole 728-set is reproducible at **zero marginal
   token cost** over ~2 weeks of wall-clock (just the subscription + ~$58 EC2),
-  trading time for dollars. The ~$2.60/instance API rate is the *fast* path; the
-  subscription is the *cheap* path. (This run used both — mostly subscription, with
+  trading time for dollars. The ~$2.60/instance API rate is the *quick* path; the
+  subscription is the *low-cost* path. (This run used both — mostly subscription, with
   a paid-API tail to finish faster.)
 
 **Model turns per instance** (recon + craft + audit, all retries; count of instances):
@@ -113,14 +111,14 @@ xychart-beta
 | median | 137 | 71k | | p90 | 291 | 154k |
 | mean | 193 | 99k | | max | 2,423 | — |
 
-## Fast — runtime & turns
+## Speed — runtime & turns
 
 Median **770 s (~13 min)** per instance, p90 **1537 s (~26 min)**; 84% finish in
 5–20 min. The right tail is heavy repos and craft-hangs on big suites (max 10,745 s,
 a teleport WIN). Model turns: median 137, p90 291; 13.7% exceed SEAL's 250-turn
 reference cap.
 
-**"Fast" is per instance, not the campaign.** The full 728-instance run took **~3.5
+**Per-instance, not the campaign.** The full 728-instance run took **~3.5
 days** of wall-clock end-to-end — bounded by fleet size (4–8 boxes), three auth
 stalls, and quota pauses, not by per-instance speed ([`RUN_NOTES.md`](RUN_NOTES.md)).
 The ~13 min is what one instance costs in time; the run is embarrassingly parallel,
@@ -145,4 +143,4 @@ xychart-beta
 
 Numbers recompute from `runs/scored/run.jsonl` (verdicts/runtimes) and the committed
 trajectory bundle (turns/tokens). Cost is the operator's measured API spend. The
-"good" caveat is load-bearing — pair this board with [`OBJECTIONS.md`](OBJECTIONS.md).
+contamination caveat is load-bearing — pair this board with [`OBJECTIONS.md`](OBJECTIONS.md).
