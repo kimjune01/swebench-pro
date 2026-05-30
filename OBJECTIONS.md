@@ -111,22 +111,36 @@ overfit cannot be ruled out empirically on Pro-public.** The checks in #3 reduce
 some overfit stories; they do not establish that 95.33% reflects generalizable
 task-solving rather than split-specific optimization plus contamination.
 
-## 10. "95% here vs 53% on novel OSS — which number is real?"
+## 10. "95% here vs ~50% on novel OSS — which number is real?"
 
 They measure different things. Pro-public hands the loop a visible test suite (an
 oracle the gate can stop on) and curated, known-solvable instances; live OSS
-gives neither. That difference could plausibly account for much of the 95→53 gap
-before contamination is invoked — but we have **not** decomposed the gap and do
-not claim a specific split. For a posterior on real-world performance, use the
-OSS deployment, not 95.33%.
+gives neither. That difference could plausibly account for much of the gap before
+contamination is invoked — we do not decompose it precisely. For a posterior on
+real-world performance, use the OSS deployment, not 95.33%. The OSS number and its
+full funnel are public and enumerated PR-by-PR
+([profile receipts](https://github.com/kimjune01/kimjune01): `pr-receipts.jsonl`,
+`closed-pr-reasons.jsonl`).
 
-## 11. "Is the OSS 53% inflated by pre-PR filtering?"
+## 11. "Is the OSS merge rate inflated by pre-PR filtering or by how closes are counted?"
 
-A fair and currently open question, and the reason the OSS number is not yet
-load-bearing here. The honest denominator is merged / *attempted*, with any
-issue-selection or pre-PR filtering disclosed; that audit (the full
-sampled-issue → attempted → PR'd → merged/closed log) is **pending** and called
-out as such. Until it lands, 53% is a pointer, not a result.
+The audit is done, and both effects are real and disclosed rather than nested.
+
+- **Pre-PR funnel.** Of 368 triaged issues, 322 were submitted as PRs; 46 (12.5%)
+  were throttled or rejected before submission. So the merge rate is conditioned
+  on having PR'd, which a live builder facing raw issues is not — the funnel is
+  published as a Sankey, not hidden.
+- **Denominator.** The headline merge rate is merged / (merged + closed-unmerged)
+  among *decided* PRs — **81/160 = 50.6% live** (the profile's "53%" is a dated
+  May-20 snapshot of the same quantity, 80/150). It excludes a 129-PR open tail.
+- **What "closed" contains.** A close-reason audit of all 79 closed PRs (verbatim
+  evidence per PR) finds only **8 are maintainer rejections on the merits**; the
+  rest are 28 author-withdrawals (mostly post-program), 13 superseded/duplicate,
+  12 no-AI-policy closes, 6 bot/stale, and 12 silent/ambiguous (counted against us
+  conservatively). So the merit-conditioned merge rate is 80–91%, while the raw
+  rate is 50.6%. We lead with the raw rate; the decomposition is context, not a
+  replacement, and every reclassification is mechanically checkable
+  ([profile `CLOSE_REASONS.md`](https://github.com/kimjune01/kimjune01/blob/main/CLOSE_REASONS.md)).
 
 ## 12. "What did it cost? How many model calls?"
 
