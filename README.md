@@ -77,7 +77,7 @@ Read in roughly this order depending on what you're here to do.
 | if you want to… | read |
 |---|---|
 | see the result and audit the numbers | [`RESULTS.md`](RESULTS.md) — per-repo W/L, runtime distributions, loss analysis, how to re-grade any verdict |
-| understand how the number was produced | [`METHODOLOGY.md`](METHODOLOGY.md) — system, per-instance pipeline, what counts as a verdict, billing modes |
+| understand how the number was produced | [`METHODOLOGY.md`](METHODOLOGY.md) — system, harness provenance (Verified-developed, one round of Pro adaptation), per-instance pipeline, what counts as a verdict, billing modes |
 | check the rules the run was held to | [`PREREGISTRATION.md`](PREREGISTRATION.md) — predicate, failure-mode state machine, contamination accounting, freeze gate (frozen `prereg-pro-v1`, 2026-05-26) |
 | audit the run's provenance | [`RUN_NOTES.md`](RUN_NOTES.md) — the three auth stalls, recovery sequence, cost shape, the off-peak-streak vs on-peak-storm load pattern |
 | reproduce a result from scratch | [`PROCEDURE.md`](PROCEDURE.md) — bootstrap → task → pilot → official grade; pinned versions; reproduction contract |

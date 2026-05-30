@@ -29,6 +29,32 @@ single-model or capability claim, and the scaffold-vs-model confound is
 permanently open because the same-model control isn't budget-viable
 ([`PREREGISTRATION.md`](PREREGISTRATION.md) §7, §12).
 
+### Harness provenance — developed on Verified, one round of Pro adaptation
+
+This harness was **not built bespoke for SWE-bench Pro.** The recon→craft→audit
+skills and driver were developed and iterated on **SWE-bench Verified** (sibling
+repo [`swebench-verified`](https://github.com/kimjune01/swebench-verified),
+which resolved 426/438 eligible, ~97%), where the skills took their shape. That
+run was apparatus validation; the harness then moved to Pro as **one round of
+adaptation** — a task-adapter swap (the Pro dataset shape, the multi-language
+Py/Go/JS grader, source-only capture, the image/parser wiring) plus the
+harness-fault fixes surfaced while validating that adapter against gold patches
+and pilots. After that one round it was **frozen as `prereg-pro-v1` and run once**
+over the whole eligible set. The Verified skills are frozen; only the Pro adapter
+surface moved (`PRO_PORT.md` lists the touchpoints).
+
+What this disclosure does and does not claim:
+- **Does:** the pipeline is a Verified-origin general rig adapted once, not a
+  scaffold tuned iteratively against Pro's scored results. The artifact was frozen
+  before the whole-set run; there is no peek-and-tweak loop on the 728 verdicts
+  (§3/§5 forbid it).
+- **Does not:** claim the harness never saw any Pro instance before the run. It
+  did — the prereg discloses pre-freeze dev-mode exposure (23 of the 31
+  `hardest_both_reasoning` ran end-to-end before freeze, all resolved;
+  [`PREREGISTRATION.md`](PREREGISTRATION.md) §8, §11 "Known exploratory exposure").
+  The adaptation was on the adapter/infra, validated against gold patches and
+  pilots — not a fit to scored-instance outcomes.
+
 ## Per-instance pipeline
 
 Each of the 728 instances runs the same loop, independent of every other
