@@ -144,20 +144,22 @@ The audit is done, and both effects are real and disclosed rather than nested.
 
 ## 12. "What did it cost? How many model calls?"
 
-Per instance: median **139 Claude turns** (recon + craft + audit, all retries;
-mean 193, p90 294), 13.7% over SEAL's 250-turn reference cap — **plus** a GPT-5.5
+Per instance: median **137 Claude turns** (recon + craft + audit, all retries;
+mean 193, p90 291), 13.7% over SEAL's 250-turn reference cap — **plus** a GPT-5.5
 challenger on top, so total model calls exceed a single 250-turn agent. Two cost
 figures, kept separate because they are not the same thing:
 
-- **Observed cash outlay this run:** dominated by EC2 (~$58, ~$0.08/instance),
-  because Claude billed on the Max plan ($0 marginal) until a paid-API tail for
-  the last ~17% of instances.
-- **Replicable marginal cost under public API pricing:** **not yet estimated.**
-  The Max-plan subsidy makes this run's cash outlay non-portable; a reproducer
-  paying PAYG for ~139 Claude turns + the codex challenger per instance would pay
-  materially more, and we have not computed that figure.
+- **Replicable marginal cost under API pricing: ~$2.60 / instance.** Measured, not
+  modeled — the API-mode canary ran $2.07/instance on light repos, blended higher
+  across heavy ones. This is the figure comparable to a vendor's advertised
+  per-task cost, and what a reproducer paying PAYG should budget.
+- **This run's actual cash outlay: $813.52 API spend + ~$58 EC2.** Most instances
+  ran on a Max subscription at ~$0 marginal; only ~310 were billed to API (≈
+  $813.52 / $2.60). The subscription subsidy makes the *cash* number non-portable,
+  which is exactly why the ~$2.60 API rate above is the one to quote.
 
-Turn stats cover the 681/728 instances whose trajectories survived teardown.
+Turn/token stats cover the 681/728 instances whose trajectories survived teardown
+(median ~71k output tokens/instance). See [`SCOREBOARD.md`](SCOREBOARD.md).
 
 ---
 

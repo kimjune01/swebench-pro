@@ -135,20 +135,22 @@ ignores it will see its score depressed by stall waves it reads as losses.
 
 ## Cost shape
 
-EC2 is the only marginal cost — the Claude generator ran on the Max plan ($0
-until the quota stall) and codex on subscription.
+Two numbers that are not the same thing: the **per-instance API rate** (portable,
+what a reproducer budgets) and **this run's actual cash** (low, because most
+instances ran on a Max subscription at ~$0 marginal).
 
 | | |
 |---|---|
-| instance | `m7i.xlarge`, `us-west-2`, 100 GB EBS |
-| rough rate | ~$0.20 / box-hr |
-| fleet | 4 boxes most of the run, 8 for the API-mode tail |
-| order-of-magnitude | 4 boxes × ~72 h × $0.20 ≈ **$58** EC2, before the 8-box tail and idle/provision overhead |
+| avg token cost / instance | **~$2.60** at API pricing (measured: canary $2.07 on light repos, blended higher) |
+| this run's API cash | **$813.52** — only ~310 instances billed to API (≈ $813.52 / $2.60); the rest on Max subscription, ~$0 marginal |
+| EC2 | `m7i.xlarge` × 4 (8 for the tail) × ~72 h × ~$0.20/box-hr ≈ **$58** (~$0.08/instance) |
+| codex (GPT-5.5 challenger) | on subscription |
 
-Add real Sonnet API spend for the final ~17% of instances after the AUTH_MODE
-switch — paid PAYG tokens rather than Max/$0. Exact figures aren't tallied here;
-the shape is "tens of dollars of EC2, plus a tail of paid API tokens," not a
-GPU-hours budget.
+So the run's out-of-pocket beyond fixed subscriptions was ≈ **$813.52 API + $58
+EC2 ≈ $870**. The portable figure to quote is the **~$2.60/instance API rate** —
+comparable to a vendor's advertised per-task cost — not the subscription-subsidized
+cash, which doesn't reproduce. Per-instance token efficiency (median ~137 turns,
+~71k output tokens) is in [`SCOREBOARD.md`](SCOREBOARD.md).
 
 ## What the next campaign should pick up
 

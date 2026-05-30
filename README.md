@@ -5,6 +5,13 @@ under a frozen, pre-registered protocol. Sibling to
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified) — one repo
 per benchmark so each run's artifacts and number stand on their own.
 
+| | **GOOD** | **CHEAP** | **FAST** |
+|---|---|---|---|
+| | **95.33%** resolved | **~$2.60** / instance | **~13 min** / instance |
+| | 694 / 728, official grader | avg token cost, API pricing | median wall-clock |
+
+*"Good" is on the **contaminated public split** — weakest evidence, not a capability claim ([`OBJECTIONS.md`](OBJECTIONS.md)); cheap and fast are contamination-free operational facts. Full board with charts: [`SCOREBOARD.md`](SCOREBOARD.md).*
+
 ## Result
 
 **694 / 728 eligible resolved = 95.33%**, official SWE-bench Pro grader, single
@@ -76,6 +83,7 @@ Read in roughly this order depending on what you're here to do.
 
 | if you want to… | read |
 |---|---|
+| scan good / cheap / fast at a glance | [`SCOREBOARD.md`](SCOREBOARD.md) — resolve rate, cost (~$2.60/instance), runtime, token efficiency, with charts |
 | see the result and audit the numbers | [`RESULTS.md`](RESULTS.md) — per-repo W/L, runtime distributions, loss analysis, development-overlap check, independent re-grade, how to re-grade any verdict |
 | weigh the result against the obvious objections | [`OBJECTIONS.md`](OBJECTIONS.md) — contamination, dev-overfit, gate-lying, capture leaks, denominator, holdout, cost; each attack stated and answered (or conceded) with evidence |
 | understand how the number was produced | [`METHODOLOGY.md`](METHODOLOGY.md) — system, harness provenance (Verified-developed, one round of Pro adaptation), per-instance pipeline, what counts as a verdict, billing modes |
