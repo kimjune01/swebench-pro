@@ -432,3 +432,62 @@ Committed for v1 and binding on every future version:
   harness but **no run data**, leaving its central claims unverifiable — a line we decline to be on).
 - Trajectory volume is large; publication may be archived/compressed, but the artifacts are committed
   to the run's frozen trail, not summarized away.
+
+**2026-05-29 — `PROVIDER_CRED_REJECT` fault class added to §3 enumeration.** During the v1 scored run
+we hit a class the original §3 list didn't name: a wave of identical sub-90s LOSSes whose
+subprocess capture contained the verbatim string `Failed to authenticate. API Error: 401 Invalid
+authentication credentials` for every step (recon, craft, audit), with 0-byte patch artifacts. The
+cause was server-side credential invalidation (OAuth token rotation by the provider) — the operator
+had not logged out; the credential pushed at fleet provisioning was rejected by the upstream after
+the fact. Three waves observed: 13:28–13:39 PDT (28 instances), 13:55–14:00 PDT (12 instances after
+a no-op coordinator restart with the same stale credential), and 3 endogenous-no-verdict rows from
+earlier in the day matching the same pattern.
+
+Re-pushing fresh credentials from the keychain to all 4 boxes resolved the wave: post-reauth
+verdicts returned within real wall-times. Statuspage at https://status.claude.com/ was consulted for
+the 13:28–14:00 window and showed no incident specific to authentication or Sonnet 4.5 — consistent
+with provider credential-rotation events being routine security hygiene rather than posted
+incidents. The historical 90-day uptime is 99.08% (≈20h degraded), consistent context but not
+direct corroboration. The on-box subprocess capture **is** the direct evidence, same shape as
+dmesg-for-OOM in the existing infra-class.
+
+The class slots between the existing provider-incident-class (§3, statuspage-required) and
+infra-class (§3, on-box-log-required). Definition:
+
+- **`PROVIDER_CRED_REJECT`** — provider rejected the operator's credential server-side, evidenced by
+  on-box subprocess capture of the provider's canonical rejection string, with the captured patch
+  0-byte (no submission occurred). Re-classified from LOSS to INCOMPLETE and re-dispatched once
+  fresh credentials are pushed; original LOSS rows stripped to a parallel ledger (not the headline
+  run.jsonl).
+
+**Invariants — all four required** (any missing → reverts to endogenous LOSS per existing §3):
+  1. Subprocess capture contains verbatim provider canonical rejection (`401 Invalid authentication
+     credentials` for Anthropic; analogous strings for OpenAI/Gemini/Cursor in the §4.5a sibling
+     run). The exact string is the evidence — not paraphrase, not inference.
+  2. Captured patch is 0 bytes (i.e. no submission occurred — distinguishes from "patch attempted
+     and graded `not resolved`", which stands as LOSS per §3).
+  3. The same fault recurs across ≥3 consecutive instances on the same box (rules out single-box
+     transient flukes; pattern is a wave, not a one-shot).
+  4. Re-pushing fresh credentials from the operator's authoritative credential store resolves the
+     wave (post-reauth verdicts return within real wall-times). This is the falsification step: if
+     fresh creds also 401, the cause is not credential-rotation and the rule does not apply.
+
+**Audit trail.** `runs/scored/auth_strips.jsonl` — one JSON line per re-dispatched instance,
+recording UTC timestamp of the strip, instance_id, the verbatim captured rejection string, box id,
+and a pointer to the credential-push event that resolved the wave. Statuspage URL + a snapshot of
+the page text for the relevant window is recorded in `docs/auth_storm_2026-05-29.md` (or analogous
+per future incident); silence is documented, not weaponized — the absence of a posted incident is
+the expected case for routine credential rotation, not disconfirming evidence.
+
+**Symmetry & anti-launder.** The rule is symmetric: same on-box-log corroboration principle applies
+to provider-side credential rejection as already applied to OOM/disk/network in infra-class. It is
+not a free re-roll — invariant (3) requires a wave, invariant (4) requires falsifiable resolution.
+A single 401 on a single box (without recurrence, without resolution-by-rotation) stays a LOSS. The
+anti-launder direction of §3 holds: we cannot retroactively re-classify a capability LOSS that
+*does* have a real patch submission as a cred-reject; the 0-byte invariant (2) makes the
+re-classification mechanical, not judgmental.
+
+**Provenance of this amendment.** Added 2026-05-29, same day as the storm observation, prior to any
+re-dispatch verdict landing in the ledger. The full incident is documented in
+`WORKLOG.md` "2026-05-29 (afternoon)" entry with the decision trail (strip → consult prereg → check
+statuspage → file amendment).

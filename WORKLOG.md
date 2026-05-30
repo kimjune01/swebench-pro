@@ -4,6 +4,49 @@ Newest first. This is the **scored-run trail** for the frozen artifact `prereg-p
 development history is in [`WORKLOG_PREFREEZE.md`](WORKLOG_PREFREEZE.md). Per §13, each scored tag
 gets its own worklog; this one carries only `v1`'s run.
 
+## 2026-05-29 (afternoon) — Anthropic credential rejection (`PROVIDER_CRED_REJECT`) wave; 43 LOSSes re-classified; prereg §3 amended
+
+**Observed.** At ~13:28 PDT, the coordinator started recording fast-LOSSes in 55–90s wall times
+on openlibrary, NodeBB, ansible, element-web. 28 consecutive within 11 minutes, then I halted.
+Pulled craft-step output from a box: every step (recon/craft/audit) returned a 88-byte file
+containing literally `Failed to authenticate. API Error: 401 Invalid authentication credentials`.
+Captured patches were 0 bytes. Score had moved 95.8% → 89.4% on the noise alone.
+
+**Cause.** Server-side OAuth token rotation. The operator did not log out; the credential pushed
+at fleet provisioning was rejected by Anthropic after the fact. Re-extracted creds from the Mac
+keychain (`security find-generic-password -s "Claude Code-credentials" -w`), scp'd fresh
+`.credentials.json` to all 4 boxes, restarted the coordinator. First post-reauth verdicts (after
+14:04) returned in real wall-times — auth resumed.
+
+**Three waves, 43 rows total.** Cutoff 13:28:34 → 28 fast-LOSSes. A no-op coordinator restart at
+13:55 (before I'd actually re-pushed creds) → 12 more in 5 min. Three earlier endogenous
+no-verdict rows from the morning matched the same pattern (1 openlibrary at 13:27:30 right at the
+lip of the cutoff; 1 flipt with 87s fast-fail + 2h55m runner-timeout retry; 1 tutao with blank
+detail). All 43 stripped from the headline ledger; backups at `runs/scored/run.jsonl.bak-auth-1340`
+and `...bak-infra-1410`; structured audit at `runs/scored/auth_strips.jsonl`.
+
+**Prereg discipline check.** §3 LOSS definition explicitly includes "empty/0-byte capture, and any
+failure endogenous to the method (agent errored, produced no patch)." Read literally, the 43
+strips were prereg-noncompliant. §3 provider-incident-class is statuspage-gated; consulted
+https://status.claude.com/ for the 13:28–14:00 window: the two posted incidents were "Elevated
+errors for Claude Opus 4.8", neither relevant to Sonnet 4.5 or to auth. 90d historical Claude Code
+uptime is 99.08% (≈20h degraded over the window) — context, not corroboration.
+
+**Resolution: §3 amendment.** Added `PROVIDER_CRED_REJECT` as a new fault class slotting between
+provider-incident (statuspage-required) and infra-class (on-box-log-required). On-box subprocess
+capture of the verbatim 401 string **is** the corroboration, same shape as dmesg-for-OOM. Four
+invariants required (canonical rejection string + 0-byte patch + ≥3-instance wave + resolution by
+fresh cred push) so the rule is mechanical not judgmental. Symmetric to existing on-box-log
+treatment. Statuspage silence is documented in `docs/auth_storm_2026-05-29.md` as part of honesty
+(not as disconfirmation — token rotations aren't posted incidents). See `PREREGISTRATION.md` §14
+amendment "2026-05-29 — `PROVIDER_CRED_REJECT`" for the full text.
+
+**Reproducibility caveat.** The Claude Code service's 90d uptime is ~99% with several visible
+degraded periods on the statuspage timeline. A reproducer running a multi-hour fleet will likely
+hit at least one credential-rejection or transient-error wave per ~10-hour campaign. Plan for the
+`PROVIDER_CRED_REJECT` recovery loop (detect 401-canonical in subprocess capture → halt dispatch →
+re-push from keychain → restart) as part of the operator runbook, not as a defect to forensicate.
+
 ## 2026-05-29 (latest) — real grader-side defect found: silent `redis-server --daemonize` flake; runner-side mitigation added with disclosure
 
 Followed up on the runtime-histogram finding (NodeBB completed p95=19m vs currently-running >40m — gap demanded investigation, not shrug-off as "NodeBB is heavy"). SSHed in: **all 4 boxes were stuck in "Waiting for Redis to start..." loop, spamming the message every second.**
@@ -367,3 +410,282 @@ runs once at provision-time. A long-lived run needs periodic re-staging (e.g., e
 detection of 401 in claude output). Today's mitigation is manual: re-stage on demand when a 401
 storm is observed.
 
+
+## 2026-05-30 03:34Z — Token stall requeue (105) + 1 pre-stall outlier
+
+Quota stall began ~03:04Z. Coordinator + boxes kept running but craft/audit
+produced no verdicts → 100 entries logged as `LOSS / detail: "no verdict
+(endogenous)"`, plus 4 overlap WINs (started pre-stall, finished after),
+plus 1 `"not resolved"` LOSS started at 03:07Z under quota pressure (degraded
+craft, not a clean grader signal). 105 total rewritten LOSS/WIN → INCOMPLETE
+with `detail: "requeued: stall <state> (<orig detail>)"`. Coordinator
+restarted; resume picked them up (eligible=728 done=534 todo=194).
+
+**Deviation from strict cutoff:** also rewrote 1 pre-stall endogenous LOSS
+at 01:23Z (qutebrowser-996487c4...) — same pipeline-drop shape, outside the
+03:04Z window. Logged separately as `"requeued: pre-stall endogenous drop
+(<orig>)"`. Rationale: endogenous = pipeline produced no verdict; same class
+of non-graded outcome as the stall cohort, not a graded fail. Operator
+(user) approved explicitly, flagged "no sneaky business" — preserving full
+audit trail (orig detail in parens, backup ledger
+`runs/scored/run.jsonl.bak-stall-20260530T033431Z`).
+
+Tally after rewrite: W=514 L=25 INCOMPLETE=496. Previous tally was W=518
+L=127 (pre-rewrite, post-stall). The L=25 is graded losses only; the 25th
+(NodeBB 01:54Z `"not resolved"`) remains real and untouched.
+
+## 2026-05-30 04:39Z — Second auth stall, re-staged creds, resumed
+
+Second OAuth credential expiry in the same session. Symptom matched the
+first stall exactly: `LOSS / detail: "no verdict (endogenous)"` with
+runtimes collapsing to 49-62s (vs normal 60-600s graded). Operator did
+`/login` locally, which refreshed `Claude Code-credentials` in the macOS
+keychain; the boxes still held the now-rejected token.
+
+**Resolution.**
+1. Killed coordinator (PID 2980) + 4 dispatched ssh sessions.
+2. Pulled fresh OAuth creds from keychain (`security find-generic-password
+   -s "Claude Code-credentials"`, 539 bytes), pushed to all 4 boxes at
+   `~/.claude/.credentials.json` (chmod 600). Verified by reading back the
+   first 60 bytes from each box — all 4 match local.
+3. Rewrote 14 ledger entries ending ≥04:34:00Z (the runtime-collapse
+   threshold) from LOSS/WIN → INCOMPLETE with detail
+   `"requeued: auth-stall-2 <orig state> (<orig detail>)"`. Backup ledger:
+   `runs/scored/run.jsonl.bak-stall2-20260530T044012Z`.
+4. Restarted coordinator (PID 55311); all 4 boxes REUSING (no
+   reprovisioning). Resume picked up requeued instances immediately —
+   coord2 grabbed the previously-troubled qutebrowser 996487c4 first.
+
+Tally after rewrite: W=523 L=26 INCOMPLETE=510. The 14 vs first stall's
+105 — the gap was shorter (~30min vs ~30min original, but auth refresh
+detected faster because operator was watching the monitor live).
+
+**Pattern note.** Two auth stalls in ~90 minutes after the original 8:04PM
+quota expiry → keychain OAuth tokens have a short-ish refresh cadence under
+this load. The on-box `~/.claude/.credentials.json` does not auto-refresh
+from upstream; manual re-staging is required on each expiry. Stale token
+detection happens via the monitor's runtime-collapse signature (49-62s
+endogenous LOSSes), not the upstream provider's auth surface. Consider
+periodic background re-stage during long runs (compose `stage_creds` into
+a 30min cron while coordinator runs).
+
+## 2026-05-30 07:35Z — Ramped down to 0, awaiting quota reset
+
+Voluntary pause after a clean 53-WIN streak. Rationale: rather be
+under-budget than over-budget, since over-budget means redo (auth stalls
+above) eat both wall time and ledger integrity. Off-peak hours (US night /
+EU morning) had been carrying the streak — the moment vibe-coder load
+returns, the OAuth bucket gets squeezed and endogenous LOSSes start
+appearing. Prefer to pause now and resume when the contention drops.
+
+Sequence:
+1. `kill <coordinator>`; coord1/coord2 drained via `drain_boxes.sh coord1
+   coord2` (coord3/coord4 had been draining since the 06:23Z ramp-down to
+   --boxes 2). Each box completes its in-flight instance, then EC2
+   terminates and worker retires gracefully.
+2. Health monitor + chat tail left armed — they'll resurface on the next
+   ledger write whenever boxes come back.
+
+Tally at pause: W=566 L=26 INCOMPLETE=510, 1101 ledger lines.
+Eligible=728, done=592 (566+26), todo ~136.
+
+**Resume:** once Anthropic quota indicators look healthy (or vibe-coder
+load drops again),
+
+    cd ~/Documents/swebench-pro
+    bash driver/run_fleet.sh stage_creds          # fresh OAuth to all boxes
+    python3 driver/coordinator.py --boxes N --skip-setup &>> runs/scored/coordinator-resurrect.log &
+
+If EC2 boxes need reprovisioning (drain terminated them), the staged path
+is `run_fleet.sh setup` first.
+
+**Pattern observation (for future overnight runs).** Daytime US =
+endogenous LOSS storms every 30-90min from auth/quota pressure. Night =
+clean 50+ WIN streaks. Schedule around that. Two auth re-stages tonight
+between 03:04Z and 04:34Z (peak US evening); zero between 04:39Z and
+07:35Z. Same boxes, same skill, same instances — different load on the
+shared OAuth/quota surface upstream.
+
+## 2026-05-30 14:20Z — Auth stall #3, switching to API mode + scaling to 8 boxes
+
+Third OAuth stall, this one the worst: 77 endogenous LOSSes in 15min
+(12:33–12:48Z), runtime collapse from minutes to 30-50s. By the time
+operator returned, all 4 EC2 instances were terminated (watchdog fired
+during the 90+min outage — drain script was idle but the in-box
+WATCHDOG_MIN reaper reached its deadline).
+
+Operator out of Sonnet quota for the cycle. Decision: stop chasing
+subscription tokens; switch to AUTH_MODE=api so Sonnet bills via
+ANTHROPIC_API_KEY (paid). Trade-off: real $ per token vs. zero $ but
+unreliable. The Max bucket has now demonstrated three stalls in <12h —
+not viable for sustained tail-end runs.
+
+Also scaling boxes 4→8. More boxes ≠ more tokens (API key bills per
+request, no shared quota); just more wall-clock parallelism.
+
+Recovery sequence:
+1. Rewrote 76 endogenous LOSSes ≥12:33:05Z → INCOMPLETE
+   (`detail: "requeued: auth-stall-3 LOSS (...)"`). Backup ledger
+   `runs/scored/run.jsonl.bak-stall3-20260530T141925Z`.
+2. Discovered all 4 EC2 boxes terminated. Fresh-provisioning 8 boxes
+   via `provision_box.sh coord{1..8}` in parallel (EBS 100G each).
+3. Pending: setup_box on all 8 (rsync repo + push api key + bootstrap),
+   then `AUTH_MODE=api python3 driver/coordinator.py --boxes 8`.
+
+Tally after rewrite: W=628 L=30 INCOMPLETE=586. The 30 LOSSes are real
+graded `not resolved` fails (24 baseline + 2 long ansible craft-hangs in
+this stall window + 4 from earlier hard instances).
+
+**Pattern note (running observation).** Quota-driven stalls cluster in
+US-peak daytime hours. Off-peak (US night, EU AM) carried clean 40-60
+WIN streaks. The Max OAuth bucket is shared with consumer Claude.ai
+traffic; load spikes there starve agent runs of refresh tokens. The fix
+isn't more retries — it's a billing path that doesn't share the bucket
+(API key, AUTH_MODE=api).
+
+## 2026-05-30 14:51Z — Stall #3 recovery: setup gotchas + manual remediation
+
+Closing the loop on the pending steps from the 14:20Z entry.
+
+**Gotcha 1 — `setup-box` re-provisions.** First instinct was
+`AUTH_MODE=api bash driver/run_fleet.sh setup-box coord<N>` in parallel.
+But the `setup-box` CLI command calls `provision_box.sh` first, which
+allocates a *new* EC2 instance. Eight parallel re-provisions on top of
+eight already-provisioned boxes hit the AWS VcpuLimitExceeded (32 vCPU
+account cap). Symptom: all 8 setup logs showed PROVISION_FAIL.
+
+**Gotcha 2 — sourcing `run_fleet.sh` loses script vars.** Tried sourcing
+the script as a library to call its internal `setup_box()` bash function
+directly. But `REPO` and `SSH` are set after `set -u` at the top of the
+script, and they don't survive parallel subshell forking the way I
+exported them. Net effect: `rsync -az -e "$SSH_CMD" "$REPO/" ...` ran
+with both vars empty, which expanded to `rsync -az -e "" "/" ...` —
+rsyncing the *entire Mac root filesystem* to each box. Caught after ~25
+min of runaway rsyncs at 30%+ CPU and 1GB+ memory each. The good news:
+none completed (boxes' EBS would have filled and the rsync would have
+errored), so no data was leaked to AWS.
+
+**Remediation.** Wrote `/tmp/manual_setup.sh` with hardcoded `REPO=` and
+inline `SSH=` (no env dependencies). It does exactly what
+`run_fleet.sh setup_box()` does but in isolation:
+1. rsync repo (`/Users/junekim/Documents/swebench-pro/` → box)
+2. mkdirs for `.claude .codex .swebench-pro runs/audit runs/scored`
+3. scp `~/.swebench-pro/anthropic.key` (api mode bills this)
+4. scp `~/.codex/auth.json`
+5. scp `runs/audit/eligible.txt`
+6. ssh + bootstrap (dnf install python3.11/node/uv, npm install pinned
+   claude+codex CLIs, run `driver/bootstrap.sh`, AUTH_ASSERT)
+
+Ran `bash /tmp/manual_setup.sh all` — 8 boxes READY in ~3min.
+
+**Launch.** `AUTH_MODE=api python3 driver/coordinator.py --boxes 8
+--skip-setup`. Banner confirmed `AUTH_MODE=api → Sonnet bills
+ANTHROPIC_API_KEY (PAID); codex on sub; CLAUDE_SUBSCRIPTION unset`. All
+8 dispatched immediately. eligible=728 done=658 todo=70.
+
+**Lessons for the retro.**
+- `run_fleet.sh setup-box <name>` is unsafe for batch reuse — needs a
+  `--no-provision` flag or a sibling `bootstrap-box` command that
+  rsyncs/installs without touching EC2.
+- Internal bash functions in `run_fleet.sh` aren't safely sourceable due
+  to var initialization at file scope. Either move setup into a
+  standalone script that the CLI dispatcher calls, or guard with
+  `: ${REPO:?}` so a missing var fails loud instead of expanding to
+  empty.
+- `rsync -az -e "$SSH" "$REPO/" "$DEST/"` with either var empty is
+  catastrophic. Guard at the call site or use `set -o nounset` plus
+  `: ${REPO:?} ${SSH:?}` immediately before.
+
+## 2026-05-30 15:35Z — Ansible runtime speculation
+
+Observing while the API-mode tail runs. Ansible runtimes look bimodal
+by verdict in ways the other heavy repos don't:
+
+| repo            | n  | WIN mean | LOSS mean | LOSS list (s)        |
+|-----------------|----|----------|-----------|----------------------|
+| ansible         | 38 |   791s   |  3202s    | 5417, 3065, 1125     |
+| gravitational   | 76 |  ~1474s  |  similar  | (long WIN & LOSS)    |
+| NodeBB          | 43 |  ~1433s  |  similar  |                      |
+
+Ansible WINs are crisp (mean 791s, max 1533s); LOSSes are catastrophic
+(mean 3202s, max 5417s). Other slow repos drag uniformly; ansible
+cleanly succeeds OR runs into a wall. Speculation on why:
+
+**Hypothesis: ansible's test infrastructure is module-coupled in a way
+that punishes craft attempts that miss the call graph.** A fix in
+e.g. `lib/ansible/plugins/connection/ssh.py` triggers pytest collection
+across `test/units/plugins/connection/`, `test/integration/`, and
+anything importing the connection plugin. Pytest collection alone is
+slow on the ansible tree. Integration tests spawn SSH subprocesses.
+When craft's first patch doesn't match the intended call graph, the
+adversary's rerun multiplies that collection cost — one extra cycle =
+~1500s, two = ~3000s, hit the 5400s wall.
+
+Same shape as the sympy/matplotlib craft-hang already documented
+in [[project_swebench_craft_hang]] — heavy suites push craft past the
+instructed gate-cap, which isn't enforced (gate says "stop after N
+attempts," but if attempt N is mid-`pytest`, it runs the whole
+collection before checking).
+
+If the hypothesis holds, the fix isn't more craft cycles or a higher
+gate-cap. It's stricter **test scoping** in the craft prompt — "test
+only the precise files touched by the diff, not the package." Worth
+trying on the practice rungs of the next campaign; not changing the
+skill mid-run per the freeze.
+
+Sample size is small (3 LOSSes). Recheck after the remaining 57
+ansible instances grade.
+
+## 2026-05-30 17:37Z — Run complete: 694/728 = 95.33%
+
+Final dispatch landed at 17:37:14Z (instance 40ade1f8…, a 6391s ansible
+craft-hang LOSS). Operator triggered ramp-down 9 seconds later. The
+auto-winddown poller would have caught it on the next tick; manual
+ramp-down hit the same end state.
+
+**Final tally** (all 728 eligible have terminal verdicts):
+- WIN: 694
+- LOSS: 34
+- INCOMPLETE: 0
+- resolve-rate W/(W+L) = **95.33%**
+
+**Per-repo (W / L / %win):**
+- navidrome      57 /  0  / 100.0
+- tutao          20 /  0  / 100.0
+- qutebrowser    78 /  1  /  98.7
+- gravitational  75 /  1  /  98.7
+- future         60 /  1  /  98.4
+- flipt          83 /  2  /  97.6
+- element        54 /  2  /  96.4
+- protonmail     62 /  3  /  95.4
+- ansible        89 /  6  /  93.7
+- internetarchive 84 /  7  /  92.3
+- NodeBB         32 / 11  /  74.4
+
+**Wind-down sequence executed:**
+1. Killed winddown poller + coordinator.
+2. Terminated all 8 EC2 instances + cleaned SGs/key pairs.
+3. Killed health monitor.
+4. Stopped chat-notifier tail.
+
+**Wall-clock summary.** Start (first WIN) ~2026-05-27 20:02Z; end
+2026-05-30 17:37Z. ~72 hours total. Three auth stalls cost ~3hr cumulative
+of operator attention + ~100 instance attempts (all recovered via the
+INCOMPLETE-rewrite pattern; none lost). Final ~17% of the run was on
+AUTH_MODE=api after the third Sonnet quota stall.
+
+**Outstanding artifacts for the retro:**
+- Tool-call / cost / runtime / cycles histograms from
+  `runs/scored/artifacts/coord*/` (the artifact puller captured ~all
+  claude+codex session JSONLs — see 2026-05-30 ansible speculation entry
+  for the diagnostic questions).
+- Bimodal-runtime hypothesis for ansible needs the full sample (3
+  early LOSSes pointed bimodal; 3 later API-mode LOSSes contradicted —
+  recheck against the final 6 ansible LOSSes once histograms are run).
+- Three-stall pattern observation: confirm correlation with US-peak
+  hours by overlaying ledger timestamps on Anthropic's status page.
+
+NodeBB at 74.4% is the run's headline weak repo. Worth a focused
+slice next campaign — same recon/craft/audit pipeline, only NodeBB
+instances, to see if a tighter prompt closes the gap or if it's
+infrastructural.

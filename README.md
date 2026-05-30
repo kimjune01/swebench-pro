@@ -74,6 +74,40 @@ so headline numbers are conservative).
 State at a glance: **adapter built + validated; freeze-gate items 1–3 done; pre-scored-run.** Only the
 §13 freeze decision (cut `prereg-pro-vN` + launch) remains. `WORKLOG.md` is the source of truth.
 
+## Reproducibility caveat — plan for provider flakiness
+
+The Claude Code service operates at ~99% uptime over 90d (the whole Anthropic
+stack averages similarly — claude.ai 98.83%, Console 99.23%, API 99.09%, Code
+99.08%, snapshot 2026-05-29). The stripe pattern in the statuspage history is
+consistent with frequent degraded-but-not-incident-class events: partial
+errors, regional slowness, **server-side credential rotations**.
+
+![Anthropic stack uptime — 90d snapshot 2026-05-29](docs/images/anthropic-stack-uptime-2026-05-29.png)
+
+A multi-hour Claude-backed fleet (this run is 10+ hours per shard) will
+typically encounter at least one `PROVIDER_CRED_REJECT` wave per campaign:
+boxes start returning verbatim `Failed to authenticate. API Error: 401 Invalid
+authentication credentials` in subprocess capture, with 0-byte patch
+artifacts, recurring across instances on the same box. The operator did not
+log out — the credential pushed at provisioning was rejected by upstream
+after the fact (OAuth token rotation).
+
+**Recovery loop** (codified in `docs/auth_storm_2026-05-29.md`): halt
+dispatch → re-extract creds from the operator's authoritative store →
+scp to all boxes → restart coordinator → strip the wave to
+`runs/scored/auth_strips.jsonl` and re-dispatch.
+
+**Prereg accounting**: `PREREGISTRATION.md` §14 amendment 2026-05-29 adds
+`PROVIDER_CRED_REJECT` as an enumerated fault class with four invariants
+(canonical 401 string + 0-byte patch + ≥3-instance wave + resolution by fresh
+cred push). The class slots between provider-incident (statuspage-required)
+and infra-class (on-box-log-required); on-box subprocess capture is the
+corroboration, same shape as dmesg-for-OOM.
+
+A reproducer who doesn't plan for this will see their score artificially
+depressed by 5+ percentage points per missed wave (today's was 28
+instances → −6.3% noise). Plan for it.
+
 ## License
 
 Repo: CC BY-SA-NS ([`LICENSE.md`](LICENSE.md)). Skills (`skills/`): dual-licensed CC BY-SA-NS **or**
