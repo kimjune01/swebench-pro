@@ -11,7 +11,9 @@ per benchmark so each run's artifacts and number stand on their own.
 frozen instance-blind artifact (`prereg-pro-v1`), whole eligible set in one
 measurement. 728 terminal verdicts: 694 WIN, 34 LOSS, **0 INCOMPLETE** — full
 coverage, no instance left un-graded. The 728 denominator is 731 dataset
-instances minus 3 pre-audited gold-patch defects, listed with grader output in
+instances minus 3 instances whose own gold patch fails the official grader (a
+pre-run defect audit, frozen before the scored run); the three are named with
+grader output in [`RESULTS.md`](RESULTS.md) and committed in
 `runs/audit/defects.jsonl`. The run window 2026-05-27 20:02Z → 2026-05-30
 17:37Z (~72 h) was **not uninterrupted**: three provider-credential stalls and
 a mid-run switch from Max-subscription to paid API billing punctuated it, all

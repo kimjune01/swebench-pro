@@ -25,6 +25,38 @@ recon→craft→audit scaffold. See [`PREREGISTRATION.md`](PREREGISTRATION.md) �
 §12 for what that confound costs the claim. The headline is a bench number, not
 evidence that either model "reasoned" the fixes.
 
+## Excluded instances — 3 gold-patch defects (why the denominator is 728, not 731)
+
+Three of the 731 dataset instances are **not in the eligible set, and were never
+run against our system**. The reason is a property of the bench, not a choice we
+made about our results: in a pre-run audit (2026-05-26, before any scored model
+run) we graded **every instance's own gold patch** through the official grader
+on a clean base. For these three, the gold patch itself graded **NOT RESOLVED** —
+the benchmark's own reference solution fails its own tests. An instance whose
+correct answer can't pass cannot fairly score our answer, so it is excluded and
+documented, one per language:
+
+| instance_id | lang | grader verdict on gold | audit s |
+|---|---|---|---:|
+| `instance_future-architect__vuls-bff6b755…-v1151a632…` | Go | gold NOT resolved | 114 |
+| `instance_NodeBB__NodeBB-00c70ce7…-vnan` | JS | gold NOT resolved (4/681 F2P tests absent — name-collision/flaky) | 82 |
+| `instance_ansible__ansible-de5858f4…-v1055803c…` | Py | gold NOT resolved | 22 |
+
+The full ids and grader output are committed in `runs/audit/defects.jsonl`; the
+kept set of 728 is `runs/audit/eligible.txt`. This is the **only** reason any
+instance went unrun — there are **0 INCOMPLETE** in the scored set, so every
+other one of the 728 has a terminal WIN/LOSS.
+
+Two points that matter for an auditor:
+- **The exclusion basis is our model's results-independent.** The defect list was
+  frozen *before* the scored run and keys only on gold-patch behavior, so it
+  cannot be a post-hoc drop of instances we happened to fail. No defect may be
+  added after model results are visible
+  ([`PREREGISTRATION.md`](PREREGISTRATION.md) §6).
+- **These three are not counted anywhere in the headline** — not as wins, not as
+  losses, not as incompletes. They are removed from the denominator entirely.
+  The 0.4% defect rate (3/731) is itself reported, not hidden.
+
 ## Per-repo breakdown
 
 Eleven public repos. `W`/`L` are terminal official verdicts; `%win` is
