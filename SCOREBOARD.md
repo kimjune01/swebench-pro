@@ -14,6 +14,19 @@ SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement
 > operational facts** about the run and are not affected by contamination — they are
 > the parts of this board that travel.
 
+> **Not a leaderboard entry.** The official SWE-bench Pro runs evaluate **models** —
+> hold a standard harness fixed, vary the model, rank them. This entry evaluates a
+> **harness**: the recon→craft→audit scaffold (with a multi-model ensemble inside it).
+> Different axis. The number measures what the *scaffold* contributes, not where a
+> model ranks, so it is not a leaderboard submission and should not be read as "our
+> model beats X" (see [`OBJECTIONS.md`](OBJECTIONS.md) #11).
+
+> **The bar is the vibe coder.** The harness worth building is one that is *good-er,
+> cheaper, **and** faster* than a vibe coder handed the same task. That is why this
+> board is a triple, not a single score: a scaffold that wins on all three earns its
+> complexity; one that wins on only one or two does not. Good/cheap/fast is the
+> admission test for a harness, not a ranking of models.
+
 ## Good — resolve rate by repo
 
 ```mermaid
@@ -38,6 +51,18 @@ losses. All 34 losses are real graded `not resolved` on non-empty patches — no
 empty captures. Full audit incl. development-overlap and independent re-grade:
 [`RESULTS.md`](RESULTS.md).
 
+**Patch sizes — small and surgical.** Across all 860 captured diffs: median **2.1
+KB**, p90 7.6 KB, max 190 KB. These are targeted source fixes, not sprawling
+rewrites — the kind of change a maintainer can actually review.
+
+```mermaid
+xychart-beta
+    title "Captured patch size (KB; count of patches)"
+    x-axis ["0-1", "1-2", "2-4", "4-8", "8-16", "16-32", "32+"]
+    y-axis "patches" 0 --> 240
+    bar [227, 183, 224, 148, 50, 20, 8]
+```
+
 ## Cheap — cost & token efficiency
 
 - **Average token cost ~$2.60 / instance at API pricing** — comparable to a
@@ -61,13 +86,32 @@ empty captures. Full audit incl. development-overlap and independent re-grade:
   subscription is the *cheap* path. (This run used both — mostly subscription, with
   a paid-API tail to finish faster.)
 
+**Model turns per instance** (recon + craft + audit, all retries; count of instances):
+
+```mermaid
+xychart-beta
+    title "Model turns per instance"
+    x-axis ["0-50", "50-100", "100-150", "150-200", "200-250", "250-300", "300-400", "400+"]
+    y-axis "instances" 0 --> 280
+    bar [1, 130, 263, 138, 56, 29, 21, 43]
+```
+
+93 instances (13.7%) exceed SEAL's 250-turn reference cap — the last three bins.
+
+**Output tokens per instance** (count of instances):
+
 ```mermaid
 xychart-beta
     title "Output tokens per instance (thousands)"
-    x-axis [median, p90]
-    y-axis "k output tokens" 0 --> 160
-    bar [71, 154]
+    x-axis ["0-25", "25-50", "50-75", "75-100", "100-150", "150-200", "200-300", "300+"]
+    y-axis "instances" 0 --> 280
+    bar [3, 124, 252, 147, 84, 24, 19, 28]
 ```
+
+| | turns | output tok | | | turns | output tok |
+|---|--:|--:|---|---|--:|--:|
+| median | 137 | 71k | | p90 | 291 | 154k |
+| mean | 193 | 99k | | max | 2,423 | — |
 
 ## Fast — runtime & turns
 
