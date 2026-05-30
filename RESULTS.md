@@ -4,8 +4,9 @@
 instance-blind artifact, whole eligible set in one measurement. All numbers
 below are recomputed from `runs/scored/run.jsonl` (last-wins dedupe by
 `instance_id`, matching the `./score` tool). A reader can re-derive every
-figure here from that ledger; the per-instance captured diffs under
-`runs/scored/artifacts/` let a reader re-grade any single verdict (PROCEDURE §6).
+figure here from that ledger; the per-instance captured diffs in the
+committed bundle `runs/scored/artifacts.tar.zst` let a reader re-grade any
+single verdict (PROCEDURE §6).
 
 - **Eligible denominator:** 728 (731 dataset instances − 3 §6 gold-patch defects).
 - **Terminal verdicts:** 728 (694 WIN, 34 LOSS), **0 INCOMPLETE** — full coverage.
@@ -119,14 +120,18 @@ Losses by repo, with the loss-instance runtimes:
 
 ### Reading any loss yourself
 
-Every loss is committed as an inspectable artifact, not a summary. Per box
-under `runs/scored/artifacts/coord<N>/`:
+Every loss is committed as an inspectable artifact, not a summary. All 6,553
+per-instance files (860 captured diffs + the Claude and GPT-5.5 trajectories +
+per-box ledgers) are committed as a single compressed bundle,
+`runs/scored/artifacts.tar.zst` (87 MB, sha256 + full file listing in
+`runs/scored/artifacts.MANIFEST.txt` — browsable without unpacking). Unpack:
 
 ```
-patches/pro_patch_<instance_id>.diff   captured source-only diff (the graded patch)
-claude/...craft-<instance_id>...       Claude recon/craft/audit session JSONLs
-codex/...                              GPT-5.5 craft-challenger sessions
-run_coord<N>.jsonl                     per-box ledger slice
+cd runs/scored && zstd -dc artifacts.tar.zst | tar -xf -
+# yields artifacts/coord<N>/{patches,claude,codex}/...
+#   patches/pro_patch_<instance_id>.diff   captured source-only diff (the graded patch)
+#   claude/...craft-<instance_id>...        Claude recon/craft/audit session JSONLs
+#   codex/...                               GPT-5.5 craft-challenger sessions
 ```
 
 To audit a loss: take its `pro_patch_*.diff`, build `pred.json`, and re-grade

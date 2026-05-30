@@ -13,7 +13,9 @@ measurement. 728 terminal verdicts: 694 WIN, 34 LOSS, **0 INCOMPLETE** — full
 coverage, no instance left un-graded. Run window 2026-05-27 20:02Z →
 2026-05-30 17:37Z (~72 h wall-clock). Every figure here is recomputable from
 `runs/scored/run.jsonl`; every verdict is re-gradable from its committed
-source-only diff under `runs/scored/artifacts/`.
+source-only diff in the artifact bundle `runs/scored/artifacts.tar.zst`
+(87 MB, all 6,553 per-instance files; sha256 + listing in
+`runs/scored/artifacts.MANIFEST.txt`).
 
 This is a **system** number, not a capability claim. The system is a
 Sonnet-4.5 generator plus a GPT-5.5 craft challenger — both contaminated on
@@ -101,7 +103,8 @@ the public→private strategy: [`PREREGISTRATION.md`](PREREGISTRATION.md) §0–
   benchmark-agnostic; the Pro-specific constants are the adapter surface
   (`PRO_PORT.md` lists the touchpoints).
 - `runs/scored/` — the frozen-tag scored-run trail: `run.jsonl` (the ledger),
-  `artifacts/` (per-box captured diffs + agent trajectories),
+  `artifacts.tar.zst` (87 MB bundle of all 6,553 per-instance captured diffs +
+  agent trajectories) with `artifacts.MANIFEST.txt` (sha256 + listing),
   `auth_strips.jsonl` (the `PROVIDER_CRED_REJECT` recovery audit trail).
 - `tasks/`, `iso/`, `scratch/`, `hypotheses/` — task generation, isolation
   notes, ephemeral pads, dev hypotheses.

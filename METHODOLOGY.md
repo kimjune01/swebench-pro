@@ -120,9 +120,9 @@ after model results are visible
 
 ## Reproducing a verdict
 
-A third party derives the number rather than trusting it: take any committed
-`pro_patch_*.diff`, build `pred.json`, run the grader on a clean container
-(PROCEDURE §3/§6). The grade is a deterministic function of the diff — no agent
+A third party derives the number rather than trusting it: unpack the committed
+bundle (`runs/scored/artifacts.tar.zst`), take any `pro_patch_*.diff`, build
+`pred.json`, run the grader on a clean container (PROCEDURE §3/§6). The grade is a deterministic function of the diff — no agent
 re-run needed. Aggregate reproduction (re-running the agent) reproduces the
 resolve-rate within sampling variance over the 728 set, **not** a per-instance
 replay; the agent is stochastic, so an individual instance flipping WIN/LOSS
