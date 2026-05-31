@@ -194,20 +194,43 @@ Losses by repo, with the loss-instance runtimes:
 | qutebrowser | 1 | 762 |
 | gravitational | 1 | 8202 |
 
-Where the 34 losses concentrate (counts, not rate, so the magnitude shows):
+### What a loss costs, and what the outer loop does
+
+Which repo a loss lands in says little (and means nothing to a reader who doesn't
+know the repos). What a loss *is* says more. A loss is not a cheap miss: against a
+win, it burns roughly double the model turns and, at the mean, triple the
+wall-clock and patch churn.
+
+| per instance | WIN median | LOSS median | WIN mean | LOSS mean |
+|---|---:|---:|---:|---:|
+| model turns | 137 | 242 | 180 | **441** |
+| wall-clock s | 766 | 1,022 | 996 | **2,354** |
+| patch bytes | 2,808 | 3,572 | 5,050 | **11,396** |
+
+The median gaps are modest; the mean gaps blow out because a tail of losses
+thrashes to exhaustion. Two findings behind that, neither repo-specific:
+
+- **Scope predicts the outcome.** Loss patches run ~2x the win patches at the mean
+  (11.4 vs 5.0 KB). The harness wins on focused changes and loses on big-scope
+  ones, so difficulty (patch scope), not repo identity, is what separates W from L.
+- **The outer loop is mostly idle, occasionally decisive.** Of wins with trajectory
+  data (648), **93% land on the first recon→craft→audit pass** (loop depth 0); the
+  loop recovers the other **7% (46 wins)** the first pass missed. Losses split by
+  depth: most fail fast at depth 0 (a wrong answer, no recovery), but a tail
+  exhausts the full loop (the craft-hang wall), which is where the expensive-failure
+  compute concentrates.
 
 ```mermaid
 xychart-beta
-    title "Losses per repo (count, of 34 total)"
-    x-axis [NodeBB, internetarchive, ansible, protonmail, element, flipt, future, gravitational, qutebrowser, navidrome, tutao]
-    y-axis "losses" 0 --> 12
-    bar [11, 7, 6, 3, 2, 2, 1, 1, 1, 0, 0]
+    title "Losses by outer-loop depth reached (d0 = failed the first pass)"
+    x-axis ["d0", "d1", "d2", "d3", "d4"]
+    y-axis "losses" 0 --> 22
+    bar [21, 7, 0, 1, 5]
 ```
 
-NodeBB and internetarchive carry over half the losses (18 of 34); navidrome and
-tutao have none. This is the magnitude view the %win bar omits: a low rate on a
-small repo (NodeBB, 43 instances) and a low rate on a large one are different
-problems, and the count is what tells them apart.
+So a loss is characterized, not located: big-scope, compute-heavy, and either
+fast-wrong (depth 0) or loop-exhausting (depth 4). That is the attribution a
+per-repo tally cannot give.
 
 ### Reading any loss yourself
 
