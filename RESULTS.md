@@ -83,20 +83,14 @@ Repo labels are the dataset org prefix; the canonical instance ids are
 `gravitational__teleport`, `flipt` is `flipt-io__flipt`, `element` is
 `element-hq__element-web`, `future` is `future-architect__vuls`).
 
-Resolve-rate, sorted, as a bar (each `#` ≈ 2 points):
+Resolve rate by repo, sorted:
 
-```
-navidrome        100.0  ##################################################
-tutao            100.0  ##################################################
-qutebrowser       98.7  #################################################
-gravitational     98.7  #################################################
-future            98.4  #################################################
-flipt             97.6  #################################################
-element           96.4  ################################################
-protonmail        95.4  ###############################################
-ansible           93.7  ###############################################
-internetarchive   92.3  ##############################################
-NodeBB            74.4  #####################################
+```mermaid
+xychart-beta
+    title "Resolve rate by repo (%)"
+    x-axis [navidrome, tutao, qutebrowser, gravitational, future, flipt, element, protonmail, ansible, internetarchive, NodeBB]
+    y-axis "resolve %" 0 --> 100
+    bar [100, 100, 98.7, 98.7, 98.4, 97.6, 96.4, 95.4, 93.7, 92.3, 74.4]
 ```
 
 Ten of eleven repos resolve at 92.3% or above. **NodeBB at 74.4% sits 18
@@ -138,18 +132,14 @@ provide (the harness co-evolved with Pro pilots before freeze, see
 
 ## Runtime distribution
 
-All 728 terminal instances, by wall-clock bucket (each `#` ≈ 3 instances):
+All 728 terminal instances, by wall-clock bucket (seconds):
 
-```
-   0–300 s      0
- 300–600 s    168  ########################################################
- 600–900 s    305  ######################################################################################################
- 900–1200 s   137  ##############################################
-1200–1800 s    58  ###################
-1800–2700 s    14  #####
-2700–3600 s    17  ######
-3600–5400 s    15  #####
-5400+   s      14  #####
+```mermaid
+xychart-beta
+    title "Runtime distribution (instances by wall-clock bucket, seconds)"
+    x-axis ["0-300", "300-600", "600-900", "900-1200", "1200-1800", "1800-2700", "2700-3600", "3600-5400", "5400+"]
+    y-axis "instances" 0 --> 320
+    bar [0, 168, 305, 137, 58, 14, 17, 15, 14]
 ```
 
 The mass sits at 300–1200 s (610 / 728 = 84%); median 770 s. The right tail is

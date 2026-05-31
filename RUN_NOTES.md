@@ -22,13 +22,14 @@ the compressed provenance view. Per-stall machinery is in
 | auth | Max OAuth for ~83% of verdicts; `AUTH_MODE=api` for the final ~17% |
 
 Verdicts landed unevenly across the four UTC days — the run was paused and
-resumed around quota pressure (each `#` ≈ 4 WINs):
+resumed around quota pressure:
 
-```
-2026-05-27  106  ##########################
-2026-05-28  277  #####################################################################
-2026-05-29   86  ######################
-2026-05-30  225  ########################################################
+```mermaid
+xychart-beta
+    title "WINs per UTC day"
+    x-axis ["05-27", "05-28", "05-29", "05-30"]
+    y-axis "WINs" 0 --> 300
+    bar [106, 277, 86, 225]
 ```
 
 The 05-29 dip is the day of the worst auth storm plus a voluntary ramp-down to
@@ -91,33 +92,16 @@ shared with consumer Claude.ai traffic, so agent runs are starved exactly when
 that traffic peaks.** Same boxes, same skill, same instances — the failure rate
 tracks the upstream load, not anything about the run.
 
-Verdicts aggregated by UTC hour across all four days, WIN (`#`) vs LOSS (`x`):
+WINs stayed roughly flat across the clock (~20–46/hour); the **losses** are the
+story — they cluster hard at 19–21Z (US working hours, peak consumer load on the
+shared OAuth bucket):
 
-```
-00Z  W=22 L=0   ######################
-01Z  W=36 L=1   ####################################x
-02Z  W=30 L=0   ##############################
-03Z  W=20 L=1   ####################x
-04Z  W=34 L=0   ##################################
-05Z  W=29 L=1   #############################x
-06Z  W=37 L=0   #####################################
-07Z  W=26 L=1   ##########################x
-08Z  W=23 L=0   #######################
-09Z  W=30 L=1   ##############################x
-10Z  W=33 L=0   #################################
-11Z  W=26 L=2   ##########################xx
-12Z  W=31 L=1   ###############################x
-13Z  W=18 L=0   ##################
-14Z  W=12 L=1   ############x
-15Z  W=46 L=1   ##############################################x
-16Z  W=46 L=2   ##############################################xx
-17Z  W=18 L=1   ##################x
-18Z  W=20 L=1   ####################x
-19Z  W=31 L=5   ###############################xxxxx
-20Z  W=33 L=7   #################################xxxxxxx
-21Z  W=25 L=5   #########################xxxxx
-22Z  W=33 L=1   #################################x
-23Z  W=35 L=2   ###################################xx
+```mermaid
+xychart-beta
+    title "Losses per UTC hour (all four days)"
+    x-axis ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
+    y-axis "losses" 0 --> 8
+    bar [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 1, 0, 1, 1, 2, 1, 1, 5, 7, 5, 1, 2]
 ```
 
 The loss mass is **19Z–21Z** (noon–2pm Pacific, mid-afternoon Eastern) — US
