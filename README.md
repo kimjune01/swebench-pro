@@ -128,6 +128,17 @@ Supporting specs: [`PREREGISTRATION-cheap-ablation.md`](PREREGISTRATION-cheap-ab
 [`CLAUDE.md`](CLAUDE.md) (agent orientation / one-command setup),
 [`docs/retros/`](docs/retros/) (lessons compressed for the next run).
 
+## Methodeutics — the method this applies
+
+Methodeutics is Peirce's name for the **methodology of inquiry**: the discipline of
+*how* you reason from a puzzle to a warranted conclusion. It sits adjacent to
+**statistics** (the formal account of induction) and **mathematics** (deduction),
+covering the third inference neither owns — **abduction**, the logic of generating
+and sequencing hypotheses. This repo is its **empirical leg**: methodeutics made
+executable and measured (recon abduces → craft acts → audit tests). The
+**theoretical leg** — the field itself — is the textbook:
+[june.kim/reading/methodeutics](https://june.kim/reading/methodeutics).
+
 ## The goal this run was an audition for
 
 A single **frozen, instance-agnostic artifact** that clears SWE-bench Pro under

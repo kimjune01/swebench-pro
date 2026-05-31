@@ -95,11 +95,12 @@ reimplementation (PROCEDURE "Pinned versions").
 
 ## Per-instance pipeline
 
-Each of the 728 instances runs the same loop — **applied methodeutics**, Peirce's
-logic of inquiry: recon **abduces** a hypothesis for the failure, craft **acts** on
-it (deduces a fix), audit **tests** it (induction). That's why the name is earned,
-not decorative — the stages *are* the inquiry cycle. Independent of every other
-instance (no cross-instance state):
+Each of the 728 instances runs the same loop — **applied methodeutics**
+([the methodology of inquiry](https://june.kim/reading/methodeutics), Peirce's
+term): recon **abduces** a hypothesis for the failure, craft **acts** on it
+(deduces a fix), audit **tests** it (induction). That's why the name is earned, not
+decorative — the stages *are* the inquiry cycle. Independent of every other instance
+(no cross-instance state):
 
 ```
 recon ──▶ craft ──▶ audit ──▶ source-only capture ──▶ official re-grade
