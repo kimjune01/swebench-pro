@@ -148,6 +148,21 @@ heavy repos (webclients, teleport) and craft-hangs on big test suites; the
 suite can stack well past it. The single longest run is a 10,745 s
 `gravitational__teleport` WIN.
 
+Median runtime by repo (the per-repo table above has the full mean/p50/p90/max):
+
+```mermaid
+xychart-beta
+    title "Median wall-clock per instance, by repo (seconds)"
+    x-axis [gravitational, tutao, flipt, NodeBB, protonmail, future, element, ansible, navidrome, qutebrowser, internetarchive]
+    y-axis "p50 seconds" 0 --> 1100
+    bar [1005, 957, 886, 873, 849, 784, 767, 697, 672, 657, 626]
+```
+
+Most repos cluster around 650–900 s; gravitational (teleport) and tutao run
+slowest, internetarchive fastest. The spread is under 2x at the median, so the
+heavy tail in the distribution above is the long-pole instances, not slow repos
+across the board.
+
 ## Loss analysis: all 34 have non-empty patches
 
 Every loss is a real graded `not resolved` verdict on a non-empty captured
@@ -178,6 +193,21 @@ Losses by repo, with the loss-instance runtimes:
 | flipt | 2 | 512, 1725 |
 | qutebrowser | 1 | 762 |
 | gravitational | 1 | 8202 |
+
+Where the 34 losses concentrate (counts, not rate, so the magnitude shows):
+
+```mermaid
+xychart-beta
+    title "Losses per repo (count, of 34 total)"
+    x-axis [NodeBB, internetarchive, ansible, protonmail, element, flipt, future, gravitational, qutebrowser, navidrome, tutao]
+    y-axis "losses" 0 --> 12
+    bar [11, 7, 6, 3, 2, 2, 1, 1, 1, 0, 0]
+```
+
+NodeBB and internetarchive carry over half the losses (18 of 34); navidrome and
+tutao have none. This is the magnitude view the %win bar omits: a low rate on a
+small repo (NodeBB, 43 instances) and a low rate on a large one are different
+problems, and the count is what tells them apart.
 
 ### Reading any loss yourself
 
