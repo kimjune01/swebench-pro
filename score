@@ -22,16 +22,23 @@ if not ledger.exists():
     print(f"no ledger at {ledger}", file=sys.stderr)
     sys.exit(1)
 
+# Merge all run*.jsonl shards in the ledger's directory (last-wins), matching the
+# coordinator's load_done(). A sharded run splits results across run.S*of*.jsonl plus
+# run.jsonl; reading a single file undercounts (it misses instances graded only in a
+# shard). Sorted order puts run.jsonl last, so it stays authoritative over shard records.
+ledger_files = sorted(ledger.parent.glob("run*.jsonl")) or [ledger]
+
 latest = {}
 total_events = 0
-for line in ledger.read_text().splitlines():
-    if not line.strip():
-        continue
-    d = json.loads(line)
-    iid = d.get("instance_id")
-    if iid:
-        latest[iid] = d
-    total_events += 1
+for lf in ledger_files:
+    for line in lf.read_text().splitlines():
+        if not line.strip():
+            continue
+        d = json.loads(line)
+        iid = d.get("instance_id")
+        if iid:
+            latest[iid] = d
+        total_events += 1
 
 states = Counter(ev.get("state", "?") for ev in latest.values())
 unique = len(latest)
