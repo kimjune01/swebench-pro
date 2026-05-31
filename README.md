@@ -1,18 +1,90 @@
 # swebench-pro
 
-An **[applied methodeutics](https://june.kim/reading/methodeutics)** harness:
-Peirce's logic of inquiry (abduce a hypothesis → act on it → test and prune), run
-as a recon → craft → audit loop, pointed at **SWE-bench Pro**, end-to-end under a
-frozen, pre-registered protocol. Sibling to
-[`swebench-verified`](https://github.com/kimjune01/swebench-verified): one repo
-per benchmark so each run's artifacts and number stand on their own.
+A **recon → craft → audit** harness pointed at **SWE-bench Pro**, run end-to-end
+under a frozen, pre-registered protocol. The loop is
+[applied methodeutics](https://june.kim/reading/methodeutics): abduce a hypothesis,
+act on it, test and prune. Sibling repo:
+[`swebench-verified`](https://github.com/kimjune01/swebench-verified).
 
-*Public, contamination-prone split; a **system/harness** result, not a model-capability claim.*
+## The result, in plain English
+
+The harness was pointed at all **728 eligible** SWE-bench Pro instances and resolved
+**694** of them under the **official** grader, with **zero left ungraded**. That is
+**95.33%**. The number is honest about its limits:
+
+- It is the **public** split, so these repos can sit in a model's training data. This
+  is a **system/harness** result, not a model-capability claim.
+- **93% of wins land on the first pass.** The outer loop is mostly idle and recovers
+  a small tail; it is not endless looping to scrape a number.
+- **Every verdict is re-gradable** from a committed source-only diff, and you can
+  reproduce a **random sample in one prompt** ([below](#reproduce-it-yourself)).
 
 | | **RESULT** | **COST** | **SPEED** |
 |---|---|---|---|
 | | **95.33%** resolved | **~$2.60** / instance | **~13 min** / instance |
 | | 694 / 728, official grader | avg token cost (API) | median wall-clock |
+
+## How the loop behaves
+
+One good shot plus a small recovery tail, not a grind. All 728 eligible instances flow
+down to a verdict: 694 resolve, 34 do not, and among the wins with captured trajectories
+the first recon → craft → audit pass already carries **93%**, with the outer loop
+recovering the rest.
+
+```mermaid
+sankey-beta
+
+728 eligible,Resolved,694
+728 eligible,Not resolved,34
+Resolved,Solved on the first pass,602
+Resolved,Recovered by the outer loop,46
+Resolved,Trajectory not captured,46
+```
+
+First-pass / recovered counts are over the 648 wins with captured trajectory data (the
+other 46 wins predate trajectory capture). The loss-side anatomy, the per-depth
+breakdown, and the full-run flow down to failure modes are in [`RESULTS.md`](RESULTS.md).
+
+## What a loss is
+
+A loss is **characterized, not located**: which repo it lands in says little, but its
+*shape* is consistent. Against a win, a loss costs roughly **2.3 to 2.5x** at the mean
+across the three axes that matter, model turns, wall-clock, and patch scope. The
+harness wins on focused changes and loses on big-scope ones, so difficulty (patch
+scope), not repo identity, is what separates win from loss.
+
+```mermaid
+xychart-beta
+    title "A loss vs a win, at the mean (win = 1.0x)"
+    x-axis ["model turns", "wall-clock", "patch bytes"]
+    y-axis "multiple of a win" 0 --> 3
+    bar [2.45, 2.36, 2.26]
+```
+
+All 34 losses are officially graded `not resolved` on **non-empty** patches, but
+reading the artifacts shows they are not all capability losses: a few are harness
+capture defects (one verified serialization defect alone would fail grading regardless
+of the fix), and the most common pattern is the harness's own audit gate passing where
+the official grader did not. The full characterization, with the verified-vs-inferred
+split, is in [`RESULTS.md`](RESULTS.md).
+
+## How fast it runs
+
+Median **~13 min** per instance; 84% finish inside 5 to 20 minutes. The right tail is
+heavy repos and craft-hangs on large suites, not the typical case.
+
+```mermaid
+xychart-beta
+    title "Wall-clock per instance (minutes; count of instances)"
+    x-axis ["5-10", "10-15", "15-20", "20-30", "30-60", "60+"]
+    y-axis "instances" 0 --> 320
+    bar [168, 305, 137, 58, 31, 29]
+```
+
+The **~13 min** is per instance. The full 728-set took **~3.5 days** of wall-clock
+end-to-end, bounded by fleet size (4 to 8 boxes) and three auth stalls, not by
+per-instance speed. The run is embarrassingly parallel
+([`SCOREBOARD.md`](SCOREBOARD.md), [`RUN_NOTES.md`](RUN_NOTES.md)).
 
 ## Reproduce it yourself
 
@@ -35,162 +107,79 @@ afternoon. Paste this to your coding agent (codex, Claude Code, Cursor):
 Goal-first on purpose: it points at the destination, not a recipe; a snag is a one-line
 followup, not a blocker.
 
-Free, no-token variant: re-grade our *committed* diffs instead.
-Every verdict's captured source-only diff is in `runs/scored/artifacts.tar.zst`; re-grading
-a random handful on fresh containers confirms the *recorded* verdicts are real. The prompt
-above is the stronger check: it confirms the harness reproduces the *rate* on instances
-you choose.
+Free, no-token variant: re-grade our *committed* diffs instead. Every verdict's captured
+source-only diff is in `runs/scored/artifacts.tar.zst`; re-grading a random handful on
+fresh containers confirms the *recorded* verdicts are real. The prompt above is the
+stronger check: it confirms the harness reproduces the *rate* on instances you choose.
 
-## Result
+## Will this hold on the private set?
 
-**694 / 728 eligible resolved = 95.33%**, official SWE-bench Pro grader, single
-frozen instance-blind artifact (`prereg-pro-v1`), whole eligible set in one
-measurement. 728 terminal verdicts: 694 WIN, 34 LOSS, **0 INCOMPLETE**: full
-coverage, no instance left un-graded. The 728 denominator is 731 dataset
-instances minus 3 instances whose own gold patch fails the official grader (a
-pre-run defect audit, frozen before the scored run); the three are named with
-grader output in [`RESULTS.md`](RESULTS.md) and committed in
-`runs/audit/defects.jsonl`. The run spanned **~3.5 days** (first dispatch
-2026-05-27 00:58Z → last verdict 2026-05-30 17:37Z) and was **not uninterrupted**: three provider-credential stalls and
-a mid-run switch from Max-subscription to paid API billing punctuated it, all
-recovered under the prereg's pre-committed recovery discipline with 0 instances
-lost ([`RUN_NOTES.md`](RUN_NOTES.md)). Every figure here is recomputable from
-`runs/scored/run.jsonl`; every verdict is re-gradable, under the pinned
-procedure, from its captured source-only diff in the artifact bundle
-`runs/scored/artifacts.tar.zst` (87 MB, 6,553 files: diffs, trajectories, and
-per-box ledgers; sha256 + listing in `runs/scored/artifacts.MANIFEST.txt`).
+Honestly, probably. The harness carries no per-instance priors, so there's no reason a
+held-out split should break it. But the 95.33% is the public split, and four things
+could still pull a private number down, in roughly descending order of concern:
 
-This is a **system** number, not a capability claim. The system is a
-Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both contaminated on
-these repos, the scaffold-vs-model axis a deliberately unclosed confound. The
-defensible reading is "this frozen system resolved 694/728 under official
-grading," not "the model can solve 95% of SWE-bench Pro." What the system is and
-why the confound stays open: [`METHODOLOGY.md`](METHODOLOGY.md) and
-[`PREREGISTRATION.md`](PREREGISTRATION.md) §7/§12.
+- **Contamination.** Public repos can be in training data; the private split is held
+  out for exactly this reason. The contamination caveat bounds the *absolute capability*
+  reading, though not the harness-vs-harness delta on a fixed model.
+- **Repo familiarity.** The loop benefits from public repos the model has likely seen;
+  unfamiliar private code is the real test.
+- **Same-family tuning.** The harness was developed on `swebench-verified` and adapted
+  once for Pro; it has never touched the private split, but it shares a lineage with it.
+- **Distribution shift.** Different repos, possibly a blind submission gate, and task
+  shapes the loop hasn't been exercised on.
 
-| repo | W | L | %win |
-|---|---:|---:|---:|
-| navidrome | 57 | 0 | 100.0 |
-| tutao | 20 | 0 | 100.0 |
-| qutebrowser | 78 | 1 | 98.7 |
-| gravitational | 75 | 1 | 98.7 |
-| future | 60 | 1 | 98.4 |
-| flipt | 83 | 2 | 97.6 |
-| element | 54 | 2 | 96.4 |
-| protonmail | 62 | 3 | 95.4 |
-| ansible | 89 | 6 | 93.7 |
-| internetarchive | 84 | 7 | 92.3 |
-| NodeBB | 32 | 11 | 74.4 |
-| **total** | **694** | **34** | **95.33** |
+This is why the public number is framed as an audition, not a deliverable. The strategy
+for the held-out set is in [`PREREGISTRATION.md`](PREREGISTRATION.md) §0 to §1.
 
-Ten of eleven repos resolve at 92.3% or above; NodeBB at 74.4% sits 18 points
-below the next-lowest and carries 11 of the 34 losses. All 34 losses are real graded `not resolved`
-verdicts on **non-empty** patches (median 3.6 KB, max 194 KB, none empty): the
-loop produced fixes the official tests rejected, not nothing. Full breakdown,
-runtime distributions, and per-loss artifact pointers in
-[`RESULTS.md`](RESULTS.md).
+## What the number is, and isn't
 
-## How it was measured
+This is a **system** number, not a capability claim. The system is a Sonnet-4.5 generator
+plus a GPT-5.5 craft challenger, both contaminated on these repos, with the
+scaffold-vs-model axis a deliberately unclosed confound. The defensible reading is "this
+frozen system resolved 694/728 under official grading," not "the model can solve 95% of
+SWE-bench Pro." What the system is and why the confound stays open:
+[`METHODOLOGY.md`](METHODOLOGY.md) and [`PREREGISTRATION.md`](PREREGISTRATION.md) §7/§12.
 
-The honest one-paragraph version: a frozen multi-model pipeline ran the full
-728-instance eligible set (731 dataset instances minus 3 pre-audited gold-patch
-defects), one instance at a time, each through recon → craft (with a GPT-5.5
-adversary) → audit → source-only capture → an official-grader re-grade on a
-fresh container. The agent's internal gate is only a stopping signal; the
-verdict is always the official grade of the captured diff. The run was not
-clean wall-clock: three OAuth-credential stalls and a mid-run switch from
-Max-subscription billing to paid API billing are part of the methodology, all
-recovered under the prereg's pre-committed `INCOMPLETE`-rewrite discipline with
-zero instances lost. The provenance of those interruptions is documented, not
-buried; see [`RUN_NOTES.md`](RUN_NOTES.md). Reproduction is aggregate (resolve-
-rate within sampling variance over the 728 set), not per-instance replay; the
-agent is stochastic.
+Provenance in brief: 728 = 731 dataset instances minus 3 whose own gold patch fails the
+official grader (a pre-run defect audit, frozen before the scored run). Every figure
+recomputes from `runs/scored/run.jsonl`; every verdict re-grades from its captured
+source-only diff in `runs/scored/artifacts.tar.zst` (87 MB, 6,553 files; sha256 +
+listing in `runs/scored/artifacts.MANIFEST.txt`). The run was **not uninterrupted**:
+three provider-credential stalls and a mid-run switch from Max-subscription to paid API
+billing, all recovered under the prereg's recovery discipline with 0 instances lost
+([`RUN_NOTES.md`](RUN_NOTES.md)).
 
-## Navigation
-
-Read in roughly this order depending on what you're here to do.
+## Where to go next
 
 | if you want to… | read |
 |---|---|
-| scan good / cheap / fast at a glance | [`SCOREBOARD.md`](SCOREBOARD.md): resolve rate, cost (~$2.60/instance), runtime, token efficiency, with charts |
-| see the result and audit the numbers | [`RESULTS.md`](RESULTS.md): per-repo W/L, runtime distributions, loss analysis, development-overlap check, independent re-grade, how to re-grade any verdict |
-| weigh the result against the obvious objections | [`OBJECTIONS.md`](OBJECTIONS.md): contamination, dev-overfit, gate-lying, capture leaks, denominator, holdout, cost; each attack stated and answered (or conceded) with evidence |
-| understand how the number was produced | [`METHODOLOGY.md`](METHODOLOGY.md): system, harness provenance (Verified-developed, one round of Pro adaptation), per-instance pipeline, what counts as a verdict, billing modes |
-| check the rules the run was held to | [`PREREGISTRATION.md`](PREREGISTRATION.md): predicate, failure-mode state machine, contamination accounting, freeze gate (frozen `prereg-pro-v1`, 2026-05-26) |
-| audit the run's provenance | [`RUN_NOTES.md`](RUN_NOTES.md): the three auth stalls, recovery sequence, cost shape, the off-peak-streak vs on-peak-storm load pattern |
-| reproduce a result from scratch | [`PROCEDURE.md`](PROCEDURE.md): bootstrap → task → pilot → official grade; pinned versions; reproduction contract |
-| read the chronological trail | [`WORKLOG.md`](WORKLOG.md): the scored-run journal, newest first |
-| know upstream-grader behaviors to expect | [`docs/bench-defects.md`](docs/bench-defects.md): silent grader deadlocks, container leaks, indistinguishable losses, and the mitigations |
-| understand why the adapter is shaped this way | [`PRO_PORT.md`](PRO_PORT.md): the original port plan and background |
+| scan result · cost · speed with charts | [`SCOREBOARD.md`](SCOREBOARD.md) |
+| audit the numbers and read the loss analysis | [`RESULTS.md`](RESULTS.md) |
+| weigh the result against the obvious objections | [`OBJECTIONS.md`](OBJECTIONS.md) |
+| understand how the number was produced | [`METHODOLOGY.md`](METHODOLOGY.md) |
+| check the rules the run was held to | [`PREREGISTRATION.md`](PREREGISTRATION.md) |
+| audit the run's provenance (stalls, cost, load) | [`RUN_NOTES.md`](RUN_NOTES.md) |
+| reproduce a result from scratch | [`PROCEDURE.md`](PROCEDURE.md) |
+| read the chronological trail | [`WORKLOG.md`](WORKLOG.md) |
 
-Supporting specs: [`PREREGISTRATION-cheap-ablation.md`](PREREGISTRATION-cheap-ablation.md)
-(companion ablation spec), [`LOCAL_ISO.md`](LOCAL_ISO.md) (local sandbox notes),
-[`CLAUDE.md`](CLAUDE.md) (agent orientation / one-command setup),
-[`docs/retros/`](docs/retros/) (lessons compressed for the next run).
+## The method, the goal, and the fine print
 
-## Methodeutics: the method this applies
+**Methodeutics** is Peirce's name for the methodology of inquiry, the discipline of *how*
+you reason from a puzzle to a warranted conclusion. It sits adjacent to **statistics**
+(the formal account of induction) and **mathematics** (deduction), covering the third
+inference neither owns: **abduction**. This repo is its empirical leg, methodeutics made
+executable and measured (recon abduces, craft acts, audit tests); the theoretical leg is
+the textbook at [june.kim/reading/methodeutics](https://june.kim/reading/methodeutics).
 
-Methodeutics is Peirce's name for the **methodology of inquiry**: the discipline of
-*how* you reason from a puzzle to a warranted conclusion. It sits adjacent to
-**statistics** (the formal account of induction) and **mathematics** (deduction),
-covering the third inference neither owns: **abduction**, the logic of generating
-and sequencing hypotheses. This repo is its **empirical leg**: methodeutics made
-executable and measured (recon abduces → craft acts → audit tests). The
-**theoretical leg** (the field itself) is the textbook:
-[june.kim/reading/methodeutics](https://june.kim/reading/methodeutics).
+**The goal this run auditioned for:** a single frozen, instance-agnostic artifact that
+clears SWE-bench Pro under official third-party grading on the held-out private set, in
+one submission, verifiably free of per-instance priors. The public 95.33% is the
+audition; the deliverable is the artifact plus its reproducible attestation trail
+([`PREREGISTRATION.md`](PREREGISTRATION.md) §0 to §1).
 
-## The goal this run was an audition for
+**Funding:** this benchmark work was self-funded, on the author's own EC2 and Claude Max
+subscription, with no external or institutional funding ([`RUN_NOTES.md`](RUN_NOTES.md)).
 
-A single **frozen, instance-agnostic artifact** that clears SWE-bench Pro under
-official third-party grading on the held-out private set, in one submission,
-verifiably free of per-instance priors. The public 95.33% is the audition, not
-the deliverable: the deliverable is the artifact plus its reproducible
-attestation trail. A change is admissible only if it stays general
-(instance-blind), leaks no held-out signal, wins only on official-test
-verdicts, keeps an honest denominator, and is reproducible. Full predicate and
-the public→private strategy: [`PREREGISTRATION.md`](PREREGISTRATION.md) §0–§1,
-[`PRO_PORT.md`](PRO_PORT.md).
-
-## Layout
-
-- `skills/{recon,craft,audit}/skill.md`: the pipeline skills (live copies;
-  dual-licensed, see `skills/LICENSE.md`).
-- `driver/`: orchestration, sharding, provisioning, grading. Mostly
-  benchmark-agnostic; the Pro-specific constants are the adapter surface
-  (`PRO_PORT.md` lists the touchpoints).
-- `runs/scored/`: the frozen-tag scored-run trail: `run.jsonl` (the ledger),
-  `artifacts.tar.zst` (87 MB bundle, 6,553 files: 860 captured diffs, the
-  agent trajectories, and per-box ledgers) with `artifacts.MANIFEST.txt`
-  (sha256 + listing),
-  `auth_strips.jsonl` (the `PROVIDER_CRED_REJECT` recovery audit trail).
-- `tasks/`, `iso/`, `scratch/`, `hypotheses/`: task generation, isolation
-  notes, ephemeral pads, dev hypotheses.
-- `./score`: prints the live tally from `run.jsonl` (last-wins dedupe by
-  instance id).
-
-## Reproducibility caveat: plan for provider flakiness
-
-A multi-hour Claude-backed fleet will typically encounter at least one
-credential-rejection wave per campaign: boxes start returning verbatim `Failed
-to authenticate. API Error: 401 Invalid authentication credentials` with 0-byte
-patches, recurring across instances on the same box, when an OAuth token pushed
-at provisioning is rotated server-side after the fact. This run hit three. They
-are recoverable (halt → re-push fresh creds → restart → strip the wave → re-
-dispatch) and the prereg enumerates the fault class with four invariants so a
-recovery can't double as a free re-roll
-([`PREREGISTRATION.md`](PREREGISTRATION.md) §14). A reproducer who doesn't plan
-for it will see the score depressed by every missed wave it reads as losses.
-The full incident trail and the load pattern that drives it are in
-[`RUN_NOTES.md`](RUN_NOTES.md).
-
-## Funding
-
-This benchmark work was self-funded, on the author's own EC2 and Claude Max
-subscription ([`RUN_NOTES.md`](RUN_NOTES.md)), and received no external or
-institutional funding.
-
-## License
-
-Repo: CC BY-SA-NS ([`LICENSE.md`](LICENSE.md)). Skills (`skills/`):
+**License:** repo CC BY-SA-NS ([`LICENSE.md`](LICENSE.md)); skills (`skills/`)
 dual-licensed CC BY-SA-NS **or** GPL-3.0, recipient's choice
 ([`skills/LICENSE.md`](skills/LICENSE.md)).

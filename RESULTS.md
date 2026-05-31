@@ -232,6 +232,64 @@ So a loss is characterized, not located: big-scope, compute-heavy, and either
 fast-wrong (depth 0) or loop-exhausting (depth 4). That is the attribution a
 per-repo tally cannot give.
 
+### What the 34 losses actually are
+
+All 34 captured diffs and their final-depth trajectories were read by hand to
+characterize *why* each lost. This is a reading of the artifacts, not a re-grade, so
+treat the mode counts as a provisional characterization rather than a measured split.
+The honest headline: **not all 34 are capability losses.** A few are harness defects
+(the capture or auth pipeline failed), and the most common pattern is the harness's
+own audit gate passing on a fix that the official grader then rejected.
+
+The whole run as one flow, from the 728 eligible instances down to where the 34 losses
+land:
+
+```mermaid
+sankey-beta
+
+728 eligible,Resolved,694
+728 eligible,Not resolved,34
+Resolved,First pass,602
+Resolved,Loop-recovered,46
+Resolved,Trajectory not captured,46
+Not resolved,Gate vs official,19
+Not resolved,Under-scoped,6
+Not resolved,Multi-hop miss,3
+Not resolved,Over-scoped or exhausting,2
+Not resolved,Capture or serialization defect,4
+```
+
+The loss-side splits are the provisional characterization below, not measured counts;
+the win-side first-pass / recovered split is over the 648 wins with captured
+trajectories (the other 46 wins predate trajectory capture).
+
+| failure mode | approx. count | what it means |
+|---|--:|---|
+| gate-vs-official mismatch | ~19 | the harness audit looked satisfied (its local tests passed) but the official grader said `not resolved`. Leading pattern, but **inferred from the trajectories, not yet verified** against official per-test output. |
+| under-scoped | ~6 | right file and direction, incomplete fix; a fuller patch would have passed. |
+| multi-hop / cross-file miss | ~3 | a chained change partly applied; one of several coordinated edits missed. |
+| over-scoped or loop-exhausting | ~2 | sprawling rework that never converged, or thrashed to the depth-4 cap. |
+| capture / serialization defect | ~4 | the captured diff itself is broken or incomplete, so it would fail grading regardless of the reasoning. **Verified** for at least one (below). |
+
+Two things here are **verified**, not inferred:
+
+- **At least one loss is a serialization defect, not a reasoning failure.** In
+  `openlibrary-9bdfd29...`, the captured diff has every Python string-literal quote
+  stripped (`hasattr(val, children)`, `combined =  .join(words)`, `Phrase(f{normed})`).
+  The patch cannot parse, so it was guaranteed to fail official grading no matter how
+  sound the underlying fix was. This is a capture-pipeline defect that manufactures a
+  false loss, the same class flagged in [`docs/bench-defects.md`](docs/bench-defects.md).
+- **Several captured diffs leaked scratch files** (`fix.py`, `auth.yaml`,
+  `appendonly.aof.manifest`) committed alongside the real source edits. The source
+  edits are present (no loss has an empty source patch), but the leaked files are a
+  capture-hygiene issue worth scrubbing before the next run.
+
+So the true *capability*-loss count is below 34: subtract the verified capture defects,
+and the gate-vs-official cases are the band where a better audit gate, not a smarter
+model, would close the gap. Confirming the exact split needs a re-grade of the
+source-corrected patches, which this run's budget did not cover; it is the first item
+for the next campaign. Every claim above is checkable against the committed artifacts.
+
 ### Reading any loss yourself
 
 Every loss is committed as an inspectable artifact, not a summary. All 6,553
