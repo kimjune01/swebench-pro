@@ -16,7 +16,7 @@ SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement
 
 > **Not a leaderboard entry.** The official SWE-bench Pro runs evaluate **models** —
 > hold a standard harness fixed, vary the model, rank them. This entry evaluates a
-> **harness**: the recon→craft→audit scaffold. The number measures what the *scaffold*
+> **harness**: applied methodeutics — a recon→craft→audit inquiry loop. The number measures what the *scaffold*
 > contributes, not where a model ranks — not a leaderboard submission, and not "our
 > model beats X" (see [`OBJECTIONS.md`](OBJECTIONS.md)).
 

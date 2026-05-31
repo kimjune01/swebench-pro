@@ -37,7 +37,7 @@ weaker, not eliminated ([`PREREGISTRATION.md`](PREREGISTRATION.md) §12, C2).
 ## 2. "How much is the scaffold vs just stronger models?"
 
 Not separable, and we do not claim to separate it. Our system is Sonnet 4.5 +
-GPT-5.5 in the recon/craft/audit scaffold; the baseline is Sonnet 4 + gpt4o in
+GPT-5.5 in the applied-methodeutics scaffold (recon/craft/audit); the baseline is Sonnet 4 + gpt4o in
 SWE-Agent — so a we-resolve cell changes **both** scaffold and model class at
 once. The clean control (same models through a vanilla scaffold) is not
 budget-viable and was not run, so scaffold-only attribution stays **permanently

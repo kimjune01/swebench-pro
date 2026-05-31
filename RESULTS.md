@@ -21,7 +21,7 @@ single verdict (PROCEDURE §6).
 
 This is a **system result**, not a capability claim: a Sonnet-4.5 generator
 plus a GPT-5.5 craft challenger, both contaminated on these repos, in the
-recon→craft→audit scaffold. See [`PREREGISTRATION.md`](PREREGISTRATION.md) §7,
+applied-methodeutics scaffold (recon→craft→audit). See [`PREREGISTRATION.md`](PREREGISTRATION.md) §7,
 §12 for what that confound costs the claim. The headline is a bench number, not
 evidence that either model "reasoned" the fixes.
 

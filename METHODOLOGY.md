@@ -31,8 +31,8 @@ permanently open because the same-model control isn't budget-viable
 
 ### Harness provenance — developed on Verified, one round of Pro adaptation
 
-This harness was **not built bespoke for SWE-bench Pro.** The recon→craft→audit
-skills and driver were developed and iterated on **SWE-bench Verified** (sibling
+This harness was **not built bespoke for SWE-bench Pro.** The applied-methodeutics
+skills and driver (recon → craft → audit) were developed and iterated on **SWE-bench Verified** (sibling
 repo [`swebench-verified`](https://github.com/kimjune01/swebench-verified),
 which resolved 426/438 eligible, ~97%), where the skills took their shape. That
 run was apparatus validation; the harness then moved to Pro as **one round of
@@ -95,7 +95,10 @@ reimplementation (PROCEDURE "Pinned versions").
 
 ## Per-instance pipeline
 
-Each of the 728 instances runs the same loop, independent of every other
+Each of the 728 instances runs the same loop — **applied methodeutics**, Peirce's
+logic of inquiry: recon **abduces** a hypothesis for the failure, craft **acts** on
+it (deduces a fix), audit **tests** it (induction). That's why the name is earned,
+not decorative — the stages *are* the inquiry cycle. Independent of every other
 instance (no cross-instance state):
 
 ```

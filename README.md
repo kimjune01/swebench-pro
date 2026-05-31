@@ -1,7 +1,9 @@
 # swebench-pro
 
-A recon→craft→audit agent pipeline pointed at **SWE-bench Pro**, run end-to-end
-under a frozen, pre-registered protocol. Sibling to
+An **[applied methodeutics](https://june.kim/reading/methodeutics)** harness —
+Peirce's logic of inquiry (abduce a hypothesis → act on it → test and prune), run
+as a recon → craft → audit loop — pointed at **SWE-bench Pro**, end-to-end under a
+frozen, pre-registered protocol. Sibling to
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified) — one repo
 per benchmark so each run's artifacts and number stand on their own.
 
