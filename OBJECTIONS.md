@@ -1,4 +1,4 @@
-# Objections — reading the 95.33% honestly
+# Objections: reading the 95.33% honestly
 
 95.33% on SWE-bench Pro-public is a striking number, and a striking number on a
 contaminated public split should be assumed overfit until it survives the obvious
@@ -6,39 +6,39 @@ attacks. This document states the attacks plainly and bounds each one against th
 evidence in this repo. Where an objection lands, it is conceded.
 
 The stance up front: this is a **system result on a public, contamination-prone
-split** — an audition, not a capability claim. We don't ask you to trust it; we
+split**: an audition, not a capability claim. We don't ask you to trust it; we
 hand you the means to check it. Every row below is a *handle* (something to verify
 or a stated limit), never an argument.
 
 ## The short version
 
-| The reaction | How it's handled — what *you* can check |
+| The reaction | How it's handled: what *you* can check |
 |---|---|
-| "95% is 2× the leaderboard — theater" | An **audition** number on the public split. The test that would validate it — the private held-out — is Scale-run and **inaccessible to us**, so it's provisional by construction, not a 2× claim (#2, #9). |
-| "The harness is overfit to the test" | **Read the skills** (`skills/{recon,craft,audit}`) — legible, general, **zero per-instance priors**, carried over from Verified. Overfit is falsifiable by inspection (#3). |
-| "It just memorized the repos" | Conceded — the **models** pretrained on these repos (model-side, **universal** across every leaderboard entry), not a harness property (#1). |
-| "It gamed the grader" | **Unmodified official grader**, pinned commit — re-grade any verdict yourself (#5, #6). |
+| "95% is 2× the leaderboard, theater" | An **audition** number on the public split. The test that would validate it (the private held-out) is Scale-run and **inaccessible to us**, so it's provisional by construction, not a 2× claim (#2, #9). |
+| "The harness is overfit to the test" | **Read the skills** (`skills/{recon,craft,audit}`): legible, general, **zero per-instance priors**, carried over from Verified. Overfit is falsifiable by inspection (#3). |
+| "It just memorized the repos" | Conceded: the **models** pretrained on these repos (model-side, **universal** across every leaderboard entry), not a harness property (#1). |
+| "It gamed the grader" | **Unmodified official grader**, pinned commit; re-grade any verdict yourself (#5, #6). |
 | "Cherry-picked instances" | Whole eligible set (728), **0 INCOMPLETE**, 3 gold-patch defects named; reproduce on a **random** sample (#7). |
-| "Expensive brute force, not reasoning" | ~$2.60 / ~13 min each — **and** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
-| "Why should I trust you?" | You don't — **one prompt** reproduces a random sample on your machine ([README](README.md)). Trust is the one axis an AI can't win; verification is the answer. |
-| "But it's AI" | A **values** call, not an evidence one — not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
+| "Expensive brute force, not reasoning" | ~$2.60 / ~13 min each, **and** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
+| "Why should I trust you?" | You don't: **one prompt** reproduces a random sample on your machine ([README](README.md)). Trust is the one axis an AI can't win; verification is the answer. |
+| "But it's AI" | A **values** call, not an evidence one, not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
 
-The sections below are the depth layer — scan the table, dig where you doubt.
+The sections below are the depth layer; scan the table, dig where you doubt.
 
-## 1. "It's contamination — the models memorized these repos."
+## 1. "It's contamination: the models memorized these repos."
 
 Conceded as unexcludable, which is why there is **no capability claim**. Sonnet
 4.5 and GPT-5.5 both postdate every repo here; recall cannot be ruled out. The
 narrower thing on record: the reference baselines (Sonnet 4 + gpt4o in SWE-Agent)
 were contaminated on the same repos and still failed the cells our system
-resolves. So recall-only is a weaker explanation than against a clean baseline —
+resolves. So recall-only is a weaker explanation than against a clean baseline;
 weaker, not eliminated ([`PREREGISTRATION.md`](PREREGISTRATION.md) §12, C2).
 
 ## 2. "How much is the scaffold vs just stronger models?"
 
 Not separable, and we do not claim to separate it. Our system is Sonnet 4.5 +
 GPT-5.5 in the applied-methodeutics scaffold (recon/craft/audit); the baseline is Sonnet 4 + gpt4o in
-SWE-Agent — so a we-resolve cell changes **both** scaffold and model class at
+SWE-Agent, so a we-resolve cell changes **both** scaffold and model class at
 once. The clean control (same models through a vanilla scaffold) is not
 budget-viable and was not run, so scaffold-only attribution stays **permanently
 open**, by disclosure, not deferral ([`PREREGISTRATION.md`](PREREGISTRATION.md)
@@ -49,13 +49,13 @@ repo; within Pro-public, the scaffold/model split is unidentified.
 
 The sharpest objection. The harness was developed on **SWE-bench Verified**, not
 Pro ([`METHODOLOGY.md`](METHODOLOGY.md)). Three checks reduce specific overfit
-stories — they do not close the question (see #9):
+stories; they do not close the question (see #9):
 
 - **Zero repo overlap.** None of the 11 Pro-public repos appear in Verified's dev
   set. No instance- or repo-level path from development into this run.
 - **The dev-language is not advantaged.** The only shared channel is language
   (Verified is all Python). The three Python repos resolve **94.7%**; the
-  never-developed-against Go/TS/JS repos resolve **95.7%** — the dev-language is a
+  never-developed-against Go/TS/JS repos resolve **95.7%**; the dev-language is a
   point *lower*. Best group (Go, 98.6%) and worst (JS/NodeBB, 74.4%) are both
   novel. We do not see the signature this objection predicts
   ([`RESULTS.md`](RESULTS.md) "Development-overlap check").
@@ -84,12 +84,12 @@ not produce an official WIN: the verdict is recomputed from the captured
 (PROCEDURE §3), so the gate is never the verdict and a weakened test is restored
 before grading. A pre-freeze skill edit also forbids test-editing (#3). This
 rules out the intended manufacturing mechanisms; it cannot rule out an unknown
-pipeline bug outside them — which is what #6 tests empirically.
+pipeline bug outside them, which is what #6 tests empirically.
 
-## 6. "Local-green, official-red — your WINs are capture artifacts."
+## 6. "Local-green, official-red: your WINs are capture artifacts."
 
 We re-graded 6 WINs (3 Go / 2 Python / 1 TS) from their committed diffs on fresh
-containers with the **unmodified** upstream grader (pinned commit `ca10a60`) —
+containers with the **unmodified** upstream grader (pinned commit `ca10a60`):
 **6/6 reproduced RESOLVED** ([`RESULTS.md`](RESULTS.md) "Independent re-grade
 spot-check"). This rules out a trivial capture bug on the sampled wins. It does
 **not** estimate the full-set error rate: n=6 of 694, and a skeptic can fairly
@@ -98,7 +98,7 @@ ask for a complete independent re-grade, which is feasible and unrun here.
 ## 7. "You cherry-picked the denominator."
 
 728 = 731 minus three instances whose **own gold patches** fail the official
-grader on a clean base — defective bench instances, named with grader output
+grader on a clean base: defective bench instances, named with grader output
 ([`RESULTS.md`](RESULTS.md) "Excluded instances"). The list was frozen before the
 scored run and keys only on gold-patch behavior. **0 INCOMPLETE** in the scored
 set; all 34 losses carry non-empty graded patches.
@@ -106,7 +106,7 @@ set; all 34 losses carry non-empty graded patches.
 ## 8. "The auth stalls let you re-roll losses into wins."
 
 The `PROVIDER_CRED_REJECT` recovery requires four invariants, the binding one a
-**0-byte captured patch** — only instances where no submission occurred can be
+**0-byte captured patch**: only instances where no submission occurred can be
 re-dispatched; a real patch graded `not resolved` stays a LOSS mechanically
 ([`PREREGISTRATION.md`](PREREGISTRATION.md) §14, [`RUN_NOTES.md`](RUN_NOTES.md)).
 Stripped rows go to a parallel ledger. All stalls recovered with 0 instances
@@ -118,18 +118,18 @@ This is the **decisive unresolved limitation**, not one item among many. Pro-
 public is a clean repo-level holdout relative to *harness development* (zero
 shared repos with Verified) but **not** clean relative to *model pretraining*
 (the models saw these repos). Held-out Pro grading from Scale (12 different repos,
-server-run) was sought and is unavailable. So the one test that would settle it —
-cross-repo generalization on unseen repos — cannot be run, and **split-specific
+server-run) was sought and is unavailable. So the one test that would settle it,
+cross-repo generalization on unseen repos, cannot be run, and **split-specific
 overfit cannot be ruled out empirically on Pro-public.** The checks in #3 reduce
 some overfit stories; they do not establish that 95.33% reflects generalizable
 task-solving rather than split-specific optimization plus contamination.
 
-## 10. "95% here vs ~50% on novel OSS — which number is real?"
+## 10. "95% here vs ~50% on novel OSS: which number is real?"
 
 They measure different things. Pro-public hands the loop a visible test suite (an
 oracle the gate can stop on) and curated, known-solvable instances; live OSS
 gives neither. That difference could plausibly account for much of the gap before
-contamination is invoked — we do not decompose it precisely. For a posterior on
+contamination is invoked; we do not decompose it precisely. For a posterior on
 real-world performance, use the OSS deployment, not 95.33%. The OSS number and its
 full funnel are public and enumerated PR-by-PR
 ([profile receipts](https://github.com/kimjune01/kimjune01): `pr-receipts.jsonl`,
@@ -141,10 +141,10 @@ The audit is done, and both effects are real and disclosed rather than nested.
 
 - **Pre-PR funnel.** Of 368 triaged issues, 322 were submitted as PRs; 46 (12.5%)
   were throttled or rejected before submission. So the merge rate is conditioned
-  on having PR'd, which a live builder facing raw issues is not — the funnel is
+  on having PR'd, which a live builder facing raw issues is not; the funnel is
   published as a Sankey, not hidden.
 - **Denominator.** The headline merge rate is merged / (merged + closed-unmerged)
-  among *decided* PRs — **81/160 = 50.6% live** (the profile's "53%" is a dated
+  among *decided* PRs: **81/160 = 50.6% live** (the profile's "53%" is a dated
   May-20 snapshot of the same quantity, 80/150). It excludes a 129-PR open tail.
 - **What "closed" contains.** A close-reason audit of all 79 closed PRs (verbatim
   evidence per PR) finds only **8 are maintainer rejections on the merits**; the
@@ -158,14 +158,14 @@ The audit is done, and both effects are real and disclosed rather than nested.
 ## 12. "What did it cost? How many model calls?"
 
 Per instance: median **137 Claude turns** (recon + craft + audit, all retries;
-mean 193, p90 291), 13.7% over SEAL's 250-turn reference cap — **plus** a GPT-5.5
+mean 193, p90 291), 13.7% over SEAL's 250-turn reference cap, **plus** a GPT-5.5
 challenger on top, so total model calls exceed a single 250-turn agent. Two cost
 figures, kept separate because they are not the same thing:
 
 - **Replicable marginal cost under API pricing: ~$2.60 / instance.** Measured, not
-  modeled — the API-mode canary ran $2.07/instance on light repos, blended higher
+  modeled: the API-mode canary ran $2.07/instance on light repos, blended higher
   across heavy ones. Comparable to a vendor's advertised per-task cost. Caveat: this
-  is the **Claude (Sonnet 4.5) leg only** — the GPT-5.5 challenger ran on a generous
+  is the **Claude (Sonnet 4.5) leg only**: the GPT-5.5 challenger ran on a generous
   codex subscription (~$0 marginal), so a reproducer metering both models budgets
   somewhat above $2.60.
 - **This run's actual cash outlay: $813.52 API spend + ~$58 EC2.** Most instances
@@ -174,7 +174,7 @@ figures, kept separate because they are not the same thing:
   non-portable, which is exactly why the ~$2.60 API rate above is the one to quote.
 
 And "fast" is **per instance**, not end-to-end: median ~13 min per instance, but
-the full 728-instance run took **~3.5 days** of wall-clock — bounded by fleet size
+the full 728-instance run took **~3.5 days** of wall-clock, bounded by fleet size
 (4–8 boxes), the three auth stalls, and quota pauses, not by per-instance speed
 ([`RUN_NOTES.md`](RUN_NOTES.md)).
 
@@ -187,6 +187,6 @@ Turn/token stats cover the 681/728 instances whose trajectories survived teardow
 intended gate/test-weakening exploits, the denominator is honest, and the
 repo-level and language-split checks reduce specific development-overfit stories.
 The genuine unclosed limitation is decisive: **without a clean held-out Pro
-evaluation, split-specific overfit cannot be ruled out** — the checks here narrow
+evaluation, split-specific overfit cannot be ruled out**: the checks here narrow
 some overfit stories but do not close the question. Treat Pro-public as the
 audition it is.

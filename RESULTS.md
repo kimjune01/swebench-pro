@@ -1,4 +1,4 @@
-# Results — SWE-bench Pro, frozen tag `prereg-pro-v1`
+# Results: SWE-bench Pro, frozen tag `prereg-pro-v1`
 
 **694 / 728 eligible resolved = 95.33%**, official Pro grader, single frozen
 instance-blind artifact, whole eligible set in one measurement. All numbers
@@ -12,10 +12,10 @@ single verdict (PROCEDURE §6).
   The three excluded ids and their grader output are committed in
   `runs/audit/defects.jsonl`; the kept set is `runs/audit/eligible.txt`
   ([`PREREGISTRATION.md`](PREREGISTRATION.md) §6).
-- **Terminal verdicts:** 728 (694 WIN, 34 LOSS), **0 INCOMPLETE** — full coverage.
+- **Terminal verdicts:** 728 (694 WIN, 34 LOSS), **0 INCOMPLETE**: full coverage.
 - **Resolve-rate:** W / (W + L) = 694 / 728 = 95.33%.
 - **Run span:** ~3.5 days end-to-end (first dispatch 2026-05-27 00:58Z → last
-  verdict 2026-05-30 17:37Z) — **not uninterrupted:** three provider-credential stalls and a mid-run switch
+  verdict 2026-05-30 17:37Z); **not uninterrupted:** three provider-credential stalls and a mid-run switch
   from Max-subscription to paid API billing, all recovered with 0 instances
   lost. Provenance in [`RUN_NOTES.md`](RUN_NOTES.md).
 
@@ -25,13 +25,13 @@ applied-methodeutics scaffold (recon→craft→audit). See [`PREREGISTRATION.md`
 §12 for what that confound costs the claim. The headline is a bench number, not
 evidence that either model "reasoned" the fixes.
 
-## Excluded instances — 3 gold-patch defects (why the denominator is 728, not 731)
+## Excluded instances: 3 gold-patch defects (why the denominator is 728, not 731)
 
 Three of the 731 dataset instances are **not in the eligible set, and were never
 run against our system**. The reason is a property of the bench, not a choice we
 made about our results: in a pre-run audit (2026-05-26, before any scored model
 run) we graded **every instance's own gold patch** through the official grader
-on a clean base. For these three, the gold patch itself graded **NOT RESOLVED** —
+on a clean base. For these three, the gold patch itself graded **NOT RESOLVED**:
 the benchmark's own reference solution fails its own tests. An instance whose
 correct answer can't pass cannot fairly score our answer, so it is excluded and
 documented, one per language:
@@ -39,12 +39,12 @@ documented, one per language:
 | instance_id | lang | grader verdict on gold | audit s |
 |---|---|---|---:|
 | `instance_future-architect__vuls-bff6b755…-v1151a632…` | Go | gold NOT resolved | 114 |
-| `instance_NodeBB__NodeBB-00c70ce7…-vnan` | JS | gold NOT resolved (4/681 F2P tests absent — name-collision/flaky) | 82 |
+| `instance_NodeBB__NodeBB-00c70ce7…-vnan` | JS | gold NOT resolved (4/681 F2P tests absent, name-collision/flaky) | 82 |
 | `instance_ansible__ansible-de5858f4…-v1055803c…` | Py | gold NOT resolved | 22 |
 
 The full ids and grader output are committed in `runs/audit/defects.jsonl`; the
 kept set of 728 is `runs/audit/eligible.txt`. This is the **only** reason any
-instance went unrun — there are **0 INCOMPLETE** in the scored set, so every
+instance went unrun: there are **0 INCOMPLETE** in the scored set, so every
 other one of the 728 has a terminal WIN/LOSS.
 
 Two points that matter for an auditor:
@@ -53,7 +53,7 @@ Two points that matter for an auditor:
   cannot be a post-hoc drop of instances we happened to fail. No defect may be
   added after model results are visible
   ([`PREREGISTRATION.md`](PREREGISTRATION.md) §6).
-- **These three are not counted anywhere in the headline** — not as wins, not as
+- **These three are not counted anywhere in the headline**, not as wins, not as
   losses, not as incompletes. They are removed from the denominator entirely.
   The 0.4% defect rate (3/731) is itself reported, not hidden.
 
@@ -97,7 +97,7 @@ Ten of eleven repos resolve at 92.3% or above. **NodeBB at 74.4% sits 18
 points below the next-lowest repo (internetarchive, 92.3%) and contributes 11
 of the 34 total losses** (see below).
 
-## Development-overlap check — did developing on Verified inflate Pro?
+## Development-overlap check: did developing on Verified inflate Pro?
 
 The harness was developed and iterated on SWE-bench Verified before this run
 ([`METHODOLOGY.md`](METHODOLOGY.md) "Harness provenance"). If that development
@@ -105,11 +105,11 @@ overfit the pipeline, the repos closest to the development set should resolve
 *higher* than novel ones. We test it two ways.
 
 **Repo overlap: none.** Zero of the 11 Pro-public repos appear in Verified's
-dev set (Verified is Python scientific/web libraries — django, sympy,
+dev set (Verified is Python scientific/web libraries: django, sympy,
 matplotlib, scikit-learn, …; Pro-public is qutebrowser, ansible, openlibrary,
 navidrome, teleport, vuls, flipt, element-web, webclients, tutanota, NodeBB).
 So there is no instance- or repo-level path from development into this run. The
-only shared channel is *language* — Verified is all Python, and three Pro repos
+only shared channel is *language*: Verified is all Python, and three Pro repos
 are Python.
 
 **Language split: the dev-language is not advantaged.** Grouping the 728 by
@@ -124,8 +124,8 @@ development):
 The Python group resolves **1.0 point lower**, not higher. By language: Go
 98.6% (279), TS 96.5% (141), Python 94.7% (265), JS 74.4% (43). The strongest
 group (Go) and the weakest (JS/NodeBB) are *both* novel languages. **No
-development-overfit signal appears in the direction the hypothesis predicts** —
-the spread tracks per-repo and per-language difficulty, not proximity to the
+development-overfit signal appears in the direction the hypothesis predicts**.
+The spread tracks per-repo and per-language difficulty, not proximity to the
 development set. This is the empirical check the freeze-timing audit cannot
 provide (the harness co-evolved with Pro pilots before freeze, see
 [`METHODOLOGY.md`](METHODOLOGY.md)); the freeze does not defend, this does.
@@ -143,12 +143,12 @@ xychart-beta
 ```
 
 The mass sits at 300–1200 s (610 / 728 = 84%); median 770 s. The right tail is
-heavy repos (webclients, teleport) and craft-hangs on big test suites — the
+heavy repos (webclients, teleport) and craft-hangs on big test suites; the
 `craft 3600` stage cap is per-stage, so a multi-cycle outer loop on a slow
 suite can stack well past it. The single longest run is a 10,745 s
 `gravitational__teleport` WIN.
 
-## Loss analysis — all 34 have non-empty patches
+## Loss analysis: all 34 have non-empty patches
 
 Every loss is a real graded `not resolved` verdict on a non-empty captured
 patch. **None is an empty-capture or no-patch loss.** Patch sizes across the 34
@@ -185,7 +185,7 @@ Every loss is committed as an inspectable artifact, not a summary. All 6,553
 artifact files (860 captured diffs, the Claude and GPT-5.5 trajectories, and the
 per-box ledgers) are committed as a single compressed bundle,
 `runs/scored/artifacts.tar.zst` (87 MB, sha256 + full file listing in
-`runs/scored/artifacts.MANIFEST.txt` — browsable without unpacking). Unpack:
+`runs/scored/artifacts.MANIFEST.txt`, browsable without unpacking). Unpack:
 
 ```
 cd runs/scored && zstd -dc artifacts.tar.zst | tar -xf -
@@ -198,21 +198,21 @@ cd runs/scored && zstd -dc artifacts.tar.zst | tar -xf -
 To audit a loss: take its `pro_patch_*.diff`, build `pred.json`, and re-grade
 on a clean container per PROCEDURE §3 / §6. Re-grading the captured diff under
 the pinned procedure reproduces the `not resolved` verdict without re-running
-the agent — the grade reads only the diff, modulo the grader pathologies
+the agent; the grade reads only the diff, modulo the grader pathologies
 documented in [`docs/bench-defects.md`](docs/bench-defects.md). The trajectory
 JSONLs show *why* the loop emitted that diff.
 
-## Open question — ansible runtime shape (flagged, not a finding)
+## Open question: ansible runtime shape (flagged, not a finding)
 
 Early in the run, ansible losses looked **bimodal by verdict**: crisp WINs
 (~780 s mean) versus catastrophic LOSSes (early sample ~3200 s), suggesting
 ansible's module-coupled test collection punishes a craft attempt that misses
-the call graph — each extra adversary cycle re-pays a large pytest-collection
+the call graph; each extra adversary cycle re-pays a large pytest-collection
 cost (worklog 2026-05-30 15:35Z; same shape as the documented sympy/matplotlib
 craft-hang).
 
 **The full six-loss sample does not support the clean split.** Ansible WIN mean
-is 778 s; the six losses are 766, 1125, 1266, 3065, 5417, 6391 — three of them
+is 778 s; the six losses are 766, 1125, 1266, 3065, 5417, 6391; three of them
 sit inside the WIN range. The "fast WIN vs slow wall" story holds for the tail
 (3065–6391 s craft-hangs) but breaks for the three sub-1300 s losses, which are
 ordinary graded fails, not collection blowups. So this is **an open question
@@ -221,7 +221,7 @@ craft prompt ("test only files the diff touches, not the package") removes the
 tail without changing the fast losses. It is a hypothesis to test on practice
 rungs, deliberately not acted on mid-run (the artifact was frozen).
 
-## Independent re-grade spot-check — no binding leak
+## Independent re-grade spot-check: no binding leak
 
 The standing worry about any agent result is **local-green / official-red**: the
 loop's own gate calls a WIN, but the captured diff fails when an independent
@@ -229,7 +229,7 @@ party runs the real grader (a capture artifact, a serialization quirk, a gate
 that disagrees with the grader). To test it directly, we took a cross-language
 sample of 6 WINs, rebuilt `pred.json` from each committed diff, and re-graded on
 fresh containers with the **unmodified** official grader (pinned commit
-`ca10a60`) — no agent re-run, no model tokens.
+`ca10a60`), no agent re-run, no model tokens.
 
 | repo | lang | re-grade verdict | grade s |
 |---|---|---|---:|
@@ -241,7 +241,7 @@ fresh containers with the **unmodified** official grader (pinned commit
 | tutanota | TypeScript | RESOLVED | 174 |
 
 **6/6 reproduced RESOLVED.** No binding leak in the sample. This is a spot-check
-(n=6 of 694, not the full set — a full re-grade is feasible but unrun here), and
+(n=6 of 694, not the full set; a full re-grade is feasible but unrun here), and
 it is consistent by construction with the run's own design: each WIN was already
 an official-grader verdict on the captured source-only diff at run time (the gate
 is never the verdict; PROCEDURE §3). The re-grade confirms a third party

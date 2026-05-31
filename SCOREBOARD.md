@@ -1,4 +1,4 @@
-# Scoreboard — result · cost · speed
+# Scoreboard: result · cost · speed
 
 SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement.
 
@@ -8,24 +8,24 @@ SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement
 | **COST** | avg token cost / instance | **~$2.60** | API pricing (vendor-comparable per-task cost) |
 | **SPEED** | wall-clock / instance | **~13 min** | median (p50 770 s) |
 
-> **Don't trust it — verify it.** This is a **public, contamination-prone** split and a
+> **Don't trust it; verify it.** This is a **public, contamination-prone** split and a
 > **system/harness** result, not a model-capability claim. So the repo doesn't ask for
 > your trust; it hands you the means to check: reproduce a random sample in one prompt
-> ([README](README.md)). Trust is the one axis an AI can't win against a human — the
+> ([README](README.md)). Trust is the one axis an AI can't win against a human; the
 > answer is verifiability, not a louder number.
 
-> **Not a leaderboard entry.** The official SWE-bench Pro runs evaluate **models** —
+> **Not a leaderboard entry.** The official SWE-bench Pro runs evaluate **models**:
 > hold a standard harness fixed, vary the model, rank them. This entry evaluates a
-> **harness**: applied methodeutics — a recon→craft→audit inquiry loop. The number measures what the *scaffold*
-> contributes, not where a model ranks — not a leaderboard submission, and not "our
+> **harness**: applied methodeutics, a recon→craft→audit inquiry loop. The number measures what the *scaffold*
+> contributes, not where a model ranks; not a leaderboard submission, and not "our
 > model beats X" (see [`OBJECTIONS.md`](OBJECTIONS.md)).
 
 > **The bar is the vibe coder.** A harness worth building **resolves more, costs less,
-> and finishes faster** than a human handed the same task — that's why this board is a
+> and finishes faster** than a human handed the same task; that's why this board is a
 > triple, not a single score. The one axis it *can't* beat the human on is **trust**;
 > reproduce-it-yourself is how it competes there anyway.
 
-## Result — resolve rate by repo
+## Result: resolve rate by repo
 
 ```mermaid
 xychart-beta
@@ -45,13 +45,13 @@ xychart-beta
 | flipt | 83 | 2 | 97.6 | | **total** | **694** | **34** | **95.33** |
 
 Ten of eleven repos at 92.3%+; NodeBB (74.4%) is the outlier, carrying 11 of the 34
-losses. All 34 losses are real graded `not resolved` on non-empty patches — no
+losses. All 34 losses are real graded `not resolved` on non-empty patches, no
 empty captures. Full audit incl. development-overlap and independent re-grade:
 [`RESULTS.md`](RESULTS.md).
 
-**Patch sizes — small and surgical.** Across all 860 captured diffs: median **2.1
+**Patch sizes: small and surgical.** Across all 860 captured diffs: median **2.1
 KB**, p90 7.6 KB, max 190 KB. These are targeted source fixes, not sprawling
-rewrites — the kind of change a maintainer can actually review.
+rewrites, the kind of change a maintainer can actually review.
 
 ```mermaid
 xychart-beta
@@ -63,14 +63,14 @@ xychart-beta
 
 ## Cost & token efficiency
 
-- **Average token cost ~$2.60 / instance at API pricing** — comparable to a
+- **Average token cost ~$2.60 / instance at API pricing**, comparable to a
   vendor's advertised per-task cost. Measured, not modeled: the API-mode canary ran
   $2.07/instance on light repos, blended higher across heavy ones. **This is the
-  Claude (Sonnet 4.5) leg only** — the GPT-5.5 craft challenger ran on a generous
+  Claude (Sonnet 4.5) leg only**: the GPT-5.5 craft challenger ran on a generous
   codex subscription at ~$0 marginal, so its tokens are not in the $2.60; a
   reproducer paying PAYG for *both* models would pay somewhat more.
 - **This run's actual cash: $813.52** in Claude API spend, because most instances
-  ran on the operator's **Max $200/mo subscription** at ~$0 marginal — only ~310
+  ran on the operator's **Max $200/mo subscription** at ~$0 marginal; only ~310
   were billed to API (≈ $813.52 / $2.60). The GPT-5.5 challenger was on a separate
   codex subscription ($0 marginal). Plus **~$58 EC2** (~$0.08/instance). So
   out-of-pocket beyond the two subscriptions was ≈ **$870**. See [`RUN_NOTES.md`](RUN_NOTES.md).
@@ -81,7 +81,7 @@ xychart-beta
   Max 20× ($200/mo) plan, the whole 728-set is reproducible at **zero marginal
   token cost** over ~2 weeks of wall-clock (just the subscription + ~$58 EC2),
   trading time for dollars. The ~$2.60/instance API rate is the *quick* path; the
-  subscription is the *low-cost* path. (This run used both — mostly subscription, with
+  subscription is the *low-cost* path. (This run used both, mostly subscription, with
   a paid-API tail to finish faster.)
 
 **Model turns per instance** (recon + craft + audit, all retries; count of instances):
@@ -94,7 +94,7 @@ xychart-beta
     bar [1, 130, 263, 138, 56, 29, 21, 43]
 ```
 
-93 instances (13.7%) exceed SEAL's 250-turn reference cap — the last three bins.
+93 instances (13.7%) exceed SEAL's 250-turn reference cap: the last three bins.
 
 **Output tokens per instance** (count of instances):
 
@@ -109,9 +109,9 @@ xychart-beta
 | | turns | output tok | | | turns | output tok |
 |---|--:|--:|---|---|--:|--:|
 | median | 137 | 71k | | p90 | 291 | 154k |
-| mean | 193 | 99k | | max | 2,423 | — |
+| mean | 193 | 99k | | max | 2,423 | n/a |
 
-## Speed — runtime & turns
+## Speed: runtime & turns
 
 Median **770 s (~13 min)** per instance, p90 **1537 s (~26 min)**; 84% finish in
 5–20 min. The right tail is heavy repos and craft-hangs on big suites (max 10,745 s,
@@ -119,7 +119,7 @@ a teleport WIN). Model turns: median 137, p90 291; 13.7% exceed SEAL's 250-turn
 reference cap.
 
 **Per-instance, not the campaign.** The full 728-instance run took **~3.5
-days** of wall-clock end-to-end — bounded by fleet size (4–8 boxes), three auth
+days** of wall-clock end-to-end, bounded by fleet size (4–8 boxes), three auth
 stalls, and quota pauses, not by per-instance speed ([`RUN_NOTES.md`](RUN_NOTES.md)).
 The ~13 min is what one instance costs in time; the run is embarrassingly parallel,
 so end-to-end is a function of how many boxes you point at it.
@@ -143,4 +143,4 @@ xychart-beta
 
 Numbers recompute from `runs/scored/run.jsonl` (verdicts/runtimes) and the committed
 trajectory bundle (turns/tokens). Cost is the operator's measured API spend. The
-contamination caveat is load-bearing — pair this board with [`OBJECTIONS.md`](OBJECTIONS.md).
+contamination caveat is load-bearing; pair this board with [`OBJECTIONS.md`](OBJECTIONS.md).
