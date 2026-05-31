@@ -306,7 +306,14 @@ cd runs/scored && zstd -dc artifacts.tar.zst | tar -xf -
 #   codex/...                               GPT-5.5 craft-challenger sessions
 ```
 
-To audit a loss: take its `pro_patch_*.diff`, build `pred.json`, and re-grade
+A concrete one to open first:
+`artifacts/coord*/patches/pro_patch_instance_gravitational__teleport-c782838c3a174fdff80cafd8cd3b1aa4dae8beb2.diff`
+is the gravitational/teleport loss that ran the outer loop all the way to depth 4
+(the 8,202 s case at the top of this section). Its diff shows what the loop
+eventually committed, and its trajectory dirs (`-d0` through `-d4`) show recon
+narrowing on each pass and the audit's tests still failing at the cap.
+
+To audit any loss: take its `pro_patch_*.diff`, build `pred.json`, and re-grade
 on a clean container per PROCEDURE §3 / §6. Re-grading the captured diff under
 the pinned procedure reproduces the `not resolved` verdict without re-running
 the agent; the grade reads only the diff, modulo the grader pathologies

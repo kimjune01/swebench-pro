@@ -41,9 +41,11 @@ Resolved,Recovered by the outer loop,46
 Resolved,Trajectory not captured,46
 ```
 
-First-pass / recovered counts are over the 648 wins with captured trajectory data (the
-other 46 wins predate trajectory capture). The loss-side anatomy, the per-depth
-breakdown, and the full-run flow down to failure modes are in [`RESULTS.md`](RESULTS.md).
+The outer loop earns its keep narrowly: it **converted 46 first-pass misses into wins**,
+about 7% of the graded wins, and otherwise stays out of the way. First-pass / recovered
+counts are over the 648 wins with captured trajectory data (the other 46 wins predate
+trajectory capture). The loss-side anatomy, the per-depth breakdown, and the full-run
+flow down to failure modes are in [`RESULTS.md`](RESULTS.md).
 
 ## What a loss is
 
@@ -85,6 +87,25 @@ The **~13 min** is per instance. The full 728-set took **~3.5 days** of wall-clo
 end-to-end, bounded by fleet size (4 to 8 boxes) and three auth stalls, not by
 per-instance speed. The run is embarrassingly parallel
 ([`SCOREBOARD.md`](SCOREBOARD.md), [`RUN_NOTES.md`](RUN_NOTES.md)).
+
+## How a verdict is made
+
+The agent's own opinion never counts. Its internal gate is only a stopping signal; the
+verdict is always the **official** grade of the captured source-only diff, run on a
+**fresh container** with the grader pinned at commit `ca10a60`.
+
+```mermaid
+flowchart LR
+    I["SWE-bench Pro<br/>instance"] --> A["recon → craft → audit<br/>agent loop"]
+    A --> P["captured<br/>source-only diff"]
+    P --> C["fresh container<br/>clean checkout"]
+    C --> G["official grader<br/>pinned ca10a60"]
+    G --> V["verdict:<br/>resolved or not"]
+```
+
+This is why the gate-vs-official mismatches in the loss analysis exist at all: the
+harness can think it passed and still be graded a loss. The grade is the diff's, not the
+agent's. [`METHODOLOGY.md`](METHODOLOGY.md) has the full pipeline.
 
 ## Reproduce it yourself
 
