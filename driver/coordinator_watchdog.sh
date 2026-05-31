@@ -8,7 +8,7 @@
 # of double-billing EC2).
 #
 # Bring it up:
-#   cd /Users/junekim/Documents/swebench-pro
+#   cd /path/to/swebench-pro
 #   nohup bash driver/coordinator_watchdog.sh > runs/scored/watchdog-boot.log 2>&1 &
 #
 # Tail:  tail -f runs/scored/watchdog.log

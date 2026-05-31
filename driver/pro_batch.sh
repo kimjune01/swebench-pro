@@ -3,7 +3,7 @@
 # Dev-mode subset runner (no scoreboard). Usage: pro_batch.sh <name> <iid> [<iid>...]
 set -u
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-PY="${PY:-/Users/junekim/Documents/swebench-verified/.venv/bin/python}"
+PY="${PY:-$REPO/.venv/bin/python}"
 export SWEAP_OS_REPO="${SWEAP_OS_REPO:-/tmp/swebench-pro-os}"
 NAME="$1"; shift
 mkdir -p "$REPO/tasks/generated" "$REPO/runs/dev"

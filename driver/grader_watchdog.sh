@@ -16,7 +16,7 @@
 # (per-box per-poll sample, consumed by box_health.sh).
 #
 # Bring it up:
-#   cd /Users/junekim/Documents/swebench-pro
+#   cd /path/to/swebench-pro
 #   nohup bash driver/grader_watchdog.sh > runs/scored/grader_watchdog-boot.log 2>&1 &
 #
 # Tail:  tail -f runs/scored/grader_watchdog.log

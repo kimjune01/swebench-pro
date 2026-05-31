@@ -12,7 +12,7 @@
 # reprovisioned boxes automatically.
 #
 # Bring it up:
-#   cd /Users/junekim/Documents/swebench-pro
+#   cd /path/to/swebench-pro
 #   nohup bash driver/pull_artifacts.sh > runs/scored/artifact_puller.log 2>&1 &
 #
 # Tail:  tail -f runs/scored/artifact_puller.log
