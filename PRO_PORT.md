@@ -73,7 +73,6 @@ so both benches stay runnable for regression:
 | `make_task.py` | test_cmd regex | parses `spec.eval_script` Start/End Test Output markers |
 | `stage_batch.py` | 36, 46, 51–53 | same dataset/namespace/conda assumptions |
 | `grade_batch.sh` | 20 | `--dataset_name princeton-nlp/SWE-bench_Verified` |
-| `archive_batch.py` | 63 | dataset id (provenance only) |
 
 Pro gets its own defect list (documented Pro defects only — never "instances we failed"; the
 no-priors / honest-denominator rule still binds), and a separate results tree so the scoreboards don't
