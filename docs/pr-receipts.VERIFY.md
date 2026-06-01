@@ -58,6 +58,14 @@ gh api graphql -f query='
 
 Or paste the inner query into the GitHub GraphQL Explorer (https://docs.github.com/en/graphql/overview/explorer).
 
+**Keep the full `T00:34:00Z` timestamp — do not shorten it.** The pipeline epoch is
+`2026-05-09T00:34:00Z`, and GitHub's `created:>` qualifier honors the time component (and
+the `Z`). Two ways to get it wrong: a bare date `created:>2026-05-09` means *after the
+entire day* (starts May 10, dropping the epoch day, undercount to 66 merged); midnight
+`T00:00:00Z` pulls in two closed-unmerged PRs from the `00:00–00:34` pre-epoch window
+(closed reads 82 instead of 80, deflating the merge rate). The query must start at the
+epoch instant, not the calendar day and not midnight.
+
 Observed live on 2026-05-31: `merged 81`, `closed 80`, `open 117` — one PR closed since the
 freeze (79 → 80), merged unchanged. Live merge rate among decided: 81 / 161 ≈ 50.3%.
 
