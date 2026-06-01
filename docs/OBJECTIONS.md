@@ -19,7 +19,7 @@ or a stated limit), never an argument.
 | "It just memorized the repos" | Conceded: the **models** pretrained on these repos (model-side, **universal** across every leaderboard entry), not a harness property (#1). |
 | "It gamed the grader" | **Unmodified official grader**, pinned commit; re-grade any verdict yourself (#5, #6). |
 | "Cherry-picked instances" | Whole eligible set (728), **0 INCOMPLETE**, 3 gold-patch defects named; reproduce on a **random** sample (#7). |
-| "Expensive brute force, not reasoning" | ~$5.14 / ~12.8 min each at API rates — and the **open-weight pair does it for ~$0.41** — **plus** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
+| "Expensive brute force, not reasoning" | ~$5.14 / ~12.8 min each at API rates — and the **open-weight-generator pair does it for ~$0.41** — **plus** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
 | "Why should I trust you?" | You don't: **one prompt** reproduces a random sample on your machine ([README](../README.md)). Trust is the one axis an AI can't win; verification is the answer. |
 | "But it's AI" | A **values** call, not an evidence one, not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
 
@@ -53,7 +53,14 @@ models swapped to a cheaper pair (Composer 2.5 + Gemini Flash 3.5) and resolves
 strict scaffold-only attribution stays open), yet most of the result survives
 dropping a frontier model class, which is the opposite of "it's just the model"
 ([`PREREGISTRATION-cheap-ablation.md`](PREREGISTRATION-cheap-ablation.md),
-[`COST_BASIS.md`](COST_BASIS.md)).
+[`COST_BASIS.md`](COST_BASIS.md)). Stronger still, induce the model contribution to
+the *strongest* constituent: GPT-5.5 (used here only as a reasoning-off challenger)
+scores ~58.6% bare on Pro, and the board leader Opus 4.7 ~64.3%, so against the best
+single model the harness still adds 31–37 points, an order beyond any reasoning-budget
+lift. Two caveats held: the harnessed generator runs thinking-on against the baseline's
+thinking-off, and the ~50-point lift bundles the typed structure with generic
+agent-engineering (turns, tools, retries); separating them is future work
+([`DISCUSSION.md`](DISCUSSION.md)).
 
 ## 3. "You developed the harness on these repos, so you overfit."
 
@@ -175,7 +182,7 @@ figures, kept separate because they are not the same thing:
 
 - **Replicable economic cost at API pricing: ~$5.14 / instance** for the frontier
   pair (Sonnet 4.5 leg $4.73 + GPT-5.5 ~$0.42, every leg metered at public rates incl.
-  cache). The open-weight pair does the same work for **~$0.41** (~12.6× cheaper). This
+  cache). The open-weight-generator pair does the same work for **~$0.41** (~12.6× cheaper). This
   supersedes an earlier "~$2.60" headline, which was *cash-per-billed-instance* and
   priced only the Claude leg; full line-by-line derivation in
   [`COST_BASIS.md`](COST_BASIS.md).

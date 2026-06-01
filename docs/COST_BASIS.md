@@ -22,7 +22,7 @@ to that leg's logged usage.
 | Claude Sonnet 4.5 | frontier generator | $3.00 | $3.75 (5m) | $0.30 | $15.00 | [platform.claude.com](https://platform.claude.com/docs/en/about-claude/pricing) |
 | OpenAI GPT-5.5 | frontier challenger | $5.00 | — | $0.50 | $30.00 | [openai.com](https://openai.com/api/pricing/) |
 | Kimi K2.5 (Composer 2.5) | open-weight generator | $0.60 | — | $0.10 | $3.00 | [Moonshot via costgoat](https://costgoat.com/pricing/kimi-api) |
-| Gemini Flash 3.5 | open-weight challenger | $0.30 | — | — | $2.50 | [ai.google.dev](https://ai.google.dev/gemini-api/docs/pricing) |
+| Gemini Flash 3.5 | proprietary challenger | $0.30 | — | — | $2.50 | [ai.google.dev](https://ai.google.dev/gemini-api/docs/pricing) |
 
 GPT-5.5 cache read uses the standard 10%-of-input OpenAI cache discount ($0.50).
 Sonnet cache writes are priced at the 5-minute rate ($3.75); any 1-hour writes
@@ -112,7 +112,7 @@ cash equals the economic cost for this leg (no subscription subsidy to back out)
 | Sonnet 4.5 + GPT-5.5 | 95.3% (694/728) | **$5.14** | 12.8 min |
 | Composer 2.5 + Gemini Flash | 93.1% (678/728) | **$0.41** | 8.4 min |
 
-Same frozen harness. The open-weight pair runs **~12.6×** cheaper at **2.2 points**
+Same frozen harness. The open-weight-generator pair runs **~12.6×** cheaper at **2.2 points**
 lower resolve rate.
 
 Denominator is 728 eligible instances for both runs (731 dataset − 3 gold-patch

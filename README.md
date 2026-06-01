@@ -11,12 +11,12 @@ abduces a hypothesis, **craft** acts on it, **audit** tests and prunes. Sibling 
 | model pair | resolve | cost / instance | speed / instance |
 |---|---|---|---|
 | **Sonnet 4.5 + GPT-5.5** · frontier | **95.3%** · 694/728 | **~$5.14** | **~12.8 min** |
-| **Composer 2.5 + Gemini Flash** · open-weight | **93.1%** · 678/728 | **~$0.41** | **~8.4 min** |
+| **Composer 2.5 + Gemini Flash 3.5** · open-weight generator | **93.1%** · 678/728 | **~$0.41** | **~8.4 min** |
 
 The same frozen harness, two model pairs. Both rows use the *official* grader on the
 same *728 eligible* instances, with *zero left ungraded*. Costs are *economic* —
-every leg priced at public API rates, derived line-by-line in
-[`COST_BASIS.md`](docs/COST_BASIS.md); the open-weight pair runs *~12.6× cheaper at 2.2
+every leg priced at publicly posted metered rates (the open-weight generator at its Kimi K2.5 base rate), derived line-by-line in
+[`COST_BASIS.md`](docs/COST_BASIS.md); the open-weight-generator pair runs *~12.6× cheaper at 2.2
 points lower resolve*.
 
 The anatomy below details the *frontier* run: 694 of 728 resolved, *95.3%*. The
@@ -56,7 +56,7 @@ flow down to failure modes are in [`RESULTS.md`](docs/RESULTS.md).
 
 The per-instance figures in the table are *economic* — every leg priced at a published
 API rate and traced line-by-line from committed token totals, so a third party can
-reproduce them. The frontier pair runs *~$5.14*; the open-weight pair does the same
+reproduce them. The frontier pair runs *~$5.14*; the open-weight-generator pair does the same
 work for *~$0.41*. The operator's actual cash was far lower, most of it absorbed by
 flat subscriptions (Claude Max, codex, Cursor) at roughly zero marginal cost. The full
 arithmetic for both pairs, plus the cash-vs-economic reconciliation, is in

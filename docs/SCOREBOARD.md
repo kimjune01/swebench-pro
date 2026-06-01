@@ -4,14 +4,14 @@ SWE-bench Pro, whole eligible set (728) in one measurement, run with two model p
 the frontier pair (`prereg-pro-v1`) and a pre-registered open-weight ablation
 (`prereg-pro-v1-cheap`).
 
-| metric | frontier · Sonnet 4.5 + GPT-5.5 | open-weight · Composer 2.5 + Gemini Flash |
+| metric | frontier · Sonnet 4.5 + GPT-5.5 | open-weight generator · Composer 2.5 + Gemini Flash 3.5 |
 |---|--:|--:|
 | **RESULT** — resolve rate | **95.3%** · 694/728 | **93.1%** · 678/728 |
 | **COST** — economic $/instance | **~$5.14** | **~$0.41** |
 | **SPEED** — median wall-clock | **~12.8 min** | **~8.4 min** |
 
 Same frozen harness, both models swapped; same 728 eligible, **official** grader. The
-open-weight pair runs **~12.6× cheaper at 2.2 points lower resolve** — the cleanest single
+open-weight-generator pair runs **~12.6× cheaper at 2.2 points lower resolve** — the cleanest single
 read on how much the *harness* (not the model tier) carries the result. Cost is *economic*
 (public API rates incl. cache; the frontier Claude-leg-only rate is ~$4.73, $5.14 the full
 pair) — derivation and the cash-vs-economic split in [`COST_BASIS.md`](COST_BASIS.md). The
