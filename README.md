@@ -8,9 +8,19 @@ act on it, test and prune. Sibling repo:
 
 ## The result
 
-The harness was pointed at all **728 eligible** SWE-bench Pro instances and resolved
-**694** of them under the **official** grader, with **zero left ungraded**. That is
-**95.33%**. The number is honest about its limits:
+| model pair | resolve | cost / instance | speed / instance |
+|---|---|---|---|
+| **Sonnet 4.5 + GPT-5.5** · frontier | **95.33%** · 694/728 | **~$5.14** | **~12.8 min** |
+| **Composer 2.5 + Gemini Flash** · open-weight | **93.13%** · 678/728 | **~$0.41** | **~8.4 min** |
+
+The same frozen harness, two model pairs. Both rows use the **official** grader on the
+same **728 eligible** instances, with **zero left ungraded**. Costs are *economic* —
+every leg priced at public API rates, derived line-by-line in
+[`COST_BASIS.md`](COST_BASIS.md); the open-weight pair runs **~12.6× cheaper at 2.2
+points lower resolve**.
+
+The anatomy below details the **frontier** run: 694 of 728 resolved, **95.33%**. The
+number is honest about its limits:
 
 - It is the **public** split, so these repos can sit in a model's training data. This
   is a **system/harness** result, not a model-capability claim.
@@ -19,19 +29,7 @@ The harness was pointed at all **728 eligible** SWE-bench Pro instances and reso
 - **Every verdict is re-gradable** from a committed source-only diff, and you can
   reproduce a **random sample in one prompt** ([below](#reproduce-it-yourself)).
 
-The same frozen harness was run with two model pairs:
-
-| model pair | resolve | cost / instance | speed / instance |
-|---|---|---|---|
-| **Sonnet 4.5 + GPT-5.5** · frontier | **95.33%** · 694/728 | **~$5.14** | **~12.8 min** |
-| **Composer 2.5 + Gemini Flash** · open-weight | **93.13%** · 678/728 | **~$0.41** | **~8.4 min** |
-
-Costs are *economic* — every leg priced at public API rates, derived line-by-line in
-[`COST_BASIS.md`](COST_BASIS.md). Both rows use the official grader on the same 728
-eligible instances. The open-weight pair runs **~12.6× cheaper at 2.2 points lower
-resolve**. The anatomy below details the frontier pair.
-
-## How the loop behaves
+## The harness iterates
 
 One good shot plus a small recovery tail rather than a grind. All 728 eligible instances flow
 down to a verdict: 694 resolve, 34 do not, and among the wins with captured trajectories
@@ -54,28 +52,15 @@ counts are over the 648 wins with captured trajectory data (the other 46 wins pr
 trajectory capture). The loss-side anatomy, the per-depth breakdown, and the full-run
 flow down to failure modes are in [`RESULTS.md`](RESULTS.md).
 
-## What a loss is
+## What it costs
 
-A loss is **characterized, not located**: which repo it lands in says little, but its
-*shape* is consistent. Against a win, a loss costs roughly **2.3 to 2.5x** at the mean
-across the three axes that matter, model turns, wall-clock, and patch scope. The
-harness wins on focused changes and loses on big-scope ones, so difficulty (patch
-scope) over repo identity is what separates win from loss.
-
-```mermaid
-xychart-beta
-    title "A loss vs a win, at the mean (win = 1.0x)"
-    x-axis ["model turns", "wall-clock", "patch bytes"]
-    y-axis "multiple of a win" 0 --> 3
-    bar [2.45, 2.36, 2.26]
-```
-
-All 34 losses are officially graded `not resolved` on **non-empty** patches, but
-reading the artifacts shows they are not all capability losses: a few are harness
-capture defects (one verified serialization defect alone would fail grading regardless
-of the fix), and the most common pattern is the harness's own audit gate passing where
-the official grader did not. The full characterization, with the verified-vs-inferred
-split, is in [`RESULTS.md`](RESULTS.md).
+The per-instance figures in the table are *economic* — every leg priced at a published
+API rate and traced line-by-line from committed token totals, so a third party can
+reproduce them. The frontier pair runs **~$5.14**; the open-weight pair does the same
+work for **~$0.41**. The operator's actual cash was far lower, most of it absorbed by
+flat subscriptions (Claude Max, codex, Cursor) at roughly zero marginal cost. The full
+arithmetic for both pairs, plus the cash-vs-economic reconciliation, is in
+[`COST_BASIS.md`](COST_BASIS.md).
 
 ## How fast it runs
 
@@ -83,6 +68,12 @@ Median **~13 min** per instance; 84% finish inside 5 to 20 minutes. The right ta
 heavy repos and craft-hangs on large suites, well outside the typical case.
 
 ```mermaid
+---
+config:
+  xyChart:
+    width: 460
+    height: 270
+---
 xychart-beta
     title "Wall-clock per instance (minutes; count of instances)"
     x-axis ["5-10", "10-15", "15-20", "20-30", "30-60", "60+"]
@@ -104,15 +95,24 @@ verdict is always the **official** grade of the captured source-only diff, run o
 ```mermaid
 flowchart LR
     I["SWE-bench Pro<br/>instance"] --> A["recon → craft → audit<br/>agent loop"]
+    A -->|audit gate red| R(["retry<br/>outer loop"]):::retry
+    R --> A
+    A -->|budget spent| F1(["fail = loss"]):::fail
     A --> P["captured<br/>source-only diff"]
-    P --> C["fresh container<br/>clean checkout"]
-    C --> G["official grader<br/>pinned ca10a60"]
-    G --> V["verdict:<br/>resolved or not"]
+    P -->|empty / defective| F2(["fail = loss"]):::fail
+    P --> G["official grader<br/>fresh container, pinned ca10a60"]
+    G -->|not resolved| F3(["fail = loss"]):::fail
+    G -->|resolved| W(["win"]):::win
+    classDef retry fill:#fef3c7,stroke:#d97706,color:#1f2937;
+    classDef fail fill:#fee2e2,stroke:#dc2626,color:#1f2937;
+    classDef win fill:#dcfce7,stroke:#16a34a,color:#1f2937;
 ```
 
-This is why the gate-vs-official mismatches in the loss analysis exist at all: the
-harness can think it passed and still be graded a loss. The grade is the diff's alone.
-[`METHODOLOGY.md`](METHODOLOGY.md) has the full pipeline.
+Every **fail** branch is what we count as a loss — all 34 are real graded `not resolved`
+on **non-empty** patches, with no empty captures padding the wins. The harness can think
+it passed (its audit gate green) and still be graded a loss; the grade is the diff's
+alone. Full loss breakdown in [`RESULTS.md`](RESULTS.md); the pipeline is in
+[`METHODOLOGY.md`](METHODOLOGY.md).
 
 ## Reproduce it yourself
 
