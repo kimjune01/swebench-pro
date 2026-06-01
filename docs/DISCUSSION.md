@@ -19,6 +19,14 @@ It also survives the strongest objection, *"your system just contains a strong m
 
 One honest line on the fifty. The standard scaffold caps its turns, so that delta mixes the harness's structure with the compute it is allowed to spend. The grid supports "this harness against the standard one, same model," and stops short of "structure alone." A compute-matched bare arm would isolate structure, and that run is named in the future work.
 
+## Speculative analysis: why the lever is the harness
+
+Interpretation beyond what the grid settles, labeled as such. The magnitude above shows reasoning scaling cannot explain a fifty-point lift; it does not say what does.
+
+The mechanistic reading we favor: reasoning scaling spends more compute on a *single* inquiry, while the methodeutic loop *perturbs* the system — abducing competing hypotheses, acting, reading the evidence back, pruning — so the lift comes from running an inquiry rather than thinking harder about one guess. A first-order knob (more reasoning) moves the score a few points; the second-order move (perturb, then read the deltas) clears a ceiling the knob cannot. A delta on the deltas. This is interpretation, not measurement; the compute-matched, per-component ablation is the test.
+
+A qualitative read points the same way. The generator's primary job here is *constructing the hypothesis graph* — the abductive recon step; the challenger only critiques the diff. In the open-weight run the cheap Composer 2.5 generator produced hypothesis graphs of apparent quality comparable to Sonnet 4.5's (committed per instance as `fc_hgraph_*.md`). If that holds under a rubric, it locates why model tier barely moves the rate: laying out the hypothesis space is not the step that most rewards frontier weights. An impression from reading the graphs, not a measured comparison of graph quality.
+
 ## A dial with one axis
 
 Capability today is sold as spend. Claude Code's `/effort` control (as of v2.1.68, May 2026) runs from "Faster" to "Smarter," and the "Smarter" end is the more-tokens end. Its top setting, `ultracode`, is defined as `xhigh + workflows`: maximum reasoning budget stacked with multi-agent fan-out. The `ultrathink` keyword allocates a 31,999-token thinking budget for a single turn, billed as output, roughly half a dollar at Sonnet rates, and the current default is maximum thinking with no keyword at all.

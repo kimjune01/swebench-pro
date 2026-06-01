@@ -142,6 +142,10 @@ source-only diff is in `runs/scored/artifacts.tar.zst`; re-grading a random hand
 fresh containers confirms the *recorded* verdicts are real. The prompt above is the
 stronger check: it confirms the harness reproduces the *rate* on instances you choose.
 
+Doubts beyond the headline — did it game the grader, are the losses real, is the cost
+honest, is it just the strong model — each have a paste-ready verification prompt in
+[`FOR_SKEPTICS.md`](docs/FOR_SKEPTICS.md). Point your agent in.
+
 ## Will this hold on the private set?
 
 Probably. The harness carries no per-instance priors, so there's no reason a
@@ -226,6 +230,7 @@ as the number.
 | Trace the per-instance cost arithmetic | [`COST_BASIS.md`](docs/COST_BASIS.md) |
 | Read the economic argument (job-shop unit cost) | [`DISCUSSION.md`](docs/DISCUSSION.md) |
 | Weigh the result against the obvious objections | [`OBJECTIONS.md`](docs/OBJECTIONS.md) |
+| Check a doubt yourself (paste-ready prompts) | [`FOR_SKEPTICS.md`](docs/FOR_SKEPTICS.md) |
 | Check the contamination-free OSS receipts | [`pr-receipts.VERIFY.md`](docs/pr-receipts.VERIFY.md) |
 | Understand how the number was produced | [`METHODOLOGY.md`](docs/METHODOLOGY.md) |
 | See how the harness ported from Verified to Pro | [`PRO_PORT.md`](docs/PRO_PORT.md) |
