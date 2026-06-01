@@ -109,8 +109,8 @@ cash equals the economic cost for this leg (no subscription subsidy to back out)
 
 | pair | resolve | economic $/instance | median time |
 |---|--:|--:|--:|
-| Sonnet 4.5 + GPT-5.5 | 95.33% (694/728) | **$5.14** | 12.8 min |
-| Composer 2.5 + Gemini Flash | 93.13% (678/728) | **$0.41** | 8.4 min |
+| Sonnet 4.5 + GPT-5.5 | 95.3% (694/728) | **$5.14** | 12.8 min |
+| Composer 2.5 + Gemini Flash | 93.1% (678/728) | **$0.41** | 8.4 min |
 
 Same frozen harness. The open-weight pair runs **~12.6×** cheaper at **2.2 points**
 lower resolve rate.

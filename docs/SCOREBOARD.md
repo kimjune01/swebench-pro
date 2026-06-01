@@ -6,7 +6,7 @@ the frontier pair (`prereg-pro-v1`) and a pre-registered open-weight ablation
 
 | metric | frontier · Sonnet 4.5 + GPT-5.5 | open-weight · Composer 2.5 + Gemini Flash |
 |---|--:|--:|
-| **RESULT** — resolve rate | **95.33%** · 694/728 | **93.13%** · 678/728 |
+| **RESULT** — resolve rate | **95.3%** · 694/728 | **93.1%** · 678/728 |
 | **COST** — economic $/instance | **~$5.14** | **~$0.41** |
 | **SPEED** — median wall-clock | **~12.8 min** | **~8.4 min** |
 
@@ -51,7 +51,7 @@ xychart-beta
 | qutebrowser | 78 | 1 | 98.7 | | ansible | 89 | 6 | 93.7 |
 | gravitational | 75 | 1 | 98.7 | | internetarchive | 84 | 7 | 92.3 |
 | future | 60 | 1 | 98.4 | | NodeBB | 32 | 11 | 74.4 |
-| flipt | 83 | 2 | 97.6 | | **total** | **694** | **34** | **95.33** |
+| flipt | 83 | 2 | 97.6 | | **total** | **694** | **34** | **95.3** |
 
 Ten of eleven repos at 92.3%+; NodeBB (74.4%) is the outlier, carrying 11 of the 34
 losses. All 34 losses are real graded `not resolved` on non-empty patches, no

@@ -1,6 +1,6 @@
-# Objections: reading the 95.33% honestly
+# Objections: reading the 95.3% honestly
 
-95.33% on SWE-bench Pro-public is a striking number, and a striking number on a
+95.3% on SWE-bench Pro-public is a striking number, and a striking number on a
 contaminated public split should be assumed overfit until it survives the obvious
 attacks. This document states the attacks plainly and bounds each one against the
 evidence in this repo. Where an objection lands, it is conceded.
@@ -49,7 +49,7 @@ open**, by disclosure, not deferral ([`PREREGISTRATION.md`](PREREGISTRATION.md)
 §12, C1). But the model-tier contribution is now bounded from above, in this repo:
 a pre-registered open-weight ablation runs the **same frozen harness** with both
 models swapped to a cheaper pair (Composer 2.5 + Gemini 2.5 Flash) and resolves
-**93.13% vs 95.33%** — a 2.2-point drop. That isn't the same-model control (so
+**93.1% vs 95.3%** — a 2.2-point drop. That isn't the same-model control (so
 strict scaffold-only attribution stays open), yet most of the result survives
 dropping a frontier model class, which is the opposite of "it's just the model"
 ([`PREREGISTRATION-cheap-ablation.md`](PREREGISTRATION-cheap-ablation.md),
@@ -131,7 +131,7 @@ shared repos with Verified) but **not** clean relative to *model pretraining*
 server-run) was sought and is unavailable. So the one test that would settle it,
 cross-repo generalization on unseen repos, cannot be run, and **split-specific
 overfit cannot be ruled out empirically on Pro-public.** The checks in #3 reduce
-some overfit stories; they do not establish that 95.33% reflects generalizable
+some overfit stories; they do not establish that 95.3% reflects generalizable
 task-solving rather than split-specific optimization plus contamination.
 
 ## 10. "95% here vs ~50% on novel OSS: which number is real?"
@@ -140,7 +140,7 @@ They measure different things. Pro-public hands the loop a visible test suite (a
 oracle the gate can stop on) and curated, known-solvable instances; live OSS
 gives neither. That difference could plausibly account for much of the gap before
 contamination is invoked; we do not decompose it precisely. For a posterior on
-real-world performance, use the OSS deployment, not 95.33%: over a ~10-day run the
+real-world performance, use the OSS deployment, not 95.3%: over a ~10-day run the
 same lineage merged **81 PRs into 73 cold repos** (0 self-owned, median merged diff
 49 lines) at a **~50% rate** (81 of 160 decided). That funnel is committed and
 enumerated PR-by-PR in this repo ([`pr-receipts.jsonl`](pr-receipts.jsonl),

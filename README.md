@@ -10,8 +10,8 @@ abduces a hypothesis, **craft** acts on it, **audit** tests and prunes. Sibling 
 
 | model pair | resolve | cost / instance | speed / instance |
 |---|---|---|---|
-| **Sonnet 4.5 + GPT-5.5** · frontier | **95.33%** · 694/728 | **~$5.14** | **~12.8 min** |
-| **Composer 2.5 + Gemini Flash** · open-weight | **93.13%** · 678/728 | **~$0.41** | **~8.4 min** |
+| **Sonnet 4.5 + GPT-5.5** · frontier | **95.3%** · 694/728 | **~$5.14** | **~12.8 min** |
+| **Composer 2.5 + Gemini Flash** · open-weight | **93.1%** · 678/728 | **~$0.41** | **~8.4 min** |
 
 The same frozen harness, two model pairs. Both rows use the *official* grader on the
 same *728 eligible* instances, with *zero left ungraded*. Costs are *economic* —
@@ -19,7 +19,7 @@ every leg priced at public API rates, derived line-by-line in
 [`COST_BASIS.md`](docs/COST_BASIS.md); the open-weight pair runs *~12.6× cheaper at 2.2
 points lower resolve*.
 
-The anatomy below details the *frontier* run: 694 of 728 resolved, *95.33%*. The
+The anatomy below details the *frontier* run: 694 of 728 resolved, *95.3%*. The
 number is honest about its limits:
 
 - It is the *public* split, so these repos can sit in a model's training data. This
@@ -125,13 +125,13 @@ Gemini CLI, whatever you run. The open-weight ablation shows the harness isn't
 model-picky, so the repro steps don't depend on a particular vendor or tier:
 
 > I'm skeptical of the SWE-bench Pro result in github.com/kimjune01/swebench-pro
-> (claimed 95.33% resolved). First, inspect `driver/bootstrap.sh` and the pipeline it
+> (claimed 95.3% resolved). First, inspect `driver/bootstrap.sh` and the pipeline it
 > invokes, and confirm it only pulls the pinned official eval repo, runs the grader in
 > Docker, and uses my credentials locally; tell me what it does before running it.
 > Then, following `CLAUDE.md`/`docs/PROCEDURE.md`, run the *harness-under-test* on a
 > *random* ~20-instance sample from `runs/audit/eligible.txt` (print your seed and
 > ids), grade each with the *unmodified official* grader, and report resolved / 20
-> with a confidence interval and whether it's consistent with 95.33%. Use my own
+> with a confidence interval and whether it's consistent with 95.3%. Use my own
 > machine and tokens. If you hit a snag, the repo's docs have the fix.
 
 Goal-first on purpose: it points at the destination instead of a recipe; a snag is a one-line
@@ -145,7 +145,7 @@ stronger check: it confirms the harness reproduces the *rate* on instances you c
 ## Will this hold on the private set?
 
 Probably. The harness carries no per-instance priors, so there's no reason a
-held-out split should break it. But the 95.33% is the public split, and four things
+held-out split should break it. But the 95.3% is the public split, and four things
 could still pull a private number down, in roughly descending order of concern:
 
 - **Contamination.** Public repos can be in training data; the private split is held
@@ -189,7 +189,7 @@ for the held-out set is in [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 t
 The score measures the *harness*, not the model. It's what the methodeutic loop —
 recon, craft, audit — extracts on top of whatever model fills its stages: the diagnosis
 discipline, the anti-cheat capture rules, the audit gate, the recovery loop. The open-weight ablation pins that down — swap the frontier pair for cheap
-open-weight models and the same frozen harness still resolves *93.13%*, a 2.2-point dip,
+open-weight models and the same frozen harness still resolves *93.1%*, a 2.2-point dip,
 so the loop's structure, not a frontier model's raw capability, carries most of the
 result. The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
 contaminated on these repos, with the strict scaffold-vs-model control deliberately
@@ -250,7 +250,7 @@ harness; this ranks a *harness*. The fuller argument is in [`DISCUSSION.md`](doc
 
 **The goal this run auditioned for:** a single frozen, instance-agnostic artifact that
 clears SWE-bench Pro under official third-party grading on the held-out private set, in
-one submission, verifiably free of per-instance priors. The public 95.33% is the
+one submission, verifiably free of per-instance priors. The public 95.3% is the
 audition; the deliverable is the artifact plus its reproducible attestation trail
 ([`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 to §1).
 

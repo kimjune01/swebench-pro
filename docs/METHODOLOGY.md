@@ -1,4 +1,4 @@
-# Methodology: how the 95.33% was measured
+# Methodology: how the 95.3% was measured
 
 This is the auditor's-eye summary: what the system is, what one instance goes
 through, how a verdict is decided, and how the run was billed. It synthesizes

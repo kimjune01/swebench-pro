@@ -1,6 +1,6 @@
 # Results: SWE-bench Pro, frozen tag `prereg-pro-v1`
 
-**694 / 728 eligible resolved = 95.33%**, official Pro grader, single frozen
+**694 / 728 eligible resolved = 95.3%**, official Pro grader, single frozen
 instance-blind artifact, whole eligible set in one measurement. All numbers
 below are recomputed from `runs/scored/run.jsonl` (last-wins dedupe by
 `instance_id`, matching the `./score` tool). A reader can re-derive every
@@ -13,7 +13,7 @@ single verdict (PROCEDURE §6).
   `runs/audit/defects.jsonl`; the kept set is `runs/audit/eligible.txt`
   ([`PREREGISTRATION.md`](PREREGISTRATION.md) §6).
 - **Terminal verdicts:** 728 (694 WIN, 34 LOSS), **0 INCOMPLETE**: full coverage.
-- **Resolve-rate:** W / (W + L) = 694 / 728 = 95.33%.
+- **Resolve-rate:** W / (W + L) = 694 / 728 = 95.3%.
 - **Run span:** ~3.5 days end-to-end (first dispatch 2026-05-27 00:58Z → last
   verdict 2026-05-30 17:37Z); **not uninterrupted:** three provider-credential stalls and a mid-run switch
   from Max-subscription to paid API billing, all recovered with 0 instances
@@ -76,7 +76,7 @@ craft + audit + capture + grade), recomputed across all 728.
 | ansible | 89 | 6 | 93.7 | 919 | 697 | 1294 | 6391 |
 | internetarchive | 84 | 7 | 92.3 | 726 | 626 | 1082 | 4347 |
 | NodeBB | 32 | 11 | 74.4 | 1433 | 873 | 3178 | 6441 |
-| **total** | **694** | **34** | **95.33** | **1060** | **770** | **1537** | **10745** |
+| **total** | **694** | **34** | **95.3** | **1060** | **770** | **1537** | **10745** |
 
 Repo labels are the dataset org prefix; the canonical instance ids are
 `instance_<org>__<repo>-<sha>` (e.g. `gravitational` is

@@ -8,7 +8,7 @@ NOT polished (Composer 2.5 swaperoo run in flight). Working notes.
 "harness is the contestant, model controlled, good+cheap+fast" leaderboard exist?
 
 ## H1: Pro baselines (verified, source-anchored)
-**Verdict:** our 95.33% is ~2× the standardized baseline and ~18pt over the live leader.
+**Verdict:** our 95.3% is ~2× the standardized baseline and ~18pt over the live leader.
 - Paper reference harness (SWE-agent, 250-turn), Sept 2025: GPT-5 **23.3%**, Opus 4.1 **23.1%** public; ~15-18% commercial. [arXiv 2509.16941, scale.com/blog/swe-bench-pro]
 - SEAL standardized (2026 models): gpt-5.4 **59.1%**, opus-4-5 45.9%, gemini-3.1-pro 46.1%; top "Claude Mythos" ~77.8% (UNVERIFIED). [labs.scale.com/leaderboard/swe_bench_pro_public]
 - Custom scaffolds buy **+5 to +15pt** over standardized (morphllm). That's the documented "harness contribution" ceiling, far below our +36pt over the 59% leader.

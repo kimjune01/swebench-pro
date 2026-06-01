@@ -1,6 +1,6 @@
 # Run notes: provenance for `prereg-pro-v1`
 
-The audit trail for the 95.33% measurement: what interrupted the run, how each
+The audit trail for the 95.3% measurement: what interrupted the run, how each
 interruption was recovered, what it cost, and the load pattern that shaped the
 whole thing. None of this is a footnote. Three OAuth stalls and a mid-run
 billing-mode switch are part of how the number was produced, and the prereg's
