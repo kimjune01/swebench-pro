@@ -19,8 +19,8 @@ or a stated limit), never an argument.
 | "It just memorized the repos" | Conceded: the **models** pretrained on these repos (model-side, **universal** across every leaderboard entry), not a harness property (#1). |
 | "It gamed the grader" | **Unmodified official grader**, pinned commit; re-grade any verdict yourself (#5, #6). |
 | "Cherry-picked instances" | Whole eligible set (728), **0 INCOMPLETE**, 3 gold-patch defects named; reproduce on a **random** sample (#7). |
-| "Expensive brute force, not reasoning" | ~$2.60 / ~13 min each, **and** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
-| "Why should I trust you?" | You don't: **one prompt** reproduces a random sample on your machine ([README](README.md)). Trust is the one axis an AI can't win; verification is the answer. |
+| "Expensive brute force, not reasoning" | ~$5.14 / ~12.8 min each at API rates — and the **open-weight pair does it for ~$0.41** — **plus** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
+| "Why should I trust you?" | You don't: **one prompt** reproduces a random sample on your machine ([README](../README.md)). Trust is the one axis an AI can't win; verification is the answer. |
 | "But it's AI" | A **values** call, not an evidence one, not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
 
 The sections below are the depth layer; scan the table, dig where you doubt.
@@ -32,7 +32,11 @@ Conceded as unexcludable, which is why there is **no capability claim**. Sonnet
 narrower thing on record: the reference baselines (Sonnet 4 + gpt4o in SWE-Agent)
 were contaminated on the same repos and still failed the cells our system
 resolves. So recall-only is a weaker explanation than against a clean baseline;
-weaker, not eliminated ([`PREREGISTRATION.md`](PREREGISTRATION.md) §12, C2).
+weaker, not eliminated ([`PREREGISTRATION.md`](PREREGISTRATION.md) §12, C2). The
+contamination-*free* corroboration is out-of-split: the same methodeutics lineage
+merged 81 PRs into 73 cold repos (no training priors) at a ~50% maintainer rate, where
+recall of a pretrained repo cannot inflate a merge decision (#10,
+[`pr-receipts.VERIFY.md`](pr-receipts.VERIFY.md)).
 
 ## 2. "How much is the scaffold vs just stronger models?"
 
@@ -42,8 +46,14 @@ SWE-Agent, so a we-resolve cell changes **both** scaffold and model class at
 once. The clean control (same models through a vanilla scaffold) is not
 budget-viable and was not run, so scaffold-only attribution stays **permanently
 open**, by disclosure, not deferral ([`PREREGISTRATION.md`](PREREGISTRATION.md)
-§12, C1). The cross-model transfer evidence that bears on this lives outside this
-repo; within Pro-public, the scaffold/model split is unidentified.
+§12, C1). But the model-tier contribution is now bounded from above, in this repo:
+a pre-registered open-weight ablation runs the **same frozen harness** with both
+models swapped to a cheaper pair (Composer 2.5 + Gemini 2.5 Flash) and resolves
+**93.13% vs 95.33%** — a 2.2-point drop. That isn't the same-model control (so
+strict scaffold-only attribution stays open), yet most of the result survives
+dropping a frontier model class, which is the opposite of "it's just the model"
+([`PREREGISTRATION-cheap-ablation.md`](PREREGISTRATION-cheap-ablation.md),
+[`COST_BASIS.md`](COST_BASIS.md)).
 
 ## 3. "You developed the harness on these repos, so you overfit."
 
@@ -130,10 +140,11 @@ They measure different things. Pro-public hands the loop a visible test suite (a
 oracle the gate can stop on) and curated, known-solvable instances; live OSS
 gives neither. That difference could plausibly account for much of the gap before
 contamination is invoked; we do not decompose it precisely. For a posterior on
-real-world performance, use the OSS deployment, not 95.33%. The OSS number and its
-full funnel are public and enumerated PR-by-PR
-([profile receipts](https://github.com/kimjune01/kimjune01): `pr-receipts.jsonl`,
-`closed-pr-reasons.jsonl`).
+real-world performance, use the OSS deployment, not 95.33%: over a ~10-day run the
+same lineage merged **81 PRs into 73 cold repos** (0 self-owned, median merged diff
+49 lines) at a **~50% rate** (81 of 160 decided). That funnel is committed and
+enumerated PR-by-PR in this repo ([`pr-receipts.jsonl`](pr-receipts.jsonl),
+verifiable two ways via [`pr-receipts.VERIFY.md`](pr-receipts.VERIFY.md)).
 
 ## 11. "Is the OSS merge rate inflated by pre-PR filtering or by how closes are counted?"
 
@@ -162,16 +173,17 @@ mean 193, p90 291), 13.7% over SEAL's 250-turn reference cap, **plus** a GPT-5.5
 challenger on top, so total model calls exceed a single 250-turn agent. Two cost
 figures, kept separate because they are not the same thing:
 
-- **Replicable marginal cost under API pricing: ~$2.60 / instance.** Measured, not
-  modeled: the API-mode canary ran $2.07/instance on light repos, blended higher
-  across heavy ones. Comparable to a vendor's advertised per-task cost. Caveat: this
-  is the **Claude (Sonnet 4.5) leg only**: the GPT-5.5 challenger ran on a generous
-  codex subscription (~$0 marginal), so a reproducer metering both models budgets
-  somewhat above $2.60.
-- **This run's actual cash outlay: $813.52 API spend + ~$58 EC2.** Most instances
-  ran on the operator's **Max $200/mo plan** at ~$0 marginal; only ~310 were billed
-  to API (≈ $813.52 / $2.60). The subscription subsidy makes the *cash* number
-  non-portable, which is exactly why the ~$2.60 API rate above is the one to quote.
+- **Replicable economic cost at API pricing: ~$5.14 / instance** for the frontier
+  pair (Sonnet 4.5 leg $4.73 + GPT-5.5 ~$0.42, every leg metered at public rates incl.
+  cache). The open-weight pair does the same work for **~$0.41** (~12.6× cheaper). This
+  supersedes an earlier "~$2.60" headline, which was *cash-per-billed-instance* and
+  priced only the Claude leg; full line-by-line derivation in
+  [`COST_BASIS.md`](COST_BASIS.md).
+- **This run's actual cash outlay: ≈ $858 marginal + ~$58 EC2.** Most legs ran on flat
+  subscriptions (Claude Max $200/mo, codex, Cursor) at ~$0 marginal, so the cash was
+  far below the economic figure — non-portable by construction, which is why the
+  **economic** rate is the one to quote. The cash-vs-economic reconciliation is in
+  [`COST_BASIS.md`](COST_BASIS.md#cash-vs-economic).
 
 And "fast" is **per instance**, not end-to-end: median ~13 min per instance, but
 the full 728-instance run took **~3.5 days** of wall-clock, bounded by fleet size

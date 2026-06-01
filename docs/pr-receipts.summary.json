@@ -1,0 +1,8 @@
+{
+  "epoch": "2026-05-09T00:34:00Z",
+  "merged": 81,
+  "closed_unmerged": 79,
+  "decided": 160,
+  "merge_rate_pct": 50.6,
+  "note": "merge_rate = merged / (merged + closed-unmerged); excludes still-open PRs and the pre-PR triage funnel (see sweep). Live GitHub counts; reproduce with the GraphQL in this repo."
+}

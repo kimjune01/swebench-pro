@@ -68,7 +68,7 @@ for i in sorted(won_rerun): L.append(f"- ✓↻ {i}")
 L.append("")
 L.append("## Not won (empty patch / timeout / unresolved, every attempt)")
 for i in sorted(lost): L.append(f"- ✗ {i}")
-open(f"{REPO}/SCOREBOARD.md","w").write("\n".join(L)+"\n")
+open(f"{REPO}/docs/SCOREBOARD.md","w").write("\n".join(L)+"\n")
 print(f"wins={len(won)} (first={len(won_first)} rerun={len(won_rerun)}) "
       f"attempted={len(attempted)} not-won={len(lost)} runs={total_runs}")
 print("not won:", sorted(lost))

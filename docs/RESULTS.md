@@ -278,7 +278,7 @@ Two things here are **verified**, not inferred:
   stripped (`hasattr(val, children)`, `combined =  .join(words)`, `Phrase(f{normed})`).
   The patch cannot parse, so it was guaranteed to fail official grading no matter how
   sound the underlying fix was. This is a capture-pipeline defect that manufactures a
-  false loss, the same class flagged in [`docs/bench-defects.md`](docs/bench-defects.md).
+  false loss, the same class flagged in [`docs/bench-defects.md`](bench-defects.md).
 - **Several captured diffs leaked scratch files** (`fix.py`, `auth.yaml`,
   `appendonly.aof.manifest`) committed alongside the real source edits. The source
   edits are present (no loss has an empty source patch), but the leaked files are a
@@ -317,7 +317,7 @@ To audit any loss: take its `pro_patch_*.diff`, build `pred.json`, and re-grade
 on a clean container per PROCEDURE §3 / §6. Re-grading the captured diff under
 the pinned procedure reproduces the `not resolved` verdict without re-running
 the agent; the grade reads only the diff, modulo the grader pathologies
-documented in [`docs/bench-defects.md`](docs/bench-defects.md). The trajectory
+documented in [`docs/bench-defects.md`](bench-defects.md). The trajectory
 JSONLs show *why* the loop emitted that diff.
 
 ## Open question: ansible runtime shape (flagged, not a finding)

@@ -35,7 +35,7 @@ If a proposed step fails any clause, it's out — however well it would raise th
 Public Pro is in hand; private (held-out) is a later request. They're two modes:
 
 - **Public** — tests visible, so the full local pipeline runs as on Verified (apply test patch, local
-  gate, source-only capture, official grade). This is where the methodeutics loop lives: improve the
+  gate, source-only capture, official grade). This is where the methodeutic loop lives: improve the
   general artifact, restart from square 1, iterate until a frozen version clears the set.
 - **Private** — held out, server-graded, **one blind submission of the frozen artifact**.
 
@@ -267,7 +267,7 @@ recon primitive; everything wider is composition the pipeline already does.
 ## Sequence
 
 Public: one-instance smoke (image pulls, container sets up, gate runs, capture, official verdict) →
-small sharded batch → full pool with the methodeutics loop until a frozen artifact clears it. Then
+small sharded batch → full pool with the methodeutic loop until a frozen artifact clears it. Then
 private: request access, design the blind stopping signal, run the frozen artifact once, record as-is,
 and rewrite the README/LIMITATIONS contamination posture for Pro's actual held-out status (don't copy
 the Verified language).

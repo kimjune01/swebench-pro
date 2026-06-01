@@ -16,7 +16,7 @@ act on it, test and prune. Sibling repo:
 The same frozen harness, two model pairs. Both rows use the **official** grader on the
 same **728 eligible** instances, with **zero left ungraded**. Costs are *economic* —
 every leg priced at public API rates, derived line-by-line in
-[`COST_BASIS.md`](COST_BASIS.md); the open-weight pair runs **~12.6× cheaper at 2.2
+[`COST_BASIS.md`](docs/COST_BASIS.md); the open-weight pair runs **~12.6× cheaper at 2.2
 points lower resolve**.
 
 The anatomy below details the **frontier** run: 694 of 728 resolved, **95.33%**. The
@@ -50,7 +50,7 @@ The outer loop earns its keep narrowly: it **converted 46 first-pass misses into
 about 7% of the graded wins, and otherwise stays out of the way. First-pass / recovered
 counts are over the 648 wins with captured trajectory data (the other 46 wins predate
 trajectory capture). The loss-side anatomy, the per-depth breakdown, and the full-run
-flow down to failure modes are in [`RESULTS.md`](RESULTS.md).
+flow down to failure modes are in [`RESULTS.md`](docs/RESULTS.md).
 
 ## What it costs
 
@@ -60,7 +60,7 @@ reproduce them. The frontier pair runs **~$5.14**; the open-weight pair does the
 work for **~$0.41**. The operator's actual cash was far lower, most of it absorbed by
 flat subscriptions (Claude Max, codex, Cursor) at roughly zero marginal cost. The full
 arithmetic for both pairs, plus the cash-vs-economic reconciliation, is in
-[`COST_BASIS.md`](COST_BASIS.md).
+[`COST_BASIS.md`](docs/COST_BASIS.md).
 
 ## How fast it runs
 
@@ -84,7 +84,7 @@ xychart-beta
 The **~13 min** is per instance. The full 728-set took **~3.5 days** of wall-clock
 end-to-end, bounded by fleet size (4 to 8 boxes) and three auth stalls, not by
 per-instance speed. The run is embarrassingly parallel
-([`SCOREBOARD.md`](SCOREBOARD.md), [`RUN_NOTES.md`](RUN_NOTES.md)).
+([`SCOREBOARD.md`](docs/SCOREBOARD.md), [`RUN_NOTES.md`](docs/RUN_NOTES.md)).
 
 ## How a verdict is made
 
@@ -111,8 +111,8 @@ flowchart LR
 Every **fail** branch is what we count as a loss — all 34 are real graded `not resolved`
 on **non-empty** patches, with no empty captures padding the wins. The harness can think
 it passed (its audit gate green) and still be graded a loss; the grade is the diff's
-alone. Full loss breakdown in [`RESULTS.md`](RESULTS.md); the pipeline is in
-[`METHODOLOGY.md`](METHODOLOGY.md).
+alone. Full loss breakdown in [`RESULTS.md`](docs/RESULTS.md); the pipeline is in
+[`METHODOLOGY.md`](docs/METHODOLOGY.md).
 
 ## Reproduce it yourself
 
@@ -126,7 +126,7 @@ afternoon. Paste this to your coding agent (codex, Claude Code, Cursor):
 > (claimed 95.33% resolved). First, inspect `driver/bootstrap.sh` and the pipeline it
 > invokes, and confirm it only pulls the pinned official eval repo, runs the grader in
 > Docker, and uses my credentials locally; tell me what it does before running it.
-> Then, following `CLAUDE.md`/`PROCEDURE.md`, run the **harness-under-test** on a
+> Then, following `CLAUDE.md`/`docs/PROCEDURE.md`, run the **harness-under-test** on a
 > **random** ~20-instance sample from `runs/audit/eligible.txt` (print your seed and
 > ids), grade each with the **unmodified official** grader, and report resolved / 20
 > with a confidence interval and whether it's consistent with 95.33%. Use my own
@@ -156,8 +156,20 @@ could still pull a private number down, in roughly descending order of concern:
 - **Distribution shift.** Different repos, possibly a blind submission gate, and task
   shapes the loop hasn't been exercised on.
 
+**A contamination-free check already exists.** Over a **~10-day** run the same
+recon → craft → audit method shipped **81 merged PRs into 73 cold repos** — codebases it
+didn't own and held no training priors for: fresh, post-cutoff issues, accepted by real
+maintainers at a **~50% merge rate** (81 of 160 decided). The ledger is committed
+([`pr-receipts.jsonl`](docs/pr-receipts.jsonl)) and verifiable two ways — recompute from the
+file or rerun the live GraphQL — per [`pr-receipts.VERIFY.md`](docs/pr-receipts.VERIFY.md). That tests the repo-familiarity and
+distribution-shift worries head-on, where training-data overlap can't help: a maintainer
+merges the fix or closes it. These came from the sibling
+[`sweep`](https://github.com/kimjune01/sweep) pipeline — the same methodeutics lineage
+rather than a byte-for-byte transplant of this harness — so read it as evidence for the
+method, with the open-weight ablation above as the evidence for *this* scaffold.
+
 This is why the public number is framed as an audition, short of a deliverable. The strategy
-for the held-out set is in [`PREREGISTRATION.md`](PREREGISTRATION.md) §0 to §1.
+for the held-out set is in [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 to §1.
 
 ## What the number is, and isn't
 
@@ -166,7 +178,7 @@ plus a GPT-5.5 craft challenger, both contaminated on these repos, with the
 scaffold-vs-model axis a deliberately unclosed confound. The defensible reading is "this
 frozen system resolved 694/728 under official grading," not "the model can solve 95% of
 SWE-bench Pro." What the system is and why the confound stays open:
-[`METHODOLOGY.md`](METHODOLOGY.md) and [`PREREGISTRATION.md`](PREREGISTRATION.md) §7/§12.
+[`METHODOLOGY.md`](docs/METHODOLOGY.md) and [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §7/§12.
 
 Provenance in brief: 728 = 731 dataset instances minus 3 whose own gold patch fails the
 official grader (a pre-run defect audit, frozen before the scored run). Every figure
@@ -175,20 +187,20 @@ source-only diff in `runs/scored/artifacts.tar.zst` (87 MB, 6,553 files; sha256 
 listing in `runs/scored/artifacts.MANIFEST.txt`). The run was **not uninterrupted**:
 three provider-credential stalls and a mid-run switch from Max-subscription to paid API
 billing, all recovered under the prereg's recovery discipline with 0 instances lost
-([`RUN_NOTES.md`](RUN_NOTES.md)).
+([`RUN_NOTES.md`](docs/RUN_NOTES.md)).
 
 ## Where to go next
 
 | if you want to… | read |
 |---|---|
-| scan result · cost · speed with charts | [`SCOREBOARD.md`](SCOREBOARD.md) |
-| audit the numbers and read the loss analysis | [`RESULTS.md`](RESULTS.md) |
-| weigh the result against the obvious objections | [`OBJECTIONS.md`](OBJECTIONS.md) |
-| understand how the number was produced | [`METHODOLOGY.md`](METHODOLOGY.md) |
-| check the rules the run was held to | [`PREREGISTRATION.md`](PREREGISTRATION.md) |
-| audit the run's provenance (stalls, cost, load) | [`RUN_NOTES.md`](RUN_NOTES.md) |
-| reproduce a result from scratch | [`PROCEDURE.md`](PROCEDURE.md) |
-| read the chronological trail | [`WORKLOG.md`](WORKLOG.md) |
+| scan result · cost · speed with charts | [`SCOREBOARD.md`](docs/SCOREBOARD.md) |
+| audit the numbers and read the loss analysis | [`RESULTS.md`](docs/RESULTS.md) |
+| weigh the result against the obvious objections | [`OBJECTIONS.md`](docs/OBJECTIONS.md) |
+| understand how the number was produced | [`METHODOLOGY.md`](docs/METHODOLOGY.md) |
+| check the rules the run was held to | [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) |
+| audit the run's provenance (stalls, cost, load) | [`RUN_NOTES.md`](docs/RUN_NOTES.md) |
+| reproduce a result from scratch | [`docs/PROCEDURE.md`](docs/PROCEDURE.md) |
+| read the chronological trail | [`WORKLOG.md`](docs/WORKLOG.md) |
 
 ## The method, the goal, and the fine print
 
@@ -203,10 +215,10 @@ the textbook at [june.kim/reading/methodeutics](https://june.kim/reading/methode
 clears SWE-bench Pro under official third-party grading on the held-out private set, in
 one submission, verifiably free of per-instance priors. The public 95.33% is the
 audition; the deliverable is the artifact plus its reproducible attestation trail
-([`PREREGISTRATION.md`](PREREGISTRATION.md) §0 to §1).
+([`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 to §1).
 
 **Funding:** this benchmark work was self-funded, on the author's own EC2 and Claude Max
-subscription, with no external or institutional funding ([`RUN_NOTES.md`](RUN_NOTES.md)).
+subscription, with no external or institutional funding ([`RUN_NOTES.md`](docs/RUN_NOTES.md)).
 
 **License:** repo CC BY-SA-NS ([`LICENSE.md`](LICENSE.md)); skills (`skills/`)
 dual-licensed CC BY-SA-NS **or** GPL-3.0, recipient's choice

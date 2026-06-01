@@ -8,7 +8,7 @@ recovery discipline (§4, §14) is what keeps them from contaminating it.
 
 The full chronological trail lives in [`WORKLOG.md`](WORKLOG.md); this file is
 the compressed provenance view. Per-stall machinery is in
-[`docs/auth_storm_2026-05-29.md`](docs/auth_storm_2026-05-29.md) and the
+[`docs/auth_storm_2026-05-29.md`](auth_storm_2026-05-29.md) and the
 `runs/scored/auth_strips.jsonl` ledger.
 
 ## Run window

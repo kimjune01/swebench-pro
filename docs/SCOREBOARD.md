@@ -1,17 +1,26 @@
 # Scoreboard: result · cost · speed
 
-SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement.
+SWE-bench Pro, whole eligible set (728) in one measurement, run with two model pairs:
+the frontier pair (`prereg-pro-v1`) and a pre-registered open-weight ablation
+(`prereg-pro-v1-cheap`).
 
-| | metric | value | basis |
-|---|---|---|---|
-| **RESULT** | resolve rate | **95.33%** | 694 / 728 eligible, official grader |
-| **COST** | avg token cost / instance | **~$4.73** | Claude-leg economic, full API rates incl. cache ([`COST_BASIS.md`](COST_BASIS.md)) |
-| **SPEED** | wall-clock / instance | **~13 min** | median (p50 770 s) |
+| metric | frontier · Sonnet 4.5 + GPT-5.5 | open-weight · Composer 2.5 + Gemini Flash |
+|---|--:|--:|
+| **RESULT** — resolve rate | **95.33%** · 694/728 | **93.13%** · 678/728 |
+| **COST** — economic $/instance | **~$5.14** | **~$0.41** |
+| **SPEED** — median wall-clock | **~12.8 min** | **~8.4 min** |
+
+Same frozen harness, both models swapped; same 728 eligible, **official** grader. The
+open-weight pair runs **~12.6× cheaper at 2.2 points lower resolve** — the cleanest single
+read on how much the *harness* (not the model tier) carries the result. Cost is *economic*
+(public API rates incl. cache; the frontier Claude-leg-only rate is ~$4.73, $5.14 the full
+pair) — derivation and the cash-vs-economic split in [`COST_BASIS.md`](COST_BASIS.md). The
+per-repo, patch-size, turn, and runtime breakdowns below are the **frontier** run.
 
 > **Don't trust it; verify it.** This is a **public, contamination-prone** split and a
 > **system/harness** result, not a model-capability claim. So the repo doesn't ask for
 > your trust; it hands you the means to check: reproduce a random sample in one prompt
-> ([README](README.md)). Trust is the one axis an AI can't win against a human; the
+> ([README](../README.md)). Trust is the one axis an AI can't win against a human; the
 > answer is verifiability, not a louder number.
 
 > **Not a leaderboard entry.** The official SWE-bench Pro runs evaluate **models**:
