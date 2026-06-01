@@ -1,9 +1,9 @@
 # swebench-pro
 
-A **recon → craft → audit** harness pointed at **SWE-bench Pro**, run end-to-end
+A **methodeutic** harness pointed at **SWE-bench Pro**, run end-to-end
 under a frozen, pre-registered protocol. The loop is
-[applied methodeutics](https://june.kim/reading/methodeutics): abduce a hypothesis,
-act on it, test and prune. Sibling repo:
+[applied methodeutics](https://june.kim/reading/methodeutics) — three skills: **recon**
+abduces a hypothesis, **craft** acts on it, **audit** tests and prunes. Sibling repo:
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified).
 
 ## The result
@@ -33,7 +33,7 @@ number is honest about its limits:
 
 One good shot plus a small recovery tail rather than a grind. All 728 eligible instances flow
 down to a verdict: 694 resolve, 34 do not, and among the wins with captured trajectories
-the first recon → craft → audit pass already carries **93%**, with the outer loop
+the first methodeutic pass already carries **93%**, with the outer loop
 recovering the rest.
 
 ```mermaid
@@ -94,7 +94,7 @@ verdict is always the **official** grade of the captured source-only diff, run o
 
 ```mermaid
 flowchart LR
-    I["SWE-bench Pro<br/>instance"] --> A["recon → craft → audit<br/>agent loop"]
+    I["SWE-bench Pro<br/>instance"] --> A["methodeutic loop<br/>recon · craft · audit"]
     A -->|audit gate red| R(["retry<br/>outer loop"]):::retry
     R --> A
     A -->|budget spent| F1(["fail = loss"]):::fail
@@ -119,8 +119,10 @@ alone. Full loss breakdown in [`RESULTS.md`](docs/RESULTS.md); the pipeline is i
 Don't take the number on faith, and you don't need to rerun 728 instances or stand up
 a cloud fleet. Pick a **random** sample, run the harness on *your* picks, grade with the
 **official** grader; most instances run on your laptop under Docker/OrbStack (no EC2
-unless a heavy repo is drawn), so a 20-instance check is ~$50 of your own tokens and an
-afternoon. Paste this to your coding agent (codex, Claude Code, Cursor):
+unless a heavy repo is drawn), so a 20-instance check is an evening of subscription
+tokens. Paste this to **any coding-grade agent** — codex, Claude Code, Cursor,
+Gemini CLI, whatever you run. The open-weight ablation shows the harness isn't
+model-picky, so the repro steps don't depend on a particular vendor or tier:
 
 > I'm skeptical of the SWE-bench Pro result in github.com/kimjune01/swebench-pro
 > (claimed 95.33% resolved). First, inspect `driver/bootstrap.sh` and the pipeline it
@@ -142,7 +144,7 @@ stronger check: it confirms the harness reproduces the *rate* on instances you c
 
 ## Will this hold on the private set?
 
-Honestly, probably. The harness carries no per-instance priors, so there's no reason a
+Probably. The harness carries no per-instance priors, so there's no reason a
 held-out split should break it. But the 95.33% is the public split, and four things
 could still pull a private number down, in roughly descending order of concern:
 
@@ -157,11 +159,17 @@ could still pull a private number down, in roughly descending order of concern:
   shapes the loop hasn't been exercised on.
 
 **A contamination-free check already exists.** Over a **~10-day** run the same
-recon → craft → audit method shipped **81 merged PRs into 73 cold repos** — codebases it
+methodeutic loop shipped **81 merged PRs into 73 cold repos** — codebases it
 didn't own and held no training priors for: fresh, post-cutoff issues, accepted by real
-maintainers at a **~50% merge rate** (81 of 160 decided). The ledger is committed
+maintainers at a **~50% merge rate** (81 of 160 decided). That rate is a *floor* on
+correctness, not an estimate of it: a close-reason audit found only ~8 of the 79 closures
+were rejections on the merits — the rest were no-AI policies, AI discrimination, author
+withdrawals, and duplicates, none of which mean the fix was wrong — so the share of
+*correct* solutions runs well above 50%. The ledger is committed
 ([`pr-receipts.jsonl`](docs/pr-receipts.jsonl)) and verifiable two ways — recompute from the
-file or rerun the live GraphQL — per [`pr-receipts.VERIFY.md`](docs/pr-receipts.VERIFY.md). That tests the repo-familiarity and
+file or rerun the live GraphQL ([`pr-receipts.VERIFY.md`](docs/pr-receipts.VERIFY.md)); the
+OSS program's [hypothesis graph](docs/OSS_HYPOTHESIS_GRAPH.md) has the per-failure-mode
+breakdown. That tests the repo-familiarity and
 distribution-shift worries head-on, where training-data overlap can't help: a maintainer
 merges the fix or closes it. These came from the sibling
 [`sweep`](https://github.com/kimjune01/sweep) pipeline — the same methodeutics lineage
@@ -171,13 +179,17 @@ method, with the open-weight ablation above as the evidence for *this* scaffold.
 This is why the public number is framed as an audition, short of a deliverable. The strategy
 for the held-out set is in [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 to §1.
 
-## What the number is, and isn't
+## What the score actually measures
 
-This is a **system** number, not a capability claim. The system is a Sonnet-4.5 generator
-plus a GPT-5.5 craft challenger, both contaminated on these repos, with the
-scaffold-vs-model axis a deliberately unclosed confound. The defensible reading is "this
-frozen system resolved 694/728 under official grading," not "the model can solve 95% of
-SWE-bench Pro." What the system is and why the confound stays open:
+The score measures the **harness**, not the model. It's what the methodeutic loop —
+recon, craft, audit — extracts on top of whatever model fills its stages: the diagnosis
+discipline, the anti-cheat capture rules, the audit gate, the recovery loop. The open-weight ablation pins that down — swap the frontier pair for cheap
+open-weight models and the same frozen harness still resolves **93.13%**, a 2.2-point dip,
+so the loop's structure, not a frontier model's raw capability, carries most of the
+result. The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
+contaminated on these repos, with the strict scaffold-vs-model control deliberately
+unclosed. The defensible reading is "the methodeutic harness resolved 694/728 under
+official grading," not "the model can solve 95% of SWE-bench Pro." What the system is and why the confound stays open:
 [`METHODOLOGY.md`](docs/METHODOLOGY.md) and [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §7/§12.
 
 Provenance in brief: 728 = 731 dataset instances minus 3 whose own gold patch fails the
@@ -185,22 +197,38 @@ official grader (a pre-run defect audit, frozen before the scored run). Every fi
 recomputes from `runs/scored/run.jsonl`; every verdict re-grades from its captured
 source-only diff in `runs/scored/artifacts.tar.zst` (87 MB, 6,553 files; sha256 +
 listing in `runs/scored/artifacts.MANIFEST.txt`). The run was **not uninterrupted**:
-three provider-credential stalls and a mid-run switch from Max-subscription to paid API
-billing, all recovered under the prereg's recovery discipline with 0 instances lost
-([`RUN_NOTES.md`](docs/RUN_NOTES.md)).
+provider-credential (auth) stalls, token-quota stoppages, the occasional box crash (heavy
+images exhausting disk), and a mid-run switch from Max-subscription to paid API billing.
+None of these count as losses — the recovery discipline re-dispatches only instances that
+captured a **0-byte patch** (no submission ever happened), while any *non-empty* patch
+graded `not resolved` stays a LOSS mechanically. So infrastructure failure is discounted
+from the score by construction, not by judgment: the 34 losses are genuine graded
+outcomes, and all stalls recovered with 0 instances lost
+([`RUN_NOTES.md`](docs/RUN_NOTES.md), [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §14).
+
+The whole campaign is on the record decision-by-decision: an append-only
+[`WORKLOG.md`](docs/WORKLOG.md) timestamps every choice, dead end, and losing run as it
+happened — a lab notebook left open, not a tidied-up writeup. That's still rare for a
+benchmark result, and it's the point: the trail that produced the number is as auditable
+as the number.
 
 ## Where to go next
 
-| if you want to… | read |
+| If you want to… | Read |
 |---|---|
-| scan result · cost · speed with charts | [`SCOREBOARD.md`](docs/SCOREBOARD.md) |
-| audit the numbers and read the loss analysis | [`RESULTS.md`](docs/RESULTS.md) |
-| weigh the result against the obvious objections | [`OBJECTIONS.md`](docs/OBJECTIONS.md) |
-| understand how the number was produced | [`METHODOLOGY.md`](docs/METHODOLOGY.md) |
-| check the rules the run was held to | [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) |
-| audit the run's provenance (stalls, cost, load) | [`RUN_NOTES.md`](docs/RUN_NOTES.md) |
-| reproduce a result from scratch | [`docs/PROCEDURE.md`](docs/PROCEDURE.md) |
-| read the chronological trail | [`WORKLOG.md`](docs/WORKLOG.md) |
+| Scan result · cost · speed with charts | [`SCOREBOARD.md`](docs/SCOREBOARD.md) |
+| Audit the numbers and read the loss analysis | [`RESULTS.md`](docs/RESULTS.md) |
+| Trace the per-instance cost arithmetic | [`COST_BASIS.md`](docs/COST_BASIS.md) |
+| Read the economic argument (job-shop unit cost) | [`DISCUSSION.md`](docs/DISCUSSION.md) |
+| Weigh the result against the obvious objections | [`OBJECTIONS.md`](docs/OBJECTIONS.md) |
+| Check the contamination-free OSS receipts | [`pr-receipts.VERIFY.md`](docs/pr-receipts.VERIFY.md) |
+| Understand how the number was produced | [`METHODOLOGY.md`](docs/METHODOLOGY.md) |
+| See how the harness ported from Verified to Pro | [`PRO_PORT.md`](docs/PRO_PORT.md) |
+| Check the rules the run was held to | [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) |
+| Read the open-weight ablation's pre-registration | [`PREREGISTRATION-cheap-ablation.md`](docs/PREREGISTRATION-cheap-ablation.md) |
+| Audit the run's provenance (stalls, cost, load) | [`RUN_NOTES.md`](docs/RUN_NOTES.md) |
+| Reproduce a result from scratch | [`PROCEDURE.md`](docs/PROCEDURE.md) |
+| Read the chronological trail | [`WORKLOG.md`](docs/WORKLOG.md) |
 
 ## The method, the goal, and the fine print
 

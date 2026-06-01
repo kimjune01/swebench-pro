@@ -1,4 +1,8 @@
-# License: CC BY-SA-NS
+# License
+
+This repository is **dual-licensed**: **code under [AGPL-3.0](LICENSE-CODE.txt)**, and **everything else under CC BY-SA-NS** (defined below). The two are deliberately matched — AGPL §13 carries the network-source obligation for code, the Network Services clause below does the same for non-code material. See [Scope](#scope) for the split.
+
+## CC BY-SA-NS (content)
 
 This work is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/), with the following additional condition:
 
@@ -14,13 +18,17 @@ This work is licensed under the [Creative Commons Attribution-ShareAlike 4.0 Int
 
 ## Why
 
-CC BY-SA closes the redistribution loophole — derivatives must stay open. AGPL closes the SaaS loophole for code — running it as a service counts as distribution. CC BY-SA-NS does the equivalent for everything else in this repo: prose, prompts, scripts, hypothesis graphs, attestations, driver code. If you build a service on top, source flows back to users.
+CC BY-SA closes the redistribution loophole — derivatives must stay open. AGPL closes the SaaS loophole for code — running it as a service counts as distribution, so the harness and driver fall under it directly. CC BY-SA-NS does the equivalent for everything else in this repo: prose, prompts, hypothesis graphs, attestations, scoreboards, the cost basis. Either way, if you build a service on top, source flows back to users.
 
 See [the writeup](https://june.kim/cc-by-sa-ns) for the longer argument.
 
 ## Scope
 
-Covers all files in this repository: the recon/craft/audit pipeline, driver code, prose, results/attestations, scoreboards, hypothesis graphs, and configuration. **Exception — the skills are dual-licensed:** the files under `skills/` are offered under CC BY-SA-NS **or** GNU GPL v3 at the recipient's choice (see `skills/LICENSE.md`).
+**Code → [AGPL-3.0](LICENSE-CODE.txt).** The executable parts: the recon/craft/audit pipeline, the `driver/` harness, and the build/run scripts. AGPL §13 (Remote Network Interaction) carries the network-source obligation.
+
+**Everything else → CC BY-SA-NS** (above): prose, results/attestations, scoreboards, hypothesis graphs, the cost basis, and configuration. The Network Services clause gives non-code material the equivalent of AGPL §13.
+
+**Exception — the skills are dual-licensed:** the files under `skills/` are offered under CC BY-SA-NS **or** GNU GPL v3 at the recipient's choice (see `skills/LICENSE.md`).
 
 ## Not legal advice
 
