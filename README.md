@@ -6,7 +6,7 @@ under a frozen, pre-registered protocol. The loop is
 act on it, test and prune. Sibling repo:
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified).
 
-## The result, in plain English
+## The result
 
 The harness was pointed at all **728 eligible** SWE-bench Pro instances and resolved
 **694** of them under the **official** grader, with **zero left ungraded**. That is
@@ -19,10 +19,17 @@ The harness was pointed at all **728 eligible** SWE-bench Pro instances and reso
 - **Every verdict is re-gradable** from a committed source-only diff, and you can
   reproduce a **random sample in one prompt** ([below](#reproduce-it-yourself)).
 
-| | **RESULT** | **COST** | **SPEED** |
+The same frozen harness was run with two model pairs:
+
+| model pair | resolve | cost / instance | speed / instance |
 |---|---|---|---|
-| | **95.33%** resolved | **~$2.60** / instance | **~13 min** / instance |
-| | 694 / 728, official grader | avg token cost (API) | median wall-clock |
+| **Sonnet 4.5 + GPT-5.5** · frontier | **95.33%** · 694/728 | **~$5.14** | **~12.8 min** |
+| **Composer 2.5 + Gemini Flash** · open-weight | **93.13%** · 678/728 | **~$0.41** | **~8.4 min** |
+
+Costs are *economic* — every leg priced at public API rates, derived line-by-line in
+[`COST_BASIS.md`](COST_BASIS.md). Both rows use the official grader on the same 728
+eligible instances. The open-weight pair runs **~12.6× cheaper at 2.2 points lower
+resolve**. The anatomy below details the frontier pair.
 
 ## How the loop behaves
 

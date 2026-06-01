@@ -125,18 +125,19 @@ instances ran on a Max subscription at ~$0 marginal).
 
 | | |
 |---|---|
-| avg token cost / instance | **~$2.60** at API pricing (measured: canary $2.07 on light repos, blended higher) |
-| this run's API cash | **$813.52**: only ~310 instances billed to API (≈ $813.52 / $2.60); the rest on the operator's **Max $200/mo plan**, ~$0 marginal |
+| avg token cost / instance | **~$4.73** (Claude leg, all 728 instances at full API rates incl. cache; full frontier pair ~$5.14) — derived line-by-line in [`COST_BASIS.md`](COST_BASIS.md) |
+| this run's API cash | **$813.52**: only ~310 instances billed to API; the rest on the operator's **Max $200/mo plan**, ~$0 marginal |
 | EC2 | `m7i.xlarge` × 4 (8 for the tail) × the run's box-hours × ~$0.20/box-hr ≈ **$58** (~$0.08/instance; boxes terminated during pauses, so well under the 4×3.5-day span) |
 | codex (GPT-5.5 challenger) | generous codex subscription (GPT-5.5 token allowance), ~$0 marginal |
 
 So the run's out-of-pocket beyond the two fixed subscriptions (Claude Max $200/mo +
 codex) was ≈ **$813.52 Claude API + $58 EC2 ≈ $870**. The portable figure to quote
-is the **~$2.60/instance API rate**, comparable to a vendor's advertised per-task
-cost, but note it covers the **Claude leg only**: the GPT-5.5 challenger ran on the
-codex subscription, so a reproducer metering both models would pay somewhat above
-$2.60. The subscription-subsidized cash doesn't reproduce. Per-instance token efficiency (median ~137 turns,
-~71k output tokens) is in [`SCOREBOARD.md`](SCOREBOARD.md).
+is the **~$4.73/instance economic rate** (Claude leg, all 728 instances at full API
+rates incl. cache); the GPT-5.5 challenger adds ~$0.42, so a reproducer metering both
+models pays **~$5.14/instance**. The subscription-subsidized cash ($813.52) doesn't
+reproduce; the cash-vs-economic split is reconciled in [`COST_BASIS.md`](COST_BASIS.md#cash-vs-economic).
+Per-instance token efficiency (median ~137 turns, ~71k output tokens) is in
+[`SCOREBOARD.md`](SCOREBOARD.md).
 
 ## What the next campaign should pick up
 

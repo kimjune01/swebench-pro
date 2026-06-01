@@ -5,7 +5,7 @@ SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement
 | | metric | value | basis |
 |---|---|---|---|
 | **RESULT** | resolve rate | **95.33%** | 694 / 728 eligible, official grader |
-| **COST** | avg token cost / instance | **~$2.60** | API pricing (vendor-comparable per-task cost) |
+| **COST** | avg token cost / instance | **~$4.73** | Claude-leg economic, full API rates incl. cache ([`COST_BASIS.md`](COST_BASIS.md)) |
 | **SPEED** | wall-clock / instance | **~13 min** | median (p50 770 s) |
 
 > **Don't trust it; verify it.** This is a **public, contamination-prone** split and a
@@ -63,24 +63,25 @@ xychart-beta
 
 ## Cost & token efficiency
 
-- **Average token cost ~$2.60 / instance at API pricing**, comparable to a
-  vendor's advertised per-task cost. Measured, not modeled: the API-mode canary ran
-  $2.07/instance on light repos, blended higher across heavy ones. **This is the
-  Claude (Sonnet 4.5) leg only**: the GPT-5.5 craft challenger ran on a generous
-  codex subscription at ~$0 marginal, so its tokens are not in the $2.60; a
-  reproducer paying PAYG for *both* models would pay somewhat more.
+- **Average token cost ~$4.73 / instance**, the **Claude (Sonnet 4.5) leg** with all
+  728 instances priced at public API rates including cache. The GPT-5.5 craft
+  challenger adds ~$0.42/instance, so the full frontier pair is **~$5.14/instance**.
+  Every line of this is derived from the committed token totals in
+  [`COST_BASIS.md`](COST_BASIS.md); it supersedes the earlier ~$2.60 cash-per-billed
+  figure, which conflated the cash and economic bases.
 - **This run's actual cash: $813.52** in Claude API spend, because most instances
   ran on the operator's **Max $200/mo subscription** at ~$0 marginal; only ~310
-  were billed to API (≈ $813.52 / $2.60). The GPT-5.5 challenger was on a separate
-  codex subscription ($0 marginal). Plus **~$58 EC2** (~$0.08/instance). So
-  out-of-pocket beyond the two subscriptions was ≈ **$870**. See [`RUN_NOTES.md`](RUN_NOTES.md).
+  were billed to API. The GPT-5.5 challenger was on a separate codex subscription
+  ($0 marginal). Plus **~$58 EC2** (~$0.08/instance). So out-of-pocket beyond the
+  two subscriptions was ≈ **$870**. Cash and economic are different bases; the
+  reconciliation is in [`COST_BASIS.md`](COST_BASIS.md#cash-vs-economic) and [`RUN_NOTES.md`](RUN_NOTES.md).
 - **Token efficiency (per instance, median):** ~137 model turns, ~71k output
   tokens, ~4.7M cache-read tokens (heavy prompt-cache reuse). Totals across the run:
   67M output tokens, 5.3B cache-read.
 - **Runnable on a subscription alone.** The cheapest path isn't API at all: with a
   Max 20× ($200/mo) plan, the whole 728-set is reproducible at **zero marginal
   token cost** over ~2 weeks of wall-clock (just the subscription + ~$58 EC2),
-  trading time for dollars. The ~$2.60/instance API rate is the *quick* path; the
+  trading time for dollars. The ~$4.73/instance API rate is the *quick* path; the
   subscription is the *low-cost* path. (This run used both, mostly subscription, with
   a paid-API tail to finish faster.)
 
