@@ -1,6 +1,6 @@
 # swebench-pro
 
-A **methodeutic** harness pointed at **SWE-bench Pro**, run end-to-end
+A **methodeutic** harness pointed at [SWE-bench Pro](https://labs.scale.com/leaderboard/swe_bench_pro_public), run end-to-end
 under a frozen, pre-registered protocol. The loop is
 [applied methodeutics](https://june.kim/reading/methodeutics) — three skills: **recon**
 abduces a hypothesis, **craft** acts on it, **audit** tests and prunes. Sibling repo:
@@ -253,6 +253,20 @@ clears SWE-bench Pro under official third-party grading on the held-out private 
 one submission, verifiably free of per-instance priors. The public 95.33% is the
 audition; the deliverable is the artifact plus its reproducible attestation trail
 ([`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 to §1).
+
+**The benchmark is not mine.** SWE-bench Pro, its repositories, and its official grader are the work of Deng et al. (Scale AI), 2025 — [paper](https://arxiv.org/abs/2509.16941) · [leaderboard](https://labs.scale.com/leaderboard/swe_bench_pro_public) · [dataset](https://huggingface.co/datasets/ScaleAI/SWE-bench_Pro) · [code](https://github.com/scaleapi/SWE-bench_Pro-os). This repository only evaluates a harness on their public split. Cite the benchmark as:
+
+```bibtex
+@misc{deng2025swebenchpro,
+  title  = {{SWE-Bench Pro}: Can AI Agents Solve Long-Horizon Software Engineering Tasks?},
+  author = {Deng, Xiang and Da, Jeff and Pan, Edwin and He, Yannis Yiming and Ide, Charles and Garg, Kanak and Lauffer, Niklas and Park, Andrew and Pasari, Nitin and Rane, Chetan and Sampath, Karmini and Krishnan, Maya and Kundurthy, Srivatsa and Hendryx, Sean and Wang, Zifan and Bharadwaj, Vijay and Holm, Jeff and Aluri, Raja and Zhang, Chen Bo Calvin and Jacobson, Noah and Liu, Bing and Kenstler, Brad},
+  year   = {2025},
+  eprint = {2509.16941},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+  doi    = {10.48550/arXiv.2509.16941}
+}
+```
 
 **Funding:** this research was entirely funded by the researcher
 ([June Kim](https://www.linkedin.com/in/kimjune01)) — own EC2 and Claude Max subscription,
