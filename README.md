@@ -33,7 +33,7 @@ resolve**. The anatomy below details the frontier pair.
 
 ## How the loop behaves
 
-One good shot plus a small recovery tail, not a grind. All 728 eligible instances flow
+One good shot plus a small recovery tail rather than a grind. All 728 eligible instances flow
 down to a verdict: 694 resolve, 34 do not, and among the wins with captured trajectories
 the first recon → craft → audit pass already carries **93%**, with the outer loop
 recovering the rest.
@@ -60,7 +60,7 @@ A loss is **characterized, not located**: which repo it lands in says little, bu
 *shape* is consistent. Against a win, a loss costs roughly **2.3 to 2.5x** at the mean
 across the three axes that matter, model turns, wall-clock, and patch scope. The
 harness wins on focused changes and loses on big-scope ones, so difficulty (patch
-scope), not repo identity, is what separates win from loss.
+scope) over repo identity is what separates win from loss.
 
 ```mermaid
 xychart-beta
@@ -80,7 +80,7 @@ split, is in [`RESULTS.md`](RESULTS.md).
 ## How fast it runs
 
 Median **~13 min** per instance; 84% finish inside 5 to 20 minutes. The right tail is
-heavy repos and craft-hangs on large suites, not the typical case.
+heavy repos and craft-hangs on large suites, well outside the typical case.
 
 ```mermaid
 xychart-beta
@@ -111,8 +111,8 @@ flowchart LR
 ```
 
 This is why the gate-vs-official mismatches in the loss analysis exist at all: the
-harness can think it passed and still be graded a loss. The grade is the diff's, not the
-agent's. [`METHODOLOGY.md`](METHODOLOGY.md) has the full pipeline.
+harness can think it passed and still be graded a loss. The grade is the diff's alone.
+[`METHODOLOGY.md`](METHODOLOGY.md) has the full pipeline.
 
 ## Reproduce it yourself
 
@@ -132,8 +132,8 @@ afternoon. Paste this to your coding agent (codex, Claude Code, Cursor):
 > with a confidence interval and whether it's consistent with 95.33%. Use my own
 > machine and tokens. If you hit a snag, the repo's docs have the fix.
 
-Goal-first on purpose: it points at the destination, not a recipe; a snag is a one-line
-followup, not a blocker.
+Goal-first on purpose: it points at the destination instead of a recipe; a snag is a one-line
+followup, never a blocker.
 
 Free, no-token variant: re-grade our *committed* diffs instead. Every verdict's captured
 source-only diff is in `runs/scored/artifacts.tar.zst`; re-grading a random handful on
@@ -156,7 +156,7 @@ could still pull a private number down, in roughly descending order of concern:
 - **Distribution shift.** Different repos, possibly a blind submission gate, and task
   shapes the loop hasn't been exercised on.
 
-This is why the public number is framed as an audition, not a deliverable. The strategy
+This is why the public number is framed as an audition, short of a deliverable. The strategy
 for the held-out set is in [`PREREGISTRATION.md`](PREREGISTRATION.md) §0 to §1.
 
 ## What the number is, and isn't

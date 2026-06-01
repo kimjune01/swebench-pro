@@ -22,7 +22,7 @@ SWE-bench Pro, frozen tag `prereg-pro-v1`, whole eligible set in one measurement
 
 > **The bar is the vibe coder.** A harness worth building **resolves more, costs less,
 > and finishes faster** than a human handed the same task; that's why this board is a
-> triple, not a single score. The one axis it *can't* beat the human on is **trust**;
+> triple rather than a single score. The one axis it *can't* beat the human on is **trust**;
 > reproduce-it-yourself is how it competes there anyway.
 
 ## Result: resolve rate by repo
