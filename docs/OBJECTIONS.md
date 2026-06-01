@@ -48,7 +48,7 @@ budget-viable and was not run, so scaffold-only attribution stays **permanently
 open**, by disclosure, not deferral ([`PREREGISTRATION.md`](PREREGISTRATION.md)
 §12, C1). But the model-tier contribution is now bounded from above, in this repo:
 a pre-registered open-weight ablation runs the **same frozen harness** with both
-models swapped to a cheaper pair (Composer 2.5 + Gemini 2.5 Flash) and resolves
+models swapped to a cheaper pair (Composer 2.5 + Gemini Flash 3.5) and resolves
 **93.1% vs 95.3%** — a 2.2-point drop. That isn't the same-model control (so
 strict scaffold-only attribution stays open), yet most of the result survives
 dropping a frontier model class, which is the opposite of "it's just the model"
