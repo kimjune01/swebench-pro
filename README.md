@@ -268,8 +268,8 @@ audition; the deliverable is the artifact plus its reproducible attestation trai
 }
 ```
 
-**Funding:** this research was entirely funded by the researcher
-([June Kim](https://www.linkedin.com/in/kimjune01)) — own EC2 and Claude Max subscription,
+**Funding:** this research was entirely funded by the researcher, June Kim
+([LinkedIn](https://www.linkedin.com/in/kimjune01) · [ORCID 0009-0005-3153-9396](https://orcid.org/0009-0005-3153-9396)) — own EC2 and Claude Max subscription,
 no external or institutional funding ([`RUN_NOTES.md`](docs/RUN_NOTES.md)).
 
 **License:** repo CC BY-SA-NS ([`LICENSE.md`](LICENSE.md)); skills (`skills/`)
