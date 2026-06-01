@@ -2,9 +2,15 @@
 
 A **methodeutic** harness pointed at [SWE-bench Pro](https://labs.scale.com/leaderboard/swe_bench_pro_public), run end-to-end
 under a frozen, pre-registered protocol. The loop is
-[applied methodeutics](https://june.kim/reading/methodeutics) — three skills: **recon**
+[applied methodeutics](#what-is-methodeutics) — three skills: **recon**
 abduces a hypothesis, **craft** acts on it, **audit** tests and prunes. Sibling repo:
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified).
+
+<a id="what-is-methodeutics"></a>**Methodeutics** is the discipline of *how* you reason from
+a puzzle to a sound conclusion — by *abduction*, the kind of inference that statistics
+(induction) and mathematics (deduction) leave out. The
+[textbook](https://june.kim/reading/methodeutics) is the theory; this repo is its
+empirical leg, made executable and measured.
 
 ## The result
 
@@ -242,12 +248,10 @@ as the number.
 
 ## The fine print
 
-**Methodeutics** is Peirce's name for the methodology of inquiry, the discipline of *how*
-you reason from a puzzle to a warranted conclusion. It sits adjacent to **statistics**
-(the formal account of induction) and **mathematics** (deduction), covering the third
-inference neither owns: **abduction**. This repo is its empirical leg, methodeutics made
-executable and measured (recon abduces, craft acts, audit tests); the theoretical leg is
-the textbook at [june.kim/reading/methodeutics](https://june.kim/reading/methodeutics).
+**Methodeutics** ([defined up top](#what-is-methodeutics)) covers the third inference
+statistics and mathematics don't own — abduction. In this harness recon abduces, craft
+acts, audit tests; the theoretical leg is the textbook at
+[june.kim/reading/methodeutics](https://june.kim/reading/methodeutics).
 
 *Why should a guy with a blog and spare change out-score trillion-dollar labs?* He
 doesn't, on the axis they compete on: their leaderboards rank *models* through a fixed
