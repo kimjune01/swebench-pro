@@ -12,8 +12,9 @@ able to reproduce a random sample from one prompt. Solo, unfunded.
 
 The number measures one thing precisely: the *harness*, the loop of steps wrapped around the model
 rather than the model itself. Swap the frontier models for cheap open-weight ones and the same loop
-still resolves 93.1% (the open-weight ablation below is the control), so the structure carries the
-result, not a frontier model's raw strength.
+still resolves 93.1% (the ablation below) — though a gold-overlap audit shows that cheap-model rate is
+partly recall, genuinely ~three-quarters ([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md)). What carries
+across both pairs is the harness *lift* over a bare model, not a frontier model's raw strength.
 
 <a id="what-is-methodeutics"></a>The loop is deliberately plain: guess the cause of the bug, write a
 fix, run the tests, throw the guess out if they fail, and try again. Three steps run it in order.
@@ -206,10 +207,8 @@ for the held-out set is in [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 t
 ## What the score actually measures
 
 The score measures the *harness*, not the model. It's what the methodeutic loop (recon, craft, audit) extracts on top of whatever model fills its stages: the diagnosis
-discipline, the anti-cheat capture rules, the audit gate, the recovery loop. The open-weight ablation pins that down: swap the frontier pair for cheap
-open-weight models and the same frozen harness still resolves *93.1%*, a 2.2-point dip,
-so the loop's structure, not a frontier model's raw capability, carries most of the
-result. The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
+discipline, the anti-cheat capture rules, the audit gate, the recovery loop. The open-weight ablation pins that down, and surfaces a caveat with it: swap the frontier pair for cheap
+open-weight models and the same frozen harness still resolves *93.1%*, a 2.2-point raw dip — but a gold-overlap audit ([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md), [`driver/gold_divergence.py`](driver/gold_divergence.py)) shows ~18–23% of those open-weight wins reproduce the gold patch (against ~2% for the frontier pair), so the cheap-model rate is partly recall and the genuine model-tier gap is ~17–22 points, not two. What survives is the load-bearing claim: discount the recall tail and the harness still carries the cheap model to ~three-quarters genuine resolve, above the strongest *bare* model on Pro (Opus 4.7, 64.3%). The lift over a bare run is largely model-independent (recall is available to bare runs too); the model tier is not negligible, but the lift is the harness's. (Cursor never reported a bare Composer number on Pro — by the publication pattern, evidence it trails the frontier bare models there, which would make the lift over bare Composer larger still; abductive, not measured.) The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
 contaminated on these repos, with the strict scaffold-vs-model control deliberately
 unclosed. The defensible reading is "the methodeutic harness resolved 694/728 under
 official grading," not "the model can solve 95% of SWE-bench Pro." What the system is and why the confound stays open:

@@ -38,6 +38,53 @@ merged 81 PRs into 73 cold repos (no training priors) at a ~50% maintainer rate,
 recall of a pretrained repo cannot inflate a merge decision (#10,
 [`pr-receipts.VERIFY.md`](pr-receipts.VERIFY.md)).
 
+**Direct check: how close are the wins to gold, and where is recall real?** The
+failure mode that retired SWE-bench Verified was models reproducing the human
+*gold patch* ([OpenAI, Feb 2026](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)).
+[`driver/gold_divergence.py`](../driver/gold_divergence.py) measures it directly:
+per win, the overlap between the model's changed lines/files and gold's (runtime
+artifacts stripped; denominator is WIN rows, missing patches reported, not dropped).
+Byte-identity is ~0 for any run — two diffs of the same change differ in git index
+hashes, hunk numbers, and context — so the signal is graded line-overlap and the
+near-gold tail, not identity.
+
+| run | wins compared | median line-overlap w/ gold | near-gold (≥0.8) |
+|---|---|---|---|
+| frontier (Sonnet 4.5 + GPT-5.5) | 634 / 694 | 0.11 | 14 (2.2%) |
+| open-weight (Composer 2.5 + Flash) | 672 / 672 | 0.31 | 158 (23.5%) |
+
+The result is **not** uniformly exculpatory, and we report it as found. The
+**frontier** wins are largely independent of gold (median overlap 0.11; 2.2%
+near-gold) — evidence those wins are task-solving, not gold-recall. The
+**open-weight** run carries a real recall tail: 23.5% of its wins reproduce gold's
+changed lines at ≥0.8 and 18% at ≥0.9, including full-module and multi-file
+refactors matching gold near-exactly (`ansible…icx_ping` 187/187 lines;
+`ansible…play_iterator` the exact `IteratingStates`/`FailedStates` enum design,
+230/232). These are **not** forced one-liners: on 108 of those instances the
+frontier pair won the *same task* with a different patch (median overlap 0.16), so
+an independent fix demonstrably exists. The cross-model asymmetry is the tell. If
+gold-matching were task-forced (one reasonable diff) or capability-driven (better
+models converge on the canonical fix), the *stronger* frontier pair would match
+gold at least as often as the cheaper one. The opposite holds — the weaker model
+matches gold ~10× more (23.5% vs 2.2%) — and a weaker model reproducing the human
+gold patch more often than stronger models has one good explanation: it has seen
+those solutions. You do not reproduce a 187-line gold diff by being terse. The honest reading is that Composer 2.5
+(Kimi K2.5) recalls gold on a meaningful fraction of Pro instances — expected of an
+open-weight model trained on public repositories — while the frontier pair does
+not. This sharpens the model-side contamination concession rather than refuting it,
+and it is exactly why **no capability claim rests on the open-weight resolve rate**
+(its number is partly recall-inflated; the frontier run is the cleaner capability
+signal). But recall explains the *tail*, not the body: discount the entire
+near-gold set as memorized and the open-weight harness still genuinely resolves
+≈520–555 of 728 (**~71–76%**) with independent patches — well above any bare model
+(best bare ~64%). So the cheap-model result survives at an honest, lower number;
+what does not survive is "the model tier is negligible" — the genuine-capability
+gap to the frontier pair is ~17–22 points, not the ~2 the raw rates suggest.
+Per-instance receipts (overlaps + gold/pred sha256) in
+[`runs/scored/gold_divergence.jsonl`](../runs/scored/gold_divergence.jsonl) and
+[`runs/flash-composer/gold_divergence.jsonl`](../runs/flash-composer/gold_divergence.jsonl);
+recompute with the script and the public dataset.
+
 ## 2. "How much is the scaffold vs just stronger models?"
 
 Not separable, and we do not claim to separate it. Our system is Sonnet 4.5 +
