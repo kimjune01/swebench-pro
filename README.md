@@ -239,6 +239,7 @@ as the number.
 
 | If you want to… | Read |
 |---|---|
+| Read the narrative essay (the *why*, not the *how*) | [The Methodeutic Harness on SWE-bench Pro](https://june.kim/the-methodeutic-harness-on-swebench-pro) |
 | Scan result · cost · speed with charts | [`SCOREBOARD.md`](docs/SCOREBOARD.md) |
 | Audit the numbers and read the loss analysis | [`RESULTS.md`](docs/RESULTS.md) |
 | Trace the per-instance cost arithmetic | [`COST_BASIS.md`](docs/COST_BASIS.md) |
