@@ -15,7 +15,7 @@ The pipeline is an experiment. Each repo is a perturbation. Each PR is a measure
 
 
 
-**Key insight (2026-05-12):** Detection has shifted from code quality to **behavioral signals**: review response speed (cucumber/gherkin), resubmission after rejection (jellyfin-tui ×3), and template compliance (immich ×2, openbao). The code itself is not the failure mode — the pipeline's interaction pattern is. New detection vector: **rejection cascade** — maintainer hostility escalates with each subsequent PR to the same repo.
+**Key insight (2026-05-12):** Detection has shifted from code quality to **behavioral signals**: review response speed (cucumber/gherkin), resubmission after rejection (jellyfin-tui ×3), and template compliance (immich ×2, openbao). The code itself is not the failure mode. The pipeline's interaction pattern is. New detection vector: **rejection cascade**: maintainer hostility escalates with each subsequent PR to the same repo.
 
 **Refined prediction:** Merge rate correlates with (1) reasoning depth in PR descriptions and (2) interaction pacing. Repos where the first PR is rejected should be on 7-day cooldown minimum.
 
@@ -23,7 +23,7 @@ The pipeline is an experiment. Each repo is a perturbation. Each PR is a measure
 
 **Prediction:** Starting from a specific maintainer-acknowledged issue yields more mergeable PRs than browsing repos for interesting problems.
 
-**Status: CONFIRMED (weakly).** Issue-first is the pipeline default. All merged/approved PRs came from issue-first. But the comparison is unfair — we haven't tried repo-first at scale.
+**Status: CONFIRMED (weakly).** Issue-first is the pipeline default. All merged/approved PRs came from issue-first. But the comparison is unfair. We haven't tried repo-first at scale.
 
 ## H2: Prior standing increases merge probability
 
@@ -33,9 +33,9 @@ The pipeline is an experiment. Each repo is a perturbation. Each PR is a measure
 
 **H2a: Standing gates big repos (>5k stars, multi-maintainer).** pallets batch-close, tinygrad ban, Enzyme (earned mid-PR through competence demonstration). At scale, reviewers screen contributors before reading code. Standing is the filter.
 
-**H2b: Small repos (<5k stars, solo maintainer) skip the standing gate.** bat (12 min, first PR), osctrl (instant, first PR), xtend_tuya (instant, first PR), numpyro (8 rounds but merged, first PR), airflow (approved, first PR — large project but process-driven review substitutes for standing), Infiltrator.jl#176 (instant, first PR), flux#1589 (review iteration, first PR, earned approval), tach#931 (review iteration, first PR). Code quality alone is sufficient. The maintainer reads the diff, not the profile.
+**H2b: Small repos (<5k stars, solo maintainer) skip the standing gate.** bat (12 min, first PR), osctrl (instant, first PR), xtend_tuya (instant, first PR), numpyro (8 rounds but merged, first PR), airflow (approved, first PR, large project but process-driven review substitutes for standing), Infiltrator.jl#176 (instant, first PR), flux#1589 (review iteration, first PR, earned approval), tach#931 (review iteration, first PR). Code quality alone is sufficient. The maintainer reads the diff, not the profile.
 
-**H2c: Standing compounds within a repo.** osctrl#810 merged with maintainer APPROVED+thanks — second merge after #807. agent-of-empires#1042 merged instantly (but maintainer uses Claude himself — confounded). flux#1592 getting constructive review after #1589 merged.
+**H2c: Standing compounds within a repo.** osctrl#810 merged with maintainer APPROVED+thanks (second merge after #807). agent-of-empires#1042 merged instantly (but maintainer uses Claude himself, confounded). flux#1592 getting constructive review after #1589 merged.
 
 **Social standing does not transfer.** dapr CTO LinkedIn connection did not influence code reviewer. Warm leads must be code reviewers, not executives.
 
@@ -49,7 +49,7 @@ The pipeline is an experiment. Each repo is a perturbation. Each PR is a measure
 
 
 
-**New gate needed:** rejection cooldown — 7 days per repo after any closure. 3 repos triggered this pattern (jellyfin-tui, llama.cpp, immich). Added to drip skill.
+**New gate needed:** rejection cooldown of 7 days per repo after any closure. 3 repos triggered this pattern (jellyfin-tui, llama.cpp, immich). Added to drip skill.
 
 ## H4: AI-friendly repos don't merge more — they attract more competing PRs
 
@@ -90,7 +90,7 @@ The pipeline is an experiment. Each repo is a perturbation. Each PR is a measure
 | Trending repos | High-star, recently pushed | some roster | unknown | unknown | Review bandwidth exists but so does PR volume |
 | Dependency graph | SBOM traversal from merged repos | not tried | — | — | Untested |
 
-**Status: EARLY DATA.** The one merge (bat) came from prior contributions — the maintainer already knew the contributor. Label search produced volume but near-zero merges so far. Maintainer-first finds receptive maintainers but issue selection was wrong until H5 corrected it. Ecosystem graph is promising but unproven.
+**Status: EARLY DATA.** The one merge (bat) came from prior contributions: the maintainer already knew the contributor. Label search produced volume but near-zero merges so far. Maintainer-first finds receptive maintainers but issue selection was wrong until H5 corrected it. Ecosystem graph is promising but unproven.
 
 **Key insight:** The source determines both the repo quality AND the issue quality. Maintainer-first finds good repos but the agent still picks bad issues (H5). Label search finds labeled issues but the repos are overcrowded (H4). Prior contributions find both good repos and good issues because the contributor has context.
 
@@ -100,7 +100,7 @@ The pipeline is an experiment. Each repo is a perturbation. Each PR is a measure
 
 **Prediction:** A trivial fix to a real bug merges faster than an excellent fix to a complex bug. The pipeline's advantage is throughput, not depth.
 
-**Status: CONFIRMED (weakly).** bat#3734 merged in 12 minutes — a zsh completions fix, trivial. mprocs#216 (9-line doc deletion) pushed and likely to merge. Meanwhile: marimo#9490 (140 lines, 11 files) and gemini-cli#24736 (multi-week, architectural) are still waiting. The simpler the fix, the faster it lands.
+**Status: CONFIRMED (weakly).** bat#3734 merged in 12 minutes: a zsh completions fix, trivial. mprocs#216 (9-line doc deletion) pushed and likely to merge. Meanwhile: marimo#9490 (140 lines, 11 files) and gemini-cli#24736 (multi-week, architectural) are still waiting. The simpler the fix, the faster it lands.
 
 **Evidence:** dapr#9923 (complex race condition) — wrong fix. mprocs#212 (config-vs-state) — gemini killed. hashicorp/serf (gossip protocol) — gemini killed. The complex issues are where the pipeline fails. The simple ones are where it succeeds.
 
@@ -190,7 +190,7 @@ H6 (stochastic search) → H1 (issue-first) → H5 (easy first for solo maintain
 
 ### Session 9 new patterns (retro 9)
 
-1. **Rejection cascade is a new failure mode.** jellyfin-tui: #192 rejected (wrong approach) → #193 pushed next day (same fix, maintainer: "Is this automated?") → #194 pushed (clippy cleanup, maintainer: "ai slop"). Each subsequent PR was judged more harshly. The pipeline has no rejection cooldown per-repo — the drip gate only paces per-org. **Fix:** rejection cooldown = 7 days per repo after any closure. Added to drip skill.
+1. **Rejection cascade is a new failure mode.** jellyfin-tui: #192 rejected (wrong approach) → #193 pushed next day (same fix, maintainer: "Is this automated?") → #194 pushed (clippy cleanup, maintainer: "ai slop"). Each subsequent PR was judged more harshly. The pipeline has no rejection cooldown per-repo. The drip gate only paces per-org. **Fix:** rejection cooldown = 7 days per repo after any closure. Added to drip skill.
 2. **Review interaction speed is a detection vector.** cucumber/gherkin maintainer mpkorstanje reviewed, requested changes, got a response, and concluded "I don't get the impression there is a human in the loop." The code was correct but the response pattern was too mechanical. This is a new detection axis: not code quality, not PR description, but **interaction cadence**.
 3. **Second merges compound standing.** osctrl#810 merged (second from same repo after #807). Maintainer javuto APPROVED+thanked. flux getting constructive review on #1592 after #1589 merged. H2c pattern emerging: standing within a repo accelerates subsequent PRs.
 4. **Net-deletion PRs remain highest-probability.** agent-of-empires#1042 (87 net deletions) merged instantly. Pattern holds from session 6.
@@ -227,11 +227,11 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 
 **Falsification:** A merged PR to a GUI/TUI application repo where the fix touches render/display code.
 
-**Pipeline change:** GUI/TUI application repos added to actionable skill kill list. UI libraries remain borderline — fixes may be testable if they don't require visual verification. See drip gate 0a for rejection cooldown that prevents the jellyfin-tui cascade pattern.
+**Pipeline change:** GUI/TUI application repos added to actionable skill kill list. UI libraries remain borderline. Fixes may be testable if they don't require visual verification. See drip gate 0a for rejection cooldown that prevents the jellyfin-tui cascade pattern.
 
 ## H13: Credence-rejection reservoir is small and the actionable-copyleft subset is smaller still
 
-**Prediction:** True credence rejections (clean work rejected on identity/disclosure grounds, not on technical or policy substance) are a small fixed fraction of closures (~9% per existing taxonomy). The further-filtered subset that warrants copyleft action — substantial expression, no good-faith engagement from any maintainer in the org, leverage-positive target — is roughly 1-2% of closures.
+**Prediction:** True credence rejections (clean work rejected on identity/disclosure grounds, not on technical or policy substance) are a small fixed fraction of closures (~9% per existing taxonomy). The further-filtered subset that warrants copyleft action (substantial expression, no good-faith engagement from any maintainer in the org, leverage-positive target) is roughly 1-2% of closures.
 
 **Status: PARTIALLY CONFIRMED, projection preliminary.**
 
@@ -239,9 +239,9 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 
 **Projection rate:** 1 actionable per 44 closures → at current pipeline volume (~60 closures/week per recent data), ~1-2 actionable copyleft targets per month.
 
-**Distinction from gate effects:** Gates (CONTRIBUTING.md compliance, AGENTS.md compliance, why-gate, em-dash, summary-reasoning, rejection-cooldown) do **not** reduce true credence — they reduce *false-credence-shaped pipeline errors* that previously got filed under the credence column. The true-credence rate is approximately stable; what changes is the proportion of "AI rejected" that survives honest filtering. This refines H0's framing: the dominant detection vector is meta-behavior + policy compliance, with identity-only rejection a small residue.
+**Distinction from gate effects:** Gates (CONTRIBUTING.md compliance, AGENTS.md compliance, why-gate, em-dash, summary-reasoning, rejection-cooldown) do **not** reduce true credence. They reduce *false-credence-shaped pipeline errors* that previously got filed under the credence column. The true-credence rate is approximately stable; what changes is the proportion of "AI rejected" that survives honest filtering. This refines H0's framing: the dominant detection vector is meta-behavior + policy compliance, with identity-only rejection a small residue.
 
-**Implication for the leverage portfolio:** Copyleft-of-rejected-work is a strategically real but volumetrically small move at current pipeline shape. The portfolio grows at single-digit pieces per year, not per month. This is consistent with the prework-track / political-statement-fork framing — these artifacts are positioned, not produced. The strategy was over-pitched as a routine extraction; it's actually an exception extraction.
+**Implication for the leverage portfolio:** Copyleft-of-rejected-work is a strategically real but volumetrically small move at current pipeline shape. The portfolio grows at single-digit pieces per year, not per month. This is consistent with the prework-track / political-statement-fork framing: these artifacts are positioned, not produced. The strategy was over-pitched as a routine extraction; it's actually an exception extraction.
 
 **Falsification:** If a one-month window produces zero actionable copyleft targets after honest filtering, the rate may be even lower than 1/month (still consistent with H13's general claim of "small"). If it produces 5+, the actionable subset is larger than this filter exercise suggests, which would invalidate the "1-2/month" projection while leaving the reservoir-size claim intact.
 
@@ -251,15 +251,15 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 
 **New merges (5):** airflow#66686, xtend_tuya#930, osctrl#807, pertpy#965, numpyro#2188. All issue-first, all <200 lines code.
 
-**New closures (3):** dapr#9924 (design-intent blindness), jellyfin-tui#192 (wrong approach — bug-hunt was right), llama.cpp#22873 (AI bot detection).
+**New closures (3):** dapr#9924 (design-intent blindness), jellyfin-tui#192 (wrong approach; bug-hunt was right), llama.cpp#22873 (AI bot detection).
 
 **Running total: 15 merged / 43 resolved = 35% raw, 56% adjusted.**
 
 **Key findings this retro:**
-1. **H2 is weakening.** 7/15 merges came from cold first PRs. Standing is not a universal gate — it only fires at high-profile repos or during volume spikes. Social standing (dapr CTO) does not transfer to code review.
+1. **H2 is weakening.** 7/15 merges came from cold first PRs. Standing is not a universal gate. It only fires at high-profile repos or during volume spikes. Social standing (dapr CTO) does not transfer to code review.
 2. **H11 confirmed.** jellyfin-tui maintainer rejected fps-cap for exactly the reason bug-hunt predicted (dirty-flag architecture). Maintainer is interested in the correct fix. Follow-up opportunity.
 3. **QA gate ROI confirmed.** pertpy merged after QA caught 6 bugs. 13 total bugs caught pre-push across pipeline (7 session-4 + 6 pertpy).
-4. **Pre-registration accuracy is 83%** (5/6). The miss: dapr — social warm lead predicted merge, code reviewer rejected on design intent.
+4. **Pre-registration accuracy is 83%** (5/6). The miss: dapr, where the social warm lead predicted merge but the code reviewer rejected on design intent.
 5. **Pipeline errors are the biggest drag.** 11 of 28 closures are pipeline errors. Adjusted rate without them is 56%. The three new errors are all preventable: bug-hunt would catch jellyfin-tui, staleness check would catch ballista, design-intent probe would catch dapr.
 
 ### Session 6 update (2026-05-12)
@@ -269,13 +269,13 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 **Running total: 15 merged / 33 resolved = 45% merge rate (post-epoch).**
 
 **H0 evidence:**
-- FOR: rustledger (solo maintainer, 242★, CI fix merged same day). QA caught file clobber + no checksum — would have been rejected without gate.
+- FOR: rustledger (solo maintainer, 242★, CI fix merged same day). QA caught file clobber + no checksum; would have been rejected without gate.
 - FOR: 3 approved PRs pending merge (godot#119362, servo#44846, opendal#7513). Pipeline producing merge-ready PRs.
-- AGAINST: immich#28375 closed — auto-closed for not following PR template format (CONTRIBUTING.md). Not AI detection — pure template compliance failure. Pipeline error: triage didn't read the PR template requirements.
+- AGAINST: immich#28375 closed, auto-closed for not following PR template format (CONTRIBUTING.md). Not AI detection: pure template compliance failure. Pipeline error: triage didn't read the PR template requirements.
 
 **H1 evidence:**
 - FOR: All session 6 triage came from actionable search (issue-first). 27 new repos triaged, 8 evicted (HostlistsRegistry content repo, jwt-cli stale PRs, abtop competing PRs, hyundai-kia no bugs, ida-mcp-rs too-fast maintainer, ytmusic-deleter AI-hostile, immich AI policy, openbao certification).
-- Eviction rate 30% — higher than session 5's 20%. The 200-500 star bucket produces more candidates but also more misses.
+- Eviction rate 30%, higher than session 5's 20%. The 200-500 star bucket produces more candidates but also more misses.
 
 **H2 evidence:**
 - FOR: flux#1592 got constructive review (nilehmann asked for allocation fix, not rejection). Second PRs get technical feedback. Standing transfers within org.
@@ -287,11 +287,11 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 
 **H5 evidence:**
 - FOR: Solo maintainer repos in 200-500 star range: rustledger (instant merge), free-proxy-list (engaged), cackle (queued). Pattern holds.
-- AGAINST: jwt-cli (solo maintainer, 255★) evicted — 7 stale PRs despite "happy to review." PR age distribution is acceptance signal, not stated intent.
+- AGAINST: jwt-cli (solo maintainer, 255★) evicted: 7 stale PRs despite "happy to review." PR age distribution is acceptance signal, not stated intent.
 - NEW LESSON: Fast maintainers (ida-mcp-rs, 24-48hr fix cycle) leave no contribution surface. The sweet spot is overwhelmed maintainers with backlogs, not responsive ones.
 
 **H7 evidence (new):**
-- FOR: AI policy pre-check identified 6 repos with anti-AI policies. Credence tests complete — uptime-kuma (label), llama.cpp (automated), litestar (AI_POLICY.md), immich (CONTRIBUTING.md), openbao (certification), ytmusic-deleter (comment).
+- FOR: AI policy pre-check identified 6 repos with anti-AI policies. Credence tests complete: uptime-kuma (label), llama.cpp (automated), litestar (AI_POLICY.md), immich (CONTRIBUTING.md), openbao (certification), ytmusic-deleter (comment).
 - KEY FINDING: 80% of "AI slop" rejections were policy-based, not quality-based. QA found 0 bugs on 4/5 slop-labeled PRs. uptime-kuma cherry-picked the rejected code.
 
 **QA gate data:**
@@ -319,11 +319,11 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 - Total: 5 occurrences. Crosses the 3+ threshold for skill patch.
 - **Action:** triage skill must read PR template + CONTRIBUTING.md BEFORE implementation. Currently reads it too late (after fix is committed).
 
-**Org gate bottleneck confirmed:** 86 QA'd entries blocked on existing PRs. The drip queue has more supply than the org gate can drain. Options: (a) wait for existing PRs to resolve (natural), (b) close/abandon stale open PRs to unblock (risky), (c) accept the bottleneck as correct behavior (pipeline is self-limiting). The correct answer is (c) — the org gate IS the pacing mechanism.
+**Org gate bottleneck confirmed:** 86 QA'd entries blocked on existing PRs. The drip queue has more supply than the org gate can drain. Options: (a) wait for existing PRs to resolve (natural), (b) close/abandon stale open PRs to unblock (risky), (c) accept the bottleneck as correct behavior (pipeline is self-limiting). The correct answer is (c): the org gate IS the pacing mechanism.
 
 **Inventory growth:** 523 repos total (264 ready, 180 triaged, 45 evicted). The roster is growing faster than the pipeline can process. Actionable will need scoring adjustments to prioritize repos with highest merge probability (H5 sweet spot: 200-500 stars, solo maintainer, backlogged).
 
-**Merge rate stable:** 15/44 = 34% raw, 15/27 = 56% adjusted. Raw rate dipped from 35% as immich closure added a denominator without adding a numerator. Adjusted rate unchanged — immich is a pipeline error, excluded from adjusted calculation.
+**Merge rate stable:** 15/44 = 34% raw, 15/27 = 56% adjusted. Raw rate dipped from 35% as immich closure added a denominator without adding a numerator. Adjusted rate unchanged: immich is a pipeline error, excluded from adjusted calculation.
 
 **Pre-registration for session 6 batch:** 16 new PRs across new repos, most <48h old. Prediction: 5-8 will merge within 7 days (31-50%), based on session 4/5 observed rates for solo-maintainer repos. Repos most likely to merge: free-proxy-list#49 (maintainer engaged), pertpy#966 (warm org), osctrl#810 (warm org, prior merge).
 
@@ -358,7 +358,7 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 - sorairolake/qrtool#1002 — exit code on QR-decode failure. **MERGED THEN REVERTED.** Maintainer: "I don't think this fixes #695. The images listed contain QR codes." Code was correct; *interpretation of bug was inverted*. **First instance of merged-then-reverted.**
 - du82/nonograph#17 — selection anchor restoration. **CLOSED with screenshot + "I read your blog. Interesting..."** Maintainer found speedrunning-open-source post within 5h of publication and traced back. **First H10 instance.**
 
-**H10 (distribution detection) — FIRST INSTANCE.** Post live ~18:00Z, closure 23:25Z. Same-day, single-hop propagation from blog → maintainer → eviction. Code was fine; closure was identity-based. H10 closures are not pipeline errors and not credence tests — they are intentional consequences of the public ship-defense-with-attack strategy. New retro taxonomy category: `distribution_detection`. Excluded from adjusted merge rate (predicted, not failed).
+**H10 (distribution detection) — FIRST INSTANCE.** Post live ~18:00Z, closure 23:25Z. Same-day, single-hop propagation from blog → maintainer → eviction. Code was fine; closure was identity-based. H10 closures are not pipeline errors and not credence tests; they are intentional consequences of the public ship-defense-with-attack strategy. New retro taxonomy category: `distribution_detection`. Excluded from adjusted merge rate (predicted, not failed).
 
 **H10 propagation rate:** appears to be hours, not days. Project: maintainers who close PRs after blog discovery will continue at low but nonzero rate as the post circulates.
 
@@ -383,7 +383,7 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 **Filter exercise findings (manifest discipline):**
 - 44 external candidates from past 2 months
 - 22 eat-the-loss (our procedural failures: duplicates, our-error closures, CONTRIBUTING/AGENTS non-compliance)
-- ~10 after engagement filter (any maintainer in the org engaged in good faith — sobolevn at litestar, mpkorstanje at gherkin)
+- ~10 after engagement filter (any maintainer in the org engaged in good faith: sobolevn at litestar, mpkorstanje at gherkin)
 - ~3 after silence-window patience (silent closures within 30 days don't count)
 - 1 actioned (nonograph) after substance threshold (uptime-kuma 4-line fix, gherkin 24-line mostly-fixtures don't qualify)
 
@@ -413,13 +413,13 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 - click#3414 — full pipeline ran (failing test, fix, Gemini attestation, push to fork) but **comment blocked, kimjune01 org-blocked on pallets**. Block predates session; comment attempt was the detection event. Three pallets silent-closures (click#3414, jinja#2166, quart#464) all the same block.
 - ruff#25073 — full reflow executed, addressed 2 inline comments + 5 unit tests + Gemini attestation, fast-forward push, comment posted. **Only true Q+ε test in the batch.**
 
-**H14 status: 1 true test (ruff), 5 substantive aborts.** Surface `gh search prs --state closed` does not surface closure substance — every "candidate" required deeper investigation (CONTRIBUTING.md, follow-up PRs, competing PRs, comment-block probe) to disqualify. Reflow target eligibility requires /investigate before implement.
+**H14 status: 1 true test (ruff), 5 substantive aborts.** Surface `gh search prs --state closed` does not surface closure substance. Every "candidate" required deeper investigation (CONTRIBUTING.md, follow-up PRs, competing PRs, comment-block probe) to disqualify. Reflow target eligibility requires /investigate before implement.
 
 **New rule: comment-block preflight.** Before investing investigate/implement/QA cycles on a closed PR, dry-run a comment to detect org-wide blocks. Org blocks are silent and look identical to noise-filter silent closes until the comment 403s. Added to sweep skill Rules.
 
 **New permanent evictions:** pallets (org-wide block), openbao (anti-AI CONTRIBUTING + AGENTS), litestar (anti-autonomous-agent AI_POLICY). See reference_evicted_orgs memory.
 
-**New hypothesis registered: H15 (hypothesis-graph-as-comment scales with PR complexity).** Posting a hypothesis graph as a PR comment functions as a substance signal *only* on multi-layer / architectural PRs. On simple fixes (small diff, single file, single invariant) the graph reads as ceremonial bot-overproduction. Asymmetry: cheap to produce (one Skill call), variable cost to receive (depends on PR complexity).
+**New hypothesis registered: H15 (hypothesis-graph-as-comment scales with PR complexity).** Posting a hypothesis graph as a PR comment is a substance signal *only* on multi-layer / architectural PRs. On simple fixes (small diff, single file, single invariant) the graph reads as ceremonial bot-overproduction. Asymmetry: cheap to produce (one Skill call), variable cost to receive (depends on PR complexity).
 
 **Two H15 data points in flight:**
 - compiler#1162 (multi-layer, dual-use guard, sister-repo context) — high-complexity case, hypothesis graph posted at https://github.com/withastro/compiler/pull/1162#issuecomment-4438519714
@@ -430,7 +430,7 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 - H15 engagement asymmetry: predict compiler#1162 gets reviewer engagement on the graph comment (or surrounding code) within 7 days; predict ruff#25073 graph elicits no reaction beyond the reflow itself. Falsifier: inverse pattern (ruff engages on graph, compiler ignores it).
 - Astro abort comment (#16704) goodwill: predict no negative reaction; possible weak positive (silent acknowledgement). Falsifier: ematipico responds dismissively or hides comment.
 
-**H15 refinement (immediate, same retro):** Better gating than complexity-threshold is *request-gated* — produce the graph when a maintainer asks "why" or pushes back on the approach, not as standard issue per PR. We have only seen a couple of "why did you do this" incidents so far, so the format's signal value is preserved by scarcity. Proactive graph-posting on every multi-layer PR would burn through that. Compiler#1162 graph comment is the proactive test case (no one asked); ruff#25073 graph comment was reactive (addressing MichaReiser's inline review). The reactive case should outperform the proactive case if H15-refined holds. Falsifier inversion: if compiler#1162 gets engagement on the graph and ruff#25073 doesn't, request-gating is wrong and complexity-gating wins.
+**H15 refinement (immediate, same retro):** Better gating than complexity-threshold is *request-gated*: produce the graph when a maintainer asks "why" or pushes back on the approach, not as standard issue per PR. We have only seen a couple of "why did you do this" incidents so far, so the format's signal value is preserved by scarcity. Proactive graph-posting on every multi-layer PR would burn through that. Compiler#1162 graph comment is the proactive test case (no one asked); ruff#25073 graph comment was reactive (addressing MichaReiser's inline review). The reactive case should outperform the proactive case if H15-refined holds. Falsifier inversion: if compiler#1162 gets engagement on the graph and ruff#25073 doesn't, request-gating is wrong and complexity-gating wins.
 
 ### Retro 15 (2026-05-13T17:00Z) — H15 paired test live, free-proxy-list quality bar, two investigations in flight
 
@@ -438,7 +438,7 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 
 **H15 paired test now live.** Reactive case: astral-sh/ruff#25073 hypothesis-graph comment was a response to MichaReiser's two inline reviews. Proactive case: withastro/compiler#1162 hypothesis-graph comment posted unsolicited on multi-layer architectural fix. The two cases differ on (a) request-gated vs proactive, (b) PR complexity. If reactive outperforms proactive, request-gating wins. If complexity dominates, proactive on the multi-layer case engages and reactive on the smaller case doesn't matter.
 
-**New finding: 'trigger CI' commits on closed PRs as engagement signal.** ruff#25073 had an empty `[CI] trigger` commit pushed by MichaReiser AFTER the close, which forced the reflow to rebase rather than fast-forward initially. This is a weak positive signal — the reviewer hadn't fully dismissed the PR. Pre-registration for retro 16: scan close-then-CI-commit pattern as a reflow eligibility signal in future closed PRs.
+**New finding: 'trigger CI' commits on closed PRs as engagement signal.** ruff#25073 had an empty `[CI] trigger` commit pushed by MichaReiser AFTER the close, which forced the reflow to rebase rather than fast-forward initially. This is a weak positive signal: the reviewer hadn't fully dismissed the PR. Pre-registration for retro 16: scan close-then-CI-commit pattern as a reflow eligibility signal in future closed PRs.
 
 **Friendly-maintainer parameter introduced.** gfpcom/free-proxy-list maintainer pattern (👍 emoji, "Excellent PR", "Good job") logged as `friendly_maintainer=true` + `scoring_bonus=+1`. Track whether this parameter correlates with merge rate over future actionable selection.
 
@@ -455,9 +455,9 @@ Dated session retros and one-off investigations: [HYPOTHESIS_GRAPH.retros.md](ht
 
 ### Retro 16 (2026-05-14T01:30Z) — alt-fix-preempted formalized; reactive graph-as-comment N=2
 
-**Delta since retro 15:** /pr-state scanned 163 open PRs; 13 actionable. 5 parallel agents dispatched, all converged. 4 reply postings (redscript, web-audio-api-rs, jj, harper). 1 hypothesis-graph chart+link posted (feldera). /drain skill shipped, 29 stuck entries cleared. ai-policy script tightened (CACHE_VERSION=2) — false positives on harper / otel-collector / gh-dash retired.
+**Delta since retro 15:** /pr-state scanned 163 open PRs; 13 actionable. 5 parallel agents dispatched, all converged. 4 reply postings (redscript, web-audio-api-rs, jj, harper). 1 hypothesis-graph chart+link posted (feldera). /drain skill shipped, 29 stuck entries cleared. ai-policy script tightened (CACHE_VERSION=2); false positives on harper / otel-collector / gh-dash retired.
 
-**New hypothesis registered: H16 (alt-fix-preempted as distinct closure class).** Observed N=2: Jaxx497/NoctaVox#21 (maintainer's auto-regenerate fix preempted our actionable-error fix), feldera/feldera#6219 (#6042's `read_rows`/`log_json_paths` partially overlap our `read_table`/`log_files`). Distinct from rejection (no standing damage), distinct from silent close (maintainer engaged). Triggered when our PR overlaps in-flight maintainer work the issue thread doesn't surface. **Cost asymmetry:** wasted investigation budget, no eviction risk. **Detection signal:** `git log --since=30d -- <files-the-fix-touches>` on default branch — recently-touched files indicate hidden work-in-progress; stale files are safe.
+**New hypothesis registered: H16 (alt-fix-preempted as distinct closure class).** Observed N=2: Jaxx497/NoctaVox#21 (maintainer's auto-regenerate fix preempted our actionable-error fix), feldera/feldera#6219 (#6042's `read_rows`/`log_json_paths` partially overlap our `read_table`/`log_files`). Distinct from rejection (no standing damage), distinct from silent close (maintainer engaged). Triggered when our PR overlaps in-flight maintainer work the issue thread doesn't surface. **Cost asymmetry:** wasted investigation budget, no eviction risk. **Detection signal:** `git log --since=30d -- <files-the-fix-touches>` on default branch: recently-touched files indicate hidden work-in-progress; stale files are safe.
 
 **H15 reactive paired-test data: N=4 reactive, 1 proactive.**
 - Reactive (graph posted in response to reviewer): ruff#25073 (MichaReiser), harper#3336 (hippietrail FP example, mechanical pushback via test evidence), feldera#6219 (swanandx overlap question, defer via H1-H6 chart), Fyrox#918 (mrDIMAS BytesStorage suggestion, partial-divergence reasoning embedded in reply, no separate graph posting needed)
@@ -491,7 +491,7 @@ Each is reactive. Each preserves both contributors' standing. Pre-registration: 
 
 ## H14: Gemini-only QA fabricates findings under codex rate-limit
 
-**Prediction:** When codex is unavailable (quota / rate-limit), gemini-fallback adversarial review produces a measurable fraction of fabricated findings — claims about code that doesn't exist in the diff. The single-reviewer mode lacks the cross-check that catches gemini's hallucinations.
+**Prediction:** When codex is unavailable (quota / rate-limit), gemini-fallback adversarial review produces a measurable fraction of fabricated findings: claims about code that doesn't exist in the diff. The single-reviewer mode lacks the cross-check that catches gemini's hallucinations.
 
 **Status: CONFIRMED (N=3, 2026-05-14).** Codex rate-limited until 2026-05-17.
 
@@ -509,7 +509,7 @@ Each is reactive. Each preserves both contributors' standing. Pre-registration: 
 **Status: CONFIRMED (N=1, 2026-05-14).**
 
 
-**Pattern:** Bot reviews CAN be substantive when the bot has been tuned to read diffs in context (pullfrog uses GPT). The skill rule "filter bot comments" is overbroad — it should filter *bot noise* (codecov stats, CLA reminders, dependabot pings) but not *bot review comments with code references*.
+**Pattern:** Bot reviews CAN be substantive when the bot has been tuned to read diffs in context (pullfrog uses GPT). The skill rule "filter bot comments" is overbroad. It should filter *bot noise* (codecov stats, CLA reminders, dependabot pings) but not *bot review comments with code references*.
 
 **Falsification:** If a survey of bot review comments across N PRs finds <5% substantive content, the default-filter rule was correct and this is a one-off.
 
@@ -522,7 +522,7 @@ Each is reactive. Each preserves both contributors' standing. Pre-registration: 
 **Status: CONFIRMED (N=1, 2026-05-14).**
 
 
-**Pattern:** Over-stated motivations are a credibility tax. A maintainer who notices one false claim discounts the entire PR. The fix is not stronger claims — it's accurate framing of why the refactor matters.
+**Pattern:** Over-stated motivations are a credibility tax. A maintainer who notices one false claim discounts the entire PR. The fix is not stronger claims. It's accurate framing of why the refactor matters.
 
 **Pipeline change:** Pre-ship gate should ground-truth empirical claims in the PR body. Anything of the form "X triggers Y" should be runtime-verified before being asserted. Reframing language ("aligns with upstream direction", "matches the documented contract") is safer than mechanism claims when the mechanism hasn't been verified.
 
@@ -532,7 +532,7 @@ Each is reactive. Each preserves both contributors' standing. Pre-registration: 
 2. **Codex rate-limit quietly degrades QA quality.** With codex out until 2026-05-17, gemini-only QA produces fabricated findings (H14). Every PR shipped during this window carries higher tail risk.
 3. **Bot reviews are an underused signal.** Filtering pullfrog/coderabbit by default discards real catches (H15).
 4. **Repos.jsonl status drift.** /triage skill writes drip queue picks but doesn't update repos.jsonl status from "ready" to "triaged". tick.py keeps reporting the same 9 ready repos every cycle. Infra-debt.
-5. **Org saturation floor confirmed (third instance).** 138 orgs blocked. Of 5 ship-eligible: 1 shipped (tracy), 2 hard-blocked (evicted/banned), 2 had broken gates. Effective ship count per wave ≤ 1. [[feedback-org-saturation-floor]] is now load-bearing — pipeline output is review-bound, not produce-bound.
+5. **Org saturation floor confirmed (third instance).** 138 orgs blocked. Of 5 ship-eligible: 1 shipped (tracy), 2 hard-blocked (evicted/banned), 2 had broken gates. Effective ship count per wave ≤ 1. [[feedback-org-saturation-floor]] is now load-bearing. Pipeline output is review-bound, not produce-bound.
 
 ### Score (2026-05-14, mid-session)
 
@@ -568,12 +568,12 @@ Each is reactive. Each preserves both contributors' standing. Pre-registration: 
 
 **Falsification (at +7d, 2026-05-21):**
 - If treatment merge rate ≤ control merge rate, the link adds noise without value. Retire H17 and remove HG-in-body from default drip.
-- If treatment review-touch ≤ control review-touch but merge rate matches, the link is read but not load-bearing — keep as transparency artifact, not as merge lever.
-- Adverse signal (any treatment PR closed citing the sweep repo or the pipeline disclosure) counts double — 1 such closure ≥ 5x the prior of "neutral exposure."
+- If treatment review-touch ≤ control review-touch but merge rate matches, the link is read but not load-bearing. Keep as transparency artifact, not as merge lever.
+- Adverse signal (any treatment PR closed citing the sweep repo or the pipeline disclosure) counts double: 1 such closure ≥ 5x the prior of "neutral exposure."
 
 **Sub-hypothesis H17a (detection vector):** ≥1 of the 12 treatment PRs closes within 7d with a maintainer comment referencing the sweep repo, the HG file, or batch contribution. Falsifier: zero such closures, in which case disclosure-via-link is a free transparency win.
 
-**Repaired post-launch:** chalk (junebot link → sweep), clap-rs (main → master). Note as procedural — ensure pre-launch link verification covers fork remote names and default branch.
+**Repaired post-launch:** chalk (junebot link → sweep), clap-rs (main → master). Note as procedural: ensure pre-launch link verification covers fork remote names and default branch.
 
 **Sub-hypothesis H17b (maintainer-class moderates link reception):** the H17 effect is not uniform across maintainers. Scientist-class maintainers (academic PIs, grad-student-staffed compilers, formal-methods libraries) read a falsification log as a methods section, because for them the trace IS the product. Engineer-class maintainers (paid OSS, solo hobbyists, product tooling) read the same artifact as bot prose, because time-saved is the currency and a slow trace is overhead. Predicts: heterogeneity in H17's effect is partly explained by maintainer class.
 
@@ -595,7 +595,7 @@ How to apply: tag scientist-class repos in repos.jsonl with `reception: scientis
 
 ## H18: Early claim earns standing and eases merge
 
-**Prediction:** Posting a brief "looking at this — fix shape is X, will open PR" comment on a freshly-filed issue, after /investigate's pushout converges, raises the merge rate and shortens time-to-merge for the resulting PR. Mechanism: the maintainer reads the claim while the bug context is still warm in their head, sees a coherent fix shape before competing PRs appear, and forms a "this contributor is on it" prior that survives into the actual review. Compounds with H2c (warm-org) — claim builds incremental warmth even on cold-org first contact.
+**Prediction:** Posting a brief "looking at this — fix shape is X, will open PR" comment on a freshly-filed issue, after /investigate's pushout converges, raises the merge rate and shortens time-to-merge for the resulting PR. Mechanism: the maintainer reads the claim while the bug context is still warm in their head, sees a coherent fix shape before competing PRs appear, and forms a "this contributor is on it" prior that survives into the actual review. Compounds with H2c (warm-org): claim builds incremental warmth even on cold-org first contact.
 
 **Trigger:** post-investigate phase, gated per-repo by retro_param `claim_after_investigate=true|false` (default false). Operator opts in per repo from CONTRIBUTING signals: communities that welcome "I'll take this" comments (gitea-style) opt in; communities that prefer "just open the PR" (kernel-style) stay opt-out.
 
@@ -604,7 +604,7 @@ How to apply: tag scientist-class repos in repos.jsonl with `reception: scientis
 - claim → time-to-merge median vs no-claim → time-to-merge median
 - claim → comment count on PR (proxy for friction) vs no-claim baseline
 
-**Asymmetric risk:** claim-then-ghost is worse than no-claim — the maintainer remembers the unfilled promise. The default-false retro_param + post-investigate (not post-prospect, not post-triage) gating is the conservative bound: claim only after the fix shape is grounded.
+**Asymmetric risk:** claim-then-ghost is worse than no-claim: the maintainer remembers the unfilled promise. The default-false retro_param + post-investigate (not post-prospect, not post-triage) gating is the conservative bound: claim only after the fix shape is grounded.
 
 **Falsifiers:**
 - claim → merge rate statistically indistinguishable from no-claim rate over n≥20 PRs each → H18 falsified, claim is pure cost.
@@ -629,9 +629,9 @@ How to apply: tag scientist-class repos in repos.jsonl with `reception: scientis
 - Indistinguishable rates → dual-family was theater for this problem class; consider keeping the CLI fallback as default and treating codex as elective.
 - Higher catch rate during outage → claude-only is somehow stronger (unexpected); investigate prompt or context-window differences.
 
-**Cost framing:** the outage is free experiment — it would otherwise require deliberately disabling codex for a controlled period, with the same "what does the pipeline lose" question and no way to recover gracefully. Use the window.
+**Cost framing:** the outage is free experiment. It would otherwise require deliberately disabling codex for a controlled period, with the same "what does the pipeline lose" question and no way to recover gracefully. Use the window.
 
-**Compounds with:** the pushout design (`project_sweep_investigate_pushout.md`). If H19 holds (sole-Claude is sufficient), the pushout default secondary stays at sonnet rather than upgrading to codex — saves cost without losing signal. If H19 fails, the pushout MUST cross families.
+**Compounds with:** the pushout design (`project_sweep_investigate_pushout.md`). If H19 holds (sole-Claude is sufficient), the pushout default secondary stays at sonnet rather than upgrading to codex, saving cost without losing signal. If H19 fails, the pushout MUST cross families.
 
 _Substrate/ops hypotheses moved to [`OPS_HYGRAPH.md`](https://github.com/kimjune01/sweep/blob/master/OPS_HYGRAPH.md)
 and renumbered as O1–O5. Mapping: H20 → O1 (activity-owned
@@ -644,9 +644,9 @@ hypothesis about tissue engagement)._
 
 **Prediction:** Investigations that conclude "no fix to ship" but produce a concrete finding (already-fixed-upstream, premise-killed, policy-gated with provenance) have value the maintainer can act on. Posting a one-paragraph comment with that finding earns measurable engagement (acknowledgement, issue close, reply) without requiring our code to merge. The substrate stops being PR-only; the analysis itself becomes shippable.
 
-**Status: PRE-REGISTERED (2026-05-17, retro this-session).** Side-hatch actor (`tissue-actor`) wired up. Drafts pending operator approval before posting — no auto-post. First batch from the 20 screened investigations identified by the [[O1-activity-owned-observability]] manifest pass, classified as `no-fix` with concrete provenance.
+**Status: PRE-REGISTERED (2026-05-17, retro this-session).** Side-hatch actor (`tissue-actor`) wired up. Drafts pending operator approval before posting, no auto-post. First batch from the 20 screened investigations identified by the [[O1-activity-owned-observability]] manifest pass, classified as `no-fix` with concrete provenance.
 
-**Mechanism:** the pipeline previously only credited investigations that ended in a PR. Hypothesis graphs concluded "STALE — already implemented upstream #1820" or "Halted at policy gate (maintainer self-PR)" died on local disk. Those findings are useful to the maintainer — they're "you can close this" advice grounded in evidence the maintainer often hadn't seen. Side-hatch ships that finding directly as a comment instead of forcing it through a PR shape that doesn't fit.
+**Mechanism:** the pipeline previously only credited investigations that ended in a PR. Hypothesis graphs concluded "STALE — already implemented upstream #1820" or "Halted at policy gate (maintainer self-PR)" died on local disk. Those findings are useful to the maintainer: they're "you can close this" advice grounded in evidence the maintainer often hadn't seen. Side-hatch ships that finding directly as a comment instead of forcing it through a PR shape that doesn't fit.
 
 **Operationalization:** new event `report_back_posted` carries `(repo, issue, comment_url, draft_chars, signal)`. Match against:
 - maintainer response within 7 days (any reply, reaction, close, or label change on the issue post-comment)
@@ -661,15 +661,15 @@ hypothesis about tissue engagement)._
 
 **Operator-approval gate is load-bearing:** unlike PR posting (deterministic gates plus drift policy), comment tone is judgment-heavy. One pushy or wrong-tone comment poisons the repo's prior on us. The drip-style queue + operator review keeps the substrate honest while we learn what lands.
 
-**Cost framing:** drafting cost is one Sonnet call per artifact (cheap; artifact is structured). Posting cost is one `gh issue comment` (one API call). Reputation cost is the real currency — a comment with a wrong finding or apologetic-bot tone burns more standing than the PR pipeline gains in a week.
+**Cost framing:** drafting cost is one Sonnet call per artifact (cheap; artifact is structured). Posting cost is one `gh issue comment` (one API call). Reputation cost is the real currency. A comment with a wrong finding or apologetic-bot tone burns more standing than the PR pipeline gains in a week.
 
-**Compounds with:** [[H0-quality-gated-AI-contributions]] (extends "quality is the differentiator" from code to comments); [[H2c-standing-compounds-within-a-repo]] (side-hatch is a low-cost way to plant the first contact in a repo we haven't PR'd to yet); [[H5-solo-maintainers-merge-boring-fixes]] (the tissue surface is exactly the maintainers we have least leverage with — they didn't want a PR from us, but they might want a "looks-already-fixed" pointer).
+**Compounds with:** [[H0-quality-gated-AI-contributions]] (extends "quality is the differentiator" from code to comments); [[H2c-standing-compounds-within-a-repo]] (side-hatch is a low-cost way to plant the first contact in a repo we haven't PR'd to yet); [[H5-solo-maintainers-merge-boring-fixes]] (the tissue surface is exactly the maintainers we have least leverage with. They didn't want a PR from us, but they might want a "looks-already-fixed" pointer).
 
 ## H24: Maintainer-ROI is the missing ranking function for what to PR
 
-**Prediction:** PR merge rate is dominated less by the bug being real (we filter on that already) than by the *maintainer's expected ROI* on reviewing — small diff, addresses a labeled or known-painful bug, tests included, no public-API change, no core-module surface area, doesn't reopen a closed-as-WONTFIX discussion. Sorting candidates by predicted maintainer-ROI before queuing through investigate would lift merge rate more than any further upgrade to the test_attestation gate.
+**Prediction:** PR merge rate is dominated less by the bug being real (we filter on that already) than by the *maintainer's expected ROI* on reviewing: small diff, addresses a labeled or known-painful bug, tests included, no public-API change, no core-module surface area, doesn't reopen a closed-as-WONTFIX discussion. Sorting candidates by predicted maintainer-ROI before queuing through investigate would lift merge rate more than any further upgrade to the test_attestation gate.
 
-**Why now:** the 2026-05-17 bulk-attest practice round showed wide variance in attest outcomes that wasn't predicted by language or repo size, but DID correlate with rough ROI proxies — small-diff Go/Rust fixes attested + merged-on-the-margin; large-diff multi-file ones got `test_passes_on_master` or real fail-on-fix more often. The substrate currently treats "this issue exists + I can fix it" as a green light; it should treat "the maintainer would gain from this fix landing" as the gate.
+**Why now:** the 2026-05-17 bulk-attest practice round showed wide variance in attest outcomes that wasn't predicted by language or repo size, but DID correlate with rough ROI proxies: small-diff Go/Rust fixes attested + merged-on-the-margin; large-diff multi-file ones got `test_passes_on_master` or real fail-on-fix more often. The substrate currently treats "this issue exists + I can fix it" as a green light; it should treat "the maintainer would gain from this fix landing" as the gate.
 
 **Components of maintainer-ROI (operator's working list, to be refined):**
 - diff size (smaller = lower review cost = higher ROI per maintainer minute)

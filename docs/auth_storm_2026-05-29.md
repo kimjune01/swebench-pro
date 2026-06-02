@@ -38,8 +38,8 @@ run is Sonnet 4.5 (craft) + GPT-5.5 codex (audit); Opus 4.8 isn't in our stack.
 | Claude Code | 99.08% | Operational (bumpy) |
 
 The stripe pattern across all four components is consistent with frequent
-degraded-but-not-incident-class events — partial errors, regional slowness,
-credential rotations — that operators experience but the public statuspage
+degraded-but-not-incident-class events (partial errors, regional slowness,
+credential rotations) that operators experience but the public statuspage
 doesn't separately enumerate. Whole-stack ~99% over 90d ≈ 21h degraded per
 component.
 

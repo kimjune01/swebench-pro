@@ -3,7 +3,7 @@
 The Verified run (batches 010–016, ~96% of attempted) was apparatus validation; the field moved to
 SWE-bench **Pro**, so Pro is the live target. Working thesis: the rig is benchmark-agnostic and the
 port is mostly a task-adapter swap. That thesis holds only if a few unknowns about Pro (below) come
-back favorable — if the eval images or the grader diverge, it's a new adapter, not a swap. Treat the
+back favorable: if the eval images or the grader diverge, it's a new adapter, not a swap. Treat the
 specifics here as a starting read, not a spec; the verification pass will redraw parts of it.
 
 ## Goal (the predicate)
@@ -11,7 +11,7 @@ specifics here as a starting read, not a spec; the verification pass will redraw
 A single **frozen, instance-agnostic artifact** (recon/craft/audit skills + driver) that clears
 SWE-bench Pro under **official third-party grading on the held-out private set, in one submission**,
 and is **verifiably free of per-instance priors**. The deliverable is that artifact + its reproducible
-attestation trail — not a percentage.
+attestation trail, not a percentage.
 
 Everything else in this doc is loose on purpose. The looseness is in the *how*; this is the invariant.
 When a constraint below admits more than one reading, choose the reading that keeps the predicate true.
@@ -28,7 +28,7 @@ A change, interpretation, or action is **admissible iff all five hold**:
 5. **Reproducible** — the frozen version is tagged and re-runnable from scratch; the result is
    re-derivable from committed attestations, not asserted.
 
-If a proposed step fails any clause, it's out — however well it would raise the number.
+If a proposed step fails any clause, it's out, however well it would raise the number.
 
 ## Strategy: public set, then private
 
@@ -42,11 +42,11 @@ Public Pro is in hand; private (held-out) is a later request. They're two modes:
 The discipline that matters across both: the held-out grade is an oracle, not a signal. Running the
 real official harness locally is legitimate attestation (the win is an official-*test* verdict,
 wherever it runs), and regression checking against the repo's own suite or visible PASS_TO_PASS is
-fine — it's what audit already does. The single forbidden move is letting the held-out FAIL_TO_PASS
-verdict become a stopping signal or, worse, iterating the method against the verifier and resubmitting
-— that launders the test set into the artifact one submission at a time. Hence one shot on private.
+fine. It's what audit already does. The single forbidden move is letting the held-out FAIL_TO_PASS
+verdict become a stopping signal or, worse, iterating the method against the verifier and resubmitting:
+that launders the test set into the artifact one submission at a time. Hence one shot on private.
 (Pro likely caps submissions anyway; treat one-shot as the rule regardless.) Done this way the private
-number is the clean-room capability result the project has always wanted — a no-priors artifact,
+number is the clean-room capability result the project has always wanted: a no-priors artifact,
 developed without seeing the held-out tests, graded by a third party.
 
 Edge case worth holding open: if the private set turns out to expose its graded tests locally, the
@@ -62,7 +62,7 @@ carries unchanged.
 
 ## What changes: the adapter
 
-Verified-specific constants live in four files — parameterize on a `bench_config` (or `BENCH=pro|verified`)
+Verified-specific constants live in four files. Parameterize on a `bench_config` (or `BENCH=pro|verified`)
 so both benches stay runnable for regression:
 
 | File | Line(s) | Verified value |
@@ -74,7 +74,7 @@ so both benches stay runnable for regression:
 | `stage_batch.py` | 36, 46, 51–53 | same dataset/namespace/conda assumptions |
 | `grade_batch.sh` | 20 | `--dataset_name princeton-nlp/SWE-bench_Verified` |
 
-Pro gets its own defect list (documented Pro defects only — never "instances we failed"; the
+Pro gets its own defect list (documented Pro defects only, never "instances we failed"; the
 no-priors / honest-denominator rule still binds), and a separate results tree so the scoreboards don't
 comingle.
 
@@ -88,7 +88,7 @@ instance-type, craft-cap pressure). Resolve these before committing to "swap" vs
 
 The one genuine design change. On private there's no visible FAIL_TO_PASS, so craft loses its local
 stopping signal. Gate on whatever's visible (PASS_TO_PASS, the repo's own suite, confidence, a budget),
-submit the best patch, and expect a lower number than public — that gap is the honest cost of held-out
+submit the best patch, and expect a lower number than public. That gap is the honest cost of held-out
 grading, not a bug. The thing to avoid is synthesizing a proxy FAIL_TO_PASS from the problem statement
 and trusting it; that's self-grading. Everything upstream of the stopping signal (recon, capture,
 orchestration) is unchanged.
@@ -98,24 +98,24 @@ orchestration) is unchanged.
 The session's gate-divergence losses (local-green / official-red) and the `our_f2p=None` ambiguous-gate
 losses share one root: the gate parses agent prose on the live tree, so the artifact that earns "green"
 isn't the one that gets graded. `~/Documents/sweep` already solved this; the contracts to port (not the
-Temporal/actor machinery — a driver loop doesn't need it):
+Temporal/actor machinery, a driver loop doesn't need it):
 
 - **Attestation as a deterministic gate emitting a hash** (`activities/attest.py`): apply the captured
   source-only prediction to a clean base, run the pinned tests, return a structured verdict + a content
   hash. Replaces `verify_gate`'s parse-the-agent's-output approach.
-- **Hash-as-precondition** (`pokayoke.py:has_attestation_hash`): capture/submission requires the hash —
-  no hash, no submission. This is the structural fix: local-green/official-red becomes impossible because
+- **Hash-as-precondition** (`pokayoke.py:has_attestation_hash`): capture/submission requires the hash.
+  No hash, no submission. This is the structural fix: local-green/official-red becomes impossible because
   the artifact that earns the hash *is* the submission. (Also retro-kills the django-15987 `-R`
   serialization false-positive.)
 - **Preconditions as `(fields) → SkipReason | None`** poka-yoke functions, composed per boundary,
-  structured code carried forward — front-load the cheap deterministic checks before expensive stages.
+  structured code carried forward. Front-load the cheap deterministic checks before expensive stages.
 - **The decided | errored | rejected trichotomy** (`skill_result.py`): a rejection carries its cause and
   routes, instead of an unparseable gate silently becoming "unknown."
 - **Compact deterministic output** (`skill_result.py:shim`): fast-path clean JSON with no LLM call, a hard
   input cap, fallback to artifact-on-disk, never raises.
 
 These fix gate-divergence and the serialization class, and remove the `our_f2p=None` ambiguity. They do
-nothing for recon-ceiling or genuinely-hard losses — those are diagnosis quality, not gate rigor.
+nothing for recon-ceiling or genuinely-hard losses. Those are diagnosis quality, not gate rigor.
 
 ## Efficiency (token + runtime)
 
@@ -126,7 +126,7 @@ tokens. Measure per-stage before optimizing a guessed sink.
 
 Volume/runtime levers, strongest first: semantic gate-output extraction (parse failure sections, never
 dump whole logs); suite selection (minimal FAIL_TO_PASS first, full suite only at audit); driver-enforced
-iteration caps + failure-signature early-bail (soft on patch size — a real framework fix can be large);
+iteration caps + failure-signature early-bail (soft on patch size: a real framework fix can be large);
 recon windowing (localize, read bounded ranges); an out-of-context per-instance state file fed as
 summaries; cached fail-on-base baselines; trace dedup; a stable prompt skeleton.
 
@@ -137,12 +137,12 @@ the lever set and the caching-under-subscription question; its points are folded
 
 ## Validating the improvements (cheap A/B; control = already committed)
 
-Every lever is a *suspect* until a test converts it. Rank by the two axes that matter — **reduces token
-usage** and **improves reliability** — and validate the duals first. Caching is demoted: no reliability
+Every lever is a *suspect* until a test converts it. Rank by the two axes that matter (**reduces token
+usage** and **improves reliability**) and validate the duals first. Caching is demoted: no reliability
 gain, and its token gain is unverified.
 
 Two things keep these affordable (no full-set re-run): the **control arm is the committed Verified runs**
-(`results/` already records the current frozen artifact's tokens-ish/ledger + resolve/DNF per instance —
+(`results/` already records the current frozen artifact's tokens-ish/ledger + resolve/DNF per instance:
 read it, don't re-run it), so only the **treatment** arm spends tokens, on the kept box, on a targeted set.
 And **deterministic levers need one treatment run** (the mechanism's effect on the gate isn't stochastic);
 only prompt-changing levers need repeated trials.
@@ -157,12 +157,12 @@ zero regression on the sample AND** tokens not up. Priority order:
    tokens + wall-clock drop. Deterministic gate change → 1 run (2 on the heavy ones to rule out a fluke).
 2. **Stage-cap + failure-signature early-bail** — token (kills doomed loops) + reliability (bounded).
    Treatment on the thrash losses {django-16263, astropy-13398, sympy-13091} + a passing sample. Pass: loops
-   terminate earlier (token win) with **zero newly-failed passing instances** — the bail must not guillotine
+   terminate earlier (token win) with **zero newly-failed passing instances**. The bail must not guillotine
    a slow-but-valid solve. The regression sample is the whole point here. Deterministic → 1 run, but verify
    the bail threshold against the passing sample's natural loop counts.
 3. **Attestation hash-as-precondition** — reliability (kills gate-divergence) + small token.
    Not a tunable; a correctness contract. Treatment re-grades {pytest-5787, django-14170} by attesting the
-   serialized source-only patch. Pass: our-gate verdict now **equals** official (the false-green vanishes —
+   serialized source-only patch. Pass: our-gate verdict now **equals** official (the false-green vanishes:
    our gate goes red too, so nothing wrong gets submitted) AND no new disagreement on a passing sample.
    Deterministic → 1 run.
 4. **Semantic gate-output extraction** — token (largest sink) + mild reliability.
@@ -177,19 +177,19 @@ A/B above, no reliability gain).
 ## Observed failure modes (Verified session, for calibration)
 
 Seven reasoning losses split roughly evenly across: **recon-ceiling** (right symptom function, wrong
-execution/compiler path), **genuinely-hard** (deep framework invariants — Django aggregation internals,
+execution/compiler path), **genuinely-hard** (deep framework invariants: Django aggregation internals,
 Astropy transforms), **gate-divergence** (local-green/official-red), and **craft-overfit** (passed a
 weakened/partial gate). Plus heavy-suite stage hangs (sympy/matplotlib) that are infra, not reasoning.
-Seven losses across six repos is too thin to call these established classes — they're hypotheses to test
+Seven losses across six repos is too thin to call these established classes. They're hypotheses to test
 at Pro's larger N. The contracts above close gate-divergence and overfit; recon-ceiling and
 genuinely-hard are the capability frontier, and Pro will press on them harder.
 
 ### The failed set (Verified, 16 not-won) — the line-up-ready validation corpus
 
 The full not-won list, classified, so an improved loop can be run against exactly the right instances.
-**No-credit rule:** improved-loop conversions on these are *telemetry, not Verified wins* — they're a
+**No-credit rule:** improved-loop conversions on these are *telemetry, not Verified wins*. They're a
 known/labeled test set; counting them would be training on the test set. Route such runs outside
-`results/` (scoreboard.py counts that tree). External-fault reruns are the exception — same frozen
+`results/` (scoreboard.py counts that tree). External-fault reruns are the exception: same frozen
 artifact, so they *do* count.
 
 | class | instances | validates lever | rerun? |
@@ -220,19 +220,19 @@ figure = what changed, ground = what held; the arity is the degree of freedom.
   fail-on-base baseline; under-approximate "this path reaches the bug," don't prove correctness.
 - **audit→recon outer loop builds the hypothesis graph** = N branches → typed subgraph.
 
-**recon-ceiling is bi-abduction landing on the wrong frame** — it took the *symptom function* (`In`,
+**recon-ceiling is bi-abduction landing on the wrong frame.** It took the *symptom function* (`In`,
 `ResolvedOuterRef`) as figure when the real figure was the compiler/resolution path. The fix is to add
-the third operand: **on non-convergence, take a tri-abduction step** — fork from the shared start, diff
+the third operand: **on non-convergence, take a tri-abduction step**, fork from the shared start, diff
 the actual bad-state branch against the expected-good-state counterfactual, and follow the causal edge to
 its origin (the last writer of the wrong state). That is exactly "trace the exact path, name the last
-writer," stated in the framework it instantiates — not a generic windowing tweak.
+writer," stated in the framework it instantiates, not a generic windowing tweak.
 
 This cleaves the improvement suspects by *type of fix*:
 - **Abduction-side (fixes diagnosis → recon-ceiling, partly genuinely-hard):** bi-abduction is the base
   recon; add a tri-abduction step when a frame fails to converge. Validate per the recon A/B (stochastic
   → repeated trials), with the regression sample guarding against worse localization elsewhere.
 - **Contract-side (fixes verification → gate-divergence, craft-overfit):** the attestation
-  hash-as-precondition. Orthogonal — abduction cannot fix a gate that lies about its own success, and a
+  hash-as-precondition. Orthogonal: abduction cannot fix a gate that lies about its own success, and a
   better gate cannot supply a frame the loop never inferred.
 
 So the recon windowing lever in the efficiency list is really the operational face of a tri-abduction
@@ -241,10 +241,10 @@ without degrading localization on the passing sample."
 
 ### Why tri is terminal — the lineage (to dig into)
 
-The loop's primitive set closes at {unary diff, bi-abduction, tri-abduction} — no genuine 4-ary primitive,
+The loop's primitive set closes at {unary diff, bi-abduction, tri-abduction}: no genuine 4-ary primitive,
 n-ary breadth is triadic composition (the hypothesis graph / fan-out). This isn't a hunch; it's
 **Peirce's Reduction Thesis**: triads are *necessary* (a genuinely triadic relation can't be analyzed
-into monadic+dyadic — Thirdness is irreducible) and *sufficient* (no genuinely tetradic-or-higher
+into monadic+dyadic: Thirdness is irreducible) and *sufficient* (no genuinely tetradic-or-higher
 relation; every n-adic decomposes to triadic). Same Peirce who named abduction (retroduction) and the
 1/2/3 categories (Firstness/Secondness/Thirdness).
 
@@ -256,7 +256,7 @@ Sources to chase:
   Burch, removes one of his restrictions.
 - **Koshkin, "Is Peirce's Reduction Thesis gerrymandered?"** — the live critique (argues the formalization
   smuggles the result). Cite it too; the *core* (triadic sufficient + irreducible) is the lineage, the
-  exact formalization is contested — don't present it as clean-settled.
+  exact formalization is contested. Don't present it as clean-settled.
 - Causal-domain echo: **Pearl's Causal Hierarchy Theorem** (Bareinboim–Correa–Ibeling–Icard) — exactly
   three layers, counterfactual maximal, no fourth. Continuous-function cousin: **Kolmogorov–Arnold**
   (n-ary continuous functions → superpositions bottoming out at binary+unary). Both rhyme; Peirce is the genus.

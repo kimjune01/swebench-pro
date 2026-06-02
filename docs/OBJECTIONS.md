@@ -49,7 +49,7 @@ open**, by disclosure, not deferral ([`PREREGISTRATION.md`](PREREGISTRATION.md)
 §12, C1). But the model-tier contribution is now bounded from above, in this repo:
 a pre-registered open-weight ablation runs the **same frozen harness** with both
 models swapped to a cheaper pair (Composer 2.5 + Gemini Flash 3.5) and resolves
-**93.1% vs 95.3%** — a 2.2-point drop. That isn't the same-model control (so
+**93.1% vs 95.3%**, a 2.2-point drop. That isn't the same-model control (so
 strict scaffold-only attribution stays open), yet most of the result survives
 dropping a frontier model class, which is the opposite of "it's just the model"
 ([`PREREGISTRATION-cheap-ablation.md`](PREREGISTRATION-cheap-ablation.md),
@@ -188,7 +188,7 @@ figures, kept separate because they are not the same thing:
   [`COST_BASIS.md`](COST_BASIS.md).
 - **This run's actual cash outlay: ≈ $858 marginal + ~$58 EC2.** Most legs ran on flat
   subscriptions (Claude Max $200/mo, codex, Cursor) at ~$0 marginal, so the cash was
-  far below the economic figure — non-portable by construction, which is why the
+  far below the economic figure, non-portable by construction, which is why the
   **economic** rate is the one to quote. The cash-vs-economic reconciliation is in
   [`COST_BASIS.md`](COST_BASIS.md#cash-vs-economic).
 

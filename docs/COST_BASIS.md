@@ -64,7 +64,7 @@ char-counted (÷4) as a tail estimate.
 | **GPT-5.5 leg** | | | | **$302.83** |
 
 The tail is char-estimated (the one approximation in the chain) but bounded under
-$16 — well under 1% of the frontier total — so its imprecision does not move the
+$16 (well under 1% of the frontier total), so its imprecision does not move the
 headline.
 
 ### Frontier total

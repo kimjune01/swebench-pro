@@ -1,7 +1,7 @@
 # For skeptics: verify it yourself
 
 This is a **public, contamination-prone** split and a **system/harness** result, not a
-model-capability claim. So this page does not argue — [`OBJECTIONS.md`](OBJECTIONS.md)
+model-capability claim. So this page does not argue. [`OBJECTIONS.md`](OBJECTIONS.md)
 argues. This page hands you the **prompt to check each doubt yourself**: paste it into
 your own coding agent (codex, Claude Code, Cursor, Gemini CLI, whatever), point it at a
 clone of this repo, and let it confirm or refute the claim against the committed
@@ -9,7 +9,7 @@ artifacts. Trust is the one axis an AI can't win against a human; verifiability 
 answer, so here are the means.
 
 Each section is a question a skeptic *should* ask, followed by a ready-to-paste prompt.
-Run them on your own machine and tokens. If any check fails, that's a finding — open an
+Run them on your own machine and tokens. If any check fails, that's a finding. Open an
 issue with the transcript.
 
 ---
@@ -51,7 +51,7 @@ issue with the transcript.
 > in `docs/OBJECTIONS.md` #3 against the repo: (1) zero repo overlap between the 11
 > Pro-public repos and Verified's dev set; (2) the dev-language-not-advantaged language
 > split in `docs/RESULTS.md`; (3) the git history of `skills/{recon,craft,audit}` between
-> repo init and the `prereg-pro-v1` freeze — confirm Pro-driven changes were
+> repo init and the `prereg-pro-v1` freeze. Confirm Pro-driven changes were
 > adapter/capture plumbing only, not reasoning-loop tuning. Report what you find.
 
 ## "The 34 losses are fake or capture artifacts."
@@ -76,7 +76,7 @@ issue with the transcript.
 
 > Run the verification block in `docs/pr-receipts.VERIFY.md`: the GraphQL queries against
 > live GitHub (use the **full epoch timestamp** `2026-05-09T00:34:00Z`, not a bare date or
-> midnight — the doc explains why), and the Python recompute from `docs/pr-receipts.jsonl`.
+> midnight; the doc explains why), and the Python recompute from `docs/pr-receipts.jsonl`.
 > Confirm ~81 merged / ~50% merge rate among decided PRs. Then check the close-reason
 > breakdown: confirm most closures are non-merit (no-AI policies, withdrawals, duplicates),
 > so the merge rate is a floor on correctness.
@@ -95,7 +95,7 @@ issue with the transcript.
 > The open-weight run: a 60-WIN stratified sample, ledger `runs/scored/regrade_win.jsonl`,
 > reported 60/60 with 0 flips. Inspect the ledger, then run your own re-grade on any sample
 > size you like with the official grader and report the flip rate. Same-grader re-grade is
-> deterministic, so a 0 flip rate on 60 implies ~0 on the rest — confirm or refute.
+> deterministic, so a 0 flip rate on 60 implies ~0 on the rest. Confirm or refute.
 
 ## "Reproduce the headline rate, not just the recorded verdicts."
 

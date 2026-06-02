@@ -46,7 +46,7 @@ PY
 ## Reproduce the live counts from GitHub
 
 The ledger is a snapshot; GitHub keeps moving (open PRs resolve over time). Query the
-current state with the GitHub GraphQL API — counts use the same epoch cutoff, so the
+current state with the GitHub GraphQL API. Counts use the same epoch cutoff, so the
 `merged` total is monotonic and should match or exceed the frozen 81:
 
 ```bash
@@ -58,7 +58,7 @@ gh api graphql -f query='
 
 Or paste the inner query into the GitHub GraphQL Explorer (https://docs.github.com/en/graphql/overview/explorer).
 
-**Keep the full `T00:34:00Z` timestamp — do not shorten it.** The pipeline epoch is
+**Keep the full `T00:34:00Z` timestamp; do not shorten it.** The pipeline epoch is
 `2026-05-09T00:34:00Z`, and GitHub's `created:>` qualifier honors the time component (and
 the `Z`). Two ways to get it wrong: a bare date `created:>2026-05-09` means *after the
 entire day* (starts May 10, dropping the epoch day, undercount to 66 merged); midnight
@@ -66,7 +66,7 @@ entire day* (starts May 10, dropping the epoch day, undercount to 66 merged); mi
 (closed reads 82 instead of 80, deflating the merge rate). The query must start at the
 epoch instant, not the calendar day and not midnight.
 
-Observed live on 2026-05-31: `merged 81`, `closed 80`, `open 117` — one PR closed since the
+Observed live on 2026-05-31: `merged 81`, `closed 80`, `open 117`. One PR closed since the
 freeze (79 → 80), merged unchanged. Live merge rate among decided: 81 / 161 ≈ 50.3%.
 
 ## Why this is the contamination-free check
@@ -75,7 +75,7 @@ These are post-cutoff issues on 73 repositories the model held no training prior
 ("cold" repos), where a real maintainer either merges the fix or closes it. Public-split
 benchmark contamination cannot inflate a maintainer's merge decision, so the ~50% merge
 rate is a harness-attribution signal independent of any training-data overlap. The PRs
-came from the sibling [`sweep`](https://github.com/kimjune01/sweep) pipeline — the same
+came from the sibling [`sweep`](https://github.com/kimjune01/sweep) pipeline, the same
 methodeutics lineage as this repo's recon → craft → audit harness, not a byte-for-byte
-copy of it — so read the receipts as evidence for the *method*; the open-weight ablation
+copy of it. So read the receipts as evidence for the *method*; the open-weight ablation
 in [`README.md`](../README.md) is the evidence for this specific scaffold.

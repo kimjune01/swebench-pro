@@ -1,7 +1,7 @@
 # Pre-registration — SWE-bench Pro, cheap-model ablation
 
 A planned ablation under §4.5a of *The inquiry loop on SWE-bench Pro*. Sibling run to the headline
-`prereg-pro-v1` Sonnet+codex artifact, **not a restart of it** — both runs ship under the same Zenodo
+`prereg-pro-v1` Sonnet+codex artifact, **not a restart of it**. Both runs ship under the same Zenodo
 DOI bundle, two model-pair receipts.
 
 ## 0. Import
@@ -26,7 +26,7 @@ Replaces parent §7 / §12 "Sonnet 4.5 generator + GPT-5.5 craft challenger" wit
 
 Stage assignment is **role-specialized** by design: Composer is code-specialized (impl strength
 where it pays); Flash is fast and general-purpose (cheap divergent hypothesis brainstorming where
-it pays). This is methodologically distinct from the parent's symmetric strong-model pair — if it
+it pays). This is methodologically distinct from the parent's symmetric strong-model pair. If it
 holds, the publishable heuristic is *match model to stage, not symmetric pair*.
 
 Auth: Composer via `CURSOR_API_KEY`; Flash via `GEMINI_API_KEY` (env vars in operator shell, not
@@ -78,7 +78,7 @@ tag + timestamped rationale; old tags never move).
   cross-checked against the relevant statuspage (Cursor + Google Cloud); no overlap → LOSS, not
   re-roll.
 - **Provenance contract:** per-instance trajectories, captured source-only diff, official grader
-  output, agent logs, fault codes, cost ledger — all pulled off-box continuously per parent §14
+  output, agent logs, fault codes, cost ledger: all pulled off-box continuously per parent §14
   amendment.
 - **Headline discipline:** a partial run is non-headline (parent §5). The cheap-ablation headline
   is the full-eligible-set resolve rate under this frozen artifact, reported alongside the
@@ -95,25 +95,25 @@ in-flight at preregistration time):
 | Modestly lower | Loop is necessary but not sufficient; frontier capability matters on hard-tail repos. |
 | Collapses | Frontier capability does most of the work; loop helps marginally. |
 
-Whichever outcome lands, **the receipts publish per §10** — the answer is the answer.
+Whichever outcome lands, **the receipts publish per §10**. The answer is the answer.
 
 ## 4. Why this is a sibling run, not a restart
 
 Parent §3 ("Artifact changed → whole-set restart under a new frozen tag") governs restarts within
-*one* scientific track — i.e., when a methodological change makes prior verdicts stale and the
+*one* scientific track, i.e., when a methodological change makes prior verdicts stale and the
 prior headline should be retired. This run does **not** retire the Sonnet+codex headline; both
 headlines stand, side by side, under the shared Zenodo DOI. The motivation is §4.5a of the paper
 (isolate loop contribution from model contribution), not a result-driven restart.
 
 The §3 accountability discipline still binds: this doc's worklog opens with the failure-class
-motivation ("model selection is unablated hyperparameter" — see §4.5a of the paper), written before
+motivation ("model selection is unablated hyperparameter"; see §4.5a of the paper), written before
 the scored run begins. Both headlines remain auditable independently.
 
 ## 5. Operational checklist (pre-run gate)
 
 - [ ] `CURSOR_API_KEY` and `GEMINI_API_KEY` available in operator shell; tested with a single-instance
       smoke run.
-- [ ] Shard plan committed (`tasks/shards-v1-cheap.txt` — 32 stripes of ~23 instances).
+- [ ] Shard plan committed (`tasks/shards-v1-cheap.txt`: 32 stripes of ~23 instances).
 - [ ] Fleet provisioning script updated for 32 boxes; preflight checks (parent §13.3) confirmed
       green on each.
 - [ ] Watchdog wall-clock cap sized ≥1.5× expected per-instance wall-time at the new model rate

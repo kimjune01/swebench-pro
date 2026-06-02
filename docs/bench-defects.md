@@ -14,7 +14,7 @@ If you're reproducing and seeing unexplained LOSSes, slow runs, or wedged grader
 **Symptom:**
 - Docker container alive, CPU ~0.4%
 - Inside container: bash → bash run_script.sh → sleep loop
-- `/workspace/stdout.log` is being written every second — but every new line is identical:
+- `/workspace/stdout.log` is being written every second, but every new line is identical:
   ```
   Waiting for Redis to start...
   Waiting for Redis to start...
@@ -30,13 +30,13 @@ while ! redis-cli ping; do
   sleep 1
 done
 ```
-Sometimes the `daemonize yes` invocation silently fails to fork — the server doesn't start, exits zero, no error to stderr. The script then loops forever pinging nothing.
+Sometimes the `daemonize yes` invocation silently fails to fork: the server doesn't start, exits zero, no error to stderr. The script then loops forever pinging nothing.
 
-**Verification:** running `redis-server` manually in foreground inside the same container starts it instantly and `redis-cli ping` returns PONG. So Redis CAN run; the bench's daemonize call is flaky. (Why daemonize fails specifically is unverified — suspect AOF state, but not yet diagnosed.)
+**Verification:** running `redis-server` manually in foreground inside the same container starts it instantly and `redis-cli ping` returns PONG. So Redis CAN run; the bench's daemonize call is flaky. (Why daemonize fails specifically is unverified: suspect AOF state, but not yet diagnosed.)
 
 **Mitigation (we built):** `driver/grader_watchdog.sh` checks the tail of `/workspace/stdout.log` each poll; if ≥5 of the last 10 lines contain "Waiting for Redis to start", runs `docker exec -d <cid> redis-server --daemonize yes --protected-mode no --port 6379` to kick-start it. Verified live: containers immediately switch from spam to real test output once Redis comes up.
 
-**Disclosure stance:** the kick-start is operator-layer mitigation — it helps the bench's intended setup state actually obtain. The bench grades "does the patch fix the bug under working infra"; our intervention only ensures the infra works. We do not modify pro_run, the grader, the tests, or the verdict. Score outputs carry a `*` footnote pointing here.
+**Disclosure stance:** the kick-start is operator-layer mitigation: it helps the bench's intended setup state actually obtain. The bench grades "does the patch fix the bug under working infra"; our intervention only ensures the infra works. We do not modify pro_run, the grader, the tests, or the verdict. Score outputs carry a `*` footnote pointing here.
 
 ## Defect — grader leaks containers after exit
 
@@ -48,17 +48,17 @@ leaked. Observed 3-4 stale containers per box after several hours of runs.
 
 **Implications:** disk grows monotonically; more importantly, the orphans' `pro_grade_<iid>/`
 directories persist on disk and can mislead any watchdog that uses "most recent grade dir" as a
-proxy for current activity (we hit this — see the worklog "later" entry from 2026-05-29).
+proxy for current activity (we hit this; see the worklog "later" entry from 2026-05-29).
 
-**Mitigation:** `driver/grader_watchdog.sh` reaps orphans each poll — keeps newest container per
-box, `docker kill`s the rest. Logs `REAP_ORPHAN`.
+**Mitigation:** `driver/grader_watchdog.sh` reaps orphans each poll, keeping newest container per
+box, `docker kill`ing the rest. Logs `REAP_ORPHAN`.
 
 ## Defect — `not resolved` LOSS is indistinguishable from grader-hang artifact
 
 **Observed:** ongoing.
 
 **Symptom:** when our watchdog kills a wedged container (real hang or redis flake), pro_run records
-the failed eval as `"not resolved"` — the same `detail` field a genuinely-failed test gets. The
+the failed eval as `"not resolved"`, the same `detail` field a genuinely-failed test gets. The
 ledger can't tell them apart on its own.
 
 **Mitigation:**
@@ -67,7 +67,7 @@ ledger can't tell them apart on its own.
   LOSSes, lets the queue re-pick them on next coordinator startup.
 - Policy: if the retry fails twice, run gold-passes-verifier (oracle mode) to decide between real
   LOSS and platform-bug KNOWN_BAD. The latter is reserved for cases where even the reference
-  solution fails — not for cases where our patch happened to fail twice.
+  solution fails, not for cases where our patch happened to fail twice.
 
 ## What we initially mistook for a defect
 

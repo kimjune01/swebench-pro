@@ -23,7 +23,7 @@ elif TRACK == "private":  # Scale-run held-out — the small-scope flip
 ```
 
 **Everything below is shared.** Going public→private is exactly: swap `source`, swap `gate`. Nothing
-else changes — that is the whole point of the data-source-agnostic `task.json` + EC2-box packaging
+else changes. That is the whole point of the data-source-agnostic `task.json` + EC2-box packaging
 (for skeptics *and* for Scale, who run the same self-contained driver rather than us conforming to
 their harness). Residual knots on the private flip: model credentials + sandbox-trust on secret data.
 
@@ -39,9 +39,9 @@ their harness). Residual knots on the private flip: model credentials + sandbox-
 
 ## Frozen run config (prereg §13 item 3)
 
-The exact knobs a scored run freezes. The artifact is **model-agnostic** by construction — model
-identity is a config parameter (`RCA_MODEL`, `CRAFT_CODEX_MODEL`), no code path branches on it
-(grep-verified) — so this block, not the code, records what the headline number ran under.
+The exact knobs a scored run freezes. The artifact is **model-agnostic** by construction (model
+identity is a config parameter, `RCA_MODEL`, `CRAFT_CODEX_MODEL`, no code path branches on it,
+grep-verified), so this block, not the code, records what the headline number ran under.
 
 | knob | frozen value | source |
 |---|---|---|
@@ -56,47 +56,47 @@ identity is a config parameter (`RCA_MODEL`, `CRAFT_CODEX_MODEL`), no code path 
 | auth | claude = Max OAuth (keychain → `~/.claude/.credentials.json`, bills Max/$0); codex = `~/.codex/auth.json` | run_fleet.sh `stage_creds` |
 | eligible denominator | **728** (731 − 3 §6 defects) | `runs/audit/eligible.txt` |
 
-**Regression checks (the three 2026-05-25 harness faults — a recurrence reads as INCOMPLETE, never a method LOSS):**
+**Regression checks (the three 2026-05-25 harness faults; a recurrence reads as INCOMPLETE, never a method LOSS):**
 1. **Non-login shell** — gate + box run via `bash -c` (not `-lc`); a login shell resets PATH and hides baked toolchains (Go/Rust/Node) → false RED gate. Preflight: gate goes GREEN on a Go gold patch.
 2. **Ledger dir** — `log()` mkdirs its parent; stages log before setup, so a missing dir crashes the first call on a fresh box (false loop-failure).
 3. **Serial gold selftests under emulation** — parallel container contention corrupts the gold pass-check; selftests run serially.
 
 ## Token access / auth (the harness is auth-agnostic)
 
-The harness drives the `claude` and `codex` CLIs, which resolve credentials from standard env vars —
+The harness drives the `claude` and `codex` CLIs, which resolve credentials from standard env vars,
 so **whoever reproduces it plugs in their own token source with no code change.** Claude Code's
 precedence: cloud-provider creds (`CLAUDE_CODE_USE_BEDROCK=1` / `CLAUDE_CODE_USE_VERTEX=1` + provider
 creds) → `ANTHROPIC_AUTH_TOKEN` → `ANTHROPIC_API_KEY` → subscription OAuth.
 
 - **Canonical reproduction (e.g. Scale):** set `ANTHROPIC_API_KEY` + `OPENAI_API_KEY` (PAYG, matches
   SWE-bench's own reference inference scripts), **or** `CLAUDE_CODE_USE_BEDROCK=1` + AWS creds for the
-  Claude leg if billing through Bedrock. No harness change — the CLIs pick it up. This is the most
+  Claude leg if billing through Bedrock. No harness change; the CLIs pick it up. This is the most
   likely evaluator path; the benchmark's native inference is direct-API and restartable.
 - **Operator (our run):** Max-OAuth pushed to each box + `CLAUDE_SUBSCRIPTION=1` in the dispatch env,
   which makes `plan_env()` drop any stray `ANTHROPIC_API_KEY` so the run bills **Max/$0**, never PAYG.
   ⚠ Because an API key *overrides* the subscription in the precedence order, a leaked `ANTHROPIC_API_KEY`
-  would silently bill PAYG — `CLAUDE_SUBSCRIPTION=1` is the guard.
+  would silently bill PAYG. `CLAUDE_SUBSCRIPTION=1` is the guard.
 
 ## Reproduction contract (read before reproducing)
 
 What "reproducible" means here, stated precisely so a third party hits no surprises:
 
 - **Aggregate, not bit-identical.** The agent is stochastic (sampling), so reproduction reproduces the
-  **aggregate resolve-rate within sampling variance** over the 728 eligible set — **not** a deterministic
+  **aggregate resolve-rate within sampling variance** over the 728 eligible set, **not** a deterministic
   per-instance replay. A given instance flipping WIN/LOSS between runs is expected, not a defect.
 - **Pinned surface.** Match every row in *Pinned versions* + *Frozen run config*, including the **agent
-  CLI versions** (`claude-code@2.1.150`, `codex@0.134.0`) — install them with `npm i -g
+  CLI versions** (`claude-code@2.1.150`, `codex@0.134.0`). Install them with `npm i -g
   @anthropic-ai/claude-code@2.1.150 @openai/codex@0.134.0`. CLI releases can change flags/auth/model
   resolution, so they are frozen deps like any other.
 - **Tokens are yours.** Set `ANTHROPIC_API_KEY` + `OPENAI_API_KEY` (or Bedrock); see *Token access*. The
-  `gpt-5.5` craft model is pinned via `codex exec -c model=gpt-5.5` — if your org exposes it under a
+  `gpt-5.5` craft model is pinned via `codex exec -c model=gpt-5.5`. If your org exposes it under a
   different alias/snapshot, set `CRAFT_CODEX_MODEL` to that ID.
-- **DockerHub.** 728 multi-GB images pull from `jefzda/sweap-images`; **`docker login` first** —
+- **DockerHub.** 728 multi-GB images pull from `jefzda/sweap-images`; **`docker login` first**:
   anonymous pulls throttle (~100–200/6h) and would inject spurious mid-run failures.
 
 ## Execution paths (canonical vs operator)
 
-The verdict is **dispatch-independent** — the official grader runs per-instance with no cross-instance
+The verdict is **dispatch-independent**: the official grader runs per-instance with no cross-instance
 state, so any dispatch that drains the full eligible set yields the identical 728-verdict set.
 
 - **Canonical / reproducible (what a third party runs):** `pro_run.py --mode run --shard i/N
@@ -121,7 +121,7 @@ bash driver/bootstrap.sh      # idempotent: pins+clones eval repo, builds venv, 
 ```
 
 `bootstrap.sh` ends by grading a gold patch (must print `READY — env validated`). If it fails, the
-environment is wrong and it tells you the exact command to debug — **don't proceed until it's
+environment is wrong and it tells you the exact command to debug. **Don't proceed until it's
 green.** That single command replaces the old clone/checkout/venv/validate dance. Re-run anytime.
 
 ## Layout (the dirs are the instructions)
@@ -137,7 +137,7 @@ scratch/           ephemeral pad — gitignored; durable record goes in WORKLOG.
 ```
 
 Scripts default into these (no paths to pass): `make_task` → `tasks/generated/`, pilots/batches →
-`runs/dev/`, `pro_smoke` → `scratch/`. dev vs scored, regenerable vs committed — read off the tree.
+`runs/dev/`, `pro_smoke` → `scratch/`. dev vs scored, regenerable vs committed: read off the tree.
 
 ## 1. Build the task
 
@@ -181,7 +181,7 @@ $PY swe_bench_pro_eval.py --raw_sample_path <sample.jsonl> --patch_path <pred.js
 
 `pred.json` = `[{"instance_id","patch","prefix":""}]`. `sample.jsonl` needs lowercase
 `fail_to_pass`/`pass_to_pass`/`selected_test_files_to_run` as **string** reprs (the grader `eval()`s
-them) — `pro_pilot.py:official_grade` builds both correctly.
+them). `pro_pilot.py:official_grade` builds both correctly.
 
 ## 4. Dev (local, emulated) vs scored (EC2, native)
 
@@ -218,21 +218,21 @@ cat ~/.codex/auth.json | ssh -i $PEM ec2-user@$PUBIP 'mkdir -p ~/.codex; cat > ~
 - Fields are **lowercase** and the grader `eval()`s them → pass **string** reprs, not JSON arrays.
 - Image URI: use `helper_code/image_uri.py:get_dockerhub_image_uri`; only `-vnan` is stripped, other
   `-v<sha>` suffixes are **kept**. The task must carry `repo` (image_uri does `repo.split("/")`).
-- Capture must drop runtime blobs (redis `appendonly.aof`, `node_modules`, build dirs) — handled by
+- Capture must drop runtime blobs (redis `appendonly.aof`, `node_modules`, build dirs), handled by
   the denylist + 256 KB per-file cap in `_strip_test_blocks`.
 - The eval repo clone is a hard dependency (dockerfiles + run_scripts read from disk by id).
 
 ## 6. Verify someone else's number (derive, don't trust)
 
 Every committed result carries its captured source-only diff. To verify: take `patch.diff`, build
-`pred.json`, run §3 on a clean container, confirm the verdict matches. No need to re-run the agent —
+`pred.json`, run §3 on a clean container, confirm the verdict matches. No need to re-run the agent;
 the grade is deterministic from the diff.
 
 ## Not yet load-bearing (honest gaps)
 
 - Same-model `mini-swe-agent` control arm (would isolate scaffold from model in the differential).
-  **Decided: not running it.** Removing codex shifts all load onto the scarce Claude budget — not
+  **Decided: not running it.** Removing codex shifts all load onto the scarce Claude budget, not
   budget-viable. Scaffold-only attribution stays permanently OPEN, not pending (prereg §12, C1).
 - Packaging for Scale to run our pipeline on the held-out (containerized, model-creds, 200-turn
-  budget). The held-out is Scale-run and relationship-gated, not a self-serve submission — see
+  budget). The held-out is Scale-run and relationship-gated, not a self-serve submission. See
   `PREREGISTRATION.md` §9.

@@ -8,7 +8,7 @@ edit→gate cycle is a local `docker exec`.
 
 **Scope.** This is a dev-loop convenience, not a grading path. Wins are still official-test
 verdicts (the predicate in `PRO_PORT.md` is unchanged). Conversions on the 16 not-won are
-**telemetry, not Verified wins** — they're a labeled set; see the no-credit rule in
+**telemetry, not Verified wins**; they're a labeled set; see the no-credit rule in
 `PRO_PORT.md`. Keep these runs out of any `results/` tree.
 
 ## The environment
@@ -21,12 +21,12 @@ verdicts (the predicate in `PRO_PORT.md` is unchanged). Conversions on the 16 no
   `vmgr is already running (socket)`, it's a stale handoff lock. Fix: quit OrbStack, kill
   leftover `OrbStack`/`vmgr` procs, relaunch. (Hit once during setup, 2026-05-24.)
 - Task JSONs are generated with the **Verified** venv: `../swebench-verified/.venv`
-  (swebench 4.1.0 + datasets). No separate Pro venv needed yet — Pro's dataset adapter is
+  (swebench 4.1.0 + datasets). No separate Pro venv needed yet; Pro's dataset adapter is
   still unbuilt (see `PRO_PORT.md`).
 
 ## The translation (EC2 driver → local)
 
-The single seam is `rung4_driver.py:ssh()` — everything funnels through it. Local mode is
+The single seam is `rung4_driver.py:ssh()`; everything funnels through it. Local mode is
 three substitutions:
 
 | EC2 driver | Local |
@@ -36,7 +36,7 @@ three substitutions:
 | `box`/`gate` helpers wrap `ssh … sudo docker exec` | wrap `docker exec` directly |
 
 `driver/local_iso.sh` implements this for the **manual** loop (setup→warm→helpers, no
-recon/craft/audit). It does not run the autonomous pipeline — for that, the same three
+recon/craft/audit). It does not run the autonomous pipeline; for that, the same three
 substitutions would be applied behind a `LOCAL=1` flag in `ssh()`, but manual iteration on
 known failures doesn't need the agent loop.
 
@@ -61,7 +61,7 @@ docker kill $(cat iso/django__django-15987/cid)            # tear down
 ```
 
 The test patch is staged in `/tmp` and committed (not left in the tree), so a captured
-`git diff HEAD` prediction never leaks a `delete tp.patch` hunk — the django-15987
+`git diff HEAD` prediction never leaks a `delete tp.patch` hunk, the django-15987
 `-R`-serialization false-positive the EC2 driver also guards against.
 
 ## The 16 not-won (the iteration corpus)

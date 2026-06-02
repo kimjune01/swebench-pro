@@ -16,7 +16,7 @@ Captured patches were 0 bytes. Score had moved 95.8% → 89.4% on the noise alon
 at fleet provisioning was rejected by Anthropic after the fact. Re-extracted creds from the Mac
 keychain (`security find-generic-password -s "Claude Code-credentials" -w`), scp'd fresh
 `.credentials.json` to all 4 boxes, restarted the coordinator. First post-reauth verdicts (after
-14:04) returned in real wall-times — auth resumed.
+14:04) returned in real wall-times. Auth resumed.
 
 **Three waves, 43 rows total.** Cutoff 13:28:34 → 28 fast-LOSSes. A no-op coordinator restart at
 13:55 (before I'd actually re-pushed creds) → 12 more in 5 min. Three earlier endogenous
@@ -30,7 +30,7 @@ failure endogenous to the method (agent errored, produced no patch)." Read liter
 strips were prereg-noncompliant. §3 provider-incident-class is statuspage-gated; consulted
 https://status.claude.com/ for the 13:28–14:00 window: the two posted incidents were "Elevated
 errors for Claude Opus 4.8", neither relevant to Sonnet 4.5 or to auth. 90d historical Claude Code
-uptime is 99.08% (≈20h degraded over the window) — context, not corroboration.
+uptime is 99.08% (≈20h degraded over the window): context, not corroboration.
 
 **Resolution: §3 amendment.** Added `PROVIDER_CRED_REJECT` as a new fault class slotting between
 provider-incident (statuspage-required) and infra-class (on-box-log-required). On-box subprocess
@@ -38,7 +38,7 @@ capture of the verbatim 401 string **is** the corroboration, same shape as dmesg
 invariants required (canonical rejection string + 0-byte patch + ≥3-instance wave + resolution by
 fresh cred push) so the rule is mechanical not judgmental. Symmetric to existing on-box-log
 treatment. Statuspage silence is documented in `docs/auth_storm_2026-05-29.md` as part of honesty
-(not as disconfirmation — token rotations aren't posted incidents). See `PREREGISTRATION.md` §14
+(not as disconfirmation; token rotations aren't posted incidents). See `PREREGISTRATION.md` §14
 amendment "2026-05-29 — `PROVIDER_CRED_REJECT`" for the full text.
 
 **Reproducibility caveat.** The Claude Code service's 90d uptime is ~99% with several visible
@@ -49,9 +49,9 @@ re-push from keychain → restart) as part of the operator runbook, not as a def
 
 ## 2026-05-29 (latest) — real grader-side defect found: silent `redis-server --daemonize` flake; runner-side mitigation added with disclosure
 
-Followed up on the runtime-histogram finding (NodeBB completed p95=19m vs currently-running >40m — gap demanded investigation, not shrug-off as "NodeBB is heavy"). SSHed in: **all 4 boxes were stuck in "Waiting for Redis to start..." loop, spamming the message every second.**
+Followed up on the runtime-histogram finding (NodeBB completed p95=19m vs currently-running >40m; gap demanded investigation, not shrug-off as "NodeBB is heavy"). SSHed in: **all 4 boxes were stuck in "Waiting for Redis to start..." loop, spamming the message every second.**
 
-Root cause: the grader's `prepare_test_environment` runs `redis-server --daemonize yes --protected-mode no --appendonly yes` and then pings in a loop. Sometimes the daemonize silently fails — the server doesn't actually fork. The ping loop runs forever; stdout grows with the spam; nothing on port 6379.
+Root cause: the grader's `prepare_test_environment` runs `redis-server --daemonize yes --protected-mode no --appendonly yes` and then pings in a loop. Sometimes the daemonize silently fails. The server doesn't actually fork. The ping loop runs forever; stdout grows with the spam; nothing on port 6379.
 
 **Verification:** running `redis-server` manually inside the same container gave PONG instantly. So Redis CAN run; the bench's daemonize invocation is flaky. Why daemonize fails is unverified (suspect AOF state, but didn't dig further given quota pressure).
 
@@ -67,19 +67,19 @@ Other Pro submitters presumably absorb these wedges as silent LOSSes (their scor
 
 **Action taken on disclosure:**
 - Added `* operator-side mitigations for grader-side defects in effect — see docs/bench-defects.md` line to `score` CLI output, with asterisk on the WIN/LOSS line itself. Any read of the score now surfaces the disclaimer.
-- Will revise `docs/bench-defects.md` to demote the misattributed Defect 1 (futex hang — was largely our watchdog misreading) and promote this redis-wedge as the prominent real defect.
+- Will revise `docs/bench-defects.md` to demote the misattributed Defect 1 (futex hang, was largely our watchdog misreading) and promote this redis-wedge as the prominent real defect.
 - This worklog entry IS the §14-style post-freeze amendment for the redis-wedge mitigation.
 
-**Scope of the bench (for the prereg amendment):** Pro measures "given working test environment, does the patch fix the bug?" It does NOT measure "make the test environment work in the first place" — that's operator-layer SWE work. The grader assumes prepare_test_environment succeeds. We observed it doesn't always, so we built operator infra that helps it succeed. The verdict still measures what the bench intends to measure.
+**Scope of the bench (for the prereg amendment):** Pro measures "given working test environment, does the patch fix the bug?" It does NOT measure "make the test environment work in the first place": that's operator-layer SWE work. The grader assumes prepare_test_environment succeeds. We observed it doesn't always, so we built operator infra that helps it succeed. The verdict still measures what the bench intends to measure.
 
 ## 2026-05-29 (even later) — watchdog was killing healthy graders; fixed by reading the right signal
 
-**Investigation (via /investigate):** all 4 boxes appeared stuck — uptime 23-47m, CPU <0.5%, idle 15-47m.
+**Investigation (via /investigate):** all 4 boxes appeared stuck: uptime 23-47m, CPU <0.5%, idle 15-47m.
 Watchdog about to kill them on next poll. SSHed in to see what was actually happening before pulling the trigger.
 
 **Finding:** every box's process tree was `bash entryscript.sh → bash run_script.sh <NodeBB tests> → sleep 1`,
 all in `do_wait` (parent waiting for child). Not `futex_wait`. The grader runs `npx mocha --reporter=json
---bail=false test/controllers.js` (or similar) — a legitimate slow test suite, not a hang. CPU at 0.4%
+--bail=false test/controllers.js` (or similar), a legitimate slow test suite, not a hang. CPU at 0.4%
 because mocha is I/O-bound (Redis ops, HTTP routes, async waits).
 
 **Root cause:** the watchdog's `idle_min` signal read `runs/dev/pro_grade_*/` mtime on the HOST. That
@@ -94,23 +94,23 @@ Kept IDLE_THRESHOLD_MIN as the kill gate. Verified live: all 4 boxes' watchdog i
 on the first poll after the fix.
 
 **Integrity backwash:** this morning's 3 watchdog kills (61m, 194m, 205m uptime) were almost certainly
-**false positives** — healthy long-running graders the watchdog killed because it was reading the wrong
+**false positives**: healthy long-running graders the watchdog killed because it was reading the wrong
 mtime. All 3 produced spurious `not resolved` LOSSes, were re-queued via `retry_grader_kills.sh`, and
 are currently re-running on coord1-4. Their outcomes will tell us how many were actual losses vs bench
 artifacts (which were really our-watchdog artifacts).
 
-Also fixed `box_health.sh` STUCK verdict — was triggering on CPU% alone, now uses idle_min from the
+Also fixed `box_health.sh` STUCK verdict, which was triggering on CPU% alone, now uses idle_min from the
 corrected source.
 
-**Updates to `docs/bench-defects.md`:** Defect 1 (futex deadlock) was largely misattributed — the
+**Updates to `docs/bench-defects.md`:** Defect 1 (futex deadlock) was largely misattributed. The
 3-hour `futex_wait` from this morning's investigation may have been a different (rarer) issue or itself
 an artifact of inspection timing. Long-running graders showing "0% CPU + idle log dir" are now the
-expected case, not a defect. Will revise the doc in a follow-up — for now the worklog is the source of
+expected case, not a defect. Will revise the doc in a follow-up. For now the worklog is the source of
 truth for the corrected understanding.
 
 Hypothesis graph: `~/Documents/sweep/repo-hypotheses/swebench-pro__grader-hang.md`.
 
-**Lesson: watchmen's filter must read the right signal — "right" = the artifact actually produced by
+**Lesson: watchmen's filter must read the right signal: "right" = the artifact actually produced by
 the work, not a downstream side effect of completion.**
 
 ## 2026-05-29 (later) — Pro grader leaks containers; orphans poisoned watchdog perception
@@ -128,7 +128,7 @@ sitting at ~0.4% CPU.
 **The orphans poisoned the grader_watchdog's own perception.** The watchdog uses
 `ls -dt ~/swebench-pro/runs/dev/pro_grade_*/` to find the latest grade-output dir, then checks its
 mtime to compute `idle_min`. Orphan containers left their grade dirs around (each a `pro_grade_*`
-sibling), and those stale dirs were the most-recently-modified hours ago — so the watchdog saw
+sibling), and those stale dirs were the most-recently-modified hours ago, so the watchdog saw
 `idle_min=22m` for the active container too. Live graders were making progress; the watchdog just
 couldn't tell. None had crossed the 30m idle threshold yet, but a stale orphan would have triggered
 the kill on an *active* grader within minutes.
@@ -142,7 +142,7 @@ the kill on an *active* grader within minutes.
 
 **Why this matters beyond housekeeping:** the watchdog's filter (3-threshold gate) had a latent
 false-positive class we didn't know about. With orphan dirs present, any active grader that ran
->60 minutes would have crossed all three thresholds and been killed mid-grade — adding a spurious
+>60 minutes would have crossed all three thresholds and been killed mid-grade, adding a spurious
 LOSS to the ledger AND killing legitimate work. We dodged it this morning by luck (orphans hadn't
 crossed the 30m idle threshold yet relative to the active dirs). Codex's #4 finding on the
 unwired reconciler ("count_actual is just env files, not actual fleet state") generalizes: any
@@ -156,7 +156,7 @@ finding. The bench ships containers that leak resources; that's their bug, ours 
 
 **Surprise finding.** The Pro `swe_bench_pro_eval.py` grader (third-party, in docker) hangs on
 heavy suites (NodeBB-shaped instances) in `futex_wait` with **0.4% CPU, 41MB RAM, no log activity
-for 3h+**. No timeout, no error, no progress signal — same `ship-without-sanity-checks` pattern
+for 3h+**. No timeout, no error, no progress signal: same `ship-without-sanity-checks` pattern
 we critiqued DeepSWE for, except here it's the upstream Pro grader. Documented as a known
 craft-hang pattern (`project_swebench_craft_hang.md`), now confirmed on the grader path too.
 
@@ -199,7 +199,7 @@ audit-style post once we have more reproductions.
 
 Sharpened by auditing a contemporaneous benchmark (DeepSWE/Datacurve) that ships tasks + harness but
 **no run data** across its whole GitHub org (verified: 6 repos, the only "trajectory" hits are viewer
-UI + Storybook fixtures) — its leaderboard and harness-neutrality pilot have no published numbers
+UI + Storybook fixtures). Its leaderboard and harness-neutrality pilot have no published numbers
 behind them. Engineer's report wearing science's clothes. The line is the **burden-of-proof direction**:
 publish the runs and invite refutation, or publish the result and ask for trust.
 
@@ -229,20 +229,20 @@ confirmed the key is short-lived so transcript exposure is acceptable; rotate-af
 auth source isn't part of the frozen artifact, the headline already discloses model+scaffold.
 
 **Plumbing built (operator, not artifact):** `coordinator.py` + `run_fleet.sh` gained `AUTH_MODE=api`
-alongside subscription — pushes a 600 key file (not OAuth), `run_instance` exports `ANTHROPIC_API_KEY`
+alongside subscription: pushes a 600 key file (not OAuth), `run_instance` exports `ANTHROPIC_API_KEY`
 and leaves `CLAUDE_SUBSCRIPTION` unset so `plan_env()` honors the key; codex sub auth untouched.
 Subscription path byte-identical (assert refactored into an injected snippet; both modes
 simulation-verified to render valid remote bash). The dynamic coordinator's fault-tolerance is retained
 (vs the fragile static-shard path) for the unattended window. Committed.
 
-**Canary (DONE — PASS):** 1 box, `AUTH_MODE=api`, 3 quota-paused **flipt** instances → dev ledger
+**Canary (DONE, PASS):** 1 box, `AUTH_MODE=api`, 3 quota-paused **flipt** instances → dev ledger
 (`runs/dev/canary_api.jsonl`). Plumbing works end-to-end (api provision, key billing, codex-on-sub, full
 pipeline, clean teardown). **Confirms the quota-casualty diagnosis:** under healthy tokens these ran
 **full-length 885–1378s** (vs 196–374s fast-deaths at the wall) → **2 WIN / 1 LOSS**. flipt-0b119520
 flipped LOSS@268s → **WIN@885s**; flipt-05d7234f ran 1378s and genuinely lost. So re-running cleanly
-separates quota-casualties from real losses — the reclassification was correct.
+separates quota-casualties from real losses. The reclassification was correct.
 **Measured cost: USD 6.21 / 3 = ~$2.07/instance (flipt = light end; ~900–1400s).** Heavy repos cost
-more, so blended is higher. Cost read from the Console (regular key can't query the cost API — needs
+more, so blended is higher. Cost read from the Console (regular key can't query the cost API, needs
 admin key). Box self-terminated on drain → session logs lost again (3rd teardown artifact-loss; retro:
 pull logs before teardown). Canary verdicts stay on the dev ledger; the scored run re-runs those 3.
 
@@ -252,13 +252,13 @@ then revert to subscription at 4-box pace. Projection: ~250–300 instances in-w
 
 ## 2026-05-27 (later) — PAUSE: Max quota exhausted mid-run → 341 un-run, resume when budget refreshes
 
-**Not a fault — the pre-registered `QUOTA_EXHAUSTED` PAUSE (§4).** After the auth-fix resume (~22:49Z),
+**Not a fault: the pre-registered `QUOTA_EXHAUSTED` PAUSE (§4).** After the auth-fix resume (~22:49Z),
 the fleet ran ~5.5h and exhausted the Max token budget. The `claude` CLI hit the quota wall and died
-empty (48–311s, no output across all stages) — the **same harness mis-recording** as the auth outage:
+empty (48–311s, no output across all stages). The **same harness mis-recording** as the auth outage:
 ~341 quota-deaths written as `LOSS ("no verdict endogenous")` instead of PAUSE. This briefly showed an
 11.2% resolve rate, which was **garbage** (mostly quota-deaths, not capability).
 
-**Reclassified** (mechanical, output-substance criterion — `state==LOSS AND detail startswith "no
+**Reclassified** (mechanical, output-substance criterion: `state==LOSS AND detail startswith "no
 verdict (endogenous)"`): 341 rows `LOSS`→`INCOMPLETE`, `fault=QUOTA_EXHAUSTED`. Backed up →
 `run.jsonl.prequota.bak`. Real-output verdicts stand.
 
@@ -266,7 +266,7 @@ verdict (endogenous)"`): 341 rows `LOSS`→`INCOMPLETE`, `fault=QUOTA_EXHAUSTED`
 real-diff LOSSes split on duration: 3 genuine full-length (teleport 2622s@00:58, protonmail
 5489s@06:36 + 1015s@07:51, all *healthy regime*) vs **13 flipt at 196–374s, all 08:18–09:41Z**.
 Smoking gun = a **fleet-wide temporal regime change**, not instance difficulty: flipt WINs (9) all ran
-05:51–07:52 at **764–3025s**; flipt LOSSes (13) all ran 08:18–09:41 at **<400s** — 3× faster than any
+05:51–07:52 at **764–3025s**; flipt LOSSes (13) all ran 08:18–09:41 at **<400s**, 3× faster than any
 flipt win, and **interspersed with the empty-deaths** inside the quota wall [08:01–11:28Z], where
 **WIN=0 fleet-wide**. Mechanism: under quota throttling a *light* Go repo (flipt) can limp to a thin
 shallow patch (~250s, real diff → graded LOSS) while heavy repos die fully empty. **Same
@@ -275,11 +275,11 @@ verdict-independent window rule (zero in-window wins, so no cherry-picking). The
 losses **stand**.
 
 **True state on genuine (quota-healthy) completions: 45 WIN / 3 LOSS = 93.8%** (N=48, skewed to
-early-order teleport/protonmail/flipt — NOT a headline). Remaining: **354 quota-paused + 326
+early-order teleport/protonmail/flipt, NOT a headline). Remaining: **354 quota-paused + 326
 never-attempted = 680 to run**.
 
 **Process gap (retro action):** `coordinator.py` checkpoints only verdicts, not captured diffs / agent
-logs — so post-teardown the flipt losses were diagnosable *only* from ledger timing/metadata, not the
+logs. So post-teardown the flipt losses were diagnosable *only* from ledger timing/metadata, not the
 actual patches. The coordinator must pull per-instance diff + logs to the laptop (echoes the 2026-05-26
 heavy-patch teardown loss). Until then, diagnosis leans on the timing trail.
 
@@ -294,16 +294,16 @@ grind; cadence needs a decision (see next steps).
 - **Trigger:** operator got logged out of Claude and re-authenticated (`/login`) mid-run. Max OAuth
   re-login rotates the refresh token, invalidating the tokens pushed to the boxes at setup.
 - **Signature:** a cliff at **04:42:39Z**. From then, 32 instances failed with `detail="no verdict
-  (endogenous): … craft:[empty] audit:[empty] pilot_done:[empty]"` — **empty output across all three
+  (endogenous): … craft:[empty] audit:[empty] pilot_done:[empty]"`: **empty output across all three
   stages**, 156–297s each. Before the cliff: full-length loops (WINs 1000–2900s, one genuine 2622s
   LOSS). The agent produced *nothing*, which is the auth-failure signature, not capability.
 - **Not difficulty-correlated:** WINs continued as late as 05:11 (boxes on still-valid cached tokens
   completed; only token-*refresh* attempts failed) → the failures track auth, not instance hardness.
 
-**Classification (pre-registered, mechanical, verdict-INDEPENDENT — NOT discretion):** the trigger is
-**outage-window membership** — `started_at ∈ [04:42:39Z, 05:29:14Z]` (first..last empty-output start)
+**Classification (pre-registered, mechanical, verdict-INDEPENDENT, NOT discretion):** the trigger is
+**outage-window membership**: `started_at ∈ [04:42:39Z, 05:29:14Z]` (first..last empty-output start)
 → INCOMPLETE, **regardless of verdict**. This supersedes a first-pass empty-output-only criterion: that
-version would have kept in-window WINs while re-running in-window losses — an asymmetry that is exactly
+version would have kept in-window WINs while re-running in-window losses: an asymmetry that is exactly
 the loss-laundering the §4 anti-cheat forbids. Treating the *whole* window as contaminated and
 re-running **wins too** is the verdict-independent version. Re-running the 2 in-window WINs may not
 reproduce them; accepting that risk is the cost that keeps the rule honest. Grounded in §13
@@ -312,7 +312,7 @@ regression-check #1 (environment-induced results are platform faults, INCOMPLETE
 **Out-of-window terminal verdicts STAND** (clean auth): 23 WIN + 1 LOSS (the genuine 2622s teleport
 @ 00:58). Only the documented fault window is re-run.
 
-**Action (§4a recovery, byte-identical artifact, same tag — NOT a v2 restart):**
+**Action (§4a recovery, byte-identical artifact, same tag, NOT a v2 restart):**
 1. Ledger backed up → `runs/scored/run.jsonl.preauthoutage.bak` (every original verdict preserved).
 2. **37 in-window rows reclassified → `INCOMPLETE`** (`fault=AUTH_OUTAGE`, `orig_state`, reclass_note):
    35 LOSS (32 empty + 3 flipt `not resolved`) + **2 WIN**. `load_done()` treats INCOMPLETE as
@@ -331,9 +331,9 @@ here). Every scored-run artifact cites this SHA.
 
 The §13 pre-freeze gate is cleared (all four items committed): §6 defect list (eligible = 728/731),
 batch/sharding driver + fleet, frozen config block, and this §13 self-update + worklog rotation. The
-prereg is frozen and `WORKLOG.md` rotated — pre-freeze churn lives in `WORKLOG_PREFREEZE.md`.
+prereg is frozen and `WORKLOG.md` rotated. Pre-freeze churn lives in `WORKLOG_PREFREEZE.md`.
 
-**Restart motivation:** none — this is `v1`, the first scored tag. (A future `v2` would open its own
+**Restart motivation:** none, this is `v1`, the first scored tag. (A future `v2` would open its own
 worklog with the failure class that justified the restart, per §3.)
 
 Scored run proceeds on the 728 eligible instances under the frozen config (Sonnet 4.5 generator +
@@ -392,7 +392,7 @@ confirmed 7/8 boxes 401ing.
 
 **Remediation.**
 1. Pulled fresh OAuth token from local keychain (`security find-generic-password -s
-   "Claude Code-credentials"`); scp'd to all 7 stale boxes; re-tested — all 8 boxes green.
+   "Claude Code-credentials"`); scp'd to all 7 stale boxes; re-tested. All 8 boxes green.
 2. Backed up ledger to `runs/scored/run.jsonl.bak-20260528-184949` (792 lines).
 3. Stripped the 5 LOSS entries from `runs/scored/run.jsonl` (787 lines remain). Strip predicate
    gated on `state==LOSS AND secs<100 AND iid IN <5-set>` for safety.
@@ -400,7 +400,7 @@ confirmed 7/8 boxes 401ing.
 5. Restarted coord3 (new PID 11090) with `--skip-setup --box-offset 8 --boxes 4`. New `todo=332`
    confirmed the 5 requeues landed (was 327 implied).
 
-**Classification.** This is an operational fault per §4 (provider-class incident — OAuth token
+**Classification.** This is an operational fault per §4 (provider-class incident: OAuth token
 rotation), not a model verdict. Per discipline, the 5 LOSSes are scrubbed and the instances
 re-attempted. Single ledger-strip with explicit predicate + backup is the minimal intervention;
 no harness change.
@@ -422,11 +422,11 @@ with `detail: "requeued: stall <state> (<orig detail>)"`. Coordinator
 restarted; resume picked them up (eligible=728 done=534 todo=194).
 
 **Deviation from strict cutoff:** also rewrote 1 pre-stall endogenous LOSS
-at 01:23Z (qutebrowser-996487c4...) — same pipeline-drop shape, outside the
+at 01:23Z (qutebrowser-996487c4...), same pipeline-drop shape, outside the
 03:04Z window. Logged separately as `"requeued: pre-stall endogenous drop
 (<orig>)"`. Rationale: endogenous = pipeline produced no verdict; same class
 of non-graded outcome as the stall cohort, not a graded fail. Operator
-(user) approved explicitly, flagged "no sneaky business" — preserving full
+(user) approved explicitly, flagged "no sneaky business", preserving full
 audit trail (orig detail in parens, backup ledger
 `runs/scored/run.jsonl.bak-stall-20260530T033431Z`).
 
@@ -447,17 +447,17 @@ keychain; the boxes still held the now-rejected token.
 2. Pulled fresh OAuth creds from keychain (`security find-generic-password
    -s "Claude Code-credentials"`, 539 bytes), pushed to all 4 boxes at
    `~/.claude/.credentials.json` (chmod 600). Verified by reading back the
-   first 60 bytes from each box — all 4 match local.
+   first 60 bytes from each box. All 4 match local.
 3. Rewrote 14 ledger entries ending ≥04:34:00Z (the runtime-collapse
    threshold) from LOSS/WIN → INCOMPLETE with detail
    `"requeued: auth-stall-2 <orig state> (<orig detail>)"`. Backup ledger:
    `runs/scored/run.jsonl.bak-stall2-20260530T044012Z`.
 4. Restarted coordinator (PID 55311); all 4 boxes REUSING (no
-   reprovisioning). Resume picked up requeued instances immediately —
-   coord2 grabbed the previously-troubled qutebrowser 996487c4 first.
+   reprovisioning). Resume picked up requeued instances immediately.
+   Coord2 grabbed the previously-troubled qutebrowser 996487c4 first.
 
 Tally after rewrite: W=523 L=26 INCOMPLETE=510. The 14 vs first stall's
-105 — the gap was shorter (~30min vs ~30min original, but auth refresh
+105: the gap was shorter (~30min vs ~30min original, but auth refresh
 detected faster because operator was watching the monitor live).
 
 **Pattern note.** Two auth stalls in ~90 minutes after the original 8:04PM
@@ -474,7 +474,7 @@ a 30min cron while coordinator runs).
 Voluntary pause after a clean 53-WIN streak. Rationale: rather be
 under-budget than over-budget, since over-budget means redo (auth stalls
 above) eat both wall time and ledger integrity. Off-peak hours (US night /
-EU morning) had been carrying the streak — the moment vibe-coder load
+EU morning) had been carrying the streak. The moment vibe-coder load
 returns, the OAuth bucket gets squeezed and endogenous LOSSes start
 appearing. Prefer to pause now and resume when the contention drops.
 
@@ -483,7 +483,7 @@ Sequence:
    coord2` (coord3/coord4 had been draining since the 06:23Z ramp-down to
    --boxes 2). Each box completes its in-flight instance, then EC2
    terminates and worker retires gracefully.
-2. Health monitor + chat tail left armed — they'll resurface on the next
+2. Health monitor + chat tail left armed. They'll resurface on the next
    ledger write whenever boxes come back.
 
 Tally at pause: W=566 L=26 INCOMPLETE=510, 1101 ledger lines.
@@ -503,7 +503,7 @@ is `run_fleet.sh setup` first.
 endogenous LOSS storms every 30-90min from auth/quota pressure. Night =
 clean 50+ WIN streaks. Schedule around that. Two auth re-stages tonight
 between 03:04Z and 04:34Z (peak US evening); zero between 04:39Z and
-07:35Z. Same boxes, same skill, same instances — different load on the
+07:35Z. Same boxes, same skill, same instances, different load on the
 shared OAuth/quota surface upstream.
 
 ## 2026-05-30 14:20Z — Auth stall #3, switching to API mode + scaling to 8 boxes
@@ -511,13 +511,13 @@ shared OAuth/quota surface upstream.
 Third OAuth stall, this one the worst: 77 endogenous LOSSes in 15min
 (12:33–12:48Z), runtime collapse from minutes to 30-50s. By the time
 operator returned, all 4 EC2 instances were terminated (watchdog fired
-during the 90+min outage — drain script was idle but the in-box
+during the 90+min outage, drain script was idle but the in-box
 WATCHDOG_MIN reaper reached its deadline).
 
 Operator out of Sonnet quota for the cycle. Decision: stop chasing
 subscription tokens; switch to AUTH_MODE=api so Sonnet bills via
 ANTHROPIC_API_KEY (paid). Trade-off: real $ per token vs. zero $ but
-unreliable. The Max bucket has now demonstrated three stalls in <12h —
+unreliable. The Max bucket has now demonstrated three stalls in <12h,
 not viable for sustained tail-end runs.
 
 Also scaling boxes 4→8. More boxes ≠ more tokens (API key bills per
@@ -540,7 +540,7 @@ this stall window + 4 from earlier hard instances).
 US-peak daytime hours. Off-peak (US night, EU AM) carried clean 40-60
 WIN streaks. The Max OAuth bucket is shared with consumer Claude.ai
 traffic; load spikes there starve agent runs of refresh tokens. The fix
-isn't more retries — it's a billing path that doesn't share the bucket
+isn't more retries. It's a billing path that doesn't share the bucket
 (API key, AUTH_MODE=api).
 
 ## 2026-05-30 14:51Z — Stall #3 recovery: setup gotchas + manual remediation
@@ -559,7 +559,7 @@ the script as a library to call its internal `setup_box()` bash function
 directly. But `REPO` and `SSH` are set after `set -u` at the top of the
 script, and they don't survive parallel subshell forking the way I
 exported them. Net effect: `rsync -az -e "$SSH_CMD" "$REPO/" ...` ran
-with both vars empty, which expanded to `rsync -az -e "" "/" ...` —
+with both vars empty, which expanded to `rsync -az -e "" "/" ...`,
 rsyncing the *entire Mac root filesystem* to each box. Caught after ~25
 min of runaway rsyncs at 30%+ CPU and 1GB+ memory each. The good news:
 none completed (boxes' EBS would have filled and the rsync would have
@@ -576,7 +576,7 @@ inline `SSH=` (no env dependencies). It does exactly what
 6. ssh + bootstrap (dnf install python3.11/node/uv, npm install pinned
    claude+codex CLIs, run `driver/bootstrap.sh`, AUTH_ASSERT)
 
-Ran `bash /tmp/manual_setup.sh all` — 8 boxes READY in ~3min.
+Ran `bash /tmp/manual_setup.sh all`. 8 boxes READY in ~3min.
 
 **Launch.** `AUTH_MODE=api python3 driver/coordinator.py --boxes 8
 --skip-setup`. Banner confirmed `AUTH_MODE=api → Sonnet bills
@@ -584,7 +584,7 @@ ANTHROPIC_API_KEY (PAID); codex on sub; CLAUDE_SUBSCRIPTION unset`. All
 8 dispatched immediately. eligible=728 done=658 todo=70.
 
 **Lessons for the retro.**
-- `run_fleet.sh setup-box <name>` is unsafe for batch reuse — needs a
+- `run_fleet.sh setup-box <name>` is unsafe for batch reuse. Needs a
   `--no-provision` flag or a sibling `bootstrap-box` command that
   rsyncs/installs without touching EC2.
 - Internal bash functions in `run_fleet.sh` aren't safely sourceable due
@@ -618,17 +618,17 @@ across `test/units/plugins/connection/`, `test/integration/`, and
 anything importing the connection plugin. Pytest collection alone is
 slow on the ansible tree. Integration tests spawn SSH subprocesses.
 When craft's first patch doesn't match the intended call graph, the
-adversary's rerun multiplies that collection cost — one extra cycle =
+adversary's rerun multiplies that collection cost: one extra cycle =
 ~1500s, two = ~3000s, hit the 5400s wall.
 
 Same shape as the sympy/matplotlib craft-hang already documented
-in [[project_swebench_craft_hang]] — heavy suites push craft past the
+in [[project_swebench_craft_hang]]. Heavy suites push craft past the
 instructed gate-cap, which isn't enforced (gate says "stop after N
 attempts," but if attempt N is mid-`pytest`, it runs the whole
 collection before checking).
 
 If the hypothesis holds, the fix isn't more craft cycles or a higher
-gate-cap. It's stricter **test scoping** in the craft prompt — "test
+gate-cap. It's stricter **test scoping** in the craft prompt: "test
 only the precise files touched by the diff, not the package." Worth
 trying on the practice rungs of the next campaign; not changing the
 skill mid-run per the freeze.
@@ -677,15 +677,15 @@ AUTH_MODE=api after the third Sonnet quota stall.
 **Outstanding artifacts for the retro:**
 - Tool-call / cost / runtime / cycles histograms from
   `runs/scored/artifacts/coord*/` (the artifact puller captured ~all
-  claude+codex session JSONLs — see 2026-05-30 ansible speculation entry
+  claude+codex session JSONLs; see 2026-05-30 ansible speculation entry
   for the diagnostic questions).
 - Bimodal-runtime hypothesis for ansible needs the full sample (3
-  early LOSSes pointed bimodal; 3 later API-mode LOSSes contradicted —
-  recheck against the final 6 ansible LOSSes once histograms are run).
+  early LOSSes pointed bimodal; 3 later API-mode LOSSes contradicted.
+  Recheck against the final 6 ansible LOSSes once histograms are run).
 - Three-stall pattern observation: confirm correlation with US-peak
   hours by overlaying ledger timestamps on Anthropic's status page.
 
 NodeBB at 74.4% is the run's headline weak repo. Worth a focused
-slice next campaign — same recon/craft/audit pipeline, only NodeBB
+slice next campaign: same recon/craft/audit pipeline, only NodeBB
 instances, to see if a tighter prompt closes the gap or if it's
 infrastructural.
