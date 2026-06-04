@@ -42,8 +42,10 @@ issue with the transcript.
 > ~43.6% vs ~95.3% in this harness. (3) The "induce to the stronger model" bound: even
 > bare GPT-5.5 (~58.6%) or the Pro board leader Opus 4.7 (~64.3%) sit 31–37 points below
 > 95.3%. Note the disclosed confounds (generator ran thinking-on; the lift bundles
-> structure with generic agent-engineering). Tell me whether the attribution claims are
-> stated as bounded (they should be), not as proof.
+> structure with generic agent-engineering), with turn budget excepted: the median
+> win stays inside the baseline's 250-turn cap by both model calls and executed
+> actions (`runs/scored/turn_budget.jsonl`, OBJECTIONS §12). Tell me whether the
+> attribution claims are stated as bounded (they should be), not as proof.
 
 ## "You developed the harness on these repos, so you overfit."
 

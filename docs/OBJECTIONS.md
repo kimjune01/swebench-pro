@@ -107,7 +107,11 @@ single model the harness still adds 31–37 points, an order beyond any reasonin
 lift. Two caveats held: the harnessed generator runs thinking-on against the baseline's
 thinking-off, and the ~50-point lift bundles the typed structure with generic
 agent-engineering (turns, tools, retries); separating them is future work
-([`DISCUSSION.md`](DISCUSSION.md)).
+([`DISCUSSION.md`](DISCUSSION.md)). One of those bundled factors, turn budget, is
+now bounded from the committed traces: the median win resolves in 137 model calls /
+59 executed actions, inside the baseline's own 250-turn budget (88% / 96% of wins
+under cap, both units; §12), so turn count is not the lever. Tools, retries, and
+thinking-on stay bundled.
 
 ## 3. "You developed the harness on these repos, so you overfit."
 
@@ -224,7 +228,16 @@ The audit is done, and both effects are real and disclosed rather than nested.
 
 Per instance: median **137 Claude turns** (recon + craft + audit, all retries;
 mean 193, p90 291), 13.7% over SEAL's 250-turn reference cap, **plus** a GPT-5.5
-challenger on top, so total model calls exceed a single 250-turn agent. Two cost
+challenger on top, so total model calls exceed a single 250-turn agent. But model
+calls are not the unit the 250-turn cap meters: a SWE-Agent turn emits one command,
+while most Claude calls in these traces are reasoning-only and carry none. Counted
+as executed actions, the median win spends just **59 tool calls**, with **96% of
+wins under the 250 cap** (88% under even by raw model calls). Both units land the
+typical win inside the budget the bare baseline was already granted, so the harness
+does not out-resolve it by taking more steps; the right tail and the second model
+are what push the total past one bare agent. The per-win, per-stage counts are a
+committed receipt: [`turn_budget_audit.py`](../driver/turn_budget_audit.py) →
+[`runs/scored/turn_budget.jsonl`](../runs/scored/turn_budget.jsonl). Two cost
 figures, kept separate because they are not the same thing:
 
 - **Replicable economic cost at API pricing: ~$5.14 / instance** for the frontier
