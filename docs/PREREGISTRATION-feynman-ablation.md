@@ -26,6 +26,18 @@ hard, write down the solution." So the variable is precisely **actual execution 
 of it.** Solution-attempting perturbation (craft testing fixes against the gate) is unchanged in both
 arms; only *diagnostic* perturbation is removed.
 
+**What the estimand isolates -- directed, not arbitrary, perturbation.** Both arms carry `craft`
+unchanged, and craft already perturbs: it writes a fix, runs the suite, reads the failure, retries.
+Blind search *is* perturbation, and it is held constant across arms. This ablation therefore does NOT
+test "perturbation vs none" -- it cannot, craft is frozen in both. It removes only the stage where
+perturbation is *aimed*: recon's scoped diagnostic probe, perturbing *to discriminate between
+hypotheses* rather than to stumble onto a passing test. The treatment is **scoped *diagnostic*
+perturbation (the directed probe); arbitrary search-perturbation is a held-constant covariate, not
+the manipulated variable.** This is why the predicted interaction is mechanistic, not cosmetic:
+directed perturbation should pay exactly when arbitrary perturbation has run out of road (UNDER:
+craft thrashed -- re-entry/experiments>=2) and collapse toward zero when it has already converged
+(DET: `experiments==0 AND no re-entry`, no remaining fork for a probe to resolve).
+
 ## 1. Import
 
 Inherits every discipline from `PREREGISTRATION.md` at the `prereg-pro-v1` SHA: predicate (§1), two

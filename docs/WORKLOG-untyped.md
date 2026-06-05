@@ -5,6 +5,34 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- Estimand sharpened: the treatment is *directed* perturbation, not perturbation-in-general
+
+A precision that pre-empts the obvious referee objection ("craft perturbs too -- what did you
+actually isolate?"). Both arms carry `craft` unchanged, and craft already perturbs: it writes a fix,
+runs the suite, reads the failure, tries again. **Blind search is perturbation, and it is held
+constant across arms.** The ablation never removed perturbation-in-general -- it *couldn't*, craft is
+frozen in both arms. It removed the one stage where perturbation is *aimed*: recon's scoped
+diagnostic probe, the bi-abductive move that perturbs *to discriminate between hypotheses* rather
+than to stumble onto a passing test.
+
+So the estimand is narrower and stronger than "perturbation helps":
+
+> **Treatment = scoped *diagnostic* perturbation (the directed probe). Arbitrary search-perturbation
+> (craft's blind try-and-rerun) is a held-constant covariate, NOT the manipulated variable.**
+
+This is exactly why the signal lives in UNDER and dies in DET, and the mechanism reads cleanly off
+the strata definitions:
+- **UNDER** = instances where blind craft-perturbation *wasn't enough* (re-entry OR experiments>=2 --
+  the first diagnosis thrashed). On those, aiming the probe is worth `Delta=+0.278`.
+- **DET** = `experiments==0 AND no re-entry`: craft's arbitrary perturbation already converged, so
+  there is no remaining fork for a directed probe to resolve, and the marginal effect collapses
+  toward zero.
+
+The interaction is therefore not "perturbation vs none" but **"directed perturbation pays exactly
+when arbitrary perturbation has run out of road."** Edison's filaments are in both arms; what recon
+adds is the Feynman probe pointed at a specific fork in the hypothesis graph. Propagated to the
+prereg (§0, §2) as the interpretation-of-estimand note.
+
 ## 2026-06-05 -- INTERACTION emerges (P=0.981, supplementary); DET trends null but ROPE-close is rate-limited
 
 DET control filled to n=26 (`25/1/0/0` -- 25 both-win, 1 recon-only, 0 feyn-only, 0 both-lose).
