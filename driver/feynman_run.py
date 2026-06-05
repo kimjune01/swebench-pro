@@ -35,10 +35,13 @@ FAULT_RE = re.compile(r"BOX_DEATH|AWS_API|OOM|DISK_FULL|SETUP_NETWORK_FAIL|QUOTA
                       r"failed to pull|Killed|MemoryError", re.I)
 
 
-def load_sample():
-    if not SAMPLE.exists():
-        sys.exit(f"missing {SAMPLE} (generate it: driver/perturbation_strata.py)")
-    return [l.strip() for l in SAMPLE.read_text().splitlines() if l.strip()]
+def load_sample(path=None):
+    p = pathlib.Path(path) if path else SAMPLE
+    if not p.is_absolute():
+        p = REPO / p
+    if not p.exists():
+        sys.exit(f"missing {p} (generate it: driver/perturbation_strata.py)")
+    return [l.strip() for l in p.read_text().splitlines() if l.strip()]
 
 
 def shard(ids, spec):
@@ -93,6 +96,7 @@ def run_one(iid):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--shard"); ap.add_argument("--limit", type=int)
+    ap.add_argument("--sample", help="override the ordered sample file (e.g. control phase: DET-first)")
     ap.add_argument("--redo", nargs="*", default=[]); ap.add_argument("--only", nargs="*", default=[])
     args = ap.parse_args()
 
@@ -108,9 +112,9 @@ def main():
                 pass
 
     if args.only:
-        sample = set(load_sample()); ids = [i for i in args.only if i in sample]; args.redo = list(args.only)
+        sample = set(load_sample(args.sample)); ids = [i for i in args.only if i in sample]; args.redo = list(args.only)
     else:
-        ids = shard(load_sample(), args.shard)
+        ids = shard(load_sample(args.sample), args.shard)
         if args.limit:
             ids = ids[:args.limit]
 
