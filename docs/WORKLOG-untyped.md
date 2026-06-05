@@ -5,6 +5,35 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-04 (run in progress, ~2h, n=52) -- hard-instance inspection: untyped reasons cleanly; losses are grader-divergence, not confabulation
+
+**Inspected the live `/ask` artifacts on hard instances** (the place the typing would have to earn its keep).
+Findings, recorded as the honest trail:
+- **No confabulation, easy or hard.** On flipt (easy both-win), qutebrowser (version-conditional config logic),
+  and openlibrary (validation-architecture refactor), `/ask` produced grounded, evidence-cited diagnoses with
+  ruled-out alternatives and precise edit sites -- the full inquiry loop (abduce -> ground -> eliminate ->
+  falsifiable edits) in plain prose, with the Peircean labels stripped. The failure mode the typing is meant to
+  prevent (confident confabulation) is not appearing.
+- **Both both-lose cases are gate-divergence, not capability misses.** qutebrowser (in-container 6/6 F2P PASSED)
+  and openlibrary (35/35 PASSED) both went green in-container and red on the official grader -- the headline's
+  documented pytest/django divergence class. The frozen TYPED arm lost both identically, so they are bench/grader
+  artifacts both arms hit (concordant, cancel in Delta). The capability-hard tail is thinner than the raw LOSS
+  count suggests.
+- **The diagnosis stage is Sonnet 4.5 (a 2025 model), no codex.** `RCA_MODEL` UNSET -> default `claude-sonnet-4-5`;
+  `untyped_recon` runs `claude(...)`, codex (GPT-5.5) only challenges the patch downstream in craft. So a year-old
+  mid-tier model performs the methodeutic inquiry natively, unprompted by typing. Reads as: the typing is
+  DESCRIPTIVE of what the model already does, not GENERATIVE of new capability -- and per the staleness note
+  (§limitations), newer generators would push Delta toward zero, not away.
+- **Still 0 typed-only-wins** at n=52 (1 untyped-only-win, 2 both-lose grader-artifacts). The decisive case
+  (typed reliably resolves what untyped reliably can't) has not appeared, and its mechanism (untyped drifting
+  where typed's caps save it) is not manifesting.
+
+**Calibration on the record:** prior on "typing carries the lift" is updating down, and now mechanistically (not
+just numerically) -- we can watch the model do the inquiry without the labels. NOT yet a verdict: n=52, CI wide,
+the capability-hard tail is ~thin and partly grader-noise. Do not over-update to "typing is worthless" any more
+than we'd have clung to "typing is the lever." The survivable claim if this holds: structure-as-lever +
+Peirce-as-design-rationale/legibility (§411), with the strong §grounding "the encoding is typing" narrowed.
+
 ## 2026-06-04 (run in progress, ~1h) -- early signal leans null/untyped; high-power lens considered and DEFERRED
 
 **Run health.** 8 boxes (`abl1-8`, `m7i.xlarge`, us-west-2), all live, 0 INCOMPLETE, 0 infra-guard
