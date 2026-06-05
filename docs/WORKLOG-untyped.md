@@ -5,6 +5,65 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- ANALYSIS FRAMING: how to report perturbation's attribution honestly (the reporting spine)
+
+The reporting decisions that make the perturbation result defensible rather than noise-looking. Settled
+while the recovery fleet runs; numbers are placeholders until the 81-hole recovery lands at n~88 UNDER.
+
+**1. The attribution is known by negative space (elimination ladder).** Everything we can cleanly ablate
+comes back minority-or-null, so the majority sits in the one thing we can't cleanly knock out:
+- typing labels -> **null** (prereg-pro-v1-untyped, Delta=-0.013)
+- outer-loop iteration -> **minority** (turn-budget: median win 59 executed actions, 96% under the
+  250-turn cap; best-of-N is single-digit -> the harness wins on trajectory *quality*, not iteration *count*)
+- model tier -> **minority** (cheap pair 93.1%; comparable hypothesis graphs)
+- directed perturbation -> **small + conditional** (this run)
+- reasoning/compute -> **a few points** (can't explain 50)
+- => **majority = the structured abductive decomposition itself** (hypothesis-graph construction), which
+  is also the hardest to ablate (no compute-matched bare arm yet). We know where the lift ISN'T more
+  confidently than where it IS; attribution by exclusion is more defensible than any single Delta.
+
+**2. The population-average is the wrong denominator -- condition on the hard stratum.** Directed
+perturbation is ~2-4 pts population-weighted, which "sounds like noise," but that is an artifact of Pro
+being ~81% statically determined (DET), NOT a fact about the mechanism. Information about a component =
+discordance between arms; easy cases have all-arms-win, so effective-n ~ 1 even at n=34 (observed). The
+honest fix is NOT a denominator swap-to-win: UNDER was the **pre-registered PRIMARY endpoint** all along;
+the population-average was always a derived secondary number. Re-centering on UNDER returns to the
+registered claim. **Honesty anchor: the stratifier is pre-treatment** (read off the frozen /recon
+trajectories: re-entry OR experiments>=2), never off this arm's outcome -- no collider, no forking path.
+That single property is what separates "headline the hard stratum" from cherry-picking; foreground it.
+
+**3. The family of hard-conditioned statistics (each answers a different reader question).** All the same
+2x2 viewed through different lenses; pick by what the reader asks. (Interim clean UNDER, n=21-23, strict
+.. time-censored -- final after recovery.)
+- *"Given a hard problem, how much more effective?"* -> win rates **~86% vs ~71%**; expressed as
+  **failure-rate reduction ~2x** (static fails ~29%, perturbation ~14%). Failure-reduction is the honest
+  "how much more effective" -- absolute gap (+15pts) undersells, win-ratio (1.2x) undersells.
+- *"Of the bugs static can't fix, how many does it rescue?"* -> recovery rate **b/(b+d) ~ 85%**.
+- *"Is it specific to hard problems?"* -> the interaction: this gap vs ~0 on the determined control.
+- cost side, always disclosed: **c=2** cases perturbation HURT (static won, recon lost).
+
+**4. The narrative, and why it's honest.** "On easy problems it does nothing; on hard problems it is
+worthwhile; here's what we have to show." This IS the pre-registered interaction told as a story -- not a
+post-hoc fit. The null-on-easy is **load-bearing, not a hedge**: a component that helped uniformly would be
+indistinguishable from generic scaffolding/compute; one that turns on exactly where its mechanism predicts
+(underdetermined cause -> must manufacture a discriminating experiment) and off where it doesn't is the
+signature of a real mechanism. Specificity is harder to fake than magnitude. The one word the recovery must
+cash: **"certainly"** -- today the hard-side effect is suggestive (P~0.85-0.95), so the honest present-tense
+is "looks decisively worthwhile, pending clean n."
+
+**5. Proof strategy: necessity, not magnitude.** Average magnitude can't prove a mechanism and will always
+read as noise. Prove **necessity** on the cases where it bites: take the existence cases (recon won, static
+ran the full pipeline and the gate confirmed failure -- 5 gate-confirmed), run the static-deprived arm
+**K times across models**; if it fails K/K and one manufactured experiment resolves, abduction is *required*,
+not merely helpful. Rate (b/(b+d)) for the headline; K-reps for the spine; the legible trace (hypothesis
+graphs, manufactured discriminating diffs) is the mechanistic proof that no resolve-rate can deliver.
+Narrow-and-bold: drop "methodeutics explains the lift" (too big; elimination shows majority is structural);
+keep "perturbative abduction is necessary + sufficient + specific for a characterizable class" (unshakeable).
+
+(Ops note: live-monitor briefly mixed the quarantined round-2 `_of6` back into the bayes after a stray
+re-pull to top-level; removed -- canonical copies remain in `quarantine_r2_tokenoutage/`. Did not affect
+the frozen round-1 `_of4` or the recovery `_of5`.)
+
 ## 2026-06-05 -- RETRACTION: round-1 "UNDER PROVEN" was auth-death contaminated; clean Delta is suggestive, not proven
 
 Investigating the round-2 outage forced a re-audit of round-1, and **round-1's headline does not survive
