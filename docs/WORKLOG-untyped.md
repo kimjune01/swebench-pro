@@ -5,6 +5,32 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- SCORED RUN hit the NodeBB craft-hang; runner-level per-instance timeout added; relaunched
+
+First scored fleet (4 boxes, full ordered shards) ran clean for ~5h then **3 of 4 boxes wedged** --
+each frozen 3-4h on a single heavy-suite instance (NodeBB), zero log output, zero progress. abl1
+stayed healthy (9 graded); abl2/3/4 stalled at 3 graded apiece. Total harvested: **18 graded
+(12 WIN / 6 LOSS), 0 INCOMPLETE** -- no infra deaths, just the hang.
+
+**Diagnosis: the documented craft-hang, and a missing outer timeout.** Heavy test suites hang the
+gate's `docker exec` *below* rung5's per-stage caps (RECON 2000 / CRAFT 3600 / gate 1800, MAX_OUTER 5),
+and those caps did not reap the wedged process tree. `feynman_run.py` ran the arm via
+`subprocess.run(...)` with **no timeout**, so a wedged `pro_feynman` froze the box indefinitely.
+Killing it would have written a *false LOSS* (ran >3h, so the fast-LOSS infra guard can't catch it),
+polluting the Delta -- so the wedged instances were never let through as losses.
+
+**Fix (runner-side; harness untouched): `PINST_TIMEOUT` (3600s).** `run_one` now `Popen`s the arm in
+its own session, `SIGKILL`s the whole process group on timeout, and `docker kill`s the container the
+dead process left wedged on the suite (the runner is sequential per box, so that's safe). A TIMEOUT is
+**quarantined, not a LOSS** (a hang is not a capability failure) and **re-runnable**: resume now skips
+only terminal WIN/LOSS and auto-retries INCOMPLETE/TIMEOUT. Commit `afd3ad4`, pushed.
+
+**Relaunch.** Terminated all 4 (old runner would re-wedge), staged the 18 verdicts as per-shard resume
+checkpoints (`runs/scored/shards/feynman_{i}of4.jsonl`), relaunched a fresh patched 4-box fleet that
+resumes past them. Watchdog 420m (~7h -> ~$5.6 more; ~$9.8 total, within the $10 ceiling the operator
+green-lit "let them exhaust their budgets if that's what it takes"). With the cap, a hang now costs at
+most 60 min + a quarantine instead of wedging a box for the night.
+
 ## 2026-06-05 -- PILOT validated the `ask-feynman` arm; classifier ID bug found+fixed; freezing + launching the scored run
 
 Piloted before freeze (the intended order: piloting finds faults). **The pilot earned its keep --
