@@ -108,8 +108,8 @@ case "${1:-}" in
     N="${2:?usage: ablation_fleet.sh provision <N>}"
     stage_creds
     provision_boxes "$N"
-    echo "=== bootstrap + dispatch (parallel) ==="
-    while read -r NAME I NN IP; do setup_and_dispatch "$NAME" "$I" "$NN" & done < $MANIFEST
+    echo "=== bootstrap + dispatch (parallel) ${RUN_EXTRA:+[extra: $RUN_EXTRA]} ==="
+    while read -r NAME I NN IP; do setup_and_dispatch "$NAME" "$I" "$NN" "${RUN_EXTRA:-}" & done < $MANIFEST
     wait
     echo "=== manifest ==="; cat $MANIFEST
     echo "run dispatched; poll: driver/ablation_fleet.sh status ; verdict: driver/ablation_fleet.sh delta"
