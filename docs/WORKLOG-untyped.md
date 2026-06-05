@@ -5,6 +5,44 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- INTERACTION emerges (P=0.981, supplementary); DET trends null but ROPE-close is rate-limited
+
+DET control filled to n=26 (`25/1/0/0` -- 25 both-win, 1 recon-only, 0 feyn-only, 0 both-lose).
+Per-stratum deltas, paired vs frozen `/recon`:
+
+```
+[UNDER] n=32  Delta=+0.278  95%CI=[+0.079,+0.471]  P(Delta>0)=0.9963   PROVEN (pre-registered)
+[DET  ] n=26  Delta=+0.033  95%CI=[-0.076,+0.156]  P(Delta>0)=0.7508   trending null, CI not ROPE-pinned
+```
+
+**Direct interaction (difference-of-differences), computed post-hoc:**
+`Delta_UNDER - Delta_DET: mean=+0.245  95%CI=[+0.015,+0.466]  P(>0)=0.9811`.
+
+**Honesty scorecard (do NOT let this slide into a manufactured PROVEN):**
+- Primary `P(Delta_UNDER>0)>=0.95`: **MET** (0.996), pre-registered.
+- Pre-registered PROVEN-INTERACTION also requires `Delta_DET 95% CI within +/-0.03`: **NOT MET**
+  (CI is [-0.076,+0.156]). The componentwise registered rule is therefore **not formally closed.**
+- The **direct difference-of-differences** test (P=0.981) is a reasonable -- arguably better-aligned --
+  test of the interaction, but it was **NOT the pre-registered decision rule.** Reported as
+  supplementary, clearly labeled, not substituted in to escape the unmet criterion.
+
+**Why the registered close is expensive (the rare-event tail):** DET's CI is governed by its single
+discordant pair (effective-n ~ 1 despite n=26). Pinning the discordant proportion's upper bound below
+0.03 needs ~100-150 more DET instances -- likely beyond the $10 budget. So the registered ROPE-close on
+DET may be unreachable here; the supplementary interaction test is the strongest *honest* statement.
+
+**Methodological note (the registered criterion was win-rate-shaped; the question is attribution-shaped):**
+`Delta_DET within ROPE` is a *win-rate-equivalence* test (prove the two arms resolve DET equally). But
+the estimand of interest was never a win rate -- it was **attribution** (does perturbation's effect
+*differ* by determinacy). The difference-of-differences is the faithful attribution statistic; the
+componentwise ROPE rule was a win-rate residue in an attribution-first design. Disclose both; do not
+silently swap. The stratified, UNDER-first sampling was already attribution-first by construction
+(front-load the discordant-rich cell), consistent with this.
+
+**Decision:** boxes are paid through their watchdog window; let them keep grinding DET (zero marginal
+cost) to tighten the interaction CI as far as budget allows. Report final with full disclosure of
+registered-vs-supplementary. No new provisioning (budget ~ceiling).
+
 ## 2026-06-05 -- FIRST RESULT: UNDER stratum PROVEN (Delta=+0.286, P(Delta>0)=0.996); survived an auth-death wave
 
 **Headline (clean, n=31 UNDER, paired vs frozen /recon):**
