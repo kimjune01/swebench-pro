@@ -26,6 +26,9 @@ ARM_DRIVER = "pro_feynman.py"
 # whole group on timeout, then docker-kill any container the dead process left wedged on the test suite.
 # A TIMEOUT is QUARANTINED (not a LOSS -- a hang is not a capability failure) and re-runnable on resume.
 PINST_TIMEOUT = int(os.environ.get("PINST_TIMEOUT", "3600"))   # 60 min; flipt ran 699s, deep loops < ~40m
+MIN_REAL_SECS = int(os.environ.get("MIN_REAL_SECS", "180"))    # a LOSS faster than this = suspected
+# auth/quota death (a real loss runs the full Sonnet+codex pipeline). Quarantined from Delta in
+# feynman_bayes.py AND treated as non-terminal here so resume auto-retries it (consistent philosophy).
 
 FAULT_RE = re.compile(r"BOX_DEATH|AWS_API|OOM|DISK_FULL|SETUP_NETWORK_FAIL|QUOTA_EXHAUSTED|"
                       r"No space left|Cannot connect to the Docker daemon|manifest unknown|"
@@ -113,9 +116,14 @@ def main():
 
     with open(ledger, "a") as f:
         for k, iid in enumerate(ids, 1):
-            # resume skips only TERMINAL verdicts; INCOMPLETE/TIMEOUT are quarantined -> auto-retry.
-            if iid in done and done[iid].get("state") in ("WIN", "LOSS") and iid not in args.redo:
-                continue
+            # resume skips only TERMINAL verdicts; INCOMPLETE/TIMEOUT and fast-LOSS (suspected infra
+            # death, < MIN_REAL_SECS) are quarantined -> auto-retry on the next pass.
+            if iid in done and iid not in args.redo:
+                pr = done[iid]
+                terminal = pr.get("state") == "WIN" or (
+                    pr.get("state") == "LOSS" and pr.get("secs", 0) >= MIN_REAL_SECS)
+                if terminal:
+                    continue
             t0 = time.time(); started = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t0))
             print(f"[{k}/{len(ids)}] feynman {iid} ...", flush=True)
             state, detail = run_one(iid)
