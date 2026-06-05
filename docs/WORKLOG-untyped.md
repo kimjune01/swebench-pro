@@ -5,6 +5,31 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- ROUND 2 ABORTED: token outage contaminated the DET fill; whole batch quarantined
+
+The 6-box DET continuation hit a token/auth outage. Signature: the feynman pipeline printed its
+`FEYNMAN <iid>` header then died with **no gate verdict** -> `no verdict (endogenous)` LOSS at 26-256s
+(a real feynman loss runs the full pipeline and returns `not resolved (refusals=N)`, e.g. the genuine
+837s record). Each infra-death paired with a real frozen recon-WIN -> manufactured recon-only cells,
+inflating `Delta_DET` to a bogus **+0.64** (`p_feyn=0.317` on the *determined*/easiest stratum --
+impossible; clean round-1 DET was 0.971). Caught it at n_DET~63 via the live harvester.
+
+**Two guards leaked, and "halfway" makes salvage unsafe.** `FAULT_RE` doesn't match this auth string;
+`MIN_REAL_SECS=180` only quarantines the FAST deaths -- the 210s/254s/256s "no verdict" deaths landed
+as TERMINAL losses. And a run can be hit halfway (recon ok, craft/gate dies on the outage), so no
+per-record secs/pattern rule cleanly separates infra-death from capability-loss.
+
+**Action (integrity over salvage).** Killed all 6 runners; quarantined the **entire** round-2 `_of6`
+batch -> `runs/scored/quarantine_r2_tokenoutage/` (with README), NOT a heuristic subset. Bayes reads
+clean round-1 only (n=68; UNDER PROVEN `Delta=+0.278`; DET `33/1/0/0`). Round-1 predates the outage,
+no signature, intact.
+
+**Re-run plan (staged, NOT applied mid-run per the no-edits-mid-run rule).** (1) Harden the runner:
+treat `no verdict (endogenous)` as INFRA (quarantine + non-terminal retry) regardless of secs, so an
+outage can't leak terminal losses. (2) Re-provision FRESH boxes -- the current box ledgers carry the
+poison and can't be trusted on resume (terminal losses would be skipped, not retried). (3) Refill DET
+in a clean auth window. UNDER stays frozen; only DET refills.
+
 ## 2026-06-05 -- ROUND 1 done (n=68); DET CONTINUATION launching to CLOSE the registered ROPE (integrity over budget)
 
 Round-1 boxes hit their watchdog and self-terminated; harvester pulled the ledger tails
