@@ -5,6 +5,47 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- PILOT validated the `ask-feynman` arm; classifier ID bug found+fixed; freezing + launching the scored run
+
+Piloted before freeze (the intended order: piloting finds faults). **The pilot earned its keep --
+it caught a sampling bug that would have silently zeroed the whole run.**
+
+**Bug: the strata classifier emitted lossy IDs.** First pilot: 3/3 `make_task` `StopIteration` in 2s
+each. Root cause -- `perturbation_strata.py` read instance IDs out of Claude's *project-dir* path
+encoding (`...recon-instance-flipt-io--flipt-<sha>-d0`), which replaces every `_` with `-`, so it
+emitted `flipt-io--flipt-<sha>` instead of the canonical dataset ID `instance_flipt-io__flipt-<sha>`.
+`make_task` looks up the canonical ID -> no match -> StopIteration. Two distinct faults: (1) no
+dir-form -> canonical mapping; (2) a non-greedy `(.+?)-d(\d)` that truncated any SHA beginning
+`d<digit>` (e.g. `flipt-d966...`) at the SHA's own `-d9` rather than the trailing depth marker.
+
+**Fix (runner-side only; harness untouched).** `canonical_map()` re-encodes each `run.jsonl` ID the
+same `_`->`-` way and matches (the hex SHA makes it injective); regex made greedy + anchored to the
+trajectory filename. Re-ran the classifier: **682 instances classified, zero unmatched**, strata
+corrected **UNDER 99 / MID 31 / DET 552** (was a mis-parsed 102/31/533). The ~81% DET share -- Pro's
+diagnostically-determined majority -- holds.
+
+**Re-dispatched; the arm validated end-to-end on flipt (the most perturbation-rich UNDER, e=26):**
+`make_task` passes, full recon->craft->audit->grade loop in **699s** (real, >> the 180s infra-death
+floor), **read-only box enforced (`refusals=1` -- feynman tried to execute once during diagnosis, the
+guard blocked + logged it)**, **official verdict WIN**. flipt is a `/recon`-WIN too, so this pair is a
+tie cell (no Delta) -- pure apparatus validation, not signal. (Aside worth a footnote: feynman *won*
+the hardest UNDER case by reasoning alone after one denied perturbation -- the "perturbative abduction
+in its head" outcome the prereg flags as the deeper null. n=1; the scored run decides.)
+
+**Controller built.** `driver/feynman_bayes.py` pairs the `feynman` ledger vs frozen `/recon`,
+computes **per-stratum** Delta = pi(recon-only) - pi(feynman-only) under Dirichlet(1,1,1,1), and
+prints the **interaction** verdict (PROVEN-INTERACTION = `P(Delta_UNDER>0)>=0.95` AND DET within
+ROPE). Flags existence cases (UNDER pairs recon-won/feynman-lost) and shares the fast-LOSS infra guard.
+
+**Prereg finalized (§10 threats added):** CLI-drift disclosed-not-controlled (paired same-instance
+Delta is robust to a uniform shift; the interaction would need a *differential-across-strata* CLI
+effect to be faked), scoping (mechanism-enriched subgroup, proxy dilutes toward null), and the
+pre-freeze classifier fix on the record. Counts synced to 99/31/552.
+
+**Launching the scored run:** freeze `prereg-pro-v1-feynman`, then 4 boxes, ordered shards
+(UNDER-first), self-terminating watchdog (~9h -> <=~$7 EC2, under the $10 ceiling). UNDER is the
+primary endpoint; boxes roll into MID/DET control as they clear UNDER.
+
 ## 2026-06-05 -- PERTURBATION ABLATION registered-ready (`ask-feynman` vs frozen `/recon`); codex-sniffed; pilot next
 
 The successor experiment is designed, codex-red-teamed, and fixed. Prereg:

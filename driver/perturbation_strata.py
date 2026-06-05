@@ -24,8 +24,24 @@ from collections import defaultdict
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 ART = REPO / "runs" / "scored" / "artifacts"
+RUN = REPO / "runs" / "scored" / "run.jsonl"           # frozen baseline = canonical dataset IDs
 OUT_TSV = REPO / "tasks" / "perturbation_strata.tsv"
 OUT_TXT = REPO / "tasks" / "perturbation_sample.txt"
+
+
+def canonical_map():
+    """Claude's project-dir scheme encodes the cwd tag `recon_{iid}_d{depth}` with every `_`->`-`,
+    so `instance_flipt-io__flipt-<sha>` lands in the path as `recon-instance-flipt-io--flipt-<sha>-d0`.
+    The regex below captures the lossy `instance-flipt-io--flipt-<sha>` form. Recover the real dataset
+    ID by re-encoding each canonical run.jsonl ID the same way and matching. SHA makes it injective."""
+    m = {}
+    for line in open(RUN, errors="ignore"):
+        line = line.strip()
+        if not line:
+            continue
+        cid = json.loads(line)["instance_id"]
+        m[cid.replace("_", "-")] = cid                 # enc(canonical) -> canonical
+    return m
 
 # A box command counts as a MANUFACTURED-DIFF experiment if it runs code carrying logic (not just
 # locating a file) or injects/narrows a test. Pure navigation (import X; print(X.__file__)) excluded.
@@ -64,12 +80,18 @@ def bash_cmds(path):
 
 def main():
     files = glob.glob(str(ART / "*" / "claude" / "*recon*" / "*.jsonl"))
+    cmap = canonical_map(); unmatched = set()
     exp = defaultdict(int); depth = defaultdict(int); seen = set()
     for f in files:
-        m = re.search(r"recon-instance-(.+?)-d(\d)", f)
+        # greedy + trailing slash: the depth marker `-d<n>` is the LAST one before the jsonl filename;
+        # a non-greedy match truncates SHAs that begin `-d<digit>` (e.g. flipt-d966...).
+        m = re.search(r"recon-instance-(.+)-d(\d)/[^/]*\.jsonl$", f)
         if not m:
             continue
-        iid, d = m.group(1), int(m.group(2))
+        iid = cmap.get("instance-" + m.group(1))       # resolve lossy dir form -> canonical dataset ID
+        if iid is None:
+            unmatched.add(m.group(1)); continue
+        d = int(m.group(2))
         seen.add(iid); depth[iid] = max(depth[iid], d)
         for c in bash_cmds(f):
             if c.lstrip().startswith("/tmp/gate-pro"):
@@ -99,6 +121,9 @@ def main():
     from collections import Counter
     c = Counter(s for _, s, _, _, _ in rows)
     print(f"scored {len(rows)} instances from {len(files)} recon trajectories")
+    if unmatched:
+        print(f"  WARNING: {len(unmatched)} dir IDs unmatched to run.jsonl (skipped): "
+              + ", ".join(sorted(unmatched)[:3]) + (" ..." if len(unmatched) > 3 else ""))
     print(f"  strata: {dict(c)}")
     print(f"  ordered sample -> {OUT_TXT}   (UNDER first, DET last)")
     print(f"  top UNDER: " + ", ".join(f"{i[:28]}(e={e},r={re_})" for sc, s, i, e, re_ in rows[:4]))

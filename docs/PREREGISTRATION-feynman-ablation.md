@@ -61,9 +61,13 @@ own execution record), via `driver/perturbation_strata.py`. An instance is score
 perturbation (print-injection / modified-code runs / isolating bypass, navigation excluded) + re-entry
 (a depth>=1 recon trajectory = the first diagnosis was killed -> perturbation was decision-relevant):
 
-- **UNDERDETERMINED** (`re-entry OR experiments>=2`): **102** instances. Primary endpoint.
+- **UNDERDETERMINED** (`re-entry OR experiments>=2`): **99** instances. Primary endpoint.
 - **MID**: 31.
-- **DETERMINED** (`experiments==0 AND no re-entry`): **533**. Control.
+- **DETERMINED** (`experiments==0 AND no re-entry`): **552**. Control.
+
+(682 instances classified from 1048 frozen `/recon` trajectories. The DET majority -- ~81% -- is a
+separate finding: Pro's failures are mostly statically resolvable; perturbation has a minority of
+cases to bite on, which is exactly why the strata split is load-bearing rather than cosmetic.)
 
 `tasks/perturbation_sample.txt` is the **ordered** run list -- UNDER first (highest perturbation
 first), then MID, then DET -- committed at freeze with its hash. The Bayesian run front-loads the
@@ -126,9 +130,29 @@ surface = Pro.
 `prereg-pro-v1-feynman` (annotated). SHA + `perturbation_sample.txt` hash + the `perturbation_strata.py`
 classifier (frozen) recorded in the worklog before the scored run.
 
+## 10. Threats & disclosures
+
+- **CLI drift (disclosed, not controlled).** The frozen `/recon` baseline ran on `claude-code@2.1.150`;
+  that version is no longer installable, so this arm runs `2.1.165` (codex held at `0.134.0`). The
+  intervening changelogs are patch-level (no agent-loop or tool-semantics change); reviewed and taken
+  on faith per operator direction rather than re-running a fresh `/recon` control. A reader who rejects
+  this can discount the absolute rates; the **paired, same-instance** Delta is far more robust to a
+  uniform CLI shift than either arm's level is, and the interaction (UNDER vs DET) is robust still --
+  a CLI delta would have to act *differentially across strata* to manufacture the predicted pattern.
+- **Scoping.** The headline is scoped to the perturbation strata read off Pro's own `/recon`
+  trajectories, not "all code" and not "all benchmarks." The strata proxy is pre-treatment (conditions
+  on the prior frozen run, never on this arm's outcome) but is still a *proxy* for cause-determinacy;
+  a misclassified instance dilutes toward the null, it cannot manufacture the interaction.
+- **Classifier fix during pilot (pre-freeze).** The 3-instance pilot caught two bugs in
+  `perturbation_strata.py`: it emitted Claude's lossy project-dir ID encoding (`flipt-io--flipt-<sha>`)
+  instead of the canonical dataset ID, and a non-greedy regex truncated SHAs beginning `d<digit>`.
+  Both fixed before freeze (canonical IDs resolved by re-encoding `run.jsonl` and matching; greedy
+  match anchored to the trajectory filename). Piloting-finds-faults is the intended order; the frozen
+  classifier is the corrected one, and the strata counts above are post-fix.
+
 ---
 
 **Preregistered:** 2026-06-05. **Arm:** `ask-feynman` (static), one arm; baseline = frozen `/recon`.
 **Estimand:** `Delta_perturb = p_recon - p_feynman`, paired, per stratum. **Headline:** the interaction
-(Delta_UNDER > 0, Delta_DET ~ 0). **Strata:** UNDER 102 / MID 31 / DET 533, ordered UNDER-first.
+(Delta_UNDER > 0, Delta_DET ~ 0). **Strata:** UNDER 99 / MID 31 / DET 552, ordered UNDER-first.
 **Budget:** equal ceiling, early-return allowed. **Tag:** `prereg-pro-v1-feynman`.

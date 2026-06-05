@@ -21,6 +21,10 @@ REPO="$(cd "$(dirname "$0")/.." && pwd)"
 MANIFEST=/tmp/ablation_fleet.manifest
 SSH="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10"
 WATCHDOG_MIN="${WATCHDOG_MIN:-720}"
+ARM_RUNNER="${ARM_RUNNER:-ablation_run.py}"   # set ARM_RUNNER=feynman_run.py for the perturbation arm
+ARM_LEDGER="${ARM_LEDGER:-untyped}"           # ledger prefix runs/scored/${ARM_LEDGER}_iofN.jsonl
+CC_VERSION="${CC_VERSION:-2.1.165}"           # claude-code pin (2.1.150 of the frozen run is gated/unsupported; drift disclosed, changelog-benign)
+CODEX_VERSION="${CODEX_VERSION:-0.134.0}"     # codex challenger held constant with the frozen run
 ELIGIBLE="$REPO/runs/audit/eligible.txt"
 AUTH_MODE="${AUTH_MODE:-subscription}"   # untyped arm needs Sonnet (Max) + codex (sub)
 
@@ -53,7 +57,7 @@ setup_box() {  # $1=box-name -- rsync tree, push auth, install CLIs, bootstrap, 
     export PATH=\$HOME/.local/bin:\$PATH
     npm config set prefix ~/.npm-global 2>/dev/null
     export PATH=\$HOME/.npm-global/bin:\$PATH
-    npm i -g @anthropic-ai/claude-code@2.1.150 @openai/codex@0.134.0 >/dev/null 2>&1
+    npm i -g @anthropic-ai/claude-code@${CC_VERSION} @openai/codex@${CODEX_VERSION} >/dev/null 2>&1
     cd ~/swebench-pro
     git init -q 2>/dev/null || true   # codex refuses untrusted (non-git) dirs
     UV_PYTHON=3.11 bash driver/bootstrap.sh >/tmp/boot.log 2>&1 && echo BOOT_OK || (tail -3 /tmp/boot.log; exit 1)
@@ -70,13 +74,13 @@ setup_and_dispatch() {  # $1=name $2=i $3=N [$4=extra]
   local NAME="$1" I="$2" N="$3" EXTRA="${4:-}"
   setup_box "$NAME" || return 1
   . /tmp/${NAME}.env; local PEM=/tmp/${KEY}.pem
-  local ckpt="$REPO/runs/scored/shards/untyped_${I}of${N}.jsonl"
+  local ckpt="$REPO/runs/scored/shards/${ARM_LEDGER}_${I}of${N}.jsonl"
   [ -f "$ckpt" ] && scp -o StrictHostKeyChecking=no -i $PEM "$ckpt" \
-    "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/untyped_${I}of${N}.jsonl" >/dev/null 2>&1
+    "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/${ARM_LEDGER}_${I}of${N}.jsonl" >/dev/null 2>&1
   $SSH -i $PEM ec2-user@${PUBIP} "
     cd ~/swebench-pro && . driver/.proenv
     export PATH=\$HOME/.local/bin:\$HOME/.npm-global/bin:\$PATH CLAUDE_SUBSCRIPTION=1
-    nohup env PATH=\$PATH CLAUDE_SUBSCRIPTION=1 \$PY driver/ablation_run.py --shard ${I}/${N} ${EXTRA} > ~/ablation_shard.log 2>&1 &
+    nohup env PATH=\$PATH CLAUDE_SUBSCRIPTION=1 \$PY driver/${ARM_RUNNER} --shard ${I}/${N} ${EXTRA} > ~/${ARM_LEDGER}_shard.log 2>&1 &
     echo DISPATCHED ${NAME} shard ${I}/${N} pid \$! watchdog +${WATCHDOG_MIN}m ${EXTRA}
   "
 }
@@ -97,7 +101,7 @@ case "${1:-}" in
     stage_creds
     echo "=== SMOKE: 1 box, 1 instance (validates /ask -> craft+codex -> gate -> official grade) ==="
     provision_boxes 1
-    while read -r NAME I NN IP; do setup_and_dispatch "$NAME" 1 1 "--limit 1"; done < $MANIFEST
+    while read -r NAME I NN IP; do setup_and_dispatch "$NAME" 1 1 "--limit ${PILOT_N:-1}"; done < $MANIFEST
     echo "smoke dispatched; poll: driver/ablation_fleet.sh status"
     ;;
   provision)
@@ -113,7 +117,7 @@ case "${1:-}" in
   status)
     while read -r NAME I N IP; do
       . /tmp/${NAME}.env; PEM=/tmp/${KEY}.pem
-      out=$($SSH -n -i $PEM ec2-user@${PUBIP} "L=~/swebench-pro/runs/scored/untyped_${I}of${N}.jsonl; echo done=\$(wc -l < \$L 2>/dev/null || echo 0); echo won=\$(grep -c '\"state\": \"WIN\"' \$L 2>/dev/null || echo 0); echo lost=\$(grep -c '\"state\": \"LOSS\"' \$L 2>/dev/null || echo 0); echo inc=\$(grep -c '\"state\": \"INCOMPLETE\"' \$L 2>/dev/null || echo 0)" 2>/dev/null)
+      out=$($SSH -n -i $PEM ec2-user@${PUBIP} "L=~/swebench-pro/runs/scored/${ARM_LEDGER}_${I}of${N}.jsonl; echo done=\$(wc -l < \$L 2>/dev/null || echo 0); echo won=\$(grep -c '\"state\": \"WIN\"' \$L 2>/dev/null || echo 0); echo lost=\$(grep -c '\"state\": \"LOSS\"' \$L 2>/dev/null || echo 0); echo inc=\$(grep -c '\"state\": \"INCOMPLETE\"' \$L 2>/dev/null || echo 0)" 2>/dev/null)
       echo "  $NAME (shard $I/$N): $(echo "$out" | tr '\n' ' ')"
     done < $MANIFEST
     ;;
@@ -121,16 +125,16 @@ case "${1:-}" in
     mkdir -p "$REPO/runs/scored/shards"
     while read -r NAME I N IP; do
       . /tmp/${NAME}.env; PEM=/tmp/${KEY}.pem
-      scp -o StrictHostKeyChecking=no -i $PEM "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/untyped_${I}of${N}.jsonl" \
-        "$REPO/runs/scored/shards/untyped_${I}of${N}.jsonl" 2>/dev/null && echo "ckpt $NAME $(wc -l < "$REPO/runs/scored/shards/untyped_${I}of${N}.jsonl" 2>/dev/null)"
+      scp -o StrictHostKeyChecking=no -i $PEM "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/${ARM_LEDGER}_${I}of${N}.jsonl" \
+        "$REPO/runs/scored/shards/${ARM_LEDGER}_${I}of${N}.jsonl" 2>/dev/null && echo "ckpt $NAME $(wc -l < "$REPO/runs/scored/shards/${ARM_LEDGER}_${I}of${N}.jsonl" 2>/dev/null)"
     done < $MANIFEST
     ;;
   delta)
     mkdir -p "$REPO/runs/scored/shards"
     while read -r NAME I N IP; do
       . /tmp/${NAME}.env; PEM=/tmp/${KEY}.pem
-      scp -o StrictHostKeyChecking=no -i $PEM "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/untyped_${I}of${N}.jsonl" \
-        "$REPO/runs/scored/shards/untyped_${I}of${N}.jsonl" 2>/dev/null && echo "pulled $NAME"
+      scp -o StrictHostKeyChecking=no -i $PEM "ec2-user@${PUBIP}:/home/ec2-user/swebench-pro/runs/scored/${ARM_LEDGER}_${I}of${N}.jsonl" \
+        "$REPO/runs/scored/shards/${ARM_LEDGER}_${I}of${N}.jsonl" 2>/dev/null && echo "pulled $NAME"
     done < $MANIFEST
     python3 - "$REPO" <<'PY'
 import sys, json, pathlib, glob
