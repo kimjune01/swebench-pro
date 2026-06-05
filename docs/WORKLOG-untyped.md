@@ -5,6 +5,40 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- RETRACTION: round-1 "UNDER PROVEN" was auth-death contaminated; clean Delta is suggestive, not proven
+
+Investigating the round-2 outage forced a re-audit of round-1, and **round-1's headline does not survive
+it.** The `no verdict (endogenous)` loss type is NOT an outage-only signature -- it is what an auth-death
+*always* looks like (pipeline dies before the gate). Round-1 had 77 of them; the `MIN_REAL_SECS=180`
+guard quarantined only the FAST ones, and **~5-7 SLOW (>180s) no-verdict auth-deaths leaked into Delta_UNDER
+as recon-only wins.** Almost all of round-1's UNDER feynman runs executed inside a sharp outage window.
+
+**Outage windows (inferred from feynman-death density, ~100% kill-rate blocks):**
+- **W1 = 2026-06-05 13:00-13:49Z** (round-1; 75 of its 77 deaths; 13:20Z was 31/31).
+- **W2 = 2026-06-05 17:00-19:19Z** (round-2; the continuous wall).
+Clean runs exist on both sides of each window; the contamination is cleanly time-bounded.
+
+**Delta_UNDER under three rules (the headline is fragile):**
+```
+original (secs-guard only, CONTAMINATED):  2x2=13/12/2/5  Delta=+0.278  P=0.996   <- retracted
+time-censored (no-verdict infra iff in W):  2x2=13/ 7/2/1  Delta=+0.185  P=0.945
+strict (only gate-completed runs count):    2x2=13/ 5/2/1  Delta=+0.120  P=0.855
+```
+DET stays clean (round-1 DET barely intersected W1): `33/1/0/0  Delta=+0.026`. So the clean interaction is
+**suggestive, not proven**: UNDER P~0.85-0.95, below the pre-registered 0.95 bar.
+
+**What survives -- the EXISTENCE claim (weaker, real):** 5 gate-confirmed clean existence cases where recon's
+perturbation won and feynman's static arm ran the FULL pipeline (444-3960s) and the gate confirmed a genuine
+failure: NodeBB-be43cd25, element-web-66d0b318, element-web-4fec4368, openlibrary-0dc5b20f, qutebrowser-e34dfc68.
+These are not auth artifacts. The paper's *qualitative* claim (perturbation reaches fixes static reasoning
+misses) holds on concrete cases; the *quantitative* Delta-PROVEN does not.
+
+**Corrective actions:** (1) retract "UNDER PROVEN Delta=+0.278" everywhere it was propagated (OBJECTIONS #13,
+FOR_SKEPTICS, DISCUSSION) -> replace with the clean range + the 5 existence cases. (2) Harden the runner:
+`no verdict (endogenous)` = INFRA (quarantine + non-terminal retry), verdict-type not secs. (3) Clean re-run
+of UNDER **and** DET entirely outside any outage window before any PROVEN claim. Caught pre-publication by
+operator vigilance ("some runs could be contaminated halfway"; "infer the time of the outage").
+
 ## 2026-06-05 -- ROUND 2 ABORTED: token outage contaminated the DET fill; whole batch quarantined
 
 The 6-box DET continuation hit a token/auth outage. Signature: the feynman pipeline printed its
