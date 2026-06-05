@@ -121,6 +121,35 @@ the ROPE (±0.03) on both overall and UNDER **and** the signature does not diffe
 
 Ordered stopping as in the feynman run (PROVEN / NULL / CONVERGED per stratum); UNDER front-loaded.
 
+## 4b. Power & sample size (capped by the benchmark, not by budget)
+
+The informative cases are UNDER (where M and G can diverge); DET is informationless for this contrast
+(both arms solve determined causes, effective-n ≈ 0 — the lesson from the feynman DET stratum). **UNDER
+is capped at ~99 instances** — the entire pre-classified stratum. You cannot manufacture more without
+re-running recon to classify new instances, which would break the pre-treatment property. So the
+win-rate primary is **power-capped by the benchmark**, and the honest numbers are:
+
+- ~99 UNDER, with a plausible M-vs-G discordant rate 0.1–0.2, gives a 95% CI half-width of **±0.05 to
+  ±0.09** on Δ_MG.
+- **Detects** Δ_MG ≳ **0.13** at P>0.95 (Bayesian early-stop fires well before 99 if the effect is large,
+  the way the feynman UNDER cleared P>0.95 by n≈30).
+- **Cannot resolve** a small effect (Δ_MG ≈ 0.05) — indistinguishable from zero at this n.
+- **Cannot prove the tight ROPE null** (±0.03) — that needs ~200–850 UNDER, beyond the stratum. Do not
+  chase it (the DET-ROPE-close mistake). "No large effect on UNDER" is the informative negative.
+
+**The behavioral signature carries the power when M≈G (the modal case).** Win rate is binary and
+discordant-pair-limited; the signature (live-hypotheses count, premature-commit rate, discriminating-test
+rate) is continuous and per-instance, so a difference in inquiry *behavior* is detectable at **~40–50
+blind-rated traces per arm** even when the win-rate Δ is too small to resolve. The signature is what
+separates outcomes B and C and surfaces the internalized-inquiry finding (§5).
+
+**Sample plan.** Per arm: up to ~99 UNDER (Bayesian early-stop) + ~31 MID + ~25 DET (null-anchor +
+outage tripwire) ≈ **~155 instances**. Two new arms (G, T); M is frozen `/recon` → **~310 fresh runs**.
+Trace rating: ~40–50 per arm, stratified, blind to condition. **Disclosed limit:** the win-rate primary
+resolves only Δ_MG ≳ 0.13 on UNDER; below that it is indeterminate by score, and the behavioral
+signature is the deciding measure. This is a property of a mostly-easy benchmark, stated up front, not a
+weakness to bury.
+
 ## 5. Behavioral signature — load-bearing vs internalized
 
 Win rate alone cannot distinguish "methodeutic content adds behavior that wins" from "the model
