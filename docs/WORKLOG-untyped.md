@@ -5,6 +5,50 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- SUCCESSOR DESIGN: the perturbation ablation, and a feasibility WIN on stratification
+
+The typing null pointed at the next experiment: not the *names* of the inquiry (form, null) but a
+specific *operation* (content). Settled on the cleanest, receiver-bias-immune cut.
+
+**The experiment: `/ask` vs `/ask-static`.** Same skill, same schema, same downstream
+(implement + codex + gate + loop), same model. The ONLY change: `/ask-static` may not run **scoped
+diagnostic perturbation** -- the cheap experiments that manufacture a discriminating diff to *discover*
+the cause (run the failing test for the live trace, drop a print, isolate-by-bypass). It keeps
+deduction (trace), static abduction (read the gap), and -- crucially -- **imaginary perturbation**
+(it may reason counterfactually about what an experiment *would* show; it just can't run it). So the
+variable is precisely **actual execution vs mental simulation of it**, which is the paper's
+§inquiry-frame claim ("kill conditions are executions"). Solution-attempting perturbation (craft
+testing fixes) is unchanged in both arms, so the ablation stays coherent.
+
+Why clean where the body-swap was dirty (codex red-team, this session): identical handoff shape ->
+no receiver bias; one operation varied -> no confound bundle; same implementer/gate -> no mediator
+problem. Budget: equal *ceiling*, early-return allowed -- under-utilization is a failure mode of the
+static arm, not a confound to launder; identical thoroughness exhortations so an early return means
+static inquiry genuinely bottomed out. Theory prediction (the result is the *interaction*):
+perturb >> static on **underdetermined-cause** instances, perturb ~ static on **determined-cause**
+instances (where the gap already names the cause; flipt/openlibrary-style).
+
+**Feasibility WIN -- perturbation is machine-countable, and the strata are large.** Inspected the
+frozen typed `/recon` evidence to build the determinacy stratifier:
+- The hgraph `.md` files mostly died at teardown (only 4 survived), BUT the **1,048 pulled recon
+  trajectories** carry the *actual execution record* -- a better stratifier than the prose graphs.
+- Classified 666 Pro instances by scoped executions in diagnosis: **48% perturbation-rich (>=2 execs),
+  40% light, 11% pure-static**; per-instance count runs 0 -> 51 (ansible). Clean gradient.
+- Surprise that helps power: the typed run perturbed on **~89%** of instances -- perturbation was the
+  norm, not a thin tail, so the underdetermined stratum is ~320 instances, not a sliver.
+- Deployment graphs (382) corroborate the signal is real: explicit-experiment 10%, isolation 17%,
+  induction-closed 16%, re-diagnose/kill 7%.
+
+**Refinements before freeze (the raw signal is a bit too abundant, which is its own tell):**
+(1) sharpen "execution" to *manufactured-diff* perturbation (print-injection / running modified code /
+isolating bypass), not navigation runs; (2) stratify on **decision-relevant** perturbation
+(re-entry / kill / hypothesis-flip = "perturbation broke a tie"), not raw "perturbation happened" --
+89%-perturbed overestimates 89%-needed. Headline stratifier = decision-relevant perturbation.
+
+**Status:** design + feasibility confirmed, NOT frozen. Next: build the sharpened classifier, emit the
+pre-registered determined/underdetermined instance lists, draft the `/ask` vs `/ask-static` prereg
+(own tag). This is the successor node; the typing artifact (`prereg-pro-v1-untyped`) stays terminal.
+
 ## 2026-06-05 -- TERMINAL: CONVERGED, null. Delta_typing = -0.013, 95% CI [-0.062, +0.030] (n=73)
 
 **Result.** The Bayesian run converged at n=73 (prereg §3.2, 95% CI width 0.092 <= W_TARGET 0.10):
