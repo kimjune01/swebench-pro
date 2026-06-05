@@ -47,6 +47,26 @@ issue with the transcript.
 > actions (`runs/scored/turn_budget.jsonl`, OBJECTIONS §12). Tell me whether the
 > attribution claims are stated as bounded (they should be), not as proof.
 
+## "You attribute the lift to 'perturbation', but your craft loop perturbs too." *(in-flight result)*
+
+> The mechanistic claim is that **directed diagnostic** perturbation is load-bearing — not
+> perturbation-in-general, since the `craft` stage already perturbs (blind try-and-rerun) in
+> every arm. Check that the pre-registered ablation actually isolates the directed probe and
+> nothing else. (1) Diff `skills/ask-feynman/skill.md` against `skills/recon/skill.md` and
+> confirm the **only** removed capability is *execution during diagnosis* (read-only box:
+> cat/grep/`git log` allowed, python/pytest/print-and-run refused) — same typing, hypothesis
+> graph, emit schema, and identical downstream `craft`+gate in both arms
+> (`docs/PREREGISTRATION-feynman-ablation.md` §2, §6). (2) Confirm the strata are
+> **pre-treatment**: `driver/perturbation_strata.py` classifies each instance off the *frozen
+> `/recon`* trajectories (re-entry OR experiments≥2 → UNDERDETERMINED), never off this arm's
+> outcome — no collider. (3) Recompute the per-stratum delta yourself: pair the `feynman`
+> ledger (`runs/scored/feynman*.jsonl`) against the frozen `/recon` verdicts
+> (`runs/scored/run.jsonl`) with `driver/feynman_bayes.py status`, and confirm UNDER shows
+> `Delta≈+0.278, P(Delta>0)≈0.996` while DET trends toward zero. Report whether the DET control
+> has reached the registered ROPE-close (±0.03) yet — at time of writing it has **not**, so the
+> interaction is stated as in-flight and the difference-of-differences (`P≈0.981`) is labeled
+> supplementary, not substituted for the registered rule. Flag it if you find that swap.
+
 ## "You developed the harness on these repos, so you overfit."
 
 > The harness was built on SWE-bench Verified, not Pro. Verify the three overfit checks

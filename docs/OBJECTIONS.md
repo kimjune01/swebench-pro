@@ -20,6 +20,7 @@ or a stated limit), never an argument.
 | "It gamed the grader" | **Unmodified official grader**, pinned commit; re-grade any verdict yourself (#5, #6). |
 | "Cherry-picked instances" | Whole eligible set (728), **0 INCOMPLETE**, 3 gold-patch defects named; reproduce on a **random** sample (#7). |
 | "Expensive brute force, not reasoning" | ~$5.14 / ~12.8 min each at API rates — and the **open-weight-generator pair does it for ~$0.41** — **plus** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
+| "It's 'perturbation'? craft perturbs too" | The isolated variable is **directed diagnostic** perturbation, not search. A pre-registered ablation holds craft's blind search constant in both arms and removes only the aimed probe — load-bearing on the underdetermined stratum (`Delta=+0.278`); **in-flight, scoped, not yet closed** (#13). |
 | "Why should I trust you?" | You don't: **one prompt** reproduces a random sample on your machine ([README](../README.md)). Trust is the one axis an AI can't win; verification is the answer. |
 | "But it's AI" | A **values** call, not an evidence one, not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
 
@@ -259,6 +260,42 @@ the full 728-instance run took **~3.5 days** of wall-clock, bounded by fleet siz
 
 Turn/token stats cover the 681/728 instances whose trajectories survived teardown
 (median ~71k output tokens/instance). See [`SCOREBOARD.md`](SCOREBOARD.md).
+
+## 13. "You attribute the lift to 'perturbation' — but your own craft loop perturbs too." *(in-flight)*
+
+Conceded as stated, and it narrows the mechanistic claim rather than refuting it.
+The solution-attempting stage (`craft`) already perturbs — it writes a fix, runs
+the suite, reads the failure, retries — and that blind search runs in **every arm**,
+the ablation included. So no ablation here can test "perturbation vs none"; `craft`
+is frozen on both sides. The isolated variable is the **directed diagnostic probe**:
+perturbing to *discriminate between competing hypotheses* (drop a print, narrow a
+test, bypass-to-isolate), not to stumble onto a passing test. Arbitrary
+search-perturbation is a held-constant covariate, not the manipulated one.
+
+A pre-registered single-factor ablation tests exactly this
+([`PREREGISTRATION-feynman-ablation.md`](PREREGISTRATION-feynman-ablation.md)).
+`ask-feynman` is `/recon` with the diagnostic probe removed and nothing else
+(read-only diagnosis box; it may only *imagine* an experiment's result), paired
+against the frozen `/recon` baseline and stratified — **pre-treatment**, off the
+prior frozen run — by cause-determinacy:
+
+- **Underdetermined** (blind search demonstrably insufficient: re-entry or ≥2
+  experiments) — removing the directed probe costs **`Delta=+0.278`, 95% CI
+  `[+0.079,+0.471]`, `P(Delta>0)=0.996`** (n=32; 12 existence cases where the
+  perturbing arm won and the static arm lost). **Pre-registered PROVEN.**
+- **Determined** (`experiments==0` and no re-entry) — trends null (`Delta=+0.033`)
+  as predicted, **but the control is still filling and the registered ROPE-close
+  (`Delta_DET` CI within ±0.03) is not yet met**; its CI is governed by a single
+  discordant pair, so closing it is rate-limited by budget.
+
+So the claim this supports is not "perturbation vs none" but **"directed
+perturbation pays exactly where blind search has run out of road"** — load-bearing
+on the stratum that predicts it, vanishing where the cause was already statically
+determined. The direct difference-of-differences interaction is `P=0.981`, reported
+**supplementary** — not substituted for the unmet registered rule. This row is
+**in-flight and scoped to the perturbation strata**, not a closed result; full
+honesty scorecard and the registered-vs-supplementary disclosure in
+[`WORKLOG-untyped.md`](WORKLOG-untyped.md).
 
 ---
 
