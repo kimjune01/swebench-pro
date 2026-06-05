@@ -5,6 +5,45 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- TERMINAL: CONVERGED, null. Delta_typing = -0.013, 95% CI [-0.062, +0.030] (n=73)
+
+**Result.** The Bayesian run converged at n=73 (prereg §3.2, 95% CI width 0.092 <= W_TARGET 0.10):
+`Delta_typing = p_typed - p_untyped = -0.013, 95% CI [-0.062, +0.030]`. 2x2 paired table: both-win 70,
+typed-only-win **0**, untyped-only-win 1, both-lose 2. `P(Delta > 0) = 0.25`. 0 INCOMPLETE, 0 infra-guard
+quarantines (clean auth/regime throughout). The CI excludes any meaningful positive effect; the point
+estimate is null-to-slightly-negative.
+
+**Reading.** The Peircean mode-TYPING of the diagnosis stage (abduction/deduction/induction labels,
+confidence-by-mode, typed-node semantics) adds **no measurable resolve-rate lift** over the same inquiry
+without it. The strong claim of the paper's abstract / §grounding -- "the encoding is typing" -- is
+**falsified at runtime** to within +/-~5 points. The existence case for the typing (a typed-only-win)
+did not appear in 73 instances.
+
+**The honest frame (the result's actual content).** The ablation was a **rename refactor**: same function
+bodies (reproduce -> abduce -> ground -> rule-out -> defer), new identifiers (generic names for the
+Peircean ones). It preserved runtime behavior -> null. NOT a tautology: unlike a compiler, the model
+*reads* the names, so a behavior change was possible; the null is the empirical finding that **this model
+(Sonnet 4.5, a 2025 model) compiles the vocabulary away** -- it executes the operations specified and is
+indifferent to the labels. Model-dependent: a weaker model might lean on the names. The names were
+load-bearing for the *author* (Peirce was the lens that produced the function bodies), and inert for the
+*runtime* -- which reconciles "Peirce led me to the skill" with "the typing doesn't move the number."
+Live-artifact evidence corroborates mechanistically: on easy AND hard instances, the untyped `/ask` arm
+produced grounded, evidence-cited, non-confabulated diagnoses; the only losses were gate-divergence
+grader artifacts both arms hit.
+
+**What survives / what's next.** Step-separation + context isolation is precedented (Agentless,
+Anthropic subagents, LangChain; codex prior-art search). The Peircean typing is null. The candidate claim
+that survives both the ablation and the prior-art check is **inquiry CONTENT vs localization** -- the
+function *bodies*, not their names: Agentless localizes (points at edit sites), our diagnosis abduces
+(grounded falsifiable root cause). That is UNTESTED here (both arms have the content) and is the next
+experiment (codex-designed: `OURS_INQUIRY` vs `AGENTLESS_LOCALIZE` vs `ACR_CONTEXT_RETRIEVAL`, neutral
+canonical handoff, conditional-on-gold-file analysis; its own prereg).
+
+**Provenance + teardown.** Per-instance artifacts (captured patches, `/ask`+craft+audit outputs, notes,
+failbase) pulled off all 8 boxes before teardown -> `runs/scored/artifacts/untyped/` (466 files). Merged
+scored ledger committed at `runs/scored/untyped.jsonl` (73 graded). Fleet torn down at CONVERGED per the
+prereg stop (census not required; resume-able if a full-set number is later wanted).
+
 ## 2026-06-04 (run in progress, ~2h, n=52) -- hard-instance inspection: untyped reasons cleanly; losses are grader-divergence, not confabulation
 
 **Inspected the live `/ask` artifacts on hard instances** (the place the typing would have to earn its keep).
