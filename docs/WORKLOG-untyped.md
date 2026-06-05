@@ -5,6 +5,32 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- FIRST RESULT: UNDER stratum PROVEN (Delta=+0.286, P(Delta>0)=0.996); survived an auth-death wave
+
+**Headline (clean, n=31 UNDER, paired vs frozen /recon):**
+```
+[UNDER] n=31  2x2(both/recon-only/feyn-only/both-lose)=12/12/2/5  p_recon=0.774 p_feyn=0.452
+        Delta_perturb=+0.286  95% CI=[+0.082,+0.483]  P(Delta>0)=0.9963   -> UNDER PROVEN
+```
+On the underdetermined stratum, removing scoped diagnostic perturbation costs **~29 points** of
+resolve rate (0.774 -> 0.452). 12 existence cases (recon won, feynman lost) -- instances a static
+"think real hard" diagnosis cannot reach but a perturbing one can. This is the paper's inquiry-frame
+claim, vindicated where it predicts: **perturbative abduction is load-bearing exactly where the cause
+is underdetermined.** Not the deeper null (mental simulation did NOT suffice); the empirical act of
+perturbing pays. DET control still pending to close the interaction (predict Delta_DET ~ 0).
+
+**Auth-death wave, and the guard holding.** Mid-run, an OAuth token rotation (operator `/login`
+refreshed local creds) killed the agent EMPTY in <180s on **62 instances** (secs 30-132), recorded as
+LOSS. The infra-fault guard (`MIN_REAL_SECS=180`) **quarantined all 62 out of Delta** -- so the n=31
+UNDER read above is uncontaminated; the guard did exactly its job. Re-pushed fresh creds to all 4
+boxes; recovery confirmed (current instances running 498s/1050s post-push, vs the ~40s death
+signature). The wave was a rotation transient, not persistent multi-box contention.
+
+**Two follow-on fixes (runner-side):** (1) resume now treats fast-LOSS (<MIN_REAL_SECS) as
+**non-terminal** so the 62 auto-retry on the next pass with good creds (previously LOSS was terminal
+-> they'd be quarantined from Delta but never re-run -- a silent hole). Commit `7d3d2e6`. (2) the
+per-instance `PINST_TIMEOUT` from the prior entry is live fleet-wide.
+
 ## 2026-06-05 -- SCORED RUN hit the NodeBB craft-hang; runner-level per-instance timeout added; relaunched
 
 First scored fleet (4 boxes, full ordered shards) ran clean for ~5h then **3 of 4 boxes wedged** --
