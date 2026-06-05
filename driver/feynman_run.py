@@ -90,7 +90,16 @@ def run_one(iid):
         return st, f"official RESOLVED (refusals={refusals})" if st == "WIN" else f"not resolved (refusals={refusals})"
     if FAULT_RE.search(out):
         return "INCOMPLETE", "platform fault: " + FAULT_RE.search(out).group(0)
-    return "LOSS", "no verdict (endogenous): " + out.strip()[-200:]
+    # No gate verdict. POST-OUTAGE HARDENING (2026-06-05): a "no verdict" means the pipeline died
+    # before the gate ran -- this is the auth/token-outage signature (model call killed mid-pipeline),
+    # NOT a capability loss (a real feynman loss runs the full pipeline and yields "not resolved").
+    # The original code recorded this as a terminal LOSS; with MIN_REAL_SECS catching only the FAST
+    # ones, SLOW (>180s) no-verdict deaths leaked into Delta as recon-only wins and inflated the
+    # round-1 UNDER headline (retracted, see docs/WORKLOG-untyped.md). Classify by VERDICT-TYPE, not
+    # wall-time: no-verdict -> INCOMPLETE (non-terminal) so resume auto-retries it. In a clean (no
+    # outage) window the retry reaches the gate; an instance that persistently no-verdicts across a
+    # clean re-run is a real harness/instance fault to investigate, not a silent LOSS.
+    return "INCOMPLETE", "no verdict (endogenous) -- infra/outage signature, retry on clean re-run: " + out.strip()[-200:]
 
 
 def main():
