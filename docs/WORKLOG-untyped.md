@@ -5,6 +5,50 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-04 (run in progress, ~1h) -- early signal leans null/untyped; high-power lens considered and DEFERRED
+
+**Run health.** 8 boxes (`abl1-8`, `m7i.xlarge`, us-west-2), all live, 0 INCOMPLETE, 0 infra-guard
+quarantines, no auth wave, no grader hang. Smoke (`ansible`) re-runs as part of shard 1/8 post-freeze.
+
+**Early signal (SOFT, n=34, ~1h).** Paired vs the frozen typed ledger: `2x2 = both-win 32 /
+typed-only-win 0 / untyped-only-win 1 / both-lose 1`. `Delta_typing = -0.026`, 95% CI [-0.124, +0.061],
+`P(Delta>0) = 0.25`. Recorded as the honest trail, NOT a verdict: n=34, CI is +/-0.09, and only ~2 of
+the 34 are hard (non-both-win) instances. But the direction is real and worth stating plainly: so far
+the untyped `/ask` arm is doing at least as well as typed, and the existence-proof case (a typed-only-win)
+has not appeared while its opposite has, once. The hard tail decides; it is barely sampled.
+
+**Methodology deliberation (recorded BEFORE more data, to keep it honest).** Considered raising power by
+importance-sampling the discordant boundary instead of uniform random: McNemar / the Dirichlet posterior
+draw all their power from discordant pairs, so ~94% of random trials (both-win) are statistically inert
+(effective N = b+c = 1 at n=34). Theory is standard: stratified sampling + Neyman allocation, with
+Horvitz-Thompson inverse-probability weights to stay unbiased for the population Delta. Strata pre-computed
+from the FROZEN typed ledger (so they predate any targeted run): `S_fail` = 34 typed-LOSS; `S_marginal` =
+140 typed-WIN with `secs >= p80 = 1072s` (the hard wins); `S_easy` = 554 (Neyman ~0 allocation).
+
+**Decision: random arm is the headline; existence case pursued, but only the multiplicity-clean way.**
+- The HT-weighted stratified **average** is legitimate (unbiased for the SAME population Delta; it buys
+  precision, never direction -- it cannot turn a null positive). Held as a budget-triggered amendment
+  option, NOT registered/run yet.
+- An **existence case** (one instance where typed reliably resolves what untyped reliably fails) is a
+  worthwhile minimum goal -- BUT it is only honest with **denominator disclosure**. The silly version
+  screens `S_marginal` and reports the one that worked (selection on outcome; ~7 false witnesses expected
+  in 140 at alpha=0.05). The clean version, on the record before any targeted run:
+  - **Primary candidates are the typed-only-wins the unbiased random arm surfaces** (not outcome-selected).
+    Each is escalated to a per-instance SPRT (typed k/k vs untyped 0/k confirms it isn't sampling variance).
+  - **Any targeted candidates are pre-named before testing, and ALL tested instances are reported** -- the
+    claim is scoped to "W of K tested," never a lone cherry-picked witness. Targets (from `S_marginal`)
+    to be pre-named in a later dated entry, with their full outcomes.
+- Principle on the record: **no sampling design moves the estimand.** If the unbiased random arm does not
+  clear a positive statsig Delta, the *average* claim ("typing carries the lift") is dead and the Peirce
+  section narrows to design-rationale + legibility (the paper's own §411). An existence case, if found
+  clean, supports only the *narrower* claim ("the typing does real work on >=1 instance"), with its
+  denominator -- it does not resurrect the average.
+
+**Action.** Keep the random arm running to a §3.2 terminal verdict; report then. Auto-flag every
+typed-only-win as it appears (primary clean candidates) for SPRT escalation. Pre-name any `S_marginal`
+targets in a dated entry before testing them, and report the full denominator. The stratified HT-average
+lens stays registered-but-unrun, available only if budget binds before convergence.
+
 ## 2026-06-04 -- FREEZE: `prereg-pro-v1-untyped` cut, ablation run begins
 
 **What this run measures.** `Delta_typing = p_typed - p_untyped`, paired on a seeded-random sample
