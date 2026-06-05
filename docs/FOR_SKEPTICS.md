@@ -47,7 +47,7 @@ issue with the transcript.
 > actions (`runs/scored/turn_budget.jsonl`, OBJECTIONS §12). Tell me whether the
 > attribution claims are stated as bounded (they should be), not as proof.
 
-## "You attribute the lift to 'perturbation', but your craft loop perturbs too." *(in-flight result)*
+## "You attribute the lift to 'perturbation', but your craft loop perturbs too." *(DET continuation in progress)*
 
 > The mechanistic claim is that **directed diagnostic** perturbation is load-bearing — not
 > perturbation-in-general, since the `craft` stage already perturbs (blind try-and-rerun) in
@@ -62,10 +62,13 @@ issue with the transcript.
 > outcome — no collider. (3) Recompute the per-stratum delta yourself: pair the `feynman`
 > ledger (`runs/scored/feynman*.jsonl`) against the frozen `/recon` verdicts
 > (`runs/scored/run.jsonl`) with `driver/feynman_bayes.py status`, and confirm UNDER shows
-> `Delta≈+0.278, P(Delta>0)≈0.996` while DET trends toward zero. Report whether the DET control
-> has reached the registered ROPE-close (±0.03) yet — at time of writing it has **not**, so the
-> interaction is stated as in-flight and the difference-of-differences (`P≈0.981`) is labeled
-> supplementary, not substituted for the registered rule. Flag it if you find that swap.
+> `Delta≈+0.278, P(Delta>0)≈0.996` (n=32) while DET trends toward zero (`Delta≈+0.026`, n=34 and
+> climbing). The UNDER primary is **PROVEN and frozen**; the DET control is **still filling** — a
+> follow-up fleet is adding ~100+ DET instances to close the registered ROPE (±0.03), which the
+> first round left unmet (upper bound ≈+0.125, one discordant pair). Until it closes, the
+> interaction is reported via the difference-of-differences (`P≈0.987`) and labeled
+> **supplementary**, never substituted for the registered rule. Flag it if you find that swap, or
+> if the registered criterion is presented as closed before DET reaches it.
 
 ## "You developed the harness on these repos, so you overfit."
 

@@ -5,6 +5,37 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- ROUND 1 done (n=68); DET CONTINUATION launching to CLOSE the registered ROPE (integrity over budget)
+
+Round-1 boxes hit their watchdog and self-terminated; harvester pulled the ledger tails
+(`runs/scored/feynman_*of4.jsonl`, committed). **Decision (operator): do not leave the
+pre-registered criterion open for convenience -- spend the 100+ instances to actually close the
+DET ROPE.** "We can afford 100+ for integrity's sake." A follow-up fleet runs the DET-first control
+sample (`tasks/perturbation_control.txt`) to fill DET toward the ±0.03 close; UNDER is PROVEN and
+frozen (no re-run). Round-1 per-stratum, paired vs frozen `/recon`:
+
+```
+[UNDER] n=32  2x2=13/12/2/5  Delta=+0.278  95%CI=[+0.079,+0.471]  P(Delta>0)=0.9963   PROVEN (pre-registered)
+[MID  ] n= 2  2x2=1/1/0/0    Delta=+0.167  (wide)                  P(Delta>0)=0.751
+[DET  ] n=34  2x2=33/1/0/0   Delta=+0.026  95%CI=[-0.060,+0.125]   P(Delta>0)=0.752    trending null
+```
+
+DET filled 26 -> 34 (CI width 0.232 -> 0.185, Delta 0.033 -> 0.026 -- tightened toward zero, the
+predicted direction). **Direct interaction (difference-of-differences): mean=+0.251, 95%CI=
+[+0.032,+0.462], P(>0)=0.987** (was 0.981 at n=26).
+
+**What is NOT yet closed (the target of round 2):** the pre-registered componentwise ROPE criterion
+(`Delta_DET` 95% CI within +/-0.03) is **NOT met** -- upper bound +0.125, governed by DET's single
+discordant pair (effective-n ~ 1 at 33/1/0/0). Pinning it below 0.03 needs ~100+ more DET. Rather
+than declare the criterion "unreachable at budget" and fall back to the supplementary statistic, the
+operator authorized the spend: **round 2 fills DET to honor the registered rule as written.**
+
+**Status, no over-claim:** primary endpoint **PROVEN** (directed diagnostic perturbation is
+load-bearing on the underdetermined stratum, ~31 pts of resolve rate, 12 existence cases) and frozen;
+interaction strongly supported (P=0.987, supplementary). The registered ROPE-on-DET is **open and
+being closed**, not abandoned. OBJECTIONS #13 / FOR_SKEPTICS carry "DET continuation in progress"
+markers until DET reaches the ±0.03 close.
+
 ## 2026-06-05 -- Estimand sharpened: the treatment is *directed* perturbation, not perturbation-in-general
 
 A precision that pre-empts the obvious referee objection ("craft perturbs too -- what did you

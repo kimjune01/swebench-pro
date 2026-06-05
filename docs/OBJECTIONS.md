@@ -20,7 +20,7 @@ or a stated limit), never an argument.
 | "It gamed the grader" | **Unmodified official grader**, pinned commit; re-grade any verdict yourself (#5, #6). |
 | "Cherry-picked instances" | Whole eligible set (728), **0 INCOMPLETE**, 3 gold-patch defects named; reproduce on a **random** sample (#7). |
 | "Expensive brute force, not reasoning" | ~$5.14 / ~12.8 min each at API rates — and the **open-weight-generator pair does it for ~$0.41** — **plus** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
-| "It's 'perturbation'? craft perturbs too" | The isolated variable is **directed diagnostic** perturbation, not search. A pre-registered ablation holds craft's blind search constant in both arms and removes only the aimed probe — load-bearing on the underdetermined stratum (`Delta=+0.278`); **in-flight, scoped, not yet closed** (#13). |
+| "It's 'perturbation'? craft perturbs too" | The isolated variable is **directed diagnostic** perturbation, not search. A pre-registered ablation holds craft's blind search constant in both arms and removes only the aimed probe — **PROVEN** load-bearing on the underdetermined stratum (`Delta=+0.278`, `P>0=0.996`); interaction `P=0.987` (supplementary); registered DET ROPE-close unmet, scoped (#13). |
 | "Why should I trust you?" | You don't: **one prompt** reproduces a random sample on your machine ([README](../README.md)). Trust is the one axis an AI can't win; verification is the answer. |
 | "But it's AI" | A **values** call, not an evidence one, not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
 
@@ -261,7 +261,7 @@ the full 728-instance run took **~3.5 days** of wall-clock, bounded by fleet siz
 Turn/token stats cover the 681/728 instances whose trajectories survived teardown
 (median ~71k output tokens/instance). See [`SCOREBOARD.md`](SCOREBOARD.md).
 
-## 13. "You attribute the lift to 'perturbation' — but your own craft loop perturbs too." *(in-flight)*
+## 13. "You attribute the lift to 'perturbation' — but your own craft loop perturbs too." *(UNDER frozen; DET continuation in progress)*
 
 Conceded as stated, and it narrows the mechanistic claim rather than refuting it.
 The solution-attempting stage (`craft`) already perturbs — it writes a fix, runs
@@ -283,18 +283,23 @@ prior frozen run — by cause-determinacy:
   experiments) — removing the directed probe costs **`Delta=+0.278`, 95% CI
   `[+0.079,+0.471]`, `P(Delta>0)=0.996`** (n=32; 12 existence cases where the
   perturbing arm won and the static arm lost). **Pre-registered PROVEN.**
-- **Determined** (`experiments==0` and no re-entry) — trends null (`Delta=+0.033`)
-  as predicted, **but the control is still filling and the registered ROPE-close
-  (`Delta_DET` CI within ±0.03) is not yet met**; its CI is governed by a single
-  discordant pair, so closing it is rate-limited by budget.
+- **Determined** (`experiments==0` and no re-entry, n=34 and climbing) — trends
+  null (`Delta=+0.026`, 95% CI `[-0.060,+0.125]`) as predicted, **but the registered
+  ROPE-close (`Delta_DET` CI within ±0.03) is not yet met**: the upper bound is
+  +0.125, governed by a single discordant pair (33/1/0/0, effective-n ≈ 1). Closing
+  it needs ~100+ more DET instances; a **follow-up fleet is being run to do exactly
+  that** (budget authorized for the close), rather than leaving the pre-registered
+  criterion open for convenience.
 
 So the claim this supports is not "perturbation vs none" but **"directed
 perturbation pays exactly where blind search has run out of road"** — load-bearing
 on the stratum that predicts it, vanishing where the cause was already statically
-determined. The direct difference-of-differences interaction is `P=0.981`, reported
-**supplementary** — not substituted for the unmet registered rule. This row is
-**in-flight and scoped to the perturbation strata**, not a closed result; full
-honesty scorecard and the registered-vs-supplementary disclosure in
+determined. The UNDER primary endpoint is **PROVEN and frozen**; the direct
+difference-of-differences interaction is `P=0.987`, reported **supplementary** — not
+substituted for the still-open registered rule. The DET control is **still filling**
+to close that componentwise ROPE; until it does, this row reports the interaction as
+supplementary and the registered criterion as open, not closed. Full honesty
+scorecard and the registered-vs-supplementary disclosure in
 [`WORKLOG-untyped.md`](WORKLOG-untyped.md).
 
 ---
