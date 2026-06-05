@@ -10,7 +10,7 @@ against the frozen /recon baseline (runs/scored/run.jsonl) via feynman_bayes.py.
 Ledger: runs/scored/feynman[_iofN].jsonl. Resume = skip recorded. Sources $PY/$SWEAP_OS_REPO from
 driver/.proenv (source it first).
 """
-import argparse, json, os, pathlib, re, subprocess, sys, time
+import argparse, json, os, pathlib, re, signal, subprocess, sys, time
 from collections import Counter
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
@@ -18,6 +18,14 @@ DRIVER = REPO / "driver"
 PY = sys.executable
 SAMPLE = REPO / "tasks" / "perturbation_sample.txt"   # ordered: UNDER first (prereg-feynman 3)
 ARM_DRIVER = "pro_feynman.py"
+
+# Per-instance wall cap. The per-STAGE caps in rung5 (RECON 2000 / CRAFT 3600 / gate 1800, MAX_OUTER 5)
+# do NOT reliably reap a wedged process tree -- heavy suites (NodeBB et al.) hang the gate's docker-exec
+# below the stage timeout and freeze the box for hours (observed 3-4h, zero log output). This is the
+# documented craft-hang. The OUTERMOST boundary always works: Popen in its own session, SIGKILL the
+# whole group on timeout, then docker-kill any container the dead process left wedged on the test suite.
+# A TIMEOUT is QUARANTINED (not a LOSS -- a hang is not a capability failure) and re-runnable on resume.
+PINST_TIMEOUT = int(os.environ.get("PINST_TIMEOUT", "3600"))   # 60 min; flipt ran 699s, deep loops < ~40m
 
 FAULT_RE = re.compile(r"BOX_DEATH|AWS_API|OOM|DISK_FULL|SETUP_NETWORK_FAIL|QUOTA_EXHAUSTED|"
                       r"No space left|Cannot connect to the Docker daemon|manifest unknown|"
@@ -52,8 +60,22 @@ def run_one(iid):
                         env={**os.environ, "BENCH": "pro"}, timeout=600)
     if not task.exists():
         return "INCOMPLETE", "make_task failed: " + (mk.stderr or mk.stdout).strip()[-200:]
-    p = subprocess.run([PY, str(DRIVER / ARM_DRIVER), str(task), iid], capture_output=True, text=True)
-    out = p.stdout + p.stderr
+    p = subprocess.Popen([PY, str(DRIVER / ARM_DRIVER), str(task), iid],
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, start_new_session=True)
+    try:
+        out, _ = p.communicate(timeout=PINST_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(os.getpgid(p.pid), signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        try:
+            out, _ = p.communicate(timeout=60)
+        except Exception:
+            out = ""
+        # the dead process may have left a container wedged mid-test-suite; reap it (runner is sequential).
+        subprocess.run("sudo docker kill $(sudo docker ps -q) 2>/dev/null || true", shell=True, timeout=120)
+        return "TIMEOUT", f"per-instance wall cap {PINST_TIMEOUT}s (quarantined, re-runnable)"
     m = re.search(r"OFFICIAL RESOLVED:\s*(True|False)", out)
     ref = re.search(r"perturbation_refusals\(diagnosis\):\s*(\d+)", out)
     refusals = int(ref.group(1)) if ref else None
@@ -91,7 +113,8 @@ def main():
 
     with open(ledger, "a") as f:
         for k, iid in enumerate(ids, 1):
-            if iid in done and iid not in args.redo:
+            # resume skips only TERMINAL verdicts; INCOMPLETE/TIMEOUT are quarantined -> auto-retry.
+            if iid in done and done[iid].get("state") in ("WIN", "LOSS") and iid not in args.redo:
                 continue
             t0 = time.time(); started = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t0))
             print(f"[{k}/{len(ids)}] feynman {iid} ...", flush=True)
