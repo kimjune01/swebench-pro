@@ -5,6 +5,62 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- PERTURBATION ABLATION registered-ready (`ask-feynman` vs frozen `/recon`); codex-sniffed; pilot next
+
+The successor experiment is designed, codex-red-teamed, and fixed. Prereg:
+`docs/PREREGISTRATION-feynman-ablation.md` (tag `prereg-pro-v1-feynman`, not yet cut).
+
+**The cut (Feynman vs Edison).** `ask-feynman` = `/recon` with **scoped diagnostic perturbation
+removed, nothing else** (read-only diagnosis box, no gate-run, imagine-don't-execute; Peircean typing
++ emit + craft + gate all identical). Feynman = the Gell-Mann caricature ("write down the problem,
+think real hard, write down the solution") = the *static* arm. Edison = the *perturb* baseline (try
+the filament) = the frozen `/recon`. **One arm:** we already have the perturb baseline (frozen
+`/recon`, 728); we build and run only the deprived static arm and pair against it. Single factor =
+scoped diagnostic perturbation; the variable is **actual execution vs mental simulation of it.**
+
+**Strata (frozen, `driver/perturbation_strata.py`).** Scored from `/recon`'s own trajectories by
+decision-relevant perturbation (manufactured-diff + re-entry, navigation excluded):
+**UNDER 102 / MID 31 / DET 533**. Ordered run list UNDER-first (`tasks/perturbation_sample.txt`).
+Prediction = the **interaction**: feynman < recon on UNDER, feynman ~ recon on DET.
+
+**Codex sniff (GPT-5.5) -- skill bugs FIXED.** (1) Leak: "proceed as if your predicted result held"
+licensed invented evidence -> now imagined experiments are *predictions, not evidence* (rank
+hypotheses, never confirm; the gate confirms). (2) Over-handicap: feynman now explicitly gets the
+captured failure output (same symptom recon reproduces) -- deprived of *further experiments*, not of
+the symptom. (3) Imagined experiments can't earn *induction* confidence. (4) Removed a "be exhaustive
+in reasoning" line that made feynman *more* thorough than recon -- now matched verbatim.
+
+**The CLI-drift confound, and its resolution.** Codex's strongest objection: fresh feynman vs
+*frozen* recon could confound perturbation with agent-CLI version drift, and recommended a fresh-recon
+arm. We can't pin the old CLI (`claude-code@2.1.150` unsupported). BUT the drift is `2.1.150 ->
+2.1.162` -- **15 PATCH releases, same minor line, same Sonnet 4.5 model.** Changelog review: all
+UI/UX, `claude agents` (background feature, unused), MCP/LSP, permissions, Windows, telemetry, bug
+fixes -- **nothing touches the diagnosis loop, the Bash/Read/Grep tool semantics the harness uses, or
+model reasoning.** The two brushing items (explicit Grep/Glob listing; parallel-Bash-failure
+isolation) don't apply to our `claude --print --disallowedTools ...` invocation. CLI drift assessed
+**negligible on documentary evidence**, disclosed; frozen `/recon` baseline retained (one-arm). A
+30-instance fresh-recon calibration stays in the drawer as fallback.
+
+**Scoping caveats on the record (codex #4/#5).** The stratifier selects on `/recon`'s own behavior,
+so UNDER is a **mechanism-enriched subgroup** ("where recon used perturbation"), not a random
+underdetermined sample. Headline evidence = the **per-pair discordant analysis** (recon-only-wins on
+UNDER) -- which is itself the difficulty control (same instance, both arms, difficulty held per-pair).
+Claim is scoped to "perturbation recovers instances static reasoning fails, concentrated where it was
+used," NOT "perturbation helps all hard cases."
+
+**Separate finding (distinct from the ablation verdict): Pro is diagnostically determined-heavy.**
+533/666 (~80%) of Pro instances were resolved by `/recon` with zero scoped experiments -- the cause is
+statically readable from the test-vs-code gap. Caveat: this proxies "recon didn't perturb," an upper
+bound on "shallow" (a strong model abduces statically even on non-shallow causes). Scope it to
+*diagnostic* shallowness, not difficulty (implementation can still be hard -> the 95.3% is real). The
+implication: **Pro under-exercises the discovery/perturbation mode the methodeutic is built for** --
+which is exactly why this ablation must stratify (the population average would wash the effect out
+under 80% ties).
+
+**Status:** skill + strata + prereg + classifier built; `ask-feynman` codex-clean. Next: build
+`pro_feynman.py` (read-only diagnosis box + failbase-symptom provision) and run a PILOT on a few UNDER
+instances (dev-mode, no-credit) before freezing `prereg-pro-v1-feynman`.
+
 ## 2026-06-05 -- SUCCESSOR DESIGN: the perturbation ablation, and a feasibility WIN on stratification
 
 The typing null pointed at the next experiment: not the *names* of the inquiry (form, null) but a
