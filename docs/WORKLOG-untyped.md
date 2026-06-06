@@ -5,6 +5,46 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-05 -- FINAL (clean): recovery done, contamination corrected; UNDER Delta=+0.105 suggestive, benchmark-resolution-limited
+
+The 81-hole recovery (fresh fleet, hardened runner, clean auth windows) is wrapped. It survived TWO live
+OAuth rotations (operator `/login` x2) with ZERO contamination -- the post-outage hardening
+(`no verdict (endogenous)` -> INCOMPLETE/retry by verdict-type, not wall-time) converted every auth-death
+to a retryable INCOMPLETE instead of a terminal LOSS. The retraction fix proved itself twice under fire.
+
+**Final clean numbers** (round-1 `_of4` + recovery `_of5`; round-2 `_of6` quarantined wholesale):
+```
+[UNDER] n=53  2x2=36/9/3/5  Delta=+0.105  95%CI=[-0.018,+0.234]  width=0.252  P(Delta>0)=0.954
+[MID  ] n= 4  2x2=4/0/0/0   Delta~0
+[DET  ] n=34  2x2=33/1/0/0  Delta=+0.026  95%CI=[-0.060,+0.125]                P(Delta>0)=0.752
+EXISTENCE CASES in UNDER (recon win, feynman gate-confirmed loss): 9
+```
+Recovery: 40/81 holes terminal-done; the 41 unrecovered are mostly NodeBB craft-hang traps (full-3600s
+PINST_TIMEOUT every retry -- documented dead-ends, not capability losses; excluded honestly).
+
+**The honest verdict -- suggestive, NOT proven; and the benchmark cannot make it proven.**
+- The contaminated round-1 headline (`Delta=+0.278, P=0.996`) is fully retracted. As auth-deaths were
+  replaced by real verdicts, `p_feyn` climbed 0.47 -> 0.74 and the recon-only cell collapsed 12 -> 9.
+- The clean effect is **Delta_UNDER ~ +0.10**, and the 95% CI **straddles zero** ([-0.018,+0.234]). Bayes
+  reads P(Delta>0)=0.954 (just over the 0.95 line), but the frequentist CI includes 0 and width=0.25 is
+  2.5x the CONVERGED target (0.10). **Suggestive, not significant.** (The live tool still prints "UNDER
+  PROVEN" off the P>0.95 rule -- do NOT quote that; the straddle-zero CI is the honest statement.)
+- **Resolution is capped by the benchmark, not budget (prereg-feynman 4b):** UNDER tops out at ~99
+  instances; even full recovery to n~88 shrinks width only to ~0.19, still straddling zero. The true
+  effect (~0.10) sits just BELOW the benchmark's ~0.13 resolution floor. The win-rate Delta was never
+  going to carry this claim -- the instrument lacks the resolution. This is the DET-ROPE lesson again.
+
+**What this means for the paper (the proof burden moves off the win-rate):** the load-bearing evidence
+for "directed perturbation is necessary" is NOT a CI on a paired delta -- it's (1) the **9 gate-confirmed
+existence cases** (recon won, feynman ran the full pipeline and the gate confirmed genuine failure -- not
+auth artifacts), hardened via K-reps necessity tests, and (2) the **behavioral signature**. The number
+did its job: it killed the contaminated headline and revealed the true effect is small, positive-leaning,
+and below benchmark resolution. That is a clean, honest result -- just a humbler one than the artifact.
+
+**Wrap:** fleet torn down (5 boxes), harvester stopped, recovery `_of5` ledgers committed. DET stays
+clean (33/1/0/0). The methodeutic-content 3-arm prereg (`prereg-pro-v1-methcontent`) is banked for later
+and is where the attribution question goes next.
+
 ## 2026-06-05 -- ANALYSIS FRAMING: how to report perturbation's attribution honestly (the reporting spine)
 
 The reporting decisions that make the perturbation result defensible rather than noise-looking. Settled
