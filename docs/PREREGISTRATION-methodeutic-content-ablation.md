@@ -19,6 +19,38 @@ warrant. We do not spend a fleet to estimate a magnitude the benchmark cannot re
 2026-06-05], (b) the three prompts are line-matched and committed with hashes, and (c) the behavioral-
 signature rubric is written. Nothing below is run before the freeze tag exists.
 
+## Scope — what this paper claims, and what is left to the reader
+
+The paper rests on **two clean, instructive findings**, which together form the contribution:
+
+1. **Vocabulary null** (`prereg-pro-v1-untyped`): the Peircean *labels* are inert (Δ=−0.013) — the model
+   runs the inquiry without them. A bounded null at the tested scope, not "naming never matters."
+2. **Perturbation necessity** (`prereg-pro-v1-feynman` + recovery): directed perturbation is *required*
+   on a characterizable class — underdetermined-cause problems where blind search is exhausted —
+   demonstrated by gate-confirmed existence cases and the §0a side-by-side. A scoped existence claim, not
+   "perturbation explains the lift."
+
+Together they say the sharp thing: **the naming doesn't matter; the operation does, on the problems
+where the cause is underdetermined.** That is a finished mechanism-paper contribution — a negative result
+ruling out the cheap explanation (Peircean branding) and a positive existence result locating the real
+operation. The deliverable is the §0a exhibit + these two findings, stated at their true strength.
+
+**Explicitly left to the reader (the posed frontier, not dodged).** It is not this paper's job to
+decompose every interesting component of the harness. The following are named *open*, on purpose, so the
+boundary is drawn rather than blurred — each is genuine further work, not an implied result:
+- **Framing-prose vs generic rigor** (does Peircean *content*, beyond labels, beat steelmanned generic
+  rigor?) — the M/G/T design in §0b–§5 below is the *proposed instrument*, retained as a blueprint but
+  **not required to be run** for this paper; it is the reader's exercise (and resolution-capped on this
+  bench regardless).
+- **The structure majority** (which held-constant scaffold factor carries the bulk) — needs a
+  compute-matched unstructured arm; out of scope.
+- **Generalization off-bench** — where the mechanism bites in dirtier domains (concurrency, heisenbugs,
+  production incidents); signposted, not measured here.
+
+This is *division of intellect, not labor*: the paper automates the **Filter** (what is ruled out, what
+is real) and leaves the **Attend** (why, how much, where else) to the reader. Sections 0a–0d are the
+paper; sections 2–5 are the retained-but-optional blueprint for the reader's exercise.
+
 ## 0. What this tests (the keystone, not one more component)
 
 The prior ablations established a stack: Peircean **labels** are null (`prereg-pro-v1-untyped`,
