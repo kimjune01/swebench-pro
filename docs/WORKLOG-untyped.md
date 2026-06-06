@@ -5,6 +5,68 @@ single-factor ablation isolating the methodeutic typing (`/ask` vs `/recon`). Si
 `prereg-pro-v1` headline; the typed verdicts (`runs/scored/run.jsonl`) are the frozen paired
 comparator, read but never re-run. Pre-registration: `docs/PREREGISTRATION-untyped-ablation.md`.
 
+## 2026-06-06 -- EXEMPTION RERUN (FINAL): 18/19 reran (1 persistent craft-hang exempt); effect clears zero at threshold; gate-as-compensation mechanism named
+
+**FINAL numbers** (18 of 19 reran; protonmail-e65cc exempted -- craft-hang, 2x full-3600s wall-cap,
+shared-stage hang carries no diagnosis signal). Rerun verdicts override the exemptions (last-wins),
+combined with the clean baseline:
+```
+UNDER:  n=76  a/b/c/d=59/11/3/3 (12 still exempt: 1 this-rerun hang + 11 out-of-scope no-verdicts)
+   Delta=+0.105  bootstrap95%CI=[+0.013,+0.197]  P(Delta>0)=0.982  McNemar exact p=0.057  existence b=11
+DET:    n=34  a/b/c/d=33/1/0/0  Delta=+0.029  CI=[0.000,+0.088]  P=0.639
+```
+vs the FINAL-clean state (CI straddled zero, [-0.018,+0.234]): reclaiming the 18 exempted auth-death
+cases **tightened the interval to exclude zero** and met the pre-registered P>=0.95 bar (0.982), with 11
+existence cases (was 9). But exact McNemar p=0.057 keeps it **at the threshold, not past it**. Honest
+statement: "threshold-level, favorable side of the pre-registered bar; CI clears zero; not slam-dunk
+statsig." The interaction (UNDER effect, DET null) is intact. Receipts: `runs/scored/feynman_*of7.jsonl`,
+raw `feynman_rerun7_raw.jsonl`. Fleet torn down (7 boxes).
+
+### below: in-progress notes from during the run (kept for the trail)
+Re-ran the 19 UNDER cases that the FINAL clean cut had *exempted* as no-verdict (recon-WIN /
+
+Re-ran the 19 UNDER cases that the FINAL clean cut had *exempted* as no-verdict (recon-WIN /
+feyn-INCOMPLETE auth-deaths). Rationale: those exemptions are not missing-at-random -- all 19 are
+recon-wins, so dropping them can systematically deflate the effect. The honest move is to run them,
+not asterisk them. 7-box EC2 fleet (`feynman_*of7.jsonl`), hardened runner, fresh auth.
+
+**The /login mid-run lesson, again (caught early this time).** An operator `/login` rotated the OAuth
+token ~6 min into the run; the short 2-3 instance shards burned through nearly the whole worklist on the
+dead token -> 17/19 came back INCOMPLETE (NOT loss -- the hardening held). Caught by liveness check (not
+ledger count), re-pushed keychain creds, canary-verified, resumed. Zero contaminated verdicts written.
+Two infra bugs found and fixed mid-run: (1) `ARM_LEDGER` defaulted to `untyped` so the monitor read the
+wrong ledger file; (2) a `pgrep -f feynman_run.py` redispatch guard *self-matched the launching shell*
+(its argv contained the launch string) -> falsely skipped every box. Use `ps|grep driver/feynman` and
+verify liveness, never trust a self-referential pgrep.
+
+**Provisional result (16 of 19 reran; 2 craft-hang TIMEOUTs + finalization pending).** Combining the
+rerun verdicts (last-wins over the exemptions) with the clean baseline:
+```
+UNDER provisional:  n=74  a/b/c/d=57/11/3/3
+  Delta=+0.108  bootstrap95%CI=[+0.014,+0.203]  P(Delta>0)=0.981  McNemar exact p=0.057
+  existence cases (recon-WIN, feyn-LOSS) b = 11
+```
+The rerun added 14 concordant wins AND 2 fresh existence-case losses; b went 9->11, c stayed 3, n grew
+58->74. Point estimate stable (~+0.11) but the interval **tightened to exclude zero** -- the opposite of
+the mid-run "diluting to null" read (that was an over-read of an early all-wins streak; the full data
+flipped it -- logged as a you-are-the-easiest-person-to-fool moment). Honest status: **right at the
+threshold, favorable side of the pre-registered P>=0.95 bar (0.981), bootstrap CI clears zero, but exact
+McNemar p=0.057 just over 0.05.** Do NOT call it slam-dunk statsig; "at threshold, pre-registered bar met"
+is the defensible statement. 2 craft-hangs (navidrome-fa85, protonmail-e65cc) likely exempt on re-timeout.
+
+**NEW MECHANISM -- the gate compensates (name it).** Why does removing directed perturbation cost so
+little on most cases? The **deterministic gate** compensates, in a second role beyond attestation.
+Directed perturbation's only edge is *query efficiency* (one aimed experiment vs many blind ones to split
+rivals); a free, instant, trustworthy gate destroys the value of efficiency, because blind try-and-check
+is viable exactly when each check is cheap and reliable. So blind-search-leaning-on-the-gate is the
+substitute, and the gate is the load-bearing part. Methodological twist: the gate is **held constant
+across both arms** (a controlled-for covariate) -- so the thing we fixed to keep the ablation clean is the
+channel that routes around the cut. A held-constant covariate is producing the null. Falsifiable
+prediction with a named cause: **degrade the gate (flaky tests / no oracle / expensive eval) and the
+compensation collapses -> perturbation necessity generalizes from the underdetermined minority to the
+majority.** The regime flip is gate-present vs gate-absent, not easy vs hard. Propagated to the paper
+(§prompt-ablation + §gating cross-link).
+
 ## 2026-06-05 -- FINAL (clean): recovery done, contamination corrected; UNDER Delta=+0.105 suggestive, benchmark-resolution-limited
 
 The 81-hole recovery (fresh fleet, hardened runner, clean auth windows) is wrapped. It survived TWO live

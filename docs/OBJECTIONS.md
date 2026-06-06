@@ -280,26 +280,29 @@ against the frozen `/recon` baseline and stratified — **pre-treatment**, off t
 prior frozen run — by cause-determinacy:
 
 - **Underdetermined** (blind search demonstrably insufficient: re-entry or ≥2
-  experiments) — removing the directed probe costs **`Delta=+0.278`, 95% CI
-  `[+0.079,+0.471]`, `P(Delta>0)=0.996`** (n=32; 12 existence cases where the
-  perturbing arm won and the static arm lost). **Pre-registered PROVEN.**
-- **Determined** (`experiments==0` and no re-entry, n=34 and climbing) — trends
-  null (`Delta=+0.026`, 95% CI `[-0.060,+0.125]`) as predicted, **but the registered
-  ROPE-close (`Delta_DET` CI within ±0.03) is not yet met**: the upper bound is
-  +0.125, governed by a single discordant pair (33/1/0/0, effective-n ≈ 1). Closing
-  it needs ~100+ more DET instances; a **follow-up fleet is being run to do exactly
-  that** (budget authorized for the close), rather than leaving the pre-registered
-  criterion open for convenience.
+  experiments) — removing the directed probe costs **`Delta=+0.105`, 95% CI
+  `[+0.013,+0.197]` (excludes zero), `P(Delta>0)=0.982`** (n=76; 11 gate-confirmed
+  existence cases where the perturbing arm won and the static arm lost). The
+  pre-registered `P(Delta>0)≥0.95` bar is met, but exact McNemar `p=0.057` keeps it
+  **at the threshold, not past it** — threshold-level, not slam-dunk. The earlier
+  `Delta=+0.278/P=0.996` "PROVEN" was **RETRACTED** (auth-death contamination
+  miscounted pre-gate pipeline failures as deprived-arm losses); the hardened re-run
+  that reclaimed those cases produced the figure here. See `WORKLOG-untyped.md`
+  2026-06-05 (retraction) and 2026-06-06 (re-run).
+- **Determined** (`experiments==0` and no re-entry, n=34) — null as predicted
+  (`Delta=+0.029`, 95% CI `[0.000,+0.088]`, `P(Delta>0)=0.639`), one discordant pair
+  (33/1/0/0, effective-n ≈ 1); the registered ±0.03 ROPE-close remains
+  benchmark-resolution-limited (UNDER tops out ~99 instances).
 
 So the claim this supports is not "perturbation vs none" but **"directed
 perturbation pays exactly where blind search has run out of road"** — load-bearing
 on the stratum that predicts it, vanishing where the cause was already statically
-determined. The UNDER primary endpoint is **PROVEN and frozen**; the direct
-difference-of-differences interaction is `P=0.987`, reported **supplementary** — not
-substituted for the still-open registered rule. The DET control is **still filling**
-to close that componentwise ROPE; until it does, this row reports the interaction as
-supplementary and the registered criterion as open, not closed. Full honesty
-scorecard and the registered-vs-supplementary disclosure in
+determined. The necessity claim rests on the **11 gate-confirmed existence cases**,
+not on the threshold-level win-rate delta. And the reason the delta stays *small* on
+most cases is named: the **deterministic gate compensates** — a free, trustworthy
+oracle lets blind try-and-check substitute for the aimed probe, so directed
+perturbation's query-efficiency edge only pays where the gate cannot (off-bench:
+flaky tests, no oracle, expensive eval). Full honesty scorecard in
 [`WORKLOG-untyped.md`](WORKLOG-untyped.md).
 
 ---
