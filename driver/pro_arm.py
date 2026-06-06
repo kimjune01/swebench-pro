@@ -86,6 +86,17 @@ def main():
     (HERE / f"{ARM_NAME}_failbase_{tag}.txt").write_text(failbase)
     hgraph = str(HERE / f"{ARM_NAME}_notes_{tag}.md"); pathlib.Path(hgraph).write_text(f"# {ARM_NAME}: {iid}\n")
 
+    # RECON_ONLY: diagnosis-quality sweep (diag_oracle scores the handoff vs gold). Skip the
+    # craft/audit outer loop entirely — we want the recon handoff, not a verdict. Big speedup.
+    if os.environ.get("RECON_ONLY"):
+        handoff, _ = arm_recon(inst, box, gate, hgraph, None, 0)
+        out = HERE / f"{ARM_NAME}_handoff_{tag}.txt"; out.write_text(handoff)
+        ssh(f"sudo docker kill {cid} 2>/dev/null")
+        log({"instance": iid, "stage": f"{ARM_NAME}_recononly_done", "handoff": str(out),
+             "handoff_bytes": len(handoff)})
+        print(f"\n=== {ARM_NAME.upper()} RECON-ONLY {iid} ===\n  handoff: {out} ({len(handoff)} bytes)")
+        return
+
     # IDENTICAL outer loop to pro_pilot.main — the only swap is recon -> arm_recon.
     verdict, route, kill, handoff, prev = "UNKNOWN", "recon", None, None, None
     for depth in range(MAX_OUTER):
