@@ -1,13 +1,23 @@
 # Pre-registration — SWE-bench Pro, methodeutic-content ablation (`methodeutic` vs `generic-rigor` vs `minimal`)
 
-The three-arm, single-factor ablation that tests whether the **methodeutic content of the framing
-prose** is the causal ingredient in the harness's lift, or whether generic good prompting explains it.
-Successor to the perturbation ablation (`prereg-pro-v1-feynman`) and the typing null
-(`prereg-pro-v1-untyped`). Ships under the shared Zenodo DOI.
+Tests whether the **methodeutic content of the framing prose** is the causal ingredient in the
+harness's lift, or whether generic good prompting explains it. Successor to the perturbation ablation
+(`prereg-pro-v1-feynman`) and the typing null (`prereg-pro-v1-untyped`). Ships under the shared Zenodo DOI.
 
-**Status: DRAFT, not yet frozen.** Freezes only when (a) the perturbation recovery has landed, (b) the
-three prompts are line-matched and committed with hashes, and (c) the behavioral-signature rubric is
-written. Nothing below is run before the freeze tag exists.
+**This is a MECHANISM paper; the benchmark numbers are already established.** The 95.3% headline is done,
+graded, and published — this study does NOT re-prove a rate. It asks *what operation produces the lift*.
+That reframing sets the evidence hierarchy: a mechanism is established by **deductive necessity proofs**
+(this operation reaches outcomes its absence cannot) and **exhibited process** (the operation is visible,
+in execution, in the trace) — not by a confidence interval on a win rate. The prior round proved the win-
+rate Δ is the *weakest* instrument here: it bottomed out at "suggestive" against the benchmark's own
+resolution floor (`prereg-pro-v1-feynman` recovery: UNDER Δ=+0.105, CI straddling zero, n capped at ~99).
+So this prereg is **tiered**: cheap deductive/constructive evidence first (and sufficient to carry the
+paper), expensive statistics last and explicitly *corroborative*, run only if budget and Tier-1 results
+warrant. We do not spend a fleet to estimate a magnitude the benchmark cannot resolve.
+
+**Status: DRAFT, not yet frozen.** Freezes only when (a) the perturbation recovery has landed [DONE,
+2026-06-05], (b) the three prompts are line-matched and committed with hashes, and (c) the behavioral-
+signature rubric is written. Nothing below is run before the freeze tag exists.
 
 ## 0. What this tests (the keystone, not one more component)
 
@@ -49,6 +59,135 @@ without the labels). The design is falsifiable by construction: the strong thesi
 (B) or (C), and all three are pre-committed clean findings (§4). T is therefore a co-equal arm, not a
 floor.
 
+## 0b. The tiers — cheap deductive evidence first, statistics last and corroborative
+
+Each claim is matched to the *cheapest instrument that can actually establish it*. Necessity and
+existence are deductive/constructive — one airtight case settles them, no n, no CI. Comparison and
+magnitude are irreducibly statistical and (here) resolution-capped. We run the tiers **in order** and
+stop when the paper's mechanism claim is carried; the statistical tier is corroboration, not the spine.
+
+| tier | claim | instrument | cost | gates next tier? |
+|---|---|---|---|---|
+| **T1 — necessity** | directed perturbation reaches bugs static inference cannot | **existence proof + K-reps**: run the static arm K times across ≥2 models on each of the 9 gate-confirmed existence cases; K/K static failure + perturbation success = deductive necessity | ~9 instances × K reps; no fleet | sufficient alone for the *necessity* claim |
+| **T2 — mechanism exhibited** | the model performs abduction (holds rival hypotheses, manufactures discriminating tests, revises commitment) | **trace exhibition**: read the committed `/recon` trajectories, exhibit the hypothesis graph + the discriminating experiment + the revision, per case; blind-rate the behavioral signature | reading committed traces; ~0 compute | carries the *mechanism* claim |
+| **T3 — comparison (corroborative, optional)** | methodeutic framing beats generic rigor (M vs G vs T) | **statistics**: the 3-arm paired Δ from §2–§5 | ~310 fresh runs; **resolution-capped** (UNDER ≤~99, resolves only Δ≳0.13) | only if budget allows AND a comparative claim is needed |
+
+**T1 + T2 are the paper.** Necessity (T1) proves directed perturbation is *required* on a characterizable
+class; mechanism-exhibited (T2) shows the abductive operation *in execution*, which no win-rate can show.
+Together they discharge "methodeutic inquiry is the mechanism" at the level a mechanism paper owes —
+**constructively, not statistically** — and they cost a handful of reps + trace-reading, no fleet.
+
+**T3 is corroboration, scoped and capped.** The comparative claim ("Peircean content beats generic
+rigor") is the only one that *needs* a population, and the benchmark cannot resolve it below Δ≈0.13. So
+T3 runs ONLY if (a) budget is free and (b) a reviewer would demand the head-to-head; it is reported as
+supporting, never as the headline, and its resolution limit is stated up front (§4b). If T3 is not run,
+the paper stands on T1+T2 and says so. **Do not let T3's expense or its inevitable "suggestive" verdict
+gate the mechanism claim** — that inversion (statistics as spine) is exactly what the feynman round
+showed to be the weak move.
+
+**The bench is a representative sample, not the territory — so breakdowns are signposts, not verdicts.**
+SWE-bench Pro is an *attempt at a representative sample* of software tasks; it is not the object of
+study. Two consequences. (1) Finer within-bench statistics over-index on the proxy: chasing decimals on
+a sample's stratum is measuring the sample, not the mechanism — another reason T3 is corroborative, not
+load-bearing. (2) The *useful* product of any delta breakdown is **generalization-suggestive**: a
+stratum where perturbation bites (underdetermined cause, blind search exhausted) is a *signpost* toward
+where the mechanism should matter in use cases **outside this bench** — debugging regimes that are
+underdetermined-cause-heavy (concurrency, heisenbugs, integration failures, root-cause-unknown
+production incidents). The breakdown's value is hypothesis-generating for the broader domain, reported
+as "this points to where it would matter," explicitly out-of-sample, never as a within-bench effect
+estimate. That is the proper job of a mechanism paper: locate the phenomenon and point at where it
+generalizes, leaving the magnitude to whoever studies those domains directly.
+
+**How + when generalize; attribution does not — and real life is dirtier, which favors how+when.** The
+attribution breakdown is the *least* transferable product: it is a property of this clean, curated,
+oracle-bearing sample. Real deployment is dirtier — noisy signals, no test oracle to stop on, multiple
+interacting faults, no pre-classified strata. Across that gap the percentages do not survive, but two
+things do: the **mechanism** (HOW it works — hold rivals, manufacture a discriminating experiment,
+revise on the evidence) and the **activation condition** (WHEN it works — the cause is underdetermined
+and blind search has been exhausted). Those are invariant; the 6%-vs-94% split is sample-bound. So the
+paper's transferable contribution is *how + when*, demonstrated (§0a centerpiece) and bounded (§0c
+necessity), NOT the attribution magnitude. Dirtier real-world conditions make this *more* true, not
+less: the messier the environment, the more a reader needs the operating mechanism and its trigger, and
+the less a clean-sample percentage tells them. Lead with how-and-when; let attribution be a footnote
+about one sample.
+
+**Honest guard on T1 (existence is seductive).** Existence proofs always come out "in favor" — you need
+only one. So every T1 claim ships with its scope: "perturbation is necessary on *these* cases," never
+"perturbation explains the lift." A non-empty class is not a large class and not the mechanism behind the
+headline rate. Bound the necessity claim exactly as the 9 cases are bounded; state both the strength and
+the narrowness.
+
+## 0a. [THE CENTERPIECE — run first, ~0 compute] The side-by-side reasoning exhibit
+
+The single artifact that carries a mechanism paper: a **two-column side-by-side on the SAME instance** —
+the static (`ask-feynman`) arm's reasoning trace in one column, the perturbing (`/recon`) arm's in the
+other — chosen from the existence cases (recon won, static lost) so the *outcome* difference is real and
+the *reasoning* difference is visible. The reader sees, directly:
+
+| static reasoning (lost) | perturbing reasoning (won) |
+|---|---|
+| commits to a plausible cause from reading alone | holds ≥2 rival causes |
+| predicts what an experiment *would* show | runs the experiment that discriminates them |
+| fix addresses the imagined cause | revises to the cause the evidence actually selected |
+| gate: not resolved | gate: resolved |
+
+**Why this is sufficient for a mechanism paper.** The job of a mechanism paper is to show a phenomenon is
+**real, legible, and worth further exploration** — not to bound its effect size. A vivid same-instance
+contrast does exactly that: it exhibits the abductive mechanism operating, on a case where its absence
+demonstrably failed, in a form a reader can verify by eye. No CI, no n, no fleet. One or a few such
+exhibits *is* the result; everything below (necessity K-reps, statistics) is optional hardening, not the
+deliverable. This is the cheapest and strongest evidence we have, and it should lead the paper.
+
+**Honesty bounds (so the exhibit is evidence, not anecdote):** (1) the cases are real gate-confirmed
+existence cases, IDs frozen, traces committed and reproducible; (2) present them as "here is the mechanism
+operating, worth investigating," scoped to the class — never "this explains the lift"; (3) show a
+*representative* case and disclose how many existence cases the pattern holds across (the m/9 from §0c),
+not a hand-picked outlier; (4) if a case's contrast is ambiguous on inspection, say so — a clean negative
+exhibit (static and perturbing reasoned similarly yet diverged) is itself informative.
+
+## 0c. [TIER 1 — optional hardening] Necessity protocol (existence + K-reps)
+
+**Instances.** The 9 gate-confirmed UNDER existence cases from the feynman recovery (recon won; the
+static `ask-feynman` arm ran the full pipeline and the official gate confirmed a genuine failure — not
+auth artifacts). IDs frozen from `runs/scored/feynman_*` at the `prereg-pro-v1-feynman` recovery SHA.
+
+**Protocol.** For each case, run the **static-deprived arm** (read-only diagnosis, no perturbation) `K`
+times (pre-commit `K=5`) across **≥2 models** (Sonnet 4.5 + one other), holding craft/audit/gate fixed.
+
+**Deductive close (pre-committed):**
+- **NECESSITY ESTABLISHED for a case** iff static fails **K/K across both models** AND directed
+  perturbation (the frozen `/recon`) resolves it. Logic: "K independent static attempts across models
+  cannot reach this fix; the perturbing arm does" → execution of a discriminating experiment is
+  *required*, not merely helpful, on that instance. This is a proof by construction, not an estimate.
+- **CASE RETRACTED** iff static succeeds on any rep — then it was never an existence case (static *can*
+  reach it; the round-1 win was variance). Honest: a retracted case strengthens the surviving set.
+- Report **m/9 cases with necessity established**, each with its K×model fail record. The claim is
+  exactly "directed perturbation is necessary on these m instances," scoped, no extrapolation to the rate.
+
+**Cost.** 9 × K × (#models) static runs ≈ 9×5×2 = 90 short runs, single box, no fleet. K reps also give a
+free read on static-arm *variance* (does it fail reliably or flakily), which itself is mechanism evidence.
+
+## 0d. [TIER 2 — run second] Mechanism-exhibition protocol (trace, ~0 compute)
+
+**Source.** The committed `/recon` trajectories (`fc_hgraph_*` / recon emit logs) for the surviving
+necessity cases and a stratified sample of UNDER wins. No new runs.
+
+**Exhibit, per case** (the abductive signature made visible):
+1. the **hypothesis graph** recon constructed (≥2 rival causes held simultaneously),
+2. the **discriminating experiment** it manufactured (the perturbation chosen to separate the rivals,
+   not to confirm one),
+3. the **revision** — commitment moving to the surviving hypothesis after the experiment landed.
+
+**Blind signature rating (pre-committed rubric, written before reading any trace; see §5):** distinct
+live hypotheses before commitment; discriminating-test rate; revision-after-contrary-evidence rate;
+premature-commit ("first green → stop") rate. Raters blind to provenance. A case **exhibits the
+mechanism** iff all three of (1)–(3) are present in the trace and the signature scores positive.
+
+**What T2 buys.** It shows the inquiry operating *in execution* — the Peircean abductive move, performed,
+on a bug that needed it. For a mechanism paper this is stronger than any Δ: you are not estimating how
+often the mechanism helps, you are exhibiting what it *is* and showing it on a case T1 proved it was
+*needed*. T1 (it was required) + T2 (here it is, operating) is the constructive core.
+
 ## 1. Import
 
 Inherits every discipline from `PREREGISTRATION.md` at the `prereg-pro-v1` SHA (predicate, two-mode
@@ -57,7 +196,10 @@ state machine, eligible denominator 728, provenance, freeze), the **infra-fault 
 verdict-type not wall-time; see `docs/WORKLOG-untyped.md` 2026-06-05 retraction). Deltas below override
 only what is named.
 
-## 2. The three arms — one factor varied (framing-prose content), everything else held fixed
+## 2. [TIER 3 — corroborative, optional] The three arms — one factor varied (framing-prose content), everything else held fixed
+
+*Sections 2–5 specify the statistical comparison tier. Run only per the §0b gate (budget free AND a
+comparative claim demanded). Resolution-capped; reported as supporting, never headline.*
 
 The manipulated variable is the **content of the framing prose ONLY**. Staging (recon → craft → audit
 boundaries and externalized artifacts), models (Sonnet generator + GPT-5.5 critic), compute/token
