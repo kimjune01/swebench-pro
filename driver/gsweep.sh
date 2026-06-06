@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 export SWEAP_OS_REPO=/tmp/swebench-pro-os CLAUDE_SUBSCRIPTION=1 PLATFORM=linux/amd64
 CANDS="${1:-/tmp/gsweep_cands.txt}"
 ARMS="${ARMS:-generic}"            # space-sep: "generic" or "generic minimal"
-OUT=/tmp/gsweep_results.tsv
+OUT="${GSWEEP_OUT:-/tmp/gsweep_results.tsv}"
 PY=.venv/bin/python
 [ -f "$OUT" ] || printf "iid\tM\tgeneric\tminimal\n" > "$OUT"
 

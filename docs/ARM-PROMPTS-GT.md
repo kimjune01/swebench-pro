@@ -60,3 +60,15 @@ minimal f58cfe4997d3626828c4d022d2c6d2f4663aad58c2a1259428a7e55feace3699
 `ARM_NAME` + `ARM_SKILL`. Full-execution box + real gate + outer loop (identical to M; **not** the
 read-only static arm). Runs locally on OrbStack under `--platform linux/amd64` emulation, same as the
 feynman recovery, so the §0a exhibit costs no fleet.
+
+## Results (diagnosis-recall probe, EC2)
+
+Run via `gsweep.sh` + `diag_oracle`, recon-only, 38 discriminating UNDER instances (gold 3–10), scored
+against the gold patch. **M ≈ G ≈ T — all prompt-level effects null on diagnosis recall:**
+- **M − G** (vocabulary): mean Δ −0.012, 95% CI [−0.069, +0.045] (n=38)
+- **G − T** (prompt structure): mean Δ +0.035, 95% CI [−0.023, +0.092] (n=36)
+
+The earlier single-instance T<G (qutebrowser, T=0.50 vs G=0.875) was **n=1 noise**; powered, it vanished.
+So the prompt — vocabulary *and* structure — is inert at the diagnosis layer; the lift is harness + model.
+Full trail, infra catches, and caveats (diagnosis-recall only; metric may be instance-dominated):
+`docs/WORKLOG-methcontent.md` (2026-06-06).

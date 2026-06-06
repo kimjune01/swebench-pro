@@ -41,7 +41,11 @@ boundary is drawn rather than blurred — each is genuine further work, not an i
 - **Framing-prose vs generic rigor** (does Peircean *content*, beyond labels, beat steelmanned generic
   rigor?) — the M/G/T design in §0b–§5 below is the *proposed instrument*, retained as a blueprint but
   **not required to be run** for this paper; it is the reader's exercise (and resolution-capped on this
-  bench regardless).
+  bench regardless). **[Update 2026-06-06: a cheaper *diagnosis-recall* probe — not the §2–§5 win-rate
+  tier, but `diag_oracle` scoring recon handoffs against the gold patch, n=38 — answers it: M ≈ G ≈ T,
+  null (Δ_MG=−0.012 CI[−0.069,+0.045]; Δ_GT=+0.035 CI[−0.023,+0.092]). Prompt content AND structure are
+  inert at the diagnosis layer; the lift is harness + model. The win-rate tier remains unrun. Trail:
+  `docs/WORKLOG-methcontent.md`.]**
 - **The structure majority** (which held-constant scaffold factor carries the bulk) — needs a
   compute-matched unstructured arm; out of scope.
 - **Generalization off-bench** — where the mechanism bites in dirtier domains (concurrency, heisenbugs,

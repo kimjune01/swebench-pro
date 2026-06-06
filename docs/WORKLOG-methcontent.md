@@ -5,6 +5,58 @@ Newest first. Trail for the methodeutic-content arm: does the *content* of the f
 `docs/PREREGISTRATION-methodeutic-content-ablation.md`. Arms + parity: `docs/ARM-PROMPTS-GT.md`.
 Frozen M verdicts/diagnoses live in `runs/scored/run.jsonl` + committed recon artifacts.
 
+## 2026-06-06 — EC2 boost: ALL prompt-level effects null (G≈M n=38, T≈G n=36); the T<G from 06-05 was n=1 noise
+
+Powered the diagnosis-recall sweep on EC2 (native amd64, no emulation) to harden the two prompt-content
+claims. The boost **overturned** one of them. **Bottom line: on diagnosis recall vs gold, M ≈ G ≈ T —
+the prompt (vocabulary AND structure) is inert at the diagnosis layer; the lift is harness + model, not
+the prompt.**
+
+### Setup
+2× m7i.xlarge via `run_fleet.sh setup-box` (repo + Max OAuth + swebench/datasets), recon-only sweep
+(`gsweep.sh`, `ARMS=generic` then `minimal`) over 38 discriminating UNDER instances (gold 3–10, M-recall
+spread 0.00–1.00), scored by `diag_oracle` vs gold. Receipts: 76 M/G/T handoffs in `/tmp/sweep_receipts`
++ per-instance recall TSVs.
+
+### Results (paired, diagnosis recall vs gold)
+| comparison | n | mean Δ | 95% CI | verdict |
+|---|---|---|---|---|
+| **M − G** (vocabulary) | 38 | −0.012 | [−0.069, +0.045] | null |
+| **G − T** (prompt structure) | 36 | +0.035 | [−0.023, +0.092] | **null** |
+| **M − T** (full content) | 36 | +0.016 | [−0.048, +0.080] | null |
+
+Mean recall M=0.42 / G=0.44 / T=0.40. Win-splits balanced (M>G:7, G>M:10; G>T:10, G<T:6). All three
+prompts diagnose equivalently.
+
+### The correction (honest trail)
+The 06-05 entry's qutebrowser case (T=0.50 vs G=0.875) suggested **T<G** — "structure beats minimal,
+counterculture to 2025." **That was n=1 noise.** At n=36, T≈G: minimal diagnoses score the same as
+structured. We built the airtight control *specifically* to harden "prompt matters," and the airtight
+version refuted it. **Do not claim T<G.**
+
+### Two infra catches (don't repeat)
+1. **Script-overwrite crash.** Re-rsyncing `gsweep.sh` mid-run corrupted the running bash's byte offsets
+   → the G pass crashed at `done` *after* scoring all 19 (data intact) but before the DONE marker,
+   hanging the chained T launch. Never overwrite a script while it's executing.
+2. **Auth-death contamination.** The first T re-run returned `401 Invalid authentication credentials` on
+   every call (OAuth token expired in the gap after G) → T=0.000 everywhere, which *looked* like a
+   spectacular T<G (G beats T 31-0, Δ=+0.43). Caught by the too-clean-to-be-real red flag. Re-pushed
+   fresh keychain creds, canary-verified a real 2042-byte handoff (not a 401), re-ran clean. Same
+   auth-death signature as the feynman round.
+
+### Synthesis — what survived the night
+Every prompt-level claim dissolved under power; the harness-level claim never moved:
+- methodeutic reasoning is the engine → null (typing-null + M≈G)
+- the *vocabulary* matters → null (M≈G, n=38)
+- the prompt *structure* matters → null (T≈G, n=36)
+- the harness adds 31–37 pts, model-independent → **unmoved** (frozen run)
+
+It is all in the harness structure + the model, nothing in the prompt. A cleaner, more deflationary,
+more defensible thesis than "our prompts are special." **Caveats:** diagnosis-recall only (recon-only,
+not end-to-end — T still won qutebrowser via the loop); the recall metric may be instance-dominated
+(failing tests point all arms at similar files), so the honest ceiling is "no *large* prompt effect on
+edit-site recall," not "prompt provably inert." Harness headline untouched.
+
 ## 2026-06-05 — Diagnosis-accuracy instrument + the active-search/compression reframe (n small; one null, several relocations)
 
 Built the G/T arms and ran the first three-way. The headline: **win-rate is the wrong instrument, the
