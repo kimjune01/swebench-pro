@@ -34,4 +34,4 @@ abstract: >-
   precise answer to the wrong question, and it motivated the companion mechanism
   experiment that measures the harness where no visible oracle exists. Archived
   for the record, the nulls and the mistake included.
-# doi: 10.5281/zenodo.XXXXXXX   # fill in after the Zenodo release is minted
+doi: 10.5281/zenodo.20691977   # concept DOI (all versions); v1.0.0 = 10.5281/zenodo.20691978

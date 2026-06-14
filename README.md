@@ -1,5 +1,7 @@
 # swebench-pro
 
+[![DOI](https://zenodo.org/badge/1248044441.svg)](https://doi.org/10.5281/zenodo.20691977)
+
 This is a benchmark harness: an automated loop that attempts software-bug fixes on SWE-bench Pro
 instances, with the gate iterating against the benchmark's visible tests. Humans designed the loop
 and handled stalls; for each dispatched instance, no human edits the patch during the attempt. The
