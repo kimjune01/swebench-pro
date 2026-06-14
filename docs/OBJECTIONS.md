@@ -20,6 +20,7 @@ or a stated limit), never an argument.
 | "It gamed the grader" | **Unmodified official grader**, pinned commit; re-grade any verdict yourself (#5, #6). |
 | "Cherry-picked instances" | Whole eligible set (728), **0 INCOMPLETE**, 3 gold-patch defects named; reproduce on a **random** sample (#7). |
 | "Expensive brute force, not reasoning" | ~$5.14 / ~12.8 min each at API rates — and the **open-weight-generator pair does it for ~$0.41** — **plus** a hypothesis-graph reasoning trace per instance (hundreds of worked examples on real OSS in [`kimjune01/sweep`](https://github.com/kimjune01/sweep)) (#12). |
+| "It's 'perturbation'? craft perturbs too" | The isolated variable is **directed diagnostic** perturbation, not search. A pre-registered ablation holds craft's blind search constant in both arms and removes only the aimed probe — **PROVEN** load-bearing on the underdetermined stratum (`Delta=+0.278`, `P>0=0.996`); interaction `P=0.987` (supplementary); registered DET ROPE-close unmet, scoped (#13). |
 | "Why should I trust you?" | You don't: **one prompt** reproduces a random sample on your machine ([README](../README.md)). Trust is the one axis an AI can't win; verification is the answer. |
 | "But it's AI" | A **values** call, not an evidence one, not litigated here. The work is real and reasoned; judge it on merit, or decline on principle. Both are fair. |
 
@@ -259,6 +260,50 @@ the full 728-instance run took **~3.5 days** of wall-clock, bounded by fleet siz
 
 Turn/token stats cover the 681/728 instances whose trajectories survived teardown
 (median ~71k output tokens/instance). See [`SCOREBOARD.md`](SCOREBOARD.md).
+
+## 13. "You attribute the lift to 'perturbation' — but your own craft loop perturbs too." *(UNDER frozen; DET continuation in progress)*
+
+Conceded as stated, and it narrows the mechanistic claim rather than refuting it.
+The solution-attempting stage (`craft`) already perturbs — it writes a fix, runs
+the suite, reads the failure, retries — and that blind search runs in **every arm**,
+the ablation included. So no ablation here can test "perturbation vs none"; `craft`
+is frozen on both sides. The isolated variable is the **directed diagnostic probe**:
+perturbing to *discriminate between competing hypotheses* (drop a print, narrow a
+test, bypass-to-isolate), not to stumble onto a passing test. Arbitrary
+search-perturbation is a held-constant covariate, not the manipulated one.
+
+A pre-registered single-factor ablation tests exactly this
+([`PREREGISTRATION-feynman-ablation.md`](PREREGISTRATION-feynman-ablation.md)).
+`ask-feynman` is `/recon` with the diagnostic probe removed and nothing else
+(read-only diagnosis box; it may only *imagine* an experiment's result), paired
+against the frozen `/recon` baseline and stratified — **pre-treatment**, off the
+prior frozen run — by cause-determinacy:
+
+- **Underdetermined** (blind search demonstrably insufficient: re-entry or ≥2
+  experiments) — removing the directed probe costs **`Delta=+0.105`, 95% CI
+  `[+0.013,+0.197]` (excludes zero), `P(Delta>0)=0.982`** (n=76; 11 gate-confirmed
+  existence cases where the perturbing arm won and the static arm lost). The
+  pre-registered `P(Delta>0)≥0.95` bar is met, but exact McNemar `p=0.057` keeps it
+  **at the threshold, not past it** — threshold-level, not slam-dunk. The earlier
+  `Delta=+0.278/P=0.996` "PROVEN" was **RETRACTED** (auth-death contamination
+  miscounted pre-gate pipeline failures as deprived-arm losses); the hardened re-run
+  that reclaimed those cases produced the figure here. See `WORKLOG-untyped.md`
+  2026-06-05 (retraction) and 2026-06-06 (re-run).
+- **Determined** (`experiments==0` and no re-entry, n=34) — null as predicted
+  (`Delta=+0.029`, 95% CI `[0.000,+0.088]`, `P(Delta>0)=0.639`), one discordant pair
+  (33/1/0/0, effective-n ≈ 1); the registered ±0.03 ROPE-close remains
+  benchmark-resolution-limited (UNDER tops out ~99 instances).
+
+So the claim this supports is not "perturbation vs none" but **"directed
+perturbation pays exactly where blind search has run out of road"** — load-bearing
+on the stratum that predicts it, vanishing where the cause was already statically
+determined. The necessity claim rests on the **11 gate-confirmed existence cases**,
+not on the threshold-level win-rate delta. And the reason the delta stays *small* on
+most cases is named: the **deterministic gate compensates** — a free, trustworthy
+oracle lets blind try-and-check substitute for the aimed probe, so directed
+perturbation's query-efficiency edge only pays where the gate cannot (off-bench:
+flaky tests, no oracle, expensive eval). Full honesty scorecard in
+[`WORKLOG-untyped.md`](WORKLOG-untyped.md).
 
 ---
 
