@@ -451,7 +451,7 @@ isolation) don't apply to our `claude --print --disallowedTools ...` invocation.
 **negligible on documentary evidence**, disclosed; frozen `/recon` baseline retained (one-arm). A
 30-instance fresh-recon calibration stays in the drawer as fallback.
 
-**Scoping caveats on the record (codex #4/#5).** The stratifier selects on `/recon`'s own behavior,
+**Scoping limits on the record (codex #4/#5).** The stratifier selects on `/recon`'s own behavior,
 so UNDER is a **mechanism-enriched subgroup** ("where recon used perturbation"), not a random
 underdetermined sample. Headline evidence = the **per-pair discordant analysis** (recon-only-wins on
 UNDER) -- which is itself the difficulty control (same instance, both arms, difficulty held per-pair).
@@ -460,7 +460,7 @@ used," NOT "perturbation helps all hard cases."
 
 **Separate finding (distinct from the ablation verdict): Pro is diagnostically determined-heavy.**
 533/666 (~80%) of Pro instances were resolved by `/recon` with zero scoped experiments -- the cause is
-statically readable from the test-vs-code gap. Caveat: this proxies "recon didn't perturb," an upper
+statically readable from the test-vs-code gap. Limit: this proxies "recon didn't perturb," an upper
 bound on "shallow" (a strong model abduces statically even on non-shallow causes). Scope it to
 *diagnostic* shallowness, not difficulty (implementation can still be hard -> the 95.3% is real). The
 implication: **Pro under-exercises the discovery/perturbation mode the methodeutic is built for** --

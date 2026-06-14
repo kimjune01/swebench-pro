@@ -70,5 +70,5 @@ against the gold patch. **M ≈ G ≈ T — all prompt-level effects null on dia
 
 The earlier single-instance T<G (qutebrowser, T=0.50 vs G=0.875) was **n=1 noise**; powered, it vanished.
 So the prompt — vocabulary *and* structure — is inert at the diagnosis layer; the lift is harness + model.
-Full trail, infra catches, and caveats (diagnosis-recall only; metric may be instance-dominated):
+Full trail, infra catches, and limits (diagnosis-recall only; metric may be instance-dominated):
 `docs/WORKLOG-methcontent.md` (2026-06-06).

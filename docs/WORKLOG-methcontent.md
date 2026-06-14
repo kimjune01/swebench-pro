@@ -52,7 +52,7 @@ Every prompt-level claim dissolved under power; the harness-level claim never mo
 - the harness adds 31–37 pts, model-independent → **unmoved** (frozen run)
 
 It is all in the harness structure + the model, nothing in the prompt. A cleaner, more deflationary,
-more defensible thesis than "our prompts are special." **Caveats:** diagnosis-recall only (recon-only,
+more defensible thesis than "our prompts are special." **Limits:** diagnosis-recall only (recon-only,
 not end-to-end — T still won qutebrowser via the loop); the recall metric may be instance-dominated
 (failing tests point all arms at similar files), so the honest ceiling is "no *large* prompt effect on
 edit-site recall," not "prompt provably inert." Harness headline untouched.
