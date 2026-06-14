@@ -8,7 +8,7 @@ project's own test suite, with no human in the loop.
 bugs, drawn from real repositories and graded by an official, automated test suite. One person, with a
 Claude subscription and a bit of EC2, ran this program across all 728 and resolved **694 of them,
 95.3%**, under that official grader on a fresh container, with every losing run committed and any reader
-able to reproduce a random sample from one prompt. Solo, unfunded. One caveat, in the correction below: the run used the held-out tests as the gate's stopping signal, so that number is an oracle-availability ceiling, not a harness lift.
+able to reproduce a random sample from one prompt. Solo, unfunded. The number comes with a correction, below: the run used the held-out tests as the gate's stopping signal, so it is an oracle-availability ceiling, not a harness lift.
 
 The number measures one thing precisely: the *harness*, the loop of steps wrapped around the model
 rather than the model itself. Swap the frontier models for cheap open-weight ones and the same loop
@@ -179,7 +179,7 @@ held-out split should break it. But the 95.3% is the public split, and four thin
 could still pull a private number down, in roughly descending order of concern:
 
 - **Contamination.** Public repos can be in training data; the private split is held
-  out for exactly this reason. The contamination caveat bounds the *absolute capability*
+  out for exactly this reason. Contamination bounds the *absolute capability*
   reading, though not the harness-vs-harness delta on a fixed model.
 - **Repo familiarity.** The loop benefits from public repos the model has likely seen;
   unfamiliar private code is the real test.
@@ -217,8 +217,8 @@ for the held-out set is in [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 t
 ## What the score actually measures
 
 The score measures the *harness*, not the model. It's what the methodeutic loop (recon, craft, audit) extracts on top of whatever model fills its stages: the diagnosis
-discipline, the anti-cheat capture rules, the audit gate, the recovery loop. The open-weight ablation pins that down, and surfaces a caveat with it: swap the frontier pair for cheap
-open-weight models and the same frozen harness still resolves *93.1%*, a 2.2-point raw dip — but a gold-overlap audit ([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md), [`driver/gold_divergence.py`](driver/gold_divergence.py)) shows ~18–23% of those open-weight wins reproduce the gold patch (against ~2% for the frontier pair), so the cheap-model rate is partly recall and the genuine model-tier gap is ~17–22 points, not two. What survives is the load-bearing claim: discount the recall tail and the harness still carries the cheap model to ~three-quarters genuine resolve, above the strongest *bare* model on Pro (Opus 4.7, 64.3%). The lift over a bare run is largely model-independent (recall is available to bare runs too); the model tier is not negligible, but the lift is the harness's. (Cursor never reported a bare Composer number on Pro — by the publication pattern, evidence it trails the frontier bare models there, which would make the lift over bare Composer larger still; abductive, not measured.) The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
+discipline, the anti-cheat capture rules, the audit gate, the recovery loop. The open-weight ablation pins that down, and surfaces a catch with it: swap the frontier pair for cheap
+open-weight models and the same frozen harness still resolves *93.1%*, a 2.2-point raw dip, but a gold-overlap audit ([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md), [`driver/gold_divergence.py`](driver/gold_divergence.py)) shows ~18–23% of those open-weight wins reproduce the gold patch (against ~2% for the frontier pair), so the cheap-model rate is partly recall and the genuine model-tier gap is ~17–22 points, not two. What survives is the load-bearing claim: discount the recall tail and the harness still carries the cheap model to ~three-quarters genuine resolve, above the strongest *bare* model on Pro (Opus 4.7, 64.3%). The lift over a bare run is largely model-independent (recall is available to bare runs too); the model tier is not negligible, but the lift is the harness's. (Cursor never reported a bare Composer number on Pro — by the publication pattern, evidence it trails the frontier bare models there, which would make the lift over bare Composer larger still; abductive, not measured.) The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
 contaminated on these repos, with the strict scaffold-vs-model control deliberately
 unclosed. The defensible reading is "the methodeutic harness resolved 694/728 under
 official grading," not "the model can solve 95% of SWE-bench Pro." What the system is and why the confound stays open:
