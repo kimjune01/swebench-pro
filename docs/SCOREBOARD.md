@@ -153,4 +153,4 @@ xychart-beta
 
 Numbers recompute from `runs/scored/run.jsonl` (verdicts/runtimes) and the committed
 trajectory bundle (turns/tokens). Cost is the operator's measured API spend. The
-contamination caveat is load-bearing; pair this board with [`OBJECTIONS.md`](OBJECTIONS.md).
+contamination bound is load-bearing; pair this board with [`OBJECTIONS.md`](OBJECTIONS.md).

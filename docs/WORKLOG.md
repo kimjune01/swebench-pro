@@ -41,7 +41,7 @@ treatment. Statuspage silence is documented in `docs/auth_storm_2026-05-29.md` a
 (not as disconfirmation; token rotations aren't posted incidents). See `PREREGISTRATION.md` §14
 amendment "2026-05-29 — `PROVIDER_CRED_REJECT`" for the full text.
 
-**Reproducibility caveat.** The Claude Code service's 90d uptime is ~99% with several visible
+**Reproducibility limit.** The Claude Code service's 90d uptime is ~99% with several visible
 degraded periods on the statuspage timeline. A reproducer running a multi-hour fleet will likely
 hit at least one credential-rejection or transient-error wave per ~10-hour campaign. Plan for the
 `PROVIDER_CRED_REJECT` recovery loop (detect 401-canonical in subprocess capture → halt dispatch →

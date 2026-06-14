@@ -29,7 +29,7 @@ contribution claim. Genuine remaining open questions (NOT "we saw the tests"):
   - **+36pt exceeds the +5-15pt custom-scaffold ceiling** → either genuinely-better
     harness OR ensemble-vs-single-model; attribution needs the control above.
   - **held-out split** (different repos, possibly blind gate) is the untested generalization.
-  - **contamination** caveats absolute CAPABILITY, not the harness delta.
+  - **contamination** qualifies absolute CAPABILITY, not the harness delta.
 
 ## H2: academic scaffold-as-unit prior art (verified)
 **Verdict:** the bullseye exists but stops short of "harness alone is the unit."
@@ -76,7 +76,7 @@ controlled** (proven by cross-model transfer, the Composer 2.5 swaperoo), measur
 to outside submissions**, with reproducible per-instance receipts. SWE-Effi + HAL own the
 nearest ground; none combines all four + an open invitation.
 
-## SWE-Effi caveat → load-bearing for our framing
+## SWE-Effi limit → load-bearing for our framing
 SWE-Effi's "effectiveness emerges from scaffold×model synergy" IS our C1 confound. A
 credible harness leaderboard must control for model. The Composer 2.5 swaperoo run is
 exactly that control (same harness, different model) and is the evidence that answers it.

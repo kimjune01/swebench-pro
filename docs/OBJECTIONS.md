@@ -104,7 +104,7 @@ dropping a frontier model class, which is the opposite of "it's just the model"
 the *strongest* constituent: GPT-5.5 (used here only as a reasoning-off challenger)
 scores ~58.6% bare on Pro, and the board leader Opus 4.7 ~64.3%, so against the best
 single model the harness still adds 31–37 points, an order beyond any reasoning-budget
-lift. Two caveats held: the harnessed generator runs thinking-on against the baseline's
+lift. Two limits held: the harnessed generator runs thinking-on against the baseline's
 thinking-off, and the ~50-point lift bundles the typed structure with generic
 agent-engineering (turns, tools, retries); separating them is future work
 ([`DISCUSSION.md`](DISCUSSION.md)). One of those bundled factors, turn budget, is
@@ -262,7 +262,7 @@ Turn/token stats cover the 681/728 instances whose trajectories survived teardow
 
 ---
 
-**Net.** The contamination caveat is calibrated, the grading pipeline blocks the
+**Net.** The contamination bound is calibrated, the grading pipeline blocks the
 intended gate/test-weakening exploits, the denominator is honest, and the
 repo-level and language-split checks reduce specific development-overfit stories.
 The genuine unclosed limitation is decisive: **without a clean held-out Pro
