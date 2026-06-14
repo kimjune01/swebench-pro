@@ -10,11 +10,12 @@ Claude subscription and a bit of EC2, ran this program across all 728 and resolv
 95.3%**, under that official grader on a fresh container, with every losing run committed and any reader
 able to reproduce a random sample from one prompt. Solo, unfunded. The number comes with a correction, below: the run used the held-out tests as the gate's stopping signal, so it is an oracle-availability ceiling, not a harness lift.
 
-The number measures one thing precisely: the *harness*, the loop of steps wrapped around the model
-rather than the model itself. Swap the frontier models for cheap open-weight ones and the same loop
-still resolves 93.1% (the ablation below) — though a gold-overlap audit shows that cheap-model rate is
-partly recall, genuinely ~three-quarters ([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md)). What carries
-across both pairs is the harness *lift* over a bare model, not a frontier model's raw strength.
+The number measures what the loop resolves with gate access to the visible tests. Swap the frontier
+models for cheap open-weight ones and the same loop still resolves 93.1% (the ablation below), though a
+gold-overlap audit shows that cheap-model rate is partly recall, genuinely ~three-quarters
+([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md)); so the result is not frontier-specific. The gap over bare
+models is a different thing. That gap is oracle access, the gate iterating against tests the bare
+scaffold was never handed, and it is no measure of harness skill. See the correction below.
 
 <a id="what-is-methodeutics"></a>The loop is deliberately plain: guess the cause of the bug, write a
 fix, run the tests, throw the guess out if they fail, and try again. Three steps run it in order.
@@ -40,7 +41,9 @@ The error has a name and a writeup. It is a [Type III error](https://en.wikipedi
   <img src="docs/images/methodeutic-attribution.png" width="680" alt="Grouped bar chart of SWE-bench Pro resolve rate. Bare models on the standardized SWE-Agent scaffold: Sonnet 4.5 at 43.6%, GPT-5.5 at 58.6%, Opus 4.7 at 64.3%. This methodeutic harness: open-weight pair at 93.1%, frontier pair at 95.3%. The harness bars stand about thirty points above the tallest bare-model bar.">
 </p>
 
-The same task, two ways. The same models, run **bare** on the standardized SWE-Agent scaffold, top out at **64.3%** (board-leader Opus 4.7); run through **this harness**, they resolve **95.3%** with a frontier pair and **93.1%** with a cheap open-weight pair, 31 to 37 points above the best bare model. Frontier: 694/728, ~$5.14 and ~12.8 min per instance. Open-weight: 678/728, ~$0.41 and ~8.4 min.
+*The gap the chart shows is confounded: the bare-model bars were denied the visible-test oracle this harness iterated against (the correction above).*
+
+The same task, two ways. The same models, run **bare** on the standardized SWE-Agent scaffold, top out at **64.3%** (board-leader Opus 4.7); run through **this harness**, they resolve **95.3%** with a frontier pair and **93.1%** with a cheap open-weight pair, 31 to 37 points higher. That gap is confounded: the bare scaffold was denied the visible-test oracle this loop iterated against, so it measures oracle access, not a harness lift (the correction above). Frontier: 694/728, ~$5.14 and ~12.8 min per instance. Open-weight: 678/728, ~$0.41 and ~8.4 min.
 
 Both pairs run the same frozen harness and the *official* grader on the same *728 eligible* instances, with *zero left ungraded*. Costs are *economic*: every leg priced at publicly posted metered rates (the open-weight generator at its Kimi K2.5 base rate), derived line-by-line in
 [`COST_BASIS.md`](docs/COST_BASIS.md); the open-weight-generator pair runs *~12.6× cheaper at 2.2
@@ -49,8 +52,9 @@ points lower resolve*.
 The anatomy below details the *frontier* run: 694 of 728 resolved, *95.3%*. The
 number is honest about its limits:
 
-- It is the *public* split, so these repos can sit in a model's training data. This
-  is a *system/harness* result, not a model-capability claim.
+- The gate iterated against the visible `FAIL_TO_PASS` tests, so 95.3% is an
+  oracle-availability ceiling, not a harness lift over bare models (the correction above).
+- It is the *public* split, so these repos can sit in a model's training data.
 - *93% of wins land on the first pass.* The outer loop is mostly idle and recovers
   a small tail; it is not endless looping to scrape a number.
 - *Every verdict is re-gradable* from a committed source-only diff, and you can
@@ -174,9 +178,13 @@ Doubts beyond the headline (did it game the grader, are the losses real, is the 
 
 ## Will this hold on the private set?
 
-Probably. The harness carries no per-instance priors, so there's no reason a
-held-out split should break it. But the 95.3% is the public split, and four things
-could still pull a private number down, in roughly descending order of concern:
+Expect a substantial drop. The private split withholds the `FAIL_TO_PASS` tests this
+gate leaned on, so the gate goes blind and the number should fall toward its oracle-free
+floor: the ~50% bracket an implement-only loop hits, or the ~three-quarters rate the OSS
+deployment shows where maintainers grade. Predicting that drop in print is part of the
+discipline. The contamination-free OSS check below is the honest signal for what survives;
+four secondary risks could pull a private number down further, in roughly descending order
+of concern:
 
 - **Contamination.** Public repos can be in training data; the private split is held
   out for exactly this reason. Contamination bounds the *absolute capability*
@@ -216,12 +224,15 @@ for the held-out set is in [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §0 t
 
 ## What the score actually measures
 
-The score measures the *harness*, not the model. It's what the methodeutic loop (recon, craft, audit) extracts on top of whatever model fills its stages: the diagnosis
-discipline, the anti-cheat capture rules, the audit gate, the recovery loop. The open-weight ablation pins that down, and surfaces a catch with it: swap the frontier pair for cheap
-open-weight models and the same frozen harness still resolves *93.1%*, a 2.2-point raw dip, but a gold-overlap audit ([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md), [`driver/gold_divergence.py`](driver/gold_divergence.py)) shows ~18–23% of those open-weight wins reproduce the gold patch (against ~2% for the frontier pair), so the cheap-model rate is partly recall and the genuine model-tier gap is ~17–22 points, not two. What survives is the load-bearing claim: discount the recall tail and the harness still carries the cheap model to ~three-quarters genuine resolve, above the strongest *bare* model on Pro (Opus 4.7, 64.3%). The lift over a bare run is largely model-independent (recall is available to bare runs too); the model tier is not negligible, but the lift is the harness's. (Cursor never reported a bare Composer number on Pro — by the publication pattern, evidence it trails the frontier bare models there, which would make the lift over bare Composer larger still; abductive, not measured.) The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
+The score measures resolution with gate access to the visible tests, not harness skill over
+bare models (the correction above). What the open-weight ablation pins down is narrower: the
+result is not frontier-model-specific, given that oracle. Swap the frontier pair for cheap
+open-weight models and the same frozen harness still resolves *93.1%*, a 2.2-point raw dip; a
+gold-overlap audit ([`docs/OBJECTIONS.md`](docs/OBJECTIONS.md), [`driver/gold_divergence.py`](driver/gold_divergence.py)) shows ~18–23% of those open-weight wins reproduce the gold patch (against ~2% for the frontier pair), so the cheap-model rate is partly recall and the genuine model-tier gap is ~17–22 points, not two. Discount the recall tail and the harness still carries the cheap model to ~three-quarters genuine resolve. The system here is a Sonnet-4.5 generator plus a GPT-5.5 craft challenger, both
 contaminated on these repos, with the strict scaffold-vs-model control deliberately
-unclosed. The defensible reading is "the methodeutic harness resolved 694/728 under
-official grading," not "the model can solve 95% of SWE-bench Pro." What the system is and why the confound stays open:
+unclosed. The defensible reading is "the methodeutic harness resolved 694/728 under official
+grading with gate access to the visible tests," not "the model can solve 95% of SWE-bench
+Pro." What the system is and why the confound stays open:
 [`METHODOLOGY.md`](docs/METHODOLOGY.md) and [`PREREGISTRATION.md`](docs/PREREGISTRATION.md) §7/§12.
 
 Provenance in brief: 728 = 731 dataset instances minus 3 whose own gold patch fails the
