@@ -1,0 +1,27 @@
+{
+  "title": "The Methodeutic Harness on SWE-bench Pro: public-split run, receipts, and an oracle-access correction",
+  "upload_type": "dataset",
+  "description": "A solo, fully-receipted run of a methodeutic agent harness across all 728 eligible SWE-bench Pro public-split instances (694/728 = 95.3% under the official grader, every losing run committed and re-gradable from source-only diffs). Published with a correction in the open: on this public split the gate read the held-out FAIL_TO_PASS tests as its stopping signal, iterating the method against the verifier, the move SWE-bench's held-out protocol forbids. The 95.3% is therefore an oracle-availability ceiling (an implement-only loop floors near 50%; gate access to the visible tests raises it to about 96%), not a harness lift over bare models. The mistake is named as a Type III error (a precise answer to the wrong question) and it motivated the companion mechanism experiment that measures the harness where no visible oracle exists. Archived for the record, the nulls and the mistake included. Note: this repository is dual-licensed, code under AGPL-3.0 and content under CC BY-SA-NS (see LICENSE.md); pick the matching license at the Zenodo release step.",
+  "creators": [
+    { "name": "Kim, June", "affiliation": "Independent" }
+  ],
+  "access_right": "open",
+  "keywords": [
+    "SWE-bench Pro",
+    "LLM program repair",
+    "agent harness",
+    "oracle access",
+    "test-time oracle",
+    "reproducibility",
+    "provenance",
+    "null results",
+    "Type III error"
+  ],
+  "related_identifiers": [
+    { "relation": "isSupplementTo", "identifier": "https://june.kim/the-hypothesis-graph-semantic-memory-methodeutics", "resource_type": "publication-preprint", "scheme": "url" },
+    { "relation": "isDocumentedBy", "identifier": "https://june.kim/type-iii-error", "scheme": "url" },
+    { "relation": "references", "identifier": "https://github.com/kimjune01/hygraph-mechanism", "scheme": "url" },
+    { "relation": "references", "identifier": "https://github.com/kimjune01/swebench-pro-audit", "scheme": "url" }
+  ],
+  "notes": "DOI is minted on the Zenodo release; record the version tag and DOI in CITATION.cff. License is dual (AGPL-3.0 code / CC BY-SA-NS content); choose it in the Zenodo UI."
+}

@@ -8,7 +8,7 @@ project's own test suite, with no human in the loop.
 bugs, drawn from real repositories and graded by an official, automated test suite. One person, with a
 Claude subscription and a bit of EC2, ran this program across all 728 and resolved **694 of them,
 95.3%**, under that official grader on a fresh container, with every losing run committed and any reader
-able to reproduce a random sample from one prompt. Solo, unfunded.
+able to reproduce a random sample from one prompt. Solo, unfunded. One caveat, in the correction below: the run used the held-out tests as the gate's stopping signal, so that number is an oracle-availability ceiling, not a harness lift.
 
 The number measures one thing precisely: the *harness*, the loop of steps wrapped around the model
 rather than the model itself. Swap the frontier models for cheap open-weight ones and the same loop
@@ -23,6 +23,16 @@ test-hard discipline is old enough to have a name, [methodeutics](https://june.k
 Peirce's term for reasoning by *abduction*, the kind of inference that statistics and mathematics leave
 out. The name is optional; the loop is the point. Sibling repo:
 [`swebench-verified`](https://github.com/kimjune01/swebench-verified).
+
+## Correction: this run used the tests it should have hidden
+
+We publish our nulls and mistakes in the open, so this one stays on the record with the number it qualifies.
+
+SWE-bench's held-out evaluation rests on one rule: the `FAIL_TO_PASS` tests that decide the grade are withheld from the agent. This public-split run broke it. The gate read the visible `FAIL_TO_PASS` as its stopping signal and iterated the method against the verifier until those tests passed. The repo's own porting note ([`PRO_PORT.md`](docs/PRO_PORT.md)) calls that "the single forbidden move" for held-out evaluation; the run did it anyway, rationalized in [`METHODOLOGY.md`](docs/METHODOLOGY.md) and [`PROCEDURE.md`](docs/PROCEDURE.md) as "legal because the public tests are visible." That rationalization does not hold. Visibility makes the oracle available; it does not turn iterating against it into a measure of the harness.
+
+So 95.3% is an oracle-availability ceiling, not a harness lift. An implement-only loop with no oracle access floors near 50% on the same instances; gate access to the visible tests raises it to about 96%, so roughly 46 of the points are bought by the answer key rather than by harder reasoning. The headline comparison against bare models (95.3% vs 64.3%, below) is confounded the same way: the bare leaderboard scaffold was denied the oracle this harness handed itself.
+
+The error has a name and a writeup. It is a [Type III error](https://en.wikipedia.org/wiki/Type_III_error), a precise answer to the wrong question, worked out in the open in [Precisely Wrong](https://june.kim/type-iii-error). Naming it is what motivated the mechanism experiment, [hygraph-mechanism](https://github.com/kimjune01/hygraph-mechanism), which measures the harness where no visible oracle exists. The honest signal is there and in the OSS deployment below: 81 merged PRs into cold repositories, graded by maintainers, with no test to iterate against. The corrected reading is the paper [*The Hypothesis Graph: Semantic Memory Written by Methodeutics*](https://june.kim/the-hypothesis-graph-semantic-memory-methodeutics). This repository is archived for the record, the mistake included, not as a leaderboard claim.
 
 ## The result
 
@@ -238,7 +248,7 @@ as the number.
 
 | If you want to… | Read |
 |---|---|
-| Read the narrative essay (the *why*, not the *how*) | [The Methodeutic Harness on SWE-bench Pro](https://june.kim/the-methodeutic-harness-on-swebench-pro) |
+| Read the narrative essay (the *why*, not the *how*) | [The Hypothesis Graph: Semantic Memory Written by Methodeutics](https://june.kim/the-hypothesis-graph-semantic-memory-methodeutics) · [Precisely Wrong](https://june.kim/type-iii-error) (the oracle-access error) |
 | Scan result · cost · speed with charts | [`SCOREBOARD.md`](docs/SCOREBOARD.md) |
 | Audit the numbers and read the loss analysis | [`RESULTS.md`](docs/RESULTS.md) |
 | Trace the per-instance cost arithmetic | [`COST_BASIS.md`](docs/COST_BASIS.md) |

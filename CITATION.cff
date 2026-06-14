@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+title: "The Methodeutic Harness on SWE-bench Pro: public-split run, receipts, and an oracle-access correction"
+message: "If you use this artifact, please cite it. Dual-licensed: code AGPL-3.0, content CC BY-SA-NS (see LICENSE.md). DOI added on the Zenodo release."
+type: dataset
+version: "1.0.0"
+date-released: "2026-06-14"
+authors:
+  - family-names: Kim
+    given-names: June
+    email: kimjune01@gmail.com
+    # orcid: "https://orcid.org/0000-0000-0000-0000"   # add if you have one
+repository-code: "https://github.com/kimjune01/swebench-pro"
+url: "https://github.com/kimjune01/swebench-pro"
+keywords:
+  - SWE-bench Pro
+  - LLM program repair
+  - agent harness
+  - oracle access
+  - test-time oracle
+  - reproducibility
+  - provenance
+  - null results
+  - Type III error
+abstract: >-
+  A solo, fully-receipted run of a methodeutic agent harness across all 728
+  eligible SWE-bench Pro public-split instances (694/728 = 95.3% under the
+  official grader, every losing run committed and re-gradable from source-only
+  diffs). Published with a correction in the open: on this public split the gate
+  read the held-out FAIL_TO_PASS tests as its stopping signal, iterating the
+  method against the verifier, the move SWE-bench's held-out protocol forbids.
+  The 95.3% is therefore an oracle-availability ceiling (an implement-only loop
+  floors near 50%; gate access to the visible tests raises it to about 96%), not
+  a harness lift over bare models. The mistake is named as a Type III error, a
+  precise answer to the wrong question, and it motivated the companion mechanism
+  experiment that measures the harness where no visible oracle exists. Archived
+  for the record, the nulls and the mistake included.
+# doi: 10.5281/zenodo.XXXXXXX   # fill in after the Zenodo release is minted
